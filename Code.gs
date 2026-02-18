@@ -15,12 +15,13 @@ function doPost (e) {
     var sheet = doc.getSheetByName(sheetName);
 
     var dataset = [
-        new Date(), // Timestamp
-        e.parameter.company,
-        e.parameter.name,
-        e.parameter.phone,
-        e.parameter.email,
-        e.parameter.message
+        new Date(), // A열: Timestamp
+        e.parameter.company, // B열: Company
+        e.parameter.name, // C열: Name
+        e.parameter.phone, // D열: Phone
+        e.parameter.email, // E열: Email
+        e.parameter.message, // F열: Message
+        e.parameter.privacy_agreement // G열: 추가된 동의 여부 (Y) 
     ];
 
     sheet.appendRow(dataset);

@@ -198,6 +198,20 @@
                         <label for="message">상담 내용</label>
                         <textarea id="message" name="message" rows="5" placeholder="궁금하신 내용을 자유롭게 적어주세요"></textarea>
                     </div>
+                    <div class="privacy-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="privacy-agreement" name="privacy_agreement" required value="Y">
+                            <span>개인정보 수집 및 이용에 동의합니다.</span>
+                            <a href="javascript:void(0)" class="btn-privacy-detail" onclick="togglePrivacy()">자세히 보기</a>
+                        </label>
+                        <div id="privacy-detail" class="privacy-detail-box" style="display: none;">
+                            <strong>[개인정보 수집 및 이용 안내]</strong><br>
+                            1. 수집 항목: 기업명, 성함, 연락처, 이메일, 상담 내용<br>
+                            2. 수집 목적: 수출 컨설팅 상담 및 관련 서비스 제공<br>
+                            3. 보유 기간: 상담 종료 후 1년 (또는 요청 시 즉시 파기)<br>
+                            * 동의를 거부할 수 있으나, 거부 시 상담 신청이 제한됩니다.
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary full-width">상담 신청하기</button>
                 </form>
             </div>

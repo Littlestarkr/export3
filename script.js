@@ -13,11 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
 
+            const privacyAgreement = document.getElementById('privacy-agreement').checked;
+
             // Google Apps Script Web App URL
-            // [중요] 아래 URL을 배포한 앱스 스크립트의 웹 앱 URL로 반드시 교체해주세요.
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwEGwrbz9cz7T5frNPEV5eaKwmNg-FONevt0blmIJfqow9apbYj7Mwi8NRWQGa_xSZb/exec';
 
-            if (company && name && phone && email && message) {
+            if (company && name && phone && email && message && privacyAgreement) {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerText;
 
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Check if scriptURL is set (simple check)
                 if (scriptURL === 'YOUR_GOOGLE_SCRIPT_URL_HERE' || !scriptURL.includes('script.google.com')) {
-                    alert('오류: Google Apps Script URL이 설정되지 않았습니다.\nscript.js 파일을 열어 줄 16행의 scriptURL 변수에 배포된 웹 앱 URL을 입력해주세요.');
+                    alert('오류: Google Apps Script URL이 설정되지 않았습니다.\nscript.js 파일을 열어 줄 19행의 scriptURL 변수에 배포된 웹 앱 URL을 입력해주세요.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalBtnText;
                     return;
@@ -122,3 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 });
+
+// 개인정보 상세 보기 토글 함수
+function togglePrivacy() {
+    const detail = document.getElementById('privacy-detail');
+    if (detail.style.display === 'none') {
+        detail.style.display = 'block';
+    } else {
+        detail.style.display = 'none';
+    }
+}
