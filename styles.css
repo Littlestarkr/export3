@@ -445,42 +445,61 @@ nav a:hover {
 
 /* Footer */
 .main-footer {
-    background: #111;
+    background: #000;
+    /* 완전한 블랙으로 대조 극대화 */
     color: #fff;
-    padding: 60px 20px;
+    padding: 100px 20px;
+    /* 대폭 넓어진 여백 */
     text-align: center;
 }
 
 .footer-social {
-    margin-bottom: 25px;
+    margin-bottom: 40px;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px;
+    flex-wrap: wrap;
+    /* 모바일 대응 */
 }
 
 .footer-social a {
     color: #fff;
-    font-size: 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     transition: var(--transition);
     text-decoration: none;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+}
+
+.footer-social a i {
+    font-size: 1.4rem;
 }
 
 .footer-social a:hover {
     transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
 }
 
 .footer-social a[title="네이버 블로그"]:hover {
     color: #03c75a;
+    border-color: #03c75a;
 }
 
 .footer-social a[title="유튜브"]:hover {
     color: #ff0000;
+    border-color: #ff0000;
 }
 
 .main-footer p {
-    opacity: 0.6;
-    font-size: 0.9rem;
+    opacity: 0.5;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
 }
 
 /* Response */
