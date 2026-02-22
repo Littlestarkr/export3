@@ -316,22 +316,77 @@ nav a:hover {
 
 /* Contact Section */
 .contact-container {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 50px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.contact-info h3 {
-    font-size: 2rem;
-    color: var(--primary-color);
-    font-family: var(--font-heading);
-    margin-bottom: 15px;
-}
-
-.contact-info>p {
-    color: #666;
+.contact-info {
+    text-align: center;
     margin-bottom: 40px;
+    width: 100%;
+}
+
+.contact-info p {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.contact-info .highlight-name {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.contact-btns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.btn-kakao,
+.btn-email {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.btn-kakao {
+    background: #fee500;
+    color: #3c1e1e;
+}
+
+.btn-kakao:hover {
+    background: #fada00;
+    transform: translateY(-3px);
+}
+
+.btn-kakao img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.btn-email {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.btn-email:hover {
+    background: #1a3a6c;
+    transform: translateY(-3px);
+}
+
+.btn-email i {
+    margin-right: 10px;
 }
 
 .info-item {
@@ -349,10 +404,11 @@ nav a:hover {
 }
 
 .contact-form-wrapper {
+    width: 100%;
     background: #fff;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .form-group {
@@ -661,12 +717,12 @@ footer {
 }
 
 .privacy-detail-box {
+    display: none;
     margin-top: 10px;
-    padding: 12px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.85rem;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    font-size: 0.9rem;
     line-height: 1.5;
     color: #666;
 }
