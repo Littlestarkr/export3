@@ -447,26 +447,40 @@ nav a:hover {
 .main-footer {
     background: #111;
     color: #fff;
-    padding: 40px 20px;
+    padding: 60px 20px;
     text-align: center;
 }
 
-footer .footer-social {
-    margin-bottom: 20px;
+.footer-social {
+    margin-bottom: 25px;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
 }
 
-footer .footer-social a {
+.footer-social a {
     color: #fff;
-    font-size: 24px;
+    font-size: 1.8rem;
     transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
 }
 
-footer .footer-social a:hover {
-    color: var(--secondary-color);
-    transform: translateY(-3px);
+.footer-social a:hover {
+    transform: translateY(-5px);
+}
+
+.footer-social a[title="네이버 블로그"]:hover {
+    color: #03c75a;
+}
+
+.footer-social a[title="유튜브"]:hover {
+    color: #ff0000;
+}
+
+.main-footer p {
+    opacity: 0.6;
+    font-size: 0.9rem;
 }
 
 /* Response */
@@ -780,50 +794,6 @@ footer .footer-social a:hover {
     color: #666;
 }
 
-/* =========================================
-   Footer Social Icons - 미니멀리즘 스타일
-   ========================================= */
-footer .footer-social {
-    margin-bottom: 20px;
-    /* 저작권 문구와의 여유로운 수직 간격 */
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    /* 아이콘 사이의 쾌적한 거리 확보 */
-}
-
-footer .footer-social a {
-    color: #777;
-    /* 기존 텍스트와 동일한 회색으로 통일하여 시선 분산 방지 */
-    font-size: 1.4rem;
-    /* 모바일에서도 터치하기 적당한 크기 */
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-/* 마우스를 올렸을 때만 사령관님의 열정을 상징하는 색상 노출 */
-footer .footer-social a:hover {
-    transform: translateY(-3px);
-    /* 생동감을 주는 미세한 움직임 */
-}
-
-footer .footer-social a[title="네이버 블로그"]:hover {
-    color: #03c75a;
-    /* 네이버 고유 색상 */
-}
-
-footer .footer-social a[title="유튜브"]:hover {
-    color: #ff0000;
-    /* 유튜브 고유 색상 */
-}
-
-/* 모바일 화면 대응 (선택 사항) */
-@media (max-width: 768px) {
-    footer .footer-social {
-        gap: 40px;
-        /* 모바일에서는 오클릭 방지를 위해 간격을 더 넓힘 */
-    }
-}
 
 /* =========================================
    Contact & Form Styles
