@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Use URLSearchParams for x-www-form-urlencoded (more reliable for Google Apps Script)
                 const formData = new FormData(form);
                 const data = new URLSearchParams(formData);
+                data.set('privacy_agreement', 'Y');
 
                 // Check if scriptURL is set (simple check)
                 if (scriptURL === 'YOUR_GOOGLE_SCRIPT_URL_HERE' || !scriptURL.includes('script.google.com')) {
