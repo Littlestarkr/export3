@@ -451,6 +451,10 @@ footer {
 
 /* Response */
 @media (max-width: 768px) {
+    .section {
+        padding: 60px 0;
+    }
+
     header .container {
         flex-direction: column;
         gap: 15px;
@@ -460,6 +464,12 @@ footer {
         gap: 15px;
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .hero {
+        height: auto;
+        min-height: 80vh;
+        padding: 120px 0 60px;
     }
 
     .hero h2 {
@@ -479,6 +489,25 @@ footer {
 
     .contact-info {
         text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .contact-btns {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto;
+    }
+
+    .btn-kakao,
+    .btn-email {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .contact-form-wrapper {
+        margin-top: 40px;
+        padding: 30px 20px;
     }
 
     .info-item {
@@ -586,6 +615,7 @@ footer {
     .book-container {
         flex-direction: column;
         text-align: center;
+        gap: 40px;
     }
 
     .book-features span {
