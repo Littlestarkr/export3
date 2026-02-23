@@ -443,63 +443,61 @@ nav a:hover {
     box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
 }
 
-/* Footer */
+/* Footer 최적화 (컴팩트 버전) */
 .main-footer {
     background: #000;
-    /* 완전한 블랙으로 대조 극대화 */
     color: #fff;
-    padding: 100px 20px;
-    /* 대폭 넓어진 여백 */
+    /* 위아래 여백을 30px로 대폭 축소 */
+    padding: 30px 20px;
     text-align: center;
 }
 
 .footer-social {
-    margin-bottom: 40px;
+    /* 소셜 버튼과 아래 카피라이트 사이 간격을 15px로 최소화 */
+    margin-bottom: 15px;
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 15px;
+    /* 버튼 사이 간격도 좁혀 밀도 상향 */
     flex-wrap: wrap;
-    /* 모바일 대응 */
 }
 
 .footer-social a {
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    /* 폰트 크기 소폭 축소 */
     font-weight: 500;
     transition: var(--transition);
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
+    gap: 8px;
+    padding: 6px 15px;
+    /* 버튼 자체의 부피 축소 */
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50px;
 }
 
-.footer-social a i {
-    font-size: 1.4rem;
-}
-
-.footer-social a:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #fff;
-}
-
-.footer-social a[title="네이버 블로그"]:hover {
-    color: #03c75a;
-    border-color: #03c75a;
-}
-
-.footer-social a[title="유튜브"]:hover {
-    color: #ff0000;
-    border-color: #ff0000;
-}
-
 .main-footer p {
     opacity: 0.5;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    font-size: 0.75rem;
+    /* 카피라이트 텍스트 크기 축소 */
+    letter-spacing: 0.5px;
+    margin: 0;
+    line-height: 1.2;
+    /* 줄 간격을 줄여 높이 차지 최소화 */
+}
+
+/* 모바일 전용 추가 조정 (필요 시) */
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 25px 15px;
+        /* 모바일에서 조금 더 타이트하게 조정 */
+    }
+
+    .footer-social {
+        gap: 10px;
+    }
 }
 
 /* Response */
