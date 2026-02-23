@@ -443,60 +443,58 @@ nav a:hover {
     box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
 }
 
-/* Footer 최적화 (컴팩트 버전) */
+/* Footer 최적화: 불필요한 공간을 모두 제거한 버전 */
 .main-footer {
     background: #000;
     color: #fff;
-    /* 위아래 여백을 30px로 대폭 축소 */
-    padding: 30px 20px;
+    /* 상하 패딩을 15px로 최소화하여 높이를 대폭 줄임 */
+    padding: 15px 10px;
     text-align: center;
 }
 
 .footer-social {
-    /* 소셜 버튼과 아래 카피라이트 사이 간격을 15px로 최소화 */
-    margin-bottom: 15px;
+    /* 버튼과 아래 텍스트 사이의 간격을 8px로 설정 */
+    margin-bottom: 8px;
     display: flex;
     justify-content: center;
-    gap: 15px;
-    /* 버튼 사이 간격도 좁혀 밀도 상향 */
+    gap: 10px;
+    /* 버튼 사이의 간격도 좁힘 */
     flex-wrap: wrap;
 }
 
 .footer-social a {
     color: #fff;
-    font-size: 0.9rem;
-    /* 폰트 크기 소폭 축소 */
-    font-weight: 500;
-    transition: var(--transition);
+    font-size: 0.85rem;
+    /* 가독성을 유지하는 선에서 폰트 크기 축소 */
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 15px;
-    /* 버튼 자체의 부피 축소 */
+    gap: 6px;
+    /* 버튼 내부 여백을 줄여 부피감을 제거 */
+    padding: 4px 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
+    border-radius: 4px;
+    /* 둥근 모양을 살짝 완화하여 더 깔끔하게 처리 */
+    transition: var(--transition);
 }
 
 .main-footer p {
-    opacity: 0.5;
-    font-size: 0.75rem;
-    /* 카피라이트 텍스트 크기 축소 */
-    letter-spacing: 0.5px;
+    opacity: 0.4;
+    font-size: 0.7rem;
+    /* 카피라이트 텍스트를 작게 배치 */
     margin: 0;
-    line-height: 1.2;
-    /* 줄 간격을 줄여 높이 차지 최소화 */
+    line-height: 1;
+    /* 줄 간격에 의한 추가 공간 제거 */
 }
 
-/* 모바일 전용 추가 조정 (필요 시) */
+/* 모바일 전용: 더욱 타이트한 조정 */
 @media (max-width: 768px) {
     .main-footer {
-        padding: 25px 15px;
-        /* 모바일에서 조금 더 타이트하게 조정 */
+        padding: 12px 10px;
     }
 
     .footer-social {
-        gap: 10px;
+        gap: 8px;
     }
 }
 
