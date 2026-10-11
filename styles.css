@@ -24,6 +24,8 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     background-color: #fff;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 a {
@@ -523,6 +525,10 @@ nav a:hover {
 
     .hero h2 {
         font-size: 2.2rem;
+    }
+
+    .section-header h3 {
+        font-size: 1.7rem;
     }
 
     .about-grid,
