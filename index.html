@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>오주현 경영지도사 | 수출 자금조달 및 정책자금 컨설팅</title>
     <meta name="description" content="수출 자금조달, 정책자금, 경영 컨설팅 전문. 오주현 경영지도사와 함께 기업 성장의 기회를 잡으세요.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="오주현 경영지도사 | 수출 자금조달 및 정책자금 컨설팅">
+    <meta property="og:description" content="32년 수출금융 외길, 한국무역보험공사 출신 경영지도사 오주현과 함께 수출자금·무역보험·정책자금의 해법을 찾으세요.">
+    <meta property="og:image" content="profile.jpg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,8 +29,10 @@
             <nav>
                 <ul>
                     <li><a href="#about">소개</a></li>
+                    <li><a href="#book">서적</a></li>
                     <li><a href="#services">서비스</a></li>
-                    <li><a href="https://cafe.naver.com/xsure" target="_blank">지식 카페</a></li>
+                    <li><a href="#community">커뮤니티</a></li>
+                    <li><a href="https://cafe.naver.com/xsure" target="_blank" rel="noopener noreferrer">지식 카페</a></li>
                     <li><a href="#contact" class="btn-nav">무료 상담 신청</a></li>
                 </ul>
             </nav>
@@ -50,10 +57,32 @@
                 <span class="section-subtitle">Expertise</span>
                 <h3 class="clickable-title" onclick="openResumeModal()" role="button" tabindex="0"
                     onkeydown="if(event.key==='Enter')openResumeModal()">
-                    오주현 경영지도사 소개 <i class="fa-solid fa-file-lines resume-hint-icon"></i>
+                    오주현 경영지도사 소개
                 </h3>
-                <p class="resume-hint-text">클릭하면 상세 이력을 확인할 수 있습니다</p>
                 <div class="divider"></div>
+            </div>
+            <div class="about-stats">
+                <div class="stat-item">
+                    <span class="stat-number">32년</span>
+                    <span class="stat-label">수출금융 외길<br>(한국무역보험공사)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">20여회</span>
+                    <span class="stat-label">컨설팅 등<br>실적</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3권</span>
+                    <span class="stat-label">저서 출간<br>『수출 첫걸음』 등</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">70+</span>
+                    <span class="stat-label">칼럼·기고<br>실적</span>
+                </div>
+            </div>
+            <div class="resume-cta">
+                <button type="button" class="btn-resume" onclick="openResumeModal()">
+                    전체 이력 상세보기 <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
             <div class="about-grid">
                 <div class="about-card">
@@ -92,6 +121,10 @@
                     <span><i class="fa-solid fa-check"></i> 똑똑한 무역보험 활용법!</span>
                     <span><i class="fa-solid fa-check"></i> 안전하게 수출하는 8가지 비법!</span>
                 </div>
+                <a href="https://www.yes24.com/product/goods/127102924" target="_blank" rel="noopener noreferrer"
+                    class="btn btn-primary">
+                    <i class="fa-solid fa-book"></i> YES24에서 구매하기
+                </a>
             </div>
         </div>
     </section>
@@ -148,7 +181,7 @@
                         <span><i class="fa-solid fa-check-circle"></i> 지원사업 팁</span>
                         <span><i class="fa-solid fa-check-circle"></i> 전문가 칼럼</span>
                     </div>
-                    <a href="https://cafe.naver.com/xsure" target="_blank" class="btn btn-naver">카페 바로가기</a>
+                    <a href="https://cafe.naver.com/xsure" target="_blank" rel="noopener noreferrer" class="btn btn-naver">카페 바로가기</a>
                 </div>
                 <div class="community-deco">
                     <i class="fa-solid fa-comments"></i>
@@ -173,7 +206,7 @@
                     </p>
 
                     <div class="contact-btns">
-                        <a href="https://open.kakao.com/o/sYyKojDh" target="_blank" class="btn-kakao">
+                        <a href="https://open.kakao.com/o/sYyKojDh" target="_blank" rel="noopener noreferrer" class="btn-kakao">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg"
                                 alt="카카오톡">
                             1:1 수출상담 (클릭)
@@ -187,6 +220,10 @@
 
                 <div class="contact-form-wrapper" style="margin-top: 40px;">
                     <form id="consultingForm">
+                        <div class="form-group hp-field" aria-hidden="true">
+                            <label for="website">웹사이트</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
                         <div class="form-group">
                             <label for="company">기업명</label>
                             <input type="text" id="company" name="company" required placeholder="기업명을 입력해주세요">
@@ -225,6 +262,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary full-width">상담 신청하기</button>
+                        <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
                     </form>
                 </div>
             </div>
@@ -234,10 +272,10 @@
     <footer class="main-footer">
         <div class="container">
             <div class="footer-social">
-                <a href="https://blog.naver.com/happyojh" target="_blank" title="네이버 블로그">
+                <a href="https://blog.naver.com/happyojh" target="_blank" rel="noopener noreferrer" title="네이버 블로그">
                     <i class="fa-solid fa-blog"></i> <span>네이버 블로그</span>
                 </a>
-                <a href="http://www.youtube.com/@HappyOh-01" target="_blank" title="유튜브">
+                <a href="http://www.youtube.com/@HappyOh-01" target="_blank" rel="noopener noreferrer" title="유튜브">
                     <i class="fa-brands fa-youtube"></i> <span>유튜브 채널</span>
                 </a>
             </div>
@@ -413,6 +451,18 @@
                                 <td>저서 출간</td>
                                 <td>수출 첫걸음 (초보 수출기업용 실전 가이드북)</td>
                                 <td>중앙경제평론사</td>
+                            </tr>
+                            <tr>
+                                <td>2025.02</td>
+                                <td>저서 출간</td>
+                                <td>인생은 선물이야</td>
+                                <td>미다스북스</td>
+                            </tr>
+                            <tr>
+                                <td>2025.09</td>
+                                <td>저서 출간</td>
+                                <td>오늘 하루가 선물이다</td>
+                                <td>미다스북스</td>
                             </tr>
                             <tr>
                                 <td>2024.03~25.03</td>
