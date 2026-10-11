@@ -3,8 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('consultingForm');
 
     if (form) {
+        const statusEl = document.getElementById('formStatus');
+
+        const setStatus = (type, text) => {
+            if (!statusEl) return;
+            statusEl.textContent = text;
+            statusEl.className = 'form-status ' + type;
+        };
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+
+            // Honeypot: real users never fill this hidden field. Bots that do are dropped silently.
+            const honeypot = document.getElementById('website').value;
+            if (honeypot) {
+                return;
+            }
 
             // Basic Validation Check
             const company = document.getElementById('company').value;
@@ -25,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Loading State
                 submitBtn.disabled = true;
                 submitBtn.innerText = '전송 중...';
+                setStatus('', '');
 
                 // Use URLSearchParams for x-www-form-urlencoded (more reliable for Google Apps Script)
                 const formData = new FormData(form);
@@ -33,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Check if scriptURL is set (simple check)
                 if (scriptURL === 'YOUR_GOOGLE_SCRIPT_URL_HERE' || !scriptURL.includes('script.google.com')) {
-                    alert('오류: Google Apps Script URL이 설정되지 않았습니다.\nscript.js 파일을 열어 줄 19행의 scriptURL 변수에 배포된 웹 앱 URL을 입력해주세요.');
+                    setStatus('error', '상담 신청을 접수할 수 없습니다. 카카오톡이나 이메일로 문의해 주세요.');
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalBtnText;
                     return;
@@ -46,22 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(response => response.json())
                     .then(response => {
                         if (response.result === 'success') {
-                            alert(`감사합니다, ${name}님. 상담 신청이 성공적으로 접수되었습니다.\n빠른 시일 내에 연락드리겠습니다.`);
+                            setStatus('success', `감사합니다, ${name}님. 상담 신청이 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.`);
                             form.reset();
                         } else {
-                            throw new Error('Script Error: ' + JSON.stringify(response));
+                            throw new Error(response && response.error ? String(response.error) : 'unknown error');
                         }
                         submitBtn.disabled = false;
                         submitBtn.innerText = originalBtnText;
                     })
                     .catch(error => {
-                        console.error('Error!', error.message);
-                        alert(`상담 신청 접수에 실패했습니다.\n\n[오류 내용]\n${error.message}\n\nGoogle Apps Script 배포 URL이 정확한지 확인해주세요.`);
+                        console.error('Consulting form submission failed:', error.message);
+                        setStatus('error', '상담 신청 접수에 실패했습니다. 잠시 후 다시 시도하시거나 카카오톡/이메일로 문의해 주세요.');
                         submitBtn.disabled = false;
                         submitBtn.innerText = originalBtnText;
                     });
             } else {
-                alert('필수 정보(기업명, 담당자 성함, 연락처, 이메일, 상담 내용)를 모두 입력해주세요.');
+                setStatus('error', '필수 정보(기업명, 담당자 성함, 연락처, 이메일, 상담 내용)를 모두 입력해 주세요.');
             }
         });
     }
