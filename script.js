@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
-                // Header height offset calculation
-                const headerOffset = 80;
+                // Header height offset calculation (header is not fixed on mobile)
+                const headerOffset = window.matchMedia('(max-width: 768px)').matches ? 0 : 80;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 

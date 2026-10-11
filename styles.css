@@ -699,6 +699,10 @@ nav a:hover {
         padding: 60px 0;
     }
 
+    header {
+        position: static;
+    }
+
     header .container {
         flex-direction: column;
         gap: 15px;
@@ -713,10 +717,11 @@ nav a:hover {
     .hero {
         height: auto;
         min-height: 80vh;
-        padding: 120px 0 60px;
+        padding: 40px 0 60px;
     }
 
     .hero h2 {
+        margin-top: 24px;
         font-size: 2.2rem;
     }
 
