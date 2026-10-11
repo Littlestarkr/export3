@@ -122,6 +122,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
 });
 
+// 이력서 모달 열기/닫기
+function openResumeModal() {
+    const modal = document.getElementById('resumeModal');
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeResumeModal() {
+    const modal = document.getElementById('resumeModal');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function closeResumeModalOnOverlay(event) {
+    if (event.target.id === 'resumeModal') {
+        closeResumeModal();
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeResumeModal();
+    }
+});
+
 // 개인정보 상세 보기 토글 함수
 function togglePrivacy() {
     const detail = document.getElementById('privacy-detail');

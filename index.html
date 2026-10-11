@@ -48,7 +48,11 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Expertise</span>
-                <h3>오주현 경영지도사 소개</h3>
+                <h3 class="clickable-title" onclick="openResumeModal()" role="button" tabindex="0"
+                    onkeydown="if(event.key==='Enter')openResumeModal()">
+                    오주현 경영지도사 소개 <i class="fa-solid fa-file-lines resume-hint-icon"></i>
+                </h3>
+                <p class="resume-hint-text">클릭하면 상세 이력을 확인할 수 있습니다</p>
                 <div class="divider"></div>
             </div>
             <div class="about-grid">
@@ -240,6 +244,175 @@
             <p>&copy; 2026 Happy Oh Consulting. All rights reserved.</p>
         </div>
     </footer>
+
+    <div id="resumeModal" class="modal-overlay" onclick="closeResumeModalOnOverlay(event)" aria-hidden="true">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle">
+            <button type="button" class="modal-close" onclick="closeResumeModal()" aria-label="닫기">&times;</button>
+            <div class="modal-content">
+                <div class="resume-header">
+                    <span class="section-subtitle">Profile</span>
+                    <h3 id="resumeModalTitle">오주현 수출컨설턴트 이력서</h3>
+                    <div class="divider"></div>
+                </div>
+
+                <div class="resume-basic">
+                    <div class="resume-basic-row"><span class="resume-label">성명</span><span>오주현</span></div>
+                    <div class="resume-basic-row"><span class="resume-label">소속</span><span>한국강소기업협회
+                            등</span></div>
+                    <div class="resume-basic-row"><span class="resume-label">직위</span><span>전문위원</span></div>
+                    <div class="resume-basic-row"><span class="resume-label">학력</span><span>연세대 경제학사 / 방송대
+                            경영학석사</span></div>
+                    <div class="resume-basic-row"><span class="resume-label">보유자격</span><span>경영지도사,
+                            글로벌비즈니스컨설턴트 1급, 국제무역사 1급, 외환전문역 1종/2종, 물류관리사, 유통관리사 2급, 창업보육전문매니저</span></div>
+                </div>
+
+                <h4 class="resume-section-title">경력 사항</h4>
+                <div class="resume-table-wrap">
+                    <table class="resume-table">
+                        <thead>
+                            <tr>
+                                <th>소속·기관명</th>
+                                <th>참여기간</th>
+                                <th>직위</th>
+                                <th>담당업무</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>한국무역보험공사</td>
+                                <td>1993.12~2025.12</td>
+                                <td>부장/전문위원</td>
+                                <td>수출금융, 글로벌 PF 총괄</td>
+                                <td>공공, 정년퇴직</td>
+                            </tr>
+                            <tr>
+                                <td>중소벤처기업부 외</td>
+                                <td>2026.01~현재</td>
+                                <td>자문위원</td>
+                                <td>비즈니스지원단 수출 컨설팅</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>(재)부산경제진흥원 등</td>
+                                <td>2026.04~현재</td>
+                                <td>수출전문위원</td>
+                                <td>수출기업 멘토링</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>해외건설협회</td>
+                                <td>2023.04~현재</td>
+                                <td>평가위원</td>
+                                <td>해외 프로젝트 평가</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>여성기업종합지원센터</td>
+                                <td>2026.4~현재</td>
+                                <td>글로벌전문컨설턴트</td>
+                                <td>초보 수출기업 컨설팅</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>장애인기업종합지원센터</td>
+                                <td>2026.9~현재</td>
+                                <td>장애인기업지도사</td>
+                                <td>장애인기업 경영컨설팅</td>
+                                <td>공공</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="resume-section-title">주요 컨설팅·멘토링 실적</h4>
+                <div class="resume-table-wrap">
+                    <table class="resume-table">
+                        <thead>
+                            <tr>
+                                <th>수행기간</th>
+                                <th>업체·기관</th>
+                                <th>수행 내용</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026</td>
+                                <td>소상공인시장진흥공단</td>
+                                <td>부울경 희망리턴패키지 7개사 대상 해외시장 진출 멘토링</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>2026.05~06</td>
+                                <td>(재)여성기업종합지원센터</td>
+                                <td>여성 창업기업 3개사(나리치, 더블유컴퍼니, 서가글로벌) 글로벌 진출 전략 및 B2C 마켓 입점 컨설팅</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>2026</td>
+                                <td>㈜싼카, ㈜카라바</td>
+                                <td>무역보험 컨설팅 및 수출신용보증(선적전) 발급 성공</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2026.08~09</td>
+                                <td>㈜올스페이스</td>
+                                <td>장애인기업 경영컨설팅 실시</td>
+                                <td>공공</td>
+                            </tr>
+                            <tr>
+                                <td>2025</td>
+                                <td>㈜뉴원</td>
+                                <td>2025년 ESG 지속가능경영보고서 작성 실무 컨설팅 완수</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="resume-section-title">강의 및 기고 실적</h4>
+                <div class="resume-table-wrap">
+                    <table class="resume-table">
+                        <thead>
+                            <tr>
+                                <th>일자</th>
+                                <th>구분/매체명</th>
+                                <th>주제 및 내용</th>
+                                <th>비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024.06</td>
+                                <td>저서 출간</td>
+                                <td>수출 첫걸음 (초보 수출기업용 실전 가이드북)</td>
+                                <td>중앙경제평론사</td>
+                            </tr>
+                            <tr>
+                                <td>2024.03~25.03</td>
+                                <td>한국무역신문</td>
+                                <td>초보수출기업을 위한 안전수출 가이드 50회</td>
+                                <td>칼럼 기고</td>
+                            </tr>
+                            <tr>
+                                <td>2026.01~현재</td>
+                                <td>중소기업신문</td>
+                                <td>오주현의 중소기업 글로벌 도전</td>
+                                <td>칼럼 연재</td>
+                            </tr>
+                            <tr>
+                                <td>2024년</td>
+                                <td>건국대/가천대</td>
+                                <td>대학생 대상 무역실무 강의</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
