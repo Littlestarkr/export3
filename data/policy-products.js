@@ -360,8 +360,7 @@ const PF_PRODUCTS = [
     rate: "정책자금 기준금리 또는 고정금리(2%대)",
     term: "5년(2년 거치)",
     notes: "공단 보증서 없이 기술·사업성 평가만으로 직접 융자해 수출기업의 선호도가 높다.",
-    tags: ["newexporter"],
-    verify: "자료에 따라 한도가 5억~10억 원(운전 5억 원)으로 달라 공고 확인이 필요하다."
+    tags: ["newexporter"]
   },
   {
     id: "kosmes-global-direct", org: "kosmes", by: "중진공",
@@ -446,10 +445,10 @@ const PF_PRODUCTS = [
     summary: "특허·정부 R&D 기술의 사업화 자금",
     method: "direct", purpose: ["working", "facility"], size: "sme", exp: null,
     target: "특허, 정부 R&D 등 보유기술의 사업화를 추진하는 기업",
-    limit: "연간 30억 원 (혁신성장 분야 최대 60억 원)",
-    rate: "시설 기준금리 − 0.3% / 운전 기준금리",
-    term: "시설 10년 / 운전 5년",
-    verify: "자료에 따라 한도(30억·60억 원)와 우대금리가 달라 공고 확인이 필요하다."
+    limit: "직접대출 연간 30억 원 (운전자금 5억 원) / 혁신성장 분야 최대 60억 원 (운전자금 10억 원)",
+    rate: "정책자금 기준금리(변동) — 투자조건부 융자는 기준금리 − 0.3%p",
+    term: "시설 최대 10년 / 운전 최대 5년(2년 거치)",
+    verify: "이차보전 등 다른 취급 방식의 조건은 별도 융자계획 공고에서 확인해야 한다."
   },
   {
     id: "kosmes-smart", org: "kosmes", by: "중진공",
