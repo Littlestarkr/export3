@@ -529,6 +529,31 @@ nav a:hover {
     font-size: 0.95rem;
 }
 
+/* 서비스 카드 중 별도 페이지로 연결되는 카드 (정책자금 및 수출금융) */
+.service-link {
+    cursor: pointer;
+}
+
+.service-link:hover .service-icon {
+    color: var(--secondary-color);
+}
+
+.service-more {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.service-link:hover .service-more i {
+    transform: translateX(4px);
+}
+
+.service-more i {
+    transition: var(--transition);
+}
+
 /* Contact Section */
 .contact-container {
     display: flex;

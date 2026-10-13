@@ -1,0 +1,828 @@
+/* =========================================
+   정책자금 및 수출금융 페이지 (policy-finance.html)
+   기본 변수·헤더·푸터는 styles.css 를 공유한다.
+   ========================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.pf-section,
+.pf-hero {
+    scroll-margin-top: 80px;
+}
+
+#part1,
+#part2 {
+    scroll-margin-top: 70px;
+}
+
+.logo a {
+    color: inherit;
+}
+
+/* ── Hero ── */
+.pf-hero {
+    background: linear-gradient(135deg, #0d1e38 0%, #1a3a6c 100%);
+    color: #fff;
+    text-align: center;
+    padding: 150px 0 80px;
+    position: relative;
+}
+
+.pf-hero h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    line-height: 1.25;
+    margin: 6px 0 18px;
+}
+
+.pf-hero p {
+    font-size: 1.15rem;
+    opacity: 0.92;
+    margin-bottom: 34px;
+}
+
+.pf-back {
+    display: inline-block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 24px;
+}
+
+.pf-back:hover {
+    opacity: 1;
+    color: var(--secondary-color);
+}
+
+.pf-hero-btns {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.pf-br {
+    display: none;
+}
+
+/* ── Section ── */
+.pf-section {
+    padding: 90px 0;
+}
+
+.pf-lead {
+    max-width: 640px;
+    margin: 22px auto 0;
+    color: #666;
+}
+
+.pf-group-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 50px 0 20px;
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 12px;
+}
+
+.pf-group-title i {
+    color: var(--secondary-color);
+}
+
+/* ── 1부: 사이트 카드 ── */
+.pf-site-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.pf-site {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: var(--transition);
+}
+
+.pf-site:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border-color: transparent;
+}
+
+.pf-site h5 {
+    font-size: 1.15rem;
+    color: var(--primary-color);
+}
+
+.pf-site-url {
+    font-size: 0.82rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.pf-site p {
+    font-size: 0.92rem;
+    color: #555;
+}
+
+.pf-site-for {
+    background: var(--accent-color);
+    border-radius: 4px;
+    padding: 8px 10px;
+}
+
+.pf-site-for strong {
+    color: var(--primary-color);
+    margin-right: 4px;
+}
+
+.pf-site-link {
+    margin-top: auto;
+    padding-top: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+}
+
+.pf-site-link:hover {
+    color: var(--secondary-color);
+}
+
+/* ── 1부: 접근 순서 ── */
+.pf-flow {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    counter-reset: none;
+}
+
+.pf-flow li {
+    position: relative;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+    padding: 28px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pf-flow li:not(:last-child)::after {
+    content: "\f054";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: -19px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.pf-flow-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pf-flow strong {
+    font-size: 1.1rem;
+}
+
+.pf-flow span:last-child {
+    font-size: 0.92rem;
+    opacity: 0.88;
+}
+
+/* ── 2부: 안내문 ── */
+.pf-notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #fffaf0;
+    border: 1px solid #efe0bd;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 26px;
+    font-size: 0.88rem;
+    color: #6b5a30;
+}
+
+.pf-notice i {
+    margin-top: 4px;
+    color: var(--secondary-color);
+}
+
+/* ── 2부: 필터 ── */
+.pf-filter {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+}
+
+.pf-filter>summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.pf-filter>summary::-webkit-details-marker {
+    display: none;
+}
+
+.pf-filter>summary i {
+    color: var(--secondary-color);
+    margin-right: 8px;
+}
+
+.pf-filter>summary::after {
+    content: "\f078";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.8rem;
+    color: #999;
+    margin-left: 12px;
+    transition: transform 0.2s;
+}
+
+.pf-filter[open]>summary::after {
+    transform: rotate(180deg);
+}
+
+.pf-filter>summary {
+    gap: 8px;
+}
+
+.pf-filter-count {
+    margin-left: auto;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.pf-filter-body {
+    padding: 0 24px 22px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.pf-search {
+    position: relative;
+    margin: 20px 0 8px;
+}
+
+.pf-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.pf-search input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.pf-search input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.12);
+}
+
+.pf-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-top: 16px;
+}
+
+.pf-row-label {
+    flex: 0 0 96px;
+    padding-top: 7px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+}
+
+.pf-hint {
+    margin: 6px 0 0 112px;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.pf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+}
+
+.pf-chip {
+    font-family: inherit;
+    font-size: 0.88rem;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.pf-chip:hover {
+    border-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.pf-chip.is-active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.pf-chips-tags .pf-chip {
+    background: var(--accent-color);
+    border-color: transparent;
+}
+
+.pf-chips-tags .pf-chip.is-active {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.pf-chip:focus-visible,
+.pf-tab:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+.pf-filter-foot {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.pf-reset {
+    font-family: inherit;
+    font-size: 0.88rem;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.pf-reset:hover {
+    color: var(--primary-color);
+}
+
+/* ── 2부: 기관 탭 ── */
+.pf-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e5e5e5;
+    scrollbar-width: thin;
+}
+
+.pf-tab {
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 11px 18px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -8px;
+    color: #666;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.pf-tab em {
+    font-style: normal;
+    font-size: 0.78rem;
+    background: #e9ecef;
+    color: #666;
+    padding: 1px 7px;
+    border-radius: 999px;
+    margin-left: 4px;
+}
+
+.pf-tab:hover {
+    color: var(--primary-color);
+}
+
+.pf-tab.is-active {
+    color: var(--primary-color);
+    font-weight: 700;
+    border-bottom-color: var(--secondary-color);
+}
+
+.pf-tab.is-active em {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.pf-tab.is-zero {
+    opacity: 0.45;
+}
+
+.pf-org-desc {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: #555;
+}
+
+.pf-org-desc strong {
+    color: var(--primary-color);
+}
+
+.pf-org-desc a {
+    margin-left: 6px;
+    color: var(--secondary-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pf-result-count {
+    margin: 22px 0 14px;
+    font-size: 0.9rem;
+    color: #888;
+    min-height: 1.4em;
+}
+
+/* ── 2부: 상품 카드 ── */
+.pf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.pf-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    border-top: 4px solid var(--org-color, var(--primary-color));
+    padding: 22px 22px 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+
+.pf-card:hover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.09);
+    transform: translateY(-3px);
+}
+
+.pf-card[data-org="semas"] { --org-color: #2a7f8e; }
+.pf-card[data-org="regional"] { --org-color: #4f74b3; }
+.pf-card[data-org="kosmes"] { --org-color: #0d1e38; }
+.pf-card[data-org="guarantee"] { --org-color: #7a5ea8; }
+.pf-card[data-org="ksure"] { --org-color: #b0793a; }
+.pf-card[data-org="exim"] { --org-color: #3d7a5a; }
+.pf-card[data-org="bank"] { --org-color: #777; }
+
+.pf-card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.pf-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--org-color);
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+
+.pf-method {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    border: 1px solid #d9d9d9;
+    padding: 2px 9px;
+    border-radius: 4px;
+}
+
+.pf-check {
+    margin-left: auto;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #a1670a;
+    background: #fff4dc;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: help;
+}
+
+.pf-card h4 {
+    font-size: 1.12rem;
+    line-height: 1.4;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+}
+
+.pf-summary {
+    font-size: 0.88rem;
+    color: #777;
+    margin-bottom: 14px;
+}
+
+.pf-facts {
+    border-top: 1px solid #f0f0f0;
+}
+
+.pf-fact {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 0.88rem;
+}
+
+.pf-fact dt {
+    flex: 0 0 76px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    padding-top: 1px;
+}
+
+.pf-fact dd {
+    flex: 1;
+    color: #444;
+}
+
+.pf-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.pf-tag {
+    font-size: 0.75rem;
+    color: #7a6230;
+    background: #f7f0e1;
+    padding: 2px 9px;
+    border-radius: 999px;
+}
+
+.pf-more {
+    margin-top: 12px;
+}
+
+.pf-more>summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    list-style: none;
+}
+
+.pf-more>summary::-webkit-details-marker {
+    display: none;
+}
+
+.pf-more>summary::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    color: var(--secondary-color);
+}
+
+.pf-more[open]>summary::before {
+    content: "−";
+}
+
+.pf-more-body {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: var(--accent-color);
+    border-radius: 6px;
+    font-size: 0.86rem;
+    color: #555;
+}
+
+.pf-more-body p+p {
+    margin-top: 8px;
+}
+
+.pf-more-meta strong {
+    color: var(--primary-color);
+    margin-right: 6px;
+}
+
+.pf-verify {
+    color: #a1670a;
+}
+
+.pf-verify i {
+    margin-right: 4px;
+}
+
+.pf-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.pf-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 2px solid var(--primary-color);
+}
+
+.pf-btn-line {
+    color: var(--primary-color);
+    background: #fff;
+}
+
+.pf-btn-line:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.pf-btn-solid {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.pf-btn-solid:hover {
+    background: #b08d4a;
+    border-color: #b08d4a;
+    color: #fff;
+}
+
+.pf-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #777;
+}
+
+.pf-empty[hidden] {
+    display: none;
+}
+
+.pf-empty i {
+    font-size: 2.6rem;
+    color: #ccc;
+    margin-bottom: 16px;
+}
+
+.pf-empty p {
+    margin-bottom: 22px;
+}
+
+/* ── 상담 연결 ── */
+.pf-cta {
+    background: linear-gradient(135deg, #0d1e38 0%, #1a3a6c 100%);
+    color: #fff;
+    text-align: center;
+    padding: 70px 0;
+}
+
+.pf-cta h3 {
+    font-size: 1.9rem;
+    margin-bottom: 14px;
+}
+
+.pf-cta p {
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.pf-cta-btns {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 1100px) {
+    .pf-site-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .pf-hero {
+        padding: 50px 0 56px;
+    }
+
+    .pf-hero h2 {
+        font-size: 2rem;
+    }
+
+    .pf-hero p {
+        font-size: 1rem;
+    }
+
+    .pf-br {
+        display: inline;
+    }
+
+    .pf-section {
+        padding: 50px 0 !important;
+    }
+
+    .pf-section .container {
+        padding: 0 20px;
+    }
+
+    .pf-site-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-flow {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-flow li:not(:last-child)::after {
+        content: "\f078";
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: -19px;
+        transform: translateX(-50%);
+    }
+
+    .pf-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .pf-row-label {
+        flex: none;
+        padding-top: 0;
+    }
+
+    .pf-hint {
+        margin-left: 0;
+    }
+
+    .pf-filter-body {
+        padding: 0 16px 18px;
+    }
+
+    .pf-filter>summary {
+        padding: 16px;
+    }
+
+    .pf-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-cta h3 {
+        font-size: 1.5rem;
+    }
+
+    .pf-cta .btn,
+    .pf-cta .btn-kakao {
+        width: 100%;
+        justify-content: center;
+    }
+}
