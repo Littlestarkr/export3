@@ -129,6 +129,11 @@
             ' aria-pressed="' + (active ? 'true' : 'false') + '">' + esc(label) + '</button>';
     }
 
+    // 복수 선택 그룹의 '전체' 칩: 선택이 하나도 없을 때 활성, 누르면 해당 그룹을 비운다
+    function allChip(group) {
+        return chip('전체', state[group].length === 0, 'data-group="' + group + '" data-value="all"');
+    }
+
     function renderChips() {
         $('pfSize').innerHTML = SIZE_OPTIONS.map(function (o) {
             return chip(o.label, state.size === o.id, 'data-group="size" data-value="' + o.id + '"');
@@ -138,15 +143,15 @@
             return chip(o.label, state.exp === o.id, 'data-group="exp" data-value="' + o.id + '"');
         }).join('');
 
-        $('pfPurpose').innerHTML = PURPOSE_OPTIONS.map(function (o) {
+        $('pfPurpose').innerHTML = allChip('purposes') + PURPOSE_OPTIONS.map(function (o) {
             return chip(o.label, state.purposes.indexOf(o.id) !== -1, 'data-group="purposes" data-value="' + o.id + '"');
         }).join('');
 
-        $('pfMethod').innerHTML = METHOD_OPTIONS.map(function (o) {
+        $('pfMethod').innerHTML = allChip('methods') + METHOD_OPTIONS.map(function (o) {
             return chip(o.label, state.methods.indexOf(o.id) !== -1, 'data-group="methods" data-value="' + o.id + '"');
         }).join('');
 
-        $('pfTags').innerHTML = PF_TAGS.map(function (t) {
+        $('pfTags').innerHTML = allChip('tags') + PF_TAGS.map(function (t) {
             return chip(t.label, state.tags.indexOf(t.id) !== -1, 'data-group="tags" data-value="' + t.id + '"');
         }).join('');
 
@@ -292,6 +297,8 @@
             var value = btn.getAttribute('data-value');
             if (group === 'size' || group === 'exp') {
                 state[group] = value;
+            } else if (value === 'all') {
+                state[group].length = 0;
             } else {
                 toggleIn(state[group], value);
             }
