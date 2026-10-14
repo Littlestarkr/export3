@@ -804,3 +804,6 @@ html {
 .pf-kon h6 { margin: 0 0 6px; font-size: 1.1rem; color: var(--navy, #0d1e38); }
 .pf-kon p { margin: 0; color: #555; }
 @media (max-width: 768px) { .pf-kon { padding: 18px; } .pf-kon .btn { width: 100%; text-align: center; } }
+
+/* ── 글로벌 진출 페이지(global-expansion.html) ── */
+.pf-cellnote { display: block; margin-top: 4px; font-size: 0.86em; color: #6b6b6b; }
