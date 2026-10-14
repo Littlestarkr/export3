@@ -39,3 +39,5 @@ There is no linter or test suite configured for this repo.
 **Scroll-in animations.** `script.js` uses an `IntersectionObserver` to add a `.visible` class to `.about-card` and `.service-item` elements as they enter the viewport (fading/translating in); the corresponding `.visible` CSS is injected dynamically into `<head>` by the script itself rather than living in `styles.css`.
 
 **정책자금 및 수출금융 페이지 (`policy-finance.html`).** 서비스 카드 01에서 연결되는 별도 페이지로, `policy-finance.css`·`policy-finance.js`를 쓴다(`script.js`는 `#resumeModal`이 없어 로드하지 않는다). 1부는 탐색 사이트·보증기관 카드, 2부는 기관별 탭(소진공·중진공·신용보증기금·무보·aT·수출입은행·기보·무역협회)이며 각 기관의 자금 체계(성장단계 등)에 맞춰 표를 손으로 작성한 정적 HTML이다. 탭 전환만 JS가 맡고 `?org=kosmes` 같은 쿼리로 바로 열 수 있다. 기관을 추가하려면 `.pf-tab`(비활성 ‘준비 중’ 탭을 `data-org`로 바꾸기)와 `#panel-<org>`를 추가한다. 표는 모바일(768px 이하)에서 `data-label` 기반 카드로 바뀐다. 한도·금리는 기관 공식 안내를 옮긴 것이므로 수정 시 원문 링크(`.pf-source`)를 함께 확인한다.
+
+**무역보험 및 수출 안전망 페이지 (`trade-insurance.html`).** 서비스 카드 02에서 연결되는 별도 페이지로 `policy-finance.css`를 함께 쓴다(JS 없음). 무역보험 전반(i-800), 국외기업 신용조사, 바이어 정보 검색(K-SIGHT), 단기성 보험, 신용보증, 환변동보험은 무보 홈페이지 안내를 옮긴 정적 HTML이고, K-SURE ON은 외부 링크만 연결한다. 보험료율·한도는 수시로 바뀌므로 수정 시 원문(`.pf-source`)을 확인한다.
