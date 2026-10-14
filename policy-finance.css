@@ -229,178 +229,6 @@ html {
     color: var(--secondary-color);
 }
 
-/* ── 2부: 필터 ── */
-.pf-filter {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-    margin-bottom: 30px;
-}
-
-.pf-filter>summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 24px;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.pf-filter>summary::-webkit-details-marker {
-    display: none;
-}
-
-.pf-filter>summary i {
-    color: var(--secondary-color);
-    margin-right: 8px;
-}
-
-.pf-filter>summary::after {
-    content: "\f078";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 0.8rem;
-    color: #999;
-    margin-left: 12px;
-    transition: transform 0.2s;
-}
-
-.pf-filter[open]>summary::after {
-    transform: rotate(180deg);
-}
-
-.pf-filter>summary {
-    gap: 8px;
-}
-
-.pf-filter-count {
-    margin-left: auto;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--secondary-color);
-}
-
-.pf-filter-body {
-    padding: 0 24px 22px;
-    border-top: 1px solid #f0f0f0;
-}
-
-.pf-search {
-    position: relative;
-    margin: 20px 0 8px;
-}
-
-.pf-search i {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #aaa;
-}
-
-.pf-search input {
-    width: 100%;
-    padding: 12px 15px 12px 40px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.95rem;
-}
-
-.pf-search input:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.12);
-}
-
-.pf-row {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    margin-top: 16px;
-}
-
-.pf-row-label {
-    flex: 0 0 96px;
-    padding-top: 7px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--primary-color);
-}
-
-.pf-hint {
-    margin: 6px 0 0 112px;
-    font-size: 0.8rem;
-    color: #999;
-}
-
-.pf-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    flex: 1;
-}
-
-.pf-chip {
-    font-family: inherit;
-    font-size: 0.88rem;
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 1px solid #ddd;
-    background: #fff;
-    color: #555;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.pf-chip:hover {
-    border-color: var(--secondary-color);
-    color: var(--primary-color);
-}
-
-.pf-chip.is-active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    color: #fff;
-}
-
-.pf-chips-tags .pf-chip {
-    background: var(--accent-color);
-    border-color: transparent;
-}
-
-.pf-chips-tags .pf-chip.is-active {
-    background: var(--secondary-color);
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
-.pf-chip:focus-visible,
-.pf-tab:focus-visible {
-    outline: 2px solid var(--secondary-color);
-    outline-offset: 2px;
-}
-
-.pf-filter-foot {
-    margin-top: 20px;
-    text-align: right;
-}
-
-.pf-reset {
-    font-family: inherit;
-    font-size: 0.88rem;
-    background: none;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.pf-reset:hover {
-    color: var(--primary-color);
-}
 
 /* ── 2부: 기관 탭 ── */
 .pf-tabs {
@@ -452,269 +280,6 @@ html {
     color: #fff;
 }
 
-.pf-tab.is-zero {
-    opacity: 0.45;
-}
-
-.pf-org-desc {
-    margin-top: 18px;
-    font-size: 0.92rem;
-    color: #555;
-}
-
-.pf-org-desc strong {
-    color: var(--primary-color);
-}
-
-.pf-org-desc a {
-    margin-left: 6px;
-    color: var(--secondary-color);
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.pf-result-count {
-    margin: 22px 0 14px;
-    font-size: 0.9rem;
-    color: #888;
-    min-height: 1.4em;
-}
-
-/* ── 2부: 상품 카드 ── */
-.pf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
-    align-items: stretch;
-}
-
-.pf-card {
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    border-top: 4px solid var(--org-color, var(--primary-color));
-    padding: 22px 22px 20px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-    display: flex;
-    flex-direction: column;
-    transition: var(--transition);
-}
-
-.pf-card:hover {
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.09);
-    transform: translateY(-3px);
-}
-
-.pf-card[data-org="semas"] { --org-color: #2a7f8e; }
-.pf-card[data-org="regional"] { --org-color: #4f74b3; }
-.pf-card[data-org="kosmes"] { --org-color: #0d1e38; }
-.pf-card[data-org="guarantee"] { --org-color: #7a5ea8; }
-.pf-card[data-org="ksure"] { --org-color: #b0793a; }
-.pf-card[data-org="exim"] { --org-color: #3d7a5a; }
-.pf-card[data-org="bank"] { --org-color: #777; }
-
-.pf-card-head {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-}
-
-.pf-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fff;
-    background: var(--org-color);
-    padding: 3px 10px;
-    border-radius: 4px;
-}
-
-.pf-method {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--primary-color);
-    border: 1px solid #d9d9d9;
-    padding: 2px 9px;
-    border-radius: 4px;
-}
-
-.pf-check {
-    margin-left: auto;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #a1670a;
-    background: #fff4dc;
-    padding: 3px 8px;
-    border-radius: 4px;
-    cursor: help;
-}
-
-.pf-card h4 {
-    font-size: 1.12rem;
-    line-height: 1.4;
-    color: var(--primary-color);
-    margin-bottom: 6px;
-}
-
-.pf-summary {
-    font-size: 0.88rem;
-    color: #777;
-    margin-bottom: 14px;
-}
-
-.pf-facts {
-    border-top: 1px solid #f0f0f0;
-}
-
-.pf-fact {
-    display: flex;
-    gap: 12px;
-    padding: 9px 0;
-    border-bottom: 1px solid #f4f4f4;
-    font-size: 0.88rem;
-}
-
-.pf-fact dt {
-    flex: 0 0 76px;
-    font-weight: 700;
-    color: var(--secondary-color);
-    font-size: 0.8rem;
-    padding-top: 1px;
-}
-
-.pf-fact dd {
-    flex: 1;
-    color: #444;
-}
-
-.pf-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
-}
-
-.pf-tag {
-    font-size: 0.75rem;
-    color: #7a6230;
-    background: #f7f0e1;
-    padding: 2px 9px;
-    border-radius: 999px;
-}
-
-.pf-more {
-    margin-top: 12px;
-}
-
-.pf-more>summary {
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    list-style: none;
-}
-
-.pf-more>summary::-webkit-details-marker {
-    display: none;
-}
-
-.pf-more>summary::before {
-    content: "+";
-    display: inline-block;
-    width: 16px;
-    color: var(--secondary-color);
-}
-
-.pf-more[open]>summary::before {
-    content: "−";
-}
-
-.pf-more-body {
-    margin-top: 10px;
-    padding: 12px 14px;
-    background: var(--accent-color);
-    border-radius: 6px;
-    font-size: 0.86rem;
-    color: #555;
-}
-
-.pf-more-body p+p {
-    margin-top: 8px;
-}
-
-.pf-more-meta strong {
-    color: var(--primary-color);
-    margin-right: 6px;
-}
-
-.pf-verify {
-    color: #a1670a;
-}
-
-.pf-verify i {
-    margin-right: 4px;
-}
-
-.pf-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-    padding-top: 16px;
-}
-
-.pf-btn {
-    flex: 1;
-    text-align: center;
-    font-size: 0.88rem;
-    font-weight: 700;
-    padding: 10px 12px;
-    border-radius: 4px;
-    border: 2px solid var(--primary-color);
-}
-
-.pf-btn-line {
-    color: var(--primary-color);
-    background: #fff;
-}
-
-.pf-btn-line:hover {
-    background: var(--primary-color);
-    color: #fff;
-}
-
-.pf-btn-solid {
-    background: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color: var(--primary-color);
-}
-
-.pf-btn-solid:hover {
-    background: #b08d4a;
-    border-color: #b08d4a;
-    color: #fff;
-}
-
-.pf-empty {
-    text-align: center;
-    padding: 60px 20px;
-    color: #777;
-}
-
-.pf-empty[hidden] {
-    display: none;
-}
-
-.pf-empty i {
-    font-size: 2.6rem;
-    color: #ccc;
-    margin-bottom: 16px;
-}
-
-.pf-empty p {
-    margin-bottom: 22px;
-}
-
 /* ── 상담 연결 ── */
 .pf-cta {
     background: linear-gradient(135deg, #0d1e38 0%, #1a3a6c 100%);
@@ -741,7 +306,436 @@ html {
     align-items: center;
 }
 
-/* ── 반응형 ── */
+
+/* ── 2부: 기관 탭 보강 ── */
+.pf-tab em {
+    font-size: 0.74rem;
+}
+
+.pf-tab:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: -2px;
+}
+
+.pf-tab-soon,
+.pf-tab-soon:hover {
+    color: #aaa;
+    cursor: default;
+}
+
+.pf-tab-soon em {
+    background: #f1f1f1;
+    color: #aaa;
+}
+
+.pf-panel {
+    margin-top: 28px;
+}
+
+.pf-panel[hidden] {
+    display: none;
+}
+
+.pf-soon-note {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px dashed #d8d8d8;
+    font-size: 0.88rem;
+    color: #888;
+    text-align: center;
+}
+
+/* ── 2부: 기관 머리말 ── */
+.pf-orghead {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-top: 4px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 24px 28px;
+    display: grid;
+    gap: 16px;
+}
+
+.pf-orghead h4 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin: 0 0 4px;
+}
+
+.pf-tagline {
+    color: #555;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.pf-orgfacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px 24px;
+    margin: 0;
+}
+
+.pf-orgfacts dt {
+    font-size: 0.78rem;
+    color: #999;
+    font-weight: 500;
+}
+
+.pf-orgfacts dd {
+    margin: 2px 0 0;
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+.pf-orglinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    color: var(--primary-color);
+    background: #fff;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pf-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* ── 2부: 바로가기·강조 ── */
+.pf-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 4px;
+}
+
+.pf-jump a {
+    font-size: 0.85rem;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    color: #444;
+}
+
+.pf-jump a:hover {
+    border-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.pf-callout {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 16px 0 0;
+    padding: 14px 18px;
+    background: #fff8e6;
+    border: 1px solid #f0dfb0;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #5c4a1c;
+}
+
+.pf-callout i {
+    margin-top: 4px;
+    color: var(--secondary-color);
+}
+
+/* ── 2부: 그룹·자금 카드 ── */
+.pf-grp {
+    margin-top: 40px;
+    scroll-margin-top: 80px;
+}
+
+.pf-grp-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin: 0 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.pf-grp-title small {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: #888;
+    margin-top: 3px;
+}
+
+.pf-fund {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 22px 24px;
+    scroll-margin-top: 80px;
+}
+
+.pf-fund-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pf-fund-head h6 {
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.pf-badge-ex {
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eef2f8;
+    color: var(--primary-color);
+}
+
+.pf-fund-sub {
+    margin: 6px 0 16px;
+    font-size: 0.92rem;
+    color: #666;
+}
+
+.pf-source {
+    margin: 14px 0 0;
+    text-align: right;
+    font-size: 0.82rem;
+}
+
+.pf-source a {
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+.pf-h7 {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    margin: 22px 0 8px;
+}
+
+.pf-h7 small {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 6px;
+}
+
+.pf-fund>.pf-table-wrap,
+.pf-fund>.pf-two,
+.pf-fund>.pf-list {
+    margin-top: 12px;
+}
+
+.pf-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 8px 32px;
+}
+
+.pf-two .pf-h7 {
+    margin-top: 6px;
+}
+
+.pf-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pf-list li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.pf-list li::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 0.65em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+
+.pf-notes {
+    margin-top: 16px;
+    padding: 14px 16px 10px;
+    background: #f7f8fa;
+    border-radius: 8px;
+}
+
+.pf-foot {
+    margin: 10px 0 0;
+    font-size: 0.82rem;
+    color: #888;
+}
+
+/* ── 2부: 표 ── */
+.pf-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+}
+
+.pf-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    background: #fff;
+}
+
+.pf-table th,
+.pf-table td {
+    padding: 11px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+.pf-table thead th {
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.pf-table tbody th {
+    background: #f7f8fa;
+    color: var(--primary-color);
+    font-weight: 700;
+    min-width: 110px;
+}
+
+.pf-table tbody tr:last-child th,
+.pf-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pf-table tr.is-hl th,
+.pf-table tr.is-hl td {
+    background: #fff8e6;
+}
+
+.pf-table small {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #888;
+}
+
+.pf-table-semas td:nth-child(4),
+.pf-table-semas td:nth-child(3) {
+    min-width: 130px;
+}
+
+.pf-verify {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #b3412f;
+    vertical-align: middle;
+    cursor: help;
+}
+
+/* ── 반응형: 2부 ── */
+@media (max-width: 768px) {
+    .pf-orghead {
+        padding: 20px 18px;
+    }
+
+    .pf-fund {
+        padding: 18px 16px;
+    }
+
+    .pf-orgfacts {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-table-wrap {
+        border: none;
+        overflow: visible;
+    }
+
+    .pf-table,
+    .pf-table tbody,
+    .pf-table tr,
+    .pf-table th,
+    .pf-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .pf-table thead {
+        display: none;
+    }
+
+    .pf-table tbody tr {
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .pf-table tbody th {
+        min-width: 0;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .pf-table td {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .pf-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #999;
+        margin-bottom: 2px;
+    }
+
+    .pf-table tbody tr:last-child th,
+    .pf-table tbody tr:last-child td {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .pf-table tbody tr td:last-child {
+        border-bottom: none;
+    }
+}
+
 @media (max-width: 1100px) {
     .pf-site-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -788,32 +782,6 @@ html {
         top: auto;
         bottom: -19px;
         transform: translateX(-50%);
-    }
-
-    .pf-row {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .pf-row-label {
-        flex: none;
-        padding-top: 0;
-    }
-
-    .pf-hint {
-        margin-left: 0;
-    }
-
-    .pf-filter-body {
-        padding: 0 16px 18px;
-    }
-
-    .pf-filter>summary {
-        padding: 16px;
-    }
-
-    .pf-grid {
-        grid-template-columns: 1fr;
     }
 
     .pf-cta h3 {
