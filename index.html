@@ -289,6 +289,7 @@
 
     <div id="resumeModal" class="modal-overlay" onclick="closeResumeModalOnOverlay(event)" aria-hidden="true">
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle">
+            <button type="button" class="modal-back" onclick="closeResumeModal()"><i class="fa-solid fa-arrow-left"></i> 이전 화면으로 돌아가기</button>
             <button type="button" class="modal-close" onclick="closeResumeModal()" aria-label="닫기">&times;</button>
             <div class="modal-content">
                 <div class="resume-header">
@@ -523,6 +524,10 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="modal-back modal-back-bottom" onclick="closeResumeModal()"><i class="fa-solid fa-arrow-left"></i> 이전 화면으로 돌아가기</button>
                 </div>
             </div>
         </div>

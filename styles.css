@@ -1086,3 +1086,21 @@ nav a:hover {
         padding: 5px 20px;
     }
 }
+/* 이력서 모달: 이전 화면으로 돌아가기 */
+.modal-back {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    color: var(--primary-color, #0d1e38);
+    cursor: pointer;
+    font-family: inherit;
+}
+.modal-back:hover { background: #f3f3f3; }
+.modal-footer { text-align: center; margin-top: 36px; }
+.modal-back-bottom { position: static; padding: 10px 24px; }
+@media (max-width: 768px) { .modal-back { top: 14px; left: 14px; font-size: 0.85rem; } }

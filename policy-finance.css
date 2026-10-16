@@ -807,3 +807,12 @@ html {
 
 /* ── 글로벌 진출 페이지(global-expansion.html) ── */
 .pf-cellnote { display: block; margin-top: 4px; font-size: 0.86em; color: #6b6b6b; }
+
+/* ── 하위 페이지 공통 내비게이션 ── */
+.pf-floatnav { position: fixed; left: 16px; bottom: 16px; z-index: 900; display: flex; gap: 8px; }
+.pf-floatnav button { font-family: inherit; cursor: pointer; border: none; border-radius: 24px; background: var(--navy, #0d1e38); color: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.25); font-size: 0.92rem; padding: 11px 18px; display: inline-flex; align-items: center; gap: 8px; }
+.pf-floatnav .pf-fn-top { background: #fff; color: var(--navy, #0d1e38); width: 42px; height: 42px; padding: 0; justify-content: center; }
+.pf-floatnav button:hover { background: var(--gold, #c5a059); color: #fff; }
+.pf-uplink { display: inline-block; margin-top: 14px; font-size: 0.9rem; color: var(--navy, #0d1e38); text-decoration: none; border-bottom: 1px solid var(--gold, #c5a059); }
+.pf-uplink:hover { color: var(--gold, #c5a059); }
+@media (max-width: 768px) { .pf-floatnav { left: 10px; bottom: 10px; } .pf-floatnav button { font-size: 0.85rem; padding: 10px 14px; } .pf-floatnav .pf-fn-top { width: 38px; height: 38px; } }

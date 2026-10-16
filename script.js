@@ -137,20 +137,39 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
 });
 
-// 이력서 모달 열기/닫기
+// 이력서 모달 열기/닫기 (브라우저 뒤로가기 버튼으로도 닫히도록 history 항목을 하나 쌓는다)
 function openResumeModal() {
     const modal = document.getElementById('resumeModal');
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    modal.scrollTop = 0;
+    try { history.pushState({ resume: true }, ''); } catch (e) {}
 }
 
-function closeResumeModal() {
+function hideResumeModal() {
     const modal = document.getElementById('resumeModal');
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }
+
+function closeResumeModal() {
+    const modal = document.getElementById('resumeModal');
+    if (!modal.classList.contains('active')) return;
+    if (history.state && history.state.resume) {
+        history.back(); // popstate 핸들러가 모달을 닫는다
+    } else {
+        hideResumeModal();
+    }
+}
+
+window.addEventListener('popstate', () => {
+    const modal = document.getElementById('resumeModal');
+    if (modal && modal.classList.contains('active') && !(history.state && history.state.resume)) {
+        hideResumeModal();
+    }
+});
 
 function closeResumeModalOnOverlay(event) {
     if (event.target.id === 'resumeModal') {

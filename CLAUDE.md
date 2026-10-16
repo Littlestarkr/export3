@@ -45,3 +45,5 @@ There is no linter or test suite configured for this repo.
 **글로벌 진출 페이지 (`global-expansion.html`).** 서비스 카드 03에서 연결되는 별도 페이지로 `policy-finance.css`를 함께 쓴다(JS 없음). 1부는 KOTRA 서비스(AI 수출정보·트라이빅 링크, 해외시장조사·지사화·내수기업 수출기업화·바이어 트래킹·수출바우처는 KOTRA 안내 자료를 옮긴 표, 해외전시회·바이코리아 링크), 2부는 농산물·화장품·해외인증·기타 외부 사이트 링크 카드다. 수수료·지원금은 해마다 바뀌므로 수정 시 KOTRA 최신 공고를 확인한다.
 
 **정부지원사업 매칭 페이지 (`government-support.html`).** 서비스 카드 04에서 연결되는 별도 페이지로 `policy-finance.css`를 함께 쓴다(JS 없음). 수출바우처사업(개념·구성·메뉴판 14개 분야 표)과 소진공 희망리턴패키지사업(지원개요 표)을 각 사업 홈페이지 안내에서 옮긴 정적 HTML이며, 사업을 추가하려면 `#programs` 안에 `.pf-grp` 블록과 상단 칩을 더한다. 공고·한도는 해마다 바뀌므로 수정 시 원문을 확인한다.
+
+**하위 페이지 내비게이션 (`back-nav.js`).** policy-finance·trade-insurance·global-expansion·government-support 4개 페이지가 공통으로 불러온다. 화면 왼쪽 아래에 ‘이전 화면’(같은 사이트에서 왔으면 `history.back()`, 아니면 `index.html#services`)과 ‘맨 위로’ 버튼을 띄우고, 각 `.pf-grp` 끝에 ‘목차로 돌아가기’ 링크(같은 패널·섹션의 `.pf-jump`로 이동)를 붙인다. 페이지 안 `#` 이동은 `replaceState`로 처리해 history 항목을 쌓지 않는다. 새 하위 페이지를 만들면 `</body>` 앞에 `<script src="back-nav.js?v=1"></script>`를 넣는다. 이력서 모달(`script.js`)은 열 때 history 항목을 하나 쌓아 브라우저 뒤로가기로도 닫히고, 상·하단에 ‘이전 화면으로 돌아가기’ 버튼이 있다.
