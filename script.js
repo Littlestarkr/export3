@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (response.result === 'success') {
                             setStatus('success', `감사합니다, ${name}님. 상담 신청이 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.`);
                             form.reset();
+                            // 방문 통계: 상담 신청 1건 기록 (개인정보는 전송하지 않음)
+                            try { if (typeof gtag === 'function') { gtag('event', 'generate_lead', { form_name: 'consulting' }); } } catch (e) {}
                         } else {
                             throw new Error(response && response.error ? String(response.error) : 'unknown error');
                         }
