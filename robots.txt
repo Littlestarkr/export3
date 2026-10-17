@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://littlestarkr.github.io/export3/sitemap.xml
