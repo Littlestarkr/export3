@@ -48,7 +48,7 @@ There is no linter or test suite configured for this repo.
 
 **하위 페이지 내비게이션 (`back-nav.js`).** policy-finance·trade-insurance·global-expansion·government-support 4개 페이지가 공통으로 불러온다. 화면 왼쪽 아래에 ‘이전 화면’(같은 사이트에서 왔으면 `history.back()`, 아니면 `index.html#services`)과 ‘맨 위로’ 버튼을 띄우고, 각 `.pf-grp` 끝에 ‘목차로 돌아가기’ 링크(같은 패널·섹션의 `.pf-jump`로 이동)를 붙인다. 페이지 안 `#` 이동은 `replaceState`로 처리해 history 항목을 쌓지 않는다. 새 하위 페이지를 만들면 `</body>` 앞에 `<script src="back-nav.js?v=1"></script>`를 넣는다. 이력서 모달(`script.js`)은 열 때 history 항목을 하나 쌓아 브라우저 뒤로가기로도 닫히고, 상·하단에 ‘이전 화면으로 돌아가기’ 버튼이 있다.
 
-**블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#community` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 모두 같은 네이버 블로그 주소(`https://blog.naver.com/happyojh`)로 새 탭 연결된다. 분류별 개별 URL은 쓰지 않는다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
+**블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#community` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
 
 **공유 미리보기·검색 등록.** `og-image.jpg`(1200×630)와 절대 주소 `og:*` 태그, `og:url`, `<link rel="canonical">`을 5개 페이지에 둔다. `robots.txt`(전체 허용 + Sitemap)와 `sitemap.xml`(5개 URL)은 저장소 루트에 있고, 페이지를 추가하면 `sitemap.xml`에도 더한다. 구글 서치콘솔은 `index.html`의 `google-site-verification` 메타로 소유 확인하고 sitemap을 제출했다. 네이버 서치어드바이저는 호스트 단위(`https://littlestarkr.github.io`) 등록만 가능해서, 확인 파일과 메타는 별도 저장소 `Littlestarkr/Littlestarkr.github.io`에 있다(이 저장소에는 없다). 이 두 저장소의 확인 파일·메타는 지우지 않는다.
 
