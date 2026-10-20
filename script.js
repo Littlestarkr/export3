@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitBtn.innerText = originalBtnText;
                     });
             } else {
-                setStatus('error', '필수 정보(기업명, 담당자 성함, 연락처, 이메일, 상담 내용)를 모두 입력해 주세요.');
+                setStatus('error', '필수 정보(기업명, 담당자 성함, 연락처, 이메일, 상담 요청 내용)를 모두 입력해 주세요.');
             }
         });
     }
