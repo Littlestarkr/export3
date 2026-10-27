@@ -32,7 +32,7 @@ There is no linter or test suite configured for this repo.
 
 **Privacy consent toggle.** `togglePrivacy()` is defined twice — once inline in `index.html` and once in `script.js` — both toggling the same `#privacy-detail` box. Keep both in sync (or consolidate) if changing this behavior.
 
-**Responsive breakpoint.** The site uses a single breakpoint at `768px` throughout `styles.css` for mobile layout adjustments (hero spacing, footer spacing, about stats, services, book section, naver community section, form).
+**Responsive breakpoint.** The site uses a single breakpoint at `768px` throughout `styles.css` for mobile layout adjustments (hero spacing, footer spacing, about stats, services, book section, form).
 
 **External dependencies loaded via CDN** (no local copies): Google Fonts (Noto Sans KR, Playfair Display) and Font Awesome 6.4.0 icons, both linked in `index.html`'s `<head>`.
 
