@@ -816,3 +816,13 @@ html {
 .pf-uplink { display: inline-block; margin-top: 14px; font-size: 0.9rem; color: var(--navy, #0d1e38); text-decoration: none; border-bottom: 1px solid var(--gold, #c5a059); }
 .pf-uplink:hover { color: var(--gold, #c5a059); }
 @media (max-width: 768px) { .pf-floatnav { left: 10px; bottom: 10px; } .pf-floatnav button { font-size: 0.85rem; padding: 10px 14px; } .pf-floatnav .pf-fn-top { width: 38px; height: 38px; } }
+
+/* ── 정책자금 기준금리 막대(1부 말미) ── */
+.pf-ratebar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 36px; padding: 14px 20px; background: var(--navy, #0d1e38); border-radius: 10px; border-left: 5px solid var(--gold, #c5a059); box-shadow: 0 4px 14px rgba(13, 30, 56, .18); }
+.pf-ratebar-text { display: flex; flex-direction: column; gap: 3px; color: #fff; min-width: 0; }
+.pf-ratebar-text strong { font-size: 1.05rem; color: #fff; }
+.pf-ratebar-text strong i { color: var(--gold, #c5a059); margin-right: 6px; }
+.pf-ratebar-text span { font-size: .9rem; color: rgba(255,255,255,.8); }
+.pf-ratebar-btn { display: inline-block; padding: 8px 18px; border-radius: 6px; background: var(--gold, #c5a059); color: var(--navy, #0d1e38) !important; font-weight: 700; font-size: .92rem; text-decoration: none; white-space: nowrap; }
+.pf-ratebar-btn:hover { filter: brightness(1.08); }
+@media (max-width: 768px) { .pf-ratebar { padding: 14px 16px; } .pf-ratebar-btn { width: 100%; text-align: center; } }
