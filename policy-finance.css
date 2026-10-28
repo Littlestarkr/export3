@@ -822,3 +822,7 @@ html {
 .pf-hero-rate i:first-child { color: var(--gold, #c5a059); }
 .pf-hero-rate i:last-child { font-size: .75em; opacity: .8; }
 .pf-hero-rate:hover { background: rgba(255,255,255,.16); }
+
+/* ── 표 안 링크 ── */
+.pf-tlink { color: var(--navy, #0d1e38); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold, #c5a059); text-underline-offset: 3px; }
+.pf-tlink:hover { color: var(--gold, #c5a059); }
