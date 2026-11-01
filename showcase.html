@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고객사 홍보관 | Happy Oh Consulting</title>
-    <meta name="description" content="오주현 경영지도사가 컨설팅하는 고객사의 제품을 소개하는 공간입니다.">
+    <title>고객사·협력사 | Happy Oh Consulting</title>
+    <meta name="description" content="오주현 경영지도사가 컨설팅한 고객사와 함께하는 협력사를 소개하는 공간입니다.">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="고객사 홍보관 | Happy Oh Consulting">
-    <meta property="og:description" content="오주현 경영지도사가 컨설팅하는 고객사의 제품을 소개합니다.">
+    <meta property="og:title" content="고객사·협력사 | Happy Oh Consulting">
+    <meta property="og:description" content="컨설팅한 고객사와 함께하는 협력사를 소개합니다.">
     <meta property="og:image" content="https://littlestarkr.github.io/export3/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -17,7 +17,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css?v=8">
     <link rel="stylesheet" href="policy-finance.css?v=6">
-    <link rel="stylesheet" href="showcase.css?v=1">
+    <link rel="stylesheet" href="showcase.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -48,7 +48,7 @@
                     <li><a href="index.html#book">저서</a></li>
                     <li><a href="index.html#services">서비스</a></li>
                     <li><a href="index.html#contact" class="btn-nav">상담 신청</a></li>
-                    <li><a href="showcase.html">고객사 홍보관</a></li>
+                    <li><a href="showcase.html">고객사·협력사</a></li>
                     <li><a href="guestbook.html" class="nav-gold">감사·응원 한마디</a></li>
                 </ul>
             </nav>
@@ -59,33 +59,64 @@
     <section class="pf-hero">
         <div class="container">
             <a href="index.html" class="pf-back"><i class="fa-solid fa-arrow-left"></i> 홈으로 돌아가기</a>
-            <span class="section-subtitle">Client Showcase</span>
-            <h2>고객사 홍보관</h2>
-            <p>Happy Oh Consulting과 함께 세계로 나아가는 <br class="pf-br">고객사의 제품을 소개합니다.</p>
+            <span class="section-subtitle">Clients &amp; Partners</span>
+            <h2>고객사·협력사</h2>
+            <p>Happy Oh Consulting과 함께 세계로 나아가는 고객사와, <br class="pf-br">함께 일하는 협력사를 소개합니다.</p>
         </div>
     </section>
 
     <section class="pf-section">
         <div class="container sc-wrap">
-            <div class="sc-grid" id="scGrid">
-                <!--
-                  고객사 카드 템플릿 (복사해서 아래에 붙여 쓰고, 이 안내 박스 .sc-empty 는 지운다)
-                  <article class="sc-card">
-                      <div class="sc-thumb"><img src="images/회사.jpg" alt="회사·제품 이름" loading="lazy"></div>
-                      <div class="sc-body">
-                          <span class="sc-tag">분야 (예: 식품 · 화장품)</span>
-                          <h3>회사명</h3>
-                          <p>제품 소개 한두 문장</p>
-                          <a href="https://..." target="_blank" rel="noopener noreferrer" class="sc-link">홈페이지 바로가기 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                      </div>
-                  </article>
-                -->
-                <div class="sc-empty">
-                    <i class="fa-solid fa-store"></i>
-                    <p>고객사 소개를 준비하고 있습니다.<br>곧 만나보실 수 있습니다.</p>
+            <div class="pf-tabs" id="scTabs" role="tablist" aria-label="분류 선택">
+                <button type="button" role="tab" class="pf-tab is-active" id="tab-client" data-tab="client" aria-controls="panel-client" aria-selected="true">고객사<em>컨설팅한 기업</em></button>
+                <button type="button" role="tab" class="pf-tab" id="tab-partner" data-tab="partner" aria-controls="panel-partner" aria-selected="false">협력사<em>함께하는 전문 파트너</em></button>
+            </div>
+
+            <div class="sc-panel" id="panel-client" role="tabpanel" aria-labelledby="tab-client">
+                <div class="sc-grid">
+                    <!--
+                      고객사 카드 템플릿 (복사해 붙이고, 아래 .sc-empty 안내 박스는 지운다)
+                      <article class="sc-card">
+                          <div class="sc-thumb"><img src="images/회사.jpg" alt="회사·제품 이름" loading="lazy"></div>
+                          <div class="sc-body">
+                              <span class="sc-tag">분야 (예: 식품 · 화장품)</span>
+                              <h3>회사명</h3>
+                              <p>한 줄 소개와 대표 제품</p>
+                              <p class="sc-help"><strong>컨설팅</strong> 수출바우처 · 무역보험 · 바이어 발굴</p>
+                              <a href="https://..." target="_blank" rel="noopener noreferrer" class="sc-link">제품 보러가기 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                          </div>
+                      </article>
+                    -->
+                    <div class="sc-empty">
+                        <i class="fa-solid fa-store"></i>
+                        <p>고객사 소개를 준비하고 있습니다.<br>곧 만나보실 수 있습니다.</p>
+                    </div>
                 </div>
             </div>
-            <p class="sc-note">홍보를 원하시는 고객사는 <a href="index.html#contact" class="pf-tlink">상담 신청</a>으로 문의해 주세요.</p>
+
+            <div class="sc-panel" id="panel-partner" role="tabpanel" aria-labelledby="tab-partner" hidden>
+                <div class="sc-grid">
+                    <!--
+                      협력사 카드 템플릿 (복사해 붙이고, 아래 .sc-empty 안내 박스는 지운다)
+                      <article class="sc-card">
+                          <div class="sc-thumb"><img src="images/협력사.jpg" alt="협력사 이름" loading="lazy"></div>
+                          <div class="sc-body">
+                              <span class="sc-tag">하는 일 (예: 해외인증 · 통관 · 번역)</span>
+                              <h3>협력사명</h3>
+                              <p>한 줄 소개</p>
+                              <p class="sc-help"><strong>함께하는 방식</strong> 인증 대행 연계</p>
+                              <a href="https://..." target="_blank" rel="noopener noreferrer" class="sc-link">홈페이지 바로가기 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                          </div>
+                      </article>
+                    -->
+                    <div class="sc-empty">
+                        <i class="fa-solid fa-handshake"></i>
+                        <p>협력사 소개를 준비하고 있습니다.<br>곧 만나보실 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="sc-note">소개를 원하시는 기업은 <a href="index.html#contact" class="pf-tlink">상담 신청</a>으로 문의해 주세요.</p>
         </div>
     </section>
 
@@ -101,6 +132,7 @@
         </div>
     </footer>
 
+    <script src="showcase.js?v=1"></script>
     <script src="back-nav.js?v=1"></script>
 </body>
 

@@ -16,3 +16,7 @@
 .sc-note { text-align: center; margin: 28px 0 0; font-size: 0.9rem; color: #777; }
 @media (max-width: 1024px) { .sc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) { .sc-grid { grid-template-columns: 1fr; } }
+.sc-panel { margin-top: 28px; }
+.sc-panel[hidden] { display: none; }
+.sc-help { font-size: 0.86rem !important; color: #7a6221 !important; flex: 0 !important; }
+.sc-help strong { margin-right: 6px; color: var(--navy, #0d1e38); }
