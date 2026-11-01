@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감사·응원 한마디 | Happy Oh Consulting</title>
+    <meta name="description" content="상담을 받으셨거나 Happy Oh를 아시는 분들이 감사와 응원, 바라는 점을 남기는 공간입니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="감사·응원 한마디 | Happy Oh Consulting">
+    <meta property="og:description" content="감사와 응원, 바라는 점을 남겨 주세요.">
+    <meta property="og:image" content="https://littlestarkr.github.io/export3/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://littlestarkr.github.io/export3/guestbook.html">
+    <link rel="canonical" href="https://littlestarkr.github.io/export3/guestbook.html">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="policy-finance.css?v=6">
+    <link rel="stylesheet" href="guestbook.css?v=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J15DSR7PZD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-J15DSR7PZD');
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <h1>Happy Oh <span class="sub-logo">Consulting</span></h1>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#about">소개</a></li>
+                    <li><a href="index.html#book">저서</a></li>
+                    <li><a href="index.html#services">서비스</a></li>
+                    <li><a href="index.html#contact" class="btn-nav">상담 신청</a></li>
+                    <li><a href="guestbook.html">감사·응원 한마디</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 상단 소개 -->
+    <section class="pf-hero">
+        <div class="container">
+            <a href="index.html" class="pf-back"><i class="fa-solid fa-arrow-left"></i> 홈으로 돌아가기</a>
+            <span class="section-subtitle">Thanks &amp; Cheers</span>
+            <h2>감사·응원 한마디</h2>
+            <p>상담을 받으셨거나 저를 아시는 분들의 감사와 응원, <br class="pf-br">바라는 점을 남겨 주세요. 누구나 읽고 쓸 수 있습니다.</p>
+        </div>
+    </section>
+
+    <section class="pf-section">
+        <div class="container gb-wrap">
+            <form class="gb-form" id="gbForm" autocomplete="off">
+                <h4>한마디 남기기</h4>
+                <p class="gb-note">이곳은 상담 코너가 아닙니다. 전화번호·이메일 같은 개인정보는 적지 마세요. 상담이 필요하시면 <a href="index.html#contact" class="pf-tlink">상담 신청</a>을 이용해 주세요. 등록한 글은 바로 공개되며, 비밀번호로 언제든 수정·삭제할 수 있습니다.</p>
+                <div class="gb-two">
+                    <div class="gb-row">
+                        <label for="gbName">글쓴이 <small>실명 또는 닉네임 모두 사용 가능합니다.</small></label>
+                        <input type="text" id="gbName" name="name" maxlength="20" placeholder="예: 홍길동 / 수출초보">
+                    </div>
+                    <div class="gb-row">
+                        <label for="gbCat">분류</label>
+                        <select id="gbCat" name="cat"><option>감사</option><option selected>응원</option><option>제안·의견</option></select>
+                    </div>
+                </div>
+                <div class="gb-row">
+                    <label for="gbText">내용</label>
+                    <textarea id="gbText" name="text" maxlength="500" placeholder="감사의 말씀, 응원, 바라는 점 등을 간단히 적어 주세요."></textarea>
+                    <div class="gb-count" id="gbLen">0 / 500</div>
+                </div>
+                <div class="gb-row">
+                    <label for="gbPw">비밀번호 <small>수정·삭제할 때 필요합니다 (4자 이상). 잊으시면 찾을 수 없습니다.</small></label>
+                    <input type="password" id="gbPw" name="pw" minlength="4" maxlength="40" autocomplete="new-password">
+                </div>
+                <div class="gb-hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+                <label class="gb-check"><input type="checkbox" name="priv" value="Y"><span>비공개로 남기기 <small style="color:#888">(글쓴이 본인과 Happy Oh만 볼 수 있습니다)</small></span></label>
+                <button type="submit" class="btn btn-primary" id="gbSubmit">등록하기</button>
+                <div class="gb-msg" id="gbMsg" role="status"></div>
+            </form>
+
+            <div class="gb-list-head"><h4>남겨 주신 글</h4><span id="gbCount"></span></div>
+            <div id="gbList"></div>
+            <button type="button" class="gb-btn sub gb-more" id="gbMore" style="display:none">더 보기</button>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-social">
+                <a href="https://blog.naver.com/happyojh" target="_blank" rel="noopener noreferrer" title="네이버 블로그">
+                    <i class="fa-solid fa-blog"></i> <span>네이버 블로그</span>
+                </a>
+            </div>
+            <p>&copy; 2026 Happy Oh Consulting. All rights reserved.</p>
+            <p>이 사이트는 방문 통계 분석을 위해 구글 애널리틱스(쿠키)를 사용합니다.</p>
+        </div>
+    </footer>
+
+    <script src="guestbook.js?v=1"></script>
+    <script src="back-nav.js?v=1"></script>
+</body>
+
+</html>
