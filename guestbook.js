@@ -121,6 +121,7 @@
         var pw = el('input'); pw.type = 'password'; pw.placeholder = '글을 쓸 때 정한 비밀번호'; pw.autocomplete = 'off';
         wrap.appendChild(pw);
         var msg = el('div', 'gb-msg');
+        pw.addEventListener('input', function () { setMsg(msg, ''); });
         var btns = el('div', 'gb-btns');
         var ok = el('button', 'gb-btn', mode === 'edit' ? '수정하기' : '삭제하기'); ok.type = 'button';
         var cancel = el('button', 'gb-btn sub', '취소'); cancel.type = 'button';
@@ -198,6 +199,7 @@
             }).then(function (r) {
                 $('gbSubmit').disabled = false;
                 if (!r.ok) { setMsg(msg, r.error || '등록하지 못했습니다.', false); return; }
+                f.elements.priv.checked = false;
                 if (r.id) addMine(r.id);
                 $('gbText').value = ''; $('gbPw').value = ''; $('gbLen').textContent = '0 / 500';
                 var m = '등록되었습니다. 감사합니다.';
