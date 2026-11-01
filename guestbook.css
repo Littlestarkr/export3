@@ -46,3 +46,7 @@
 .gb-actions .gb-like:hover { border-color: #c62828; color: #c62828; }
 .gb-actions .gb-like.on { color: #c62828; border-color: #c62828; background: #fdecea; }
 .gb-actions .gb-like i { margin-right: 2px; }
+
+/* 상단: 한글 제목은 화면에서 숨기고(검색·접근성용으로만 유지) 영어를 조금 키움 */
+.gb-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.pf-hero .section-subtitle { font-size: 1.2rem; margin-bottom: 18px; }
