@@ -142,7 +142,7 @@
         form.autocomplete = 'off';
         var nm = el('input'); nm.type = 'text'; nm.maxLength = 20; nm.placeholder = '글쓴이(실명 또는 닉네임)';
         var tx = el('textarea'); tx.maxLength = 300; tx.placeholder = '댓글을 적어 주세요 (300자 이내)';
-        var pw = el('input'); pw.type = 'password'; pw.maxLength = 40; pw.placeholder = '비밀번호(4자 이상, 수정·삭제 시 필요)'; pw.autocomplete = 'new-password';
+        var pw = el('input'); pw.type = 'password'; pw.maxLength = 40; pw.placeholder = '비밀번호(선택 · 수정·삭제하려면 4자 이상)'; pw.autocomplete = 'new-password';
         var hp = el('input'); hp.type = 'text'; hp.tabIndex = -1; hp.autocomplete = 'off';
         var hpw = el('div', 'gb-hp'); hpw.setAttribute('aria-hidden', 'true'); hpw.appendChild(hp);
         var lab = el('label', 'gb-check');
@@ -158,7 +158,7 @@
             e.preventDefault();
             if (!nm.value.trim()) { setMsg(msg, '글쓴이를 적어 주세요.', false); return; }
             if (!tx.value.trim()) { setMsg(msg, '댓글 내용을 적어 주세요.', false); return; }
-            if (pw.value.length < 4) { setMsg(msg, '비밀번호는 4자 이상으로 정해 주세요.', false); return; }
+            if (pw.value && pw.value.length < 4) { setMsg(msg, '비밀번호는 비우거나 4자 이상으로 정해 주세요.', false); return; }
             sb.disabled = true;
             setMsg(msg, '등록하는 중입니다…', true);
             post({ action: 'ccreate', post: it.id, name: nm.value.trim(), text: tx.value.trim(), pw: pw.value,
@@ -196,7 +196,7 @@
         be.onclick = function () { openEdit(box, c, 'edit', true); };
         bd.onclick = function () { openEdit(box, c, 'delete', true); };
         act.appendChild(be); act.appendChild(bd);
-        box.appendChild(act);
+        if (!c.nopw) box.appendChild(act);
         return box;
     }
 

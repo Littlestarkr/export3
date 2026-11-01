@@ -87,7 +87,8 @@ function cItem_(row) {
     time: str_(row[CC.time - 1]),
     name: str_(row[CC.name - 1]),
     text: str_(row[CC.text - 1]),
-    reply: str_(row[CC.reply - 1])
+    reply: str_(row[CC.reply - 1]),
+    nopw: !str_(row[CC.pw - 1])
   };
 }
 
@@ -246,7 +247,7 @@ function doPost(e) {
       var cpw = String(p.pw || '');
       if (!cname || cname.length > MAX_NAME) return json_({ ok: false, error: '글쓴이는 1~' + MAX_NAME + '자로 적어 주세요.' });
       if (!ctext || ctext.length > MAX_COMMENT) return json_({ ok: false, error: '댓글은 1~' + MAX_COMMENT + '자로 적어 주세요.' });
-      if (cpw.length < MIN_PW) return json_({ ok: false, error: '비밀번호는 ' + MIN_PW + '자 이상으로 정해 주세요.' });
+      if (cpw && cpw.length < MIN_PW) return json_({ ok: false, error: '비밀번호는 비우거나 ' + MIN_PW + '자 이상으로 정해 주세요.' });
       var creason = classify_(cname, ctext);
       var celapsed = Number(p.t || 0);
       if (!creason && celapsed > 0 && celapsed < 2000) creason = '너무 빠른 등록';
@@ -262,7 +263,7 @@ function doPost(e) {
       }
       var cid = Utilities.getUuid();
       var cstatus = creason ? '검토대기' : '공개';
-      csh.appendRow([cid, str_(pf.row[C.id - 1]), now_(), cname, ctext, hash_(cid, cpw), p.priv === 'Y' ? 'Y' : 'N', cstatus, '', '', creason]);
+      csh.appendRow([cid, str_(pf.row[C.id - 1]), now_(), cname, ctext, cpw ? hash_(cid, cpw) : '', p.priv === 'Y' ? 'Y' : 'N', cstatus, '', '', creason]);
       cache.remove('clist');
       return json_({ ok: true, id: cid, status: cstatus, priv: p.priv === 'Y' });
     }
@@ -300,6 +301,7 @@ function doPost(e) {
       var crs = csh3.getDataRange().getValues(), cfound = null;
       for (var cx = 1; cx < crs.length; cx++) if (str_(crs[cx][CC.id - 1]) === String(p.id || '')) { cfound = { index: cx + 1, row: crs[cx] }; break; }
       if (!cfound || str_(cfound.row[CC.status - 1]).indexOf('삭제') >= 0) return json_({ ok: false, error: '댓글을 찾을 수 없습니다.' });
+      if (!str_(cfound.row[CC.pw - 1])) return json_({ ok: false, error: '비밀번호 없이 쓴 댓글은 수정·삭제할 수 없습니다.' });
       if (hash_(str_(cfound.row[CC.id - 1]), String(p.pw || '')) !== str_(cfound.row[CC.pw - 1])) return json_({ ok: false, error: '비밀번호가 맞지 않습니다.' });
       if (action === 'cdelete') {
         csh3.getRange(cfound.index, CC.text).setValue('');
