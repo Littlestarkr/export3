@@ -40,3 +40,9 @@
 .gb-more { display: block; margin: 16px auto 0; }
 .gb-empty { text-align: center; color: #999; padding: 36px 0; }
 @media (max-width: 768px) { .gb-two { grid-template-columns: 1fr; } .gb-form { padding: 18px; } }
+
+.gb-actions { align-items: center; }
+.gb-actions .gb-like { text-decoration: none; color: #888; font-size: 0.88rem; border: 1px solid #ddd; border-radius: 16px; padding: 4px 12px; background: #fff; }
+.gb-actions .gb-like:hover { border-color: #c62828; color: #c62828; }
+.gb-actions .gb-like.on { color: #c62828; border-color: #c62828; background: #fdecea; }
+.gb-actions .gb-like i { margin-right: 2px; }

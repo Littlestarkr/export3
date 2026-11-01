@@ -17,6 +17,12 @@
     function setMine(a) {
         try { localStorage.setItem('gbMine', JSON.stringify(a.slice(-60))); } catch (e) {}
     }
+    function getLiked() {
+        try { return JSON.parse(localStorage.getItem('gbLiked') || '[]'); } catch (e) { return []; }
+    }
+    function setLiked(a) {
+        try { localStorage.setItem('gbLiked', JSON.stringify(a.slice(-300))); } catch (e) {}
+    }
     function addMine(id) { var a = getMine(); if (a.indexOf(id) < 0) { a.push(id); setMine(a); } }
     function removeMine(id) { setMine(getMine().filter(function (x) { return x !== id; })); }
 
@@ -67,6 +73,15 @@
             box.appendChild(rp);
         }
         var act = el('div', 'gb-actions');
+        var liked = getLiked().indexOf(it.id) >= 0;
+        var bl = el('button', 'gb-like' + (liked ? ' on' : ''), '');
+        bl.type = 'button';
+        var icon = el('i', liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart');
+        bl.appendChild(icon);
+        var cnt = el('span', '', ' 공감해요' + (it.likes ? ' ' + it.likes : ''));
+        bl.appendChild(cnt);
+        bl.onclick = function () { toggleLike(it, bl, icon, cnt); };
+        act.appendChild(bl);
         var be = el('button', '', '수정'); be.type = 'button';
         var bd = el('button', '', '삭제'); bd.type = 'button';
         be.onclick = function () { openEdit(box, it, 'edit'); };
@@ -74,6 +89,22 @@
         act.appendChild(be); act.appendChild(bd);
         box.appendChild(act);
         return box;
+    }
+
+    function toggleLike(it, btn, icon, cnt) {
+        var list = getLiked();
+        var was = list.indexOf(it.id) >= 0;
+        btn.disabled = true;
+        post({ action: 'like', id: it.id, delta: was ? '-1' : '1' }).then(function (r) {
+            btn.disabled = false;
+            if (!r.ok) return;
+            it.likes = r.likes;
+            if (was) list = list.filter(function (x) { return x !== it.id; }); else list.push(it.id);
+            setLiked(list);
+            btn.className = 'gb-like' + (was ? '' : ' on');
+            icon.className = was ? 'fa-regular fa-heart' : 'fa-solid fa-heart';
+            cnt.textContent = ' 공감해요' + (r.likes ? ' ' + r.likes : '');
+        }).catch(function () { btn.disabled = false; });
     }
 
     function openEdit(box, it, mode) {

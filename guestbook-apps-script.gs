@@ -15,12 +15,13 @@
  *   숨김      : 작가님이 비공개로 돌린 글 (글쓴이 본인 브라우저에서만 보임)
  *   삭제      : 삭제된 글
  * '답글' 열에 적으면 해당 글 아래에 'Happy Oh 답글'로 표시된다.
+ * '공감' 열은 '공감해요' 누른 수(작가님이 직접 고치지 않는다). 기기당 1회는 화면(브라우저)에서 막는다.
  * '비공개' 열이 Y 이면 글쓴이가 '나만 보기'를 선택한 글이다(시트에서는 항상 보임).
  */
 
 var SHEET_NAME = 'Guestbook';
-var HEAD = ['id', '작성시각', '글쓴이', '분류', '내용', '비밀번호해시', '비공개', '상태', '답글', '수정시각', '검토사유'];
-var C = { id: 1, time: 2, name: 3, cat: 4, text: 5, pw: 6, priv: 7, status: 8, reply: 9, edited: 10, reason: 11 };
+var HEAD = ['id', '작성시각', '글쓴이', '분류', '내용', '비밀번호해시', '비공개', '상태', '답글', '수정시각', '검토사유', '공감'];
+var C = { id: 1, time: 2, name: 3, cat: 4, text: 5, pw: 6, priv: 7, status: 8, reply: 9, edited: 10, reason: 11, likes: 12 };
 var SALT = 'happyoh-guestbook-v1';   // 바꾸면 기존 글의 비밀번호가 무효가 되므로 처음 한 번만 정한다
 var MAX_TEXT = 500;
 var MAX_NAME = 20;
@@ -82,7 +83,8 @@ function publicItem_(row) {
     name: str_(row[C.name - 1]),
     cat: str_(row[C.cat - 1]),
     text: str_(row[C.text - 1]),
-    reply: str_(row[C.reply - 1])
+    reply: str_(row[C.reply - 1]),
+    likes: Number(row[C.likes - 1]) || 0
   };
 }
 
@@ -148,7 +150,7 @@ function doPost(e) {
       }
       var id = Utilities.getUuid();
       var status = reason ? '검토대기' : '공개';
-      sh.appendRow([id, now_(), name, cat, text, hash_(id, pw), p.priv === 'Y' ? 'Y' : 'N', status, '', '', reason]);
+      sh.appendRow([id, now_(), name, cat, text, hash_(id, pw), p.priv === 'Y' ? 'Y' : 'N', status, '', '', reason, 0]);
       cache.remove('list');
       return json_({ ok: true, id: id, status: status, priv: p.priv === 'Y' });
     }
@@ -169,6 +171,16 @@ function doPost(e) {
         }
       }
       return json_({ ok: true, items: mine });
+    }
+
+    if (action === 'like') {
+      var lf = findRow_(sh, String(p.id || ''));
+      if (!lf || str_(lf.row[C.status - 1]).indexOf('삭제') >= 0) return json_({ ok: false, error: '글을 찾을 수 없습니다.' });
+      var cur = Number(lf.row[C.likes - 1]) || 0;
+      var next = Math.max(0, cur + (Number(p.delta) < 0 ? -1 : 1));
+      sh.getRange(lf.index, C.likes).setValue(next);
+      cache.remove('list');
+      return json_({ ok: true, likes: next });
     }
 
     if (action === 'update' || action === 'delete') {
