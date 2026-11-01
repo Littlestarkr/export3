@@ -17,14 +17,23 @@
  * '답글' 열에 적으면 해당 글 아래에 'Happy Oh 답글'로 표시된다.
  * '공감' 열은 '공감해요' 누른 수(작가님이 직접 고치지 않는다). 기기당 1회는 화면(브라우저)에서 막는다.
  * '비공개' 열이 Y 이면 글쓴이가 '나만 보기'를 선택한 글이다(시트에서는 항상 보임).
+ *
+ * [댓글] 'Comments' 시트 탭은 스크립트가 자동으로 만든다. 열: id, postId, 작성시각, 글쓴이, 내용, 비밀번호해시, 비공개, 상태, 답글, 수정시각, 검토사유
+ *   상태는 글과 같다(공개 / 검토대기 / 숨김 / 삭제). 비공개 댓글은 댓글 쓴 사람과 원글 쓴 사람만 본다(작가님은 시트에서 봄).
+ *   원글 쓴 사람은 글 비밀번호로 확인하며, 맞으면 브라우저에 확인 표(토큰)가 저장된다.
  */
 
 var SHEET_NAME = 'Guestbook';
 var HEAD = ['id', '작성시각', '글쓴이', '분류', '내용', '비밀번호해시', '비공개', '상태', '답글', '수정시각', '검토사유', '공감'];
 var C = { id: 1, time: 2, name: 3, cat: 4, text: 5, pw: 6, priv: 7, status: 8, reply: 9, edited: 10, reason: 11, likes: 12 };
+var CSHEET = 'Comments';
+var CHEAD = ['id', 'postId', '작성시각', '글쓴이', '내용', '비밀번호해시', '비공개', '상태', '답글', '수정시각', '검토사유'];
+var CC = { id: 1, post: 2, time: 3, name: 4, text: 5, pw: 6, priv: 7, status: 8, reply: 9, edited: 10, reason: 11 };
+var MAX_COMMENTS = 600;
 var SALT = 'happyoh-guestbook-v1';   // 바꾸면 기존 글의 비밀번호가 무효가 되므로 처음 한 번만 정한다
 var MAX_TEXT = 500;
 var MAX_NAME = 20;
+var MAX_COMMENT = 300;
 var MIN_PW = 4;
 var CATS = ['감사', '응원', '제안·의견'];
 
@@ -49,6 +58,37 @@ function sheet_() {
     sh.getRange('E:E').setWrap(true);
   }
   return sh;
+}
+
+function csheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(CSHEET);
+  if (!sh) {
+    sh = ss.insertSheet(CSHEET);
+    sh.appendRow(CHEAD);
+    sh.setFrozenRows(1);
+    sh.getRange('C:C').setNumberFormat('@');
+    sh.getRange('J:J').setNumberFormat('@');
+    sh.getRange('E:E').setWrap(true);
+  }
+  return sh;
+}
+
+// 원글 쓴이 확인 표: 글 비밀번호 해시로 만들며 시트 밖으로는 이 값만 나간다
+function tok_(id, pwHash) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, SALT + '|owner|' + id + '|' + pwHash);
+  return bytes.map(function (b) { return ('0' + (b & 0xff).toString(16)).slice(-2); }).join('');
+}
+
+function cItem_(row) {
+  return {
+    id: str_(row[CC.id - 1]),
+    post: str_(row[CC.post - 1]),
+    time: str_(row[CC.time - 1]),
+    name: str_(row[CC.name - 1]),
+    text: str_(row[CC.text - 1]),
+    reply: str_(row[CC.reply - 1])
+  };
 }
 
 function now_() { return Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm'); }
@@ -90,6 +130,21 @@ function publicItem_(row) {
 
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) || 'list';
+  if (action === 'clist') {
+    var cc = CacheService.getScriptCache();
+    var chit = cc.get('clist');
+    if (chit) return ContentService.createTextOutput(chit).setMimeType(ContentService.MimeType.JSON);
+    var crows = csheet_().getDataRange().getValues();
+    var citems = [];
+    for (var q = 1; q < crows.length; q++) {
+      var cr = crows[q];
+      if (str_(cr[CC.status - 1]) === '공개' && str_(cr[CC.priv - 1]) !== 'Y' && str_(cr[CC.text - 1])) citems.push(cItem_(cr));
+    }
+    if (citems.length > MAX_COMMENTS) citems = citems.slice(citems.length - MAX_COMMENTS);
+    var cout = JSON.stringify({ ok: true, items: citems });
+    cc.put('clist', cout, 60);
+    return ContentService.createTextOutput(cout).setMimeType(ContentService.MimeType.JSON);
+  }
   if (action !== 'list') return json_({ ok: false, error: 'unknown action' });
   var cache = CacheService.getScriptCache();
   var hit = cache.get('list');
@@ -150,9 +205,10 @@ function doPost(e) {
       }
       var id = Utilities.getUuid();
       var status = reason ? '검토대기' : '공개';
-      sh.appendRow([id, now_(), name, cat, text, hash_(id, pw), p.priv === 'Y' ? 'Y' : 'N', status, '', '', reason, 0]);
+      var ph = hash_(id, pw);
+      sh.appendRow([id, now_(), name, cat, text, ph, p.priv === 'Y' ? 'Y' : 'N', status, '', '', reason, 0]);
       cache.remove('list');
-      return json_({ ok: true, id: id, status: status, priv: p.priv === 'Y' });
+      return json_({ ok: true, id: id, status: status, priv: p.priv === 'Y', tok: tok_(id, ph) });
     }
 
     if (action === 'mine') {
@@ -171,6 +227,99 @@ function doPost(e) {
         }
       }
       return json_({ ok: true, items: mine });
+    }
+
+    if (action === 'unlock') {
+      var uf = findRow_(sh, String(p.id || ''));
+      if (!uf || str_(uf.row[C.status - 1]).indexOf('삭제') >= 0) return json_({ ok: false, error: '글을 찾을 수 없습니다.' });
+      if (hash_(str_(uf.row[C.id - 1]), String(p.pw || '')) !== str_(uf.row[C.pw - 1])) return json_({ ok: false, error: '비밀번호가 맞지 않습니다.' });
+      return json_({ ok: true, tok: tok_(str_(uf.row[C.id - 1]), str_(uf.row[C.pw - 1])) });
+    }
+
+    if (action === 'ccreate') {
+      if (p.website) return json_({ ok: true });
+      var csh = csheet_();
+      var pf = findRow_(sh, String(p.post || ''));
+      if (!pf || str_(pf.row[C.status - 1]).indexOf('삭제') >= 0) return json_({ ok: false, error: '댓글을 달 글을 찾을 수 없습니다.' });
+      var cname = String(p.name || '').trim();
+      var ctext = String(p.text || '').trim();
+      var cpw = String(p.pw || '');
+      if (!cname || cname.length > MAX_NAME) return json_({ ok: false, error: '글쓴이는 1~' + MAX_NAME + '자로 적어 주세요.' });
+      if (!ctext || ctext.length > MAX_COMMENT) return json_({ ok: false, error: '댓글은 1~' + MAX_COMMENT + '자로 적어 주세요.' });
+      if (cpw.length < MIN_PW) return json_({ ok: false, error: '비밀번호는 ' + MIN_PW + '자 이상으로 정해 주세요.' });
+      var creason = classify_(cname, ctext);
+      var celapsed = Number(p.t || 0);
+      if (!creason && celapsed > 0 && celapsed < 2000) creason = '너무 빠른 등록';
+      var crows2 = csh.getDataRange().getValues();
+      if (!creason) {
+        var crecent = 0, cten = Date.now() - 10 * 60 * 1000;
+        for (var cr2 = Math.max(1, crows2.length - 60); cr2 < crows2.length; cr2++) {
+          if (str_(crows2[cr2][CC.text - 1]) === ctext && str_(crows2[cr2][CC.post - 1]) === str_(pf.row[C.id - 1])) { creason = '중복 내용'; break; }
+          var ct = new Date(str_(crows2[cr2][CC.time - 1]).replace(' ', 'T') + ':00+09:00').getTime();
+          if (ct > cten) crecent++;
+        }
+        if (!creason && crecent > 40) creason = '짧은 시간 다량 등록';
+      }
+      var cid = Utilities.getUuid();
+      var cstatus = creason ? '검토대기' : '공개';
+      csh.appendRow([cid, str_(pf.row[C.id - 1]), now_(), cname, ctext, hash_(cid, cpw), p.priv === 'Y' ? 'Y' : 'N', cstatus, '', '', creason]);
+      cache.remove('clist');
+      return json_({ ok: true, id: cid, status: cstatus, priv: p.priv === 'Y' });
+    }
+
+    if (action === 'cmine') {
+      var cids = {};
+      String(p.ids || '').split(',').slice(0, 120).forEach(function (x) { if (x) cids[x] = true; });
+      var owned = {};
+      String(p.toks || '').split(',').slice(0, 60).forEach(function (pair) {
+        var k = pair.split(':');
+        if (k.length !== 2 || !k[0] || !k[1]) return;
+        var of = findRow_(sh, k[0]);
+        if (of && str_(of.row[C.status - 1]).indexOf('삭제') < 0 && tok_(k[0], str_(of.row[C.pw - 1])) === k[1]) owned[k[0]] = true;
+      });
+      var call = csheet_().getDataRange().getValues(), cout2 = [];
+      for (var ci = 1; ci < call.length; ci++) {
+        var crow = call[ci], cs = str_(crow[CC.status - 1]);
+        if (cs.indexOf('삭제') >= 0 || !str_(crow[CC.text - 1])) continue;
+        var cmid = str_(crow[CC.id - 1]), cpost = str_(crow[CC.post - 1]);
+        var isMine = !!cids[cmid];
+        var viaOwner = owned[cpost] && str_(crow[CC.priv - 1]) === 'Y' && cs === '공개';
+        if (isMine || viaOwner) {
+          var cit = cItem_(crow);
+          cit.status = cs;
+          cit.priv = str_(crow[CC.priv - 1]) === 'Y';
+          cit.mine = isMine;
+          cout2.push(cit);
+        }
+      }
+      return json_({ ok: true, items: cout2, owned: Object.keys(owned) });
+    }
+
+    if (action === 'cupdate' || action === 'cdelete') {
+      var csh3 = csheet_();
+      var crs = csh3.getDataRange().getValues(), cfound = null;
+      for (var cx = 1; cx < crs.length; cx++) if (str_(crs[cx][CC.id - 1]) === String(p.id || '')) { cfound = { index: cx + 1, row: crs[cx] }; break; }
+      if (!cfound || str_(cfound.row[CC.status - 1]).indexOf('삭제') >= 0) return json_({ ok: false, error: '댓글을 찾을 수 없습니다.' });
+      if (hash_(str_(cfound.row[CC.id - 1]), String(p.pw || '')) !== str_(cfound.row[CC.pw - 1])) return json_({ ok: false, error: '비밀번호가 맞지 않습니다.' });
+      if (action === 'cdelete') {
+        csh3.getRange(cfound.index, CC.text).setValue('');
+        csh3.getRange(cfound.index, CC.status).setValue('삭제(본인)');
+        csh3.getRange(cfound.index, CC.edited).setValue(now_());
+        cache.remove('clist');
+        return json_({ ok: true });
+      }
+      var cnt = String(p.text || '').trim();
+      if (!cnt || cnt.length > MAX_COMMENT) return json_({ ok: false, error: '댓글은 1~' + MAX_COMMENT + '자로 적어 주세요.' });
+      var cnr = classify_(str_(cfound.row[CC.name - 1]), cnt);
+      csh3.getRange(cfound.index, CC.text).setValue(cnt);
+      if (p.priv === 'Y' || p.priv === 'N') csh3.getRange(cfound.index, CC.priv).setValue(p.priv);
+      csh3.getRange(cfound.index, CC.edited).setValue(now_());
+      if (cnr) {
+        csh3.getRange(cfound.index, CC.status).setValue('검토대기');
+        csh3.getRange(cfound.index, CC.reason).setValue(cnr);
+      }
+      cache.remove('clist');
+      return json_({ ok: true, status: cnr ? '검토대기' : str_(cfound.row[CC.status - 1]) });
     }
 
     if (action === 'like') {
