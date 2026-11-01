@@ -1025,3 +1025,7 @@ nav a:hover {
 @media (max-width: 768px) { .writing-grid { grid-template-columns: 1fr; gap: 14px; } .writing-card { padding: 22px 20px; } }
 
 .stat-number sup { font-size: 0.6em; font-weight: 700; vertical-align: super; line-height: 0; margin-left: 1px; }
+
+/* 상단 메뉴: 감사·응원 한마디(금색) */
+nav a.nav-gold { color: var(--secondary-color); }
+nav a.nav-gold:hover { color: var(--primary-color); }
