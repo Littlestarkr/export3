@@ -3,7 +3,7 @@
     'use strict';
 
     // 앱스 스크립트 배포 후 나온 웹 앱 URL(…/exec)을 여기에 넣는다.
-    var GUESTBOOK_URL = '';
+    var GUESTBOOK_URL = 'https://script.google.com/macros/s/AKfycbyZMGjZcqVMJuCTrhmDXSlrZIWBuz0bFW6KXfbTRheEwJ8pv3Iy_cO_cMtMPCkBIKdr/exec';
 
     var PAGE = 15;
     var shown = PAGE;
