@@ -839,3 +839,6 @@ html {
 /* 활용사례 칩: 황금색으로 구분 */
 .pf-jump a.pf-jump-gold { background: var(--secondary-color); border-color: var(--secondary-color); color: var(--primary-color); font-weight: 700; }
 .pf-jump a.pf-jump-gold:hover { background: #b08d48; border-color: #b08d48; color: var(--primary-color); }
+
+/* 흰 배경 위 금색 글자 대비 확보 */
+.pf-source a, .pf-site-url { color: var(--gold-text, #8a6a1f); }

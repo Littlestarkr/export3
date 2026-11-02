@@ -1029,3 +1029,8 @@ nav a:hover {
 /* 상단 메뉴: 감사·응원 한마디(금색) */
 nav a.nav-gold { color: var(--secondary-color); }
 nav a.nav-gold:hover { color: var(--primary-color); }
+
+/* 흰 배경 위 금색 글자: 대비 확보용 진한 금색(어두운 히어로 위 글자는 원래 금색 유지) */
+:root { --gold-text: #8a6a1f; }
+nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
+.pf-hero .section-subtitle { color: var(--secondary-color); }
