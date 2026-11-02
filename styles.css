@@ -699,11 +699,11 @@ nav a:hover {
 }
 
 .main-footer p {
-    opacity: 0.4;
-    font-size: 0.7rem;
+    opacity: 0.8;
+    font-size: 0.78rem;
     /* 카피라이트 텍스트를 작게 배치 */
     margin: 0;
-    line-height: 1;
+    line-height: 1.6;
     /* 줄 간격에 의한 추가 공간 제거 */
 }
 
