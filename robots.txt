@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://littlestarkr.github.io/export3/sitemap.xml
+Sitemap: https://www.littlestar.co.kr/sitemap.xml

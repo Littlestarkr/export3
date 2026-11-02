@@ -54,10 +54,12 @@ There is no linter or test suite configured for this repo.
 
 **블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#contact` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
 
-**공유 미리보기·검색 등록.** `og-image.jpg`(1200×630)와 절대 주소 `og:*` 태그, `og:url`, `<link rel="canonical">`을 5개 페이지에 둔다. `robots.txt`(전체 허용 + Sitemap)와 `sitemap.xml`(8개 URL)은 저장소 루트에 있고, 페이지를 추가하면 `sitemap.xml`에도 더한다. 구글 서치콘솔은 `index.html`의 `google-site-verification` 메타로 소유 확인하고 sitemap을 제출했다. 네이버 서치어드바이저는 호스트 단위(`https://littlestarkr.github.io`) 등록만 가능해서, 확인 파일과 메타는 별도 저장소 `Littlestarkr/Littlestarkr.github.io`에 있다(이 저장소에는 없다). 이 두 저장소의 확인 파일·메타는 지우지 않는다.
+**공유 미리보기·검색 등록.** `og-image.jpg`(1200×630)와 절대 주소 `og:*` 태그, `og:url`, `<link rel="canonical">`을 5개 페이지에 둔다. `robots.txt`(전체 허용 + Sitemap)와 `sitemap.xml`(8개 URL; 주소는 모두 https://www.littlestar.co.kr/ 기준)은 저장소 루트에 있고, 페이지를 추가하면 `sitemap.xml`에도 더한다. 구글 서치콘솔은 `index.html`의 `google-site-verification` 메타로 소유 확인하고 sitemap을 제출했다. 네이버 서치어드바이저는 호스트 단위(`https://littlestarkr.github.io`) 등록만 가능해서, 확인 파일과 메타는 별도 저장소 `Littlestarkr/Littlestarkr.github.io`에 있다(이 저장소에는 없다). 이 두 저장소의 확인 파일·메타는 지우지 않는다.
 
 **방문 통계(구글 애널리틱스).** 측정 ID `G-J15DSR7PZD`의 gtag 스니펫이 5개 페이지 `</head>` 앞에 있고, 각 페이지 하단에 쿠키 사용 안내 문구가 있다. 상담 신청이 성공하면 `script.js`가 `generate_lead` 이벤트를 보낸다(`form_name: 'consulting'`, 개인정보는 보내지 않는다). GA 관리 > 데이터 표시 > 이벤트에서 이 이벤트를 '주요 이벤트'로 켜 두어야 전환으로 집계된다. 새 페이지를 만들면 같은 스니펫과 안내 문구를 넣는다.
 
 **상담 접수 후 처리(Apps Script, 저장소 밖).** `doPost`는 시트(`Sheet1` A–G열)에 행을 추가하고, 허니팟이 비어 있을 때만 ① 운영자(happyojh@gmail.com)에게 알림 메일, ② 신청자에게 접수 확인 메일(이메일 형식 검증, try/catch, 회신 주소는 운영자), ③ 8열(H, "Report")에 `Y` 표시를 한다. 스크립트를 고치면 배포 관리에서 새 버전으로 다시 배포해야 반영된다. 하루치 묶음 알림은 없다.
 
 **개인정보 처리방침 (`privacy.html`).** 7개 페이지 하단의 쿠키 안내 문구 옆 링크와 상담 신청 동의 박스(`#privacy-detail`)에서 연결된다(`policy-finance.css` 공유). 상담 신청·방명록·구글 애널리틱스 수집 항목, 구글(국외 이전) 위탁, 보유 기간(상담 3년), 보호책임자(오주현, happyojh@gmail.com)를 담았다. 수집 항목이나 보관 방식을 바꾸면 이 페이지와 동의 문구를 함께 고친다. 시행일은 2026년 11월 2일이다.
+
+**도메인.** 사이트 주소는 `https://www.littlestar.co.kr/`이다(저장소 루트 `CNAME` 파일 = `www.littlestar.co.kr`, GitHub Pages 브랜치 배포). DNS는 ibi.net의 DNS 설정(MY페이지 > 도메인 관리 > DNS 설정)에서 관리한다: `@` A 레코드 4개(185.199.108~111.153), `www` CNAME `littlestarkr.github.io`, `mail` A·MX는 기존 그대로. 옛 주소 `littlestarkr.github.io/export3`는 GitHub가 새 도메인으로 자동 연결한다. `CNAME` 파일을 지우면 도메인 연결이 끊긴다. og·canonical·sitemap·robots의 주소를 새 페이지에도 같은 도메인으로 쓴다.
