@@ -842,3 +842,9 @@ html {
 
 /* 흰 배경 위 금색 글자 대비 확보 */
 .pf-source a, .pf-site-url { color: var(--gold-text, #8a6a1f); }
+
+/* 인용 도표(이미지) */
+.pf-figure { margin: 0 0 18px; }
+.pf-figure-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #e6e1d4; border-radius: 8px; background: #fff; }
+.pf-figure img { display: block; width: 100%; max-width: 1047px; min-width: 640px; height: auto; }
+.pf-figure figcaption { margin-top: 8px; font-size: 0.82rem; color: #777; line-height: 1.6; }
