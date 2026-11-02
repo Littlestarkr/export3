@@ -1034,3 +1034,8 @@ nav a.nav-gold:hover { color: var(--primary-color); }
 :root { --gold-text: #8a6a1f; }
 nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .pf-hero .section-subtitle { color: var(--secondary-color); }
+
+/* 푸터 홈페이지 주소 */
+.main-footer p.footer-home { opacity: 0.85; font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; }
+.main-footer p.footer-home a { color: #fff; text-decoration: none; letter-spacing: 0.02em; }
+.main-footer p.footer-home a:hover { color: var(--secondary-color, #c5a059); }
