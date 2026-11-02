@@ -20,8 +20,11 @@
 .sc-panel[hidden] { display: none; }
 .sc-help { font-size: 0.86rem !important; color: #7a6221 !important; flex: 0 !important; }
 .sc-help strong { margin-right: 6px; color: var(--navy, #0d1e38); }
-.sc-thumb-text { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d1e38, #1a3560); }
+.sc-thumb-text { aspect-ratio: 2.6 / 1; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d1e38, #1a3560); }
 .sc-thumb-text span { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.5px; text-align: center; padding: 0 16px; }
 .sc-points { margin: 0; padding-left: 18px; font-size: 0.9rem; line-height: 1.65; color: #555; flex: 1; }
 .sc-points li { margin-bottom: 3px; }
 .sc-link + .sc-link { margin-top: 6px; }
+/* 사진은 항상 4:3 틀에 맞춰 잘라 보여 카드 높이를 맞춘다 */
+.sc-thumb { position: relative; overflow: hidden; }
+.sc-thumb img { position: absolute; inset: 0; }
