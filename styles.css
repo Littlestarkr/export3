@@ -1054,3 +1054,6 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .voice-more a { display: inline-block; padding: 11px 24px; border: 1px solid var(--secondary-color); border-radius: 24px; color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.93rem; transition: var(--transition); }
 .voice-more a:hover { background: var(--secondary-color); color: var(--primary-color); }
 @media (max-width: 768px) { .voice-grid { column-count: 1; } .voice-card { padding: 18px 18px 14px; } }
+.main-footer p.footer-cookie { opacity: 1; color: #8c949e; font-size: 0.72rem; margin-top: 4px; }
+.main-footer p.footer-cookie a { color: #b8a77a; text-decoration: underline; text-underline-offset: 2px; }
+.main-footer p.footer-cookie a:hover { color: #fff; }
