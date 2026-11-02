@@ -24,3 +24,4 @@
 .sc-thumb-text span { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.5px; text-align: center; padding: 0 16px; }
 .sc-points { margin: 0; padding-left: 18px; font-size: 0.9rem; line-height: 1.65; color: #555; flex: 1; }
 .sc-points li { margin-bottom: 3px; }
+.sc-link + .sc-link { margin-top: 6px; }
