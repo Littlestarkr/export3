@@ -835,3 +835,7 @@ html {
 .pf-quote p { margin: 0 0 6px; line-height: 1.85; color: #333; font-size: 0.95rem; }
 .pf-quote cite { display: block; text-align: right; font-style: normal; font-size: 0.85rem; color: #888; }
 .pf-closing { text-align: center; font-weight: 700; color: var(--primary-color); margin-top: 20px; }
+
+/* 활용사례 칩: 황금색으로 구분 */
+.pf-jump a.pf-jump-gold { background: var(--secondary-color); border-color: var(--secondary-color); color: var(--primary-color); font-weight: 700; }
+.pf-jump a.pf-jump-gold:hover { background: #b08d48; border-color: #b08d48; color: var(--primary-color); }
