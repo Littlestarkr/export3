@@ -826,3 +826,12 @@ html {
 /* ── 표 안 링크 ── */
 .pf-tlink { color: var(--navy, #0d1e38); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold, #c5a059); text-underline-offset: 3px; }
 .pf-tlink:hover { color: var(--gold, #c5a059); }
+
+/* 무역보험 활용사례 */
+.pf-h8 { margin: 18px 0 6px; font-size: 1rem; font-weight: 700; color: var(--primary-color); }
+.pf-case { margin: 0 0 12px; line-height: 1.85; color: #333; font-size: 0.97rem; }
+.pf-bigquote { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--primary-color); margin: 10px 0 14px; }
+.pf-quote { margin: 8px 0 14px; padding: 14px 18px; background: #faf8f2; border-left: 3px solid var(--secondary-color); border-radius: 6px; }
+.pf-quote p { margin: 0 0 6px; line-height: 1.85; color: #333; font-size: 0.95rem; }
+.pf-quote cite { display: block; text-align: right; font-style: normal; font-size: 0.85rem; color: #888; }
+.pf-closing { text-align: center; font-weight: 700; color: var(--primary-color); margin-top: 20px; }
