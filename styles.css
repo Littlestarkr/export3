@@ -1039,3 +1039,15 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .main-footer p.footer-home { opacity: 0.85; font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; }
 .main-footer p.footer-home a { color: #fff; text-decoration: none; letter-spacing: 0.02em; }
 .main-footer p.footer-home a:hover { color: var(--secondary-color, #c5a059); }
+
+/* 감사와 응원의 한마디 */
+.voices-section { background: #faf8f2; border-top: 1px solid #eee7d3; border-bottom: 1px solid #eee7d3; }
+.voice-grid { column-count: 2; column-gap: 20px; }
+.voice-card { break-inside: avoid; margin: 0 0 20px; background: #fff; border: 1px solid #e6e1d4; border-left: 4px solid var(--secondary-color); border-radius: 6px; padding: 22px 22px 18px; }
+.voice-card blockquote { margin: 0 0 14px; font-size: 0.95rem; line-height: 1.85; color: #333; word-break: keep-all; }
+.voice-card figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 0.88rem; color: #777; }
+.voice-card figcaption strong { color: var(--primary-color); font-size: 0.95rem; }
+.voice-more { text-align: center; margin: 8px 0 0; }
+.voice-more a { display: inline-block; padding: 11px 24px; border: 1px solid var(--secondary-color); border-radius: 24px; color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.93rem; transition: var(--transition); }
+.voice-more a:hover { background: var(--secondary-color); color: var(--primary-color); }
+@media (max-width: 768px) { .voice-grid { column-count: 1; } .voice-card { padding: 18px 18px 14px; } }
