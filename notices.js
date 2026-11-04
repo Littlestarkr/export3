@@ -50,20 +50,24 @@
         list.textContent = '';
         if (!rows.length) { state('등록된 알림이 없습니다.'); return; }
         rows.slice(0, shown).forEach(function (it) {
-            var card = el('article', 'nt-item' + (it.pin ? ' pin' : ''));
+            var card = el('details', 'nt-item' + (it.pin ? ' pin' : ''));
+            var sum = el('summary', 'nt-sum');
             var meta = el('div', 'nt-meta');
             if (it.pin) meta.appendChild(el('span', 'nt-chip pin', '고정'));
             if (it.cat) meta.appendChild(el('span', 'nt-chip', it.cat));
             if (it.date) meta.appendChild(el('span', '', it.date));
             if (isNew(it.date)) meta.appendChild(el('span', 'nt-chip new', 'NEW'));
-            card.appendChild(meta);
-            card.appendChild(el('h3', 'nt-title', it.title));
-            if (it.body) card.appendChild(el('div', 'nt-body', it.body));
+            sum.appendChild(meta);
+            sum.appendChild(el('h3', 'nt-title', it.title));
+            card.appendChild(sum);
+            var det = el('div', 'nt-detail');
+            if (it.body) det.appendChild(el('div', 'nt-body', it.body));
             if (/^https?:\/\//i.test(it.url || '')) {
                 var a = el('a', 'nt-link', (it.urlLabel || '원문 보기') + ' ↗');
                 a.href = it.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
-                card.appendChild(a);
+                det.appendChild(a);
             }
+            card.appendChild(det);
             list.appendChild(card);
         });
         $('ntCount').textContent = '총 ' + rows.length + '건';
