@@ -54,7 +54,7 @@ There is no linter or test suite configured for this repo.
 
 **홈페이지 '맨 위로' 버튼.** `index.html`은 back-nav.js를 쓰지 않고, `script.js` 맨 끝이 왼쪽 아래 둥근 `.to-top` 버튼(스타일은 `styles.css` 끝)을 만든다. 300px 이상 내려가면 나타난다.
 
-**로고의 반짝이는 별.** 9개 페이지 헤더 로고 `<h1>` 맨 앞에 인라인 SVG `.logo-star`(네 갈래 금색 별)가 있고, 반짝임(`logo-twinkle`, 3.6초)은 `styles.css` 끝에 있다. '동작 줄이기' 설정에서는 멈춘다. 새 페이지를 만들면 같은 SVG를 넣는다.
+**로고의 반짝이는 별.** 9개 페이지 헤더 로고 `<h1>` 맨 앞에 인라인 SVG `.logo-star`(오각별 + 작은 반짝이 2개, 금색 그라데이션)가 있고, 반짝임(`logo-twinkle`, 3.6초)은 `styles.css` 끝에 있다. '동작 줄이기' 설정에서는 멈춘다. 새 페이지를 만들면 같은 SVG를 넣는다.
 
 **블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#contact` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
 

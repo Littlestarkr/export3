@@ -1064,12 +1064,20 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .to-top:hover { background: var(--secondary-color); color: #fff; }
 @media (max-width: 768px) { .to-top { left: 10px; bottom: 10px; width: 38px; height: 38px; } }
 
-/* 로고 앞의 반짝이는 작은 별 */
-.logo-star { width: 0.8em; height: 0.8em; margin-right: 6px; vertical-align: -0.02em; fill: var(--secondary-color, #c5a059); filter: drop-shadow(0 0 3px rgba(197,160,89,.55)); transform-origin: center; animation: logo-twinkle 3.6s ease-in-out infinite; }
+/* 로고 앞의 반짝이는 작은 별(오각별 + 작은 반짝이) */
+.logo-star { width: 1.05em; height: 1.05em; margin-right: 4px; vertical-align: -0.12em; overflow: visible; }
+.logo-star .ls-main { transform-box: fill-box; transform-origin: center; animation: logo-twinkle 3.2s ease-in-out infinite; }
+.logo-star .ls-s { fill: #e8c874; transform-box: fill-box; transform-origin: center; opacity: 0; animation: logo-sparkle 3.2s ease-in-out infinite; }
+.logo-star .ls-s2 { animation-delay: 1.4s; }
 @keyframes logo-twinkle {
-    0%, 100% { transform: scale(0.85) rotate(0deg); opacity: .75; }
-    45% { transform: scale(1.2) rotate(18deg); opacity: 1; filter: drop-shadow(0 0 6px rgba(197,160,89,.95)); }
-    60% { transform: scale(0.95) rotate(0deg); opacity: .9; }
+    0%, 100% { transform: scale(0.88) rotate(-8deg); filter: drop-shadow(0 0 2px rgba(212,168,83,.5)); }
+    40% { transform: scale(1.22) rotate(22deg); filter: drop-shadow(0 0 4px rgba(255,226,140,1)) drop-shadow(0 0 9px rgba(212,168,83,.9)); }
+    55% { transform: scale(1.0) rotate(10deg); filter: drop-shadow(0 0 3px rgba(212,168,83,.7)); }
 }
-@media (prefers-reduced-motion: reduce) { .logo-star { animation: none; } }
-@media (max-width: 768px) { .logo-star { width: 0.7em; height: 0.7em; margin-right: 5px; } }
+@keyframes logo-sparkle {
+    0%, 30%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    45% { opacity: 1; transform: scale(1.1) rotate(45deg); }
+    65% { opacity: 0; transform: scale(0.3) rotate(90deg); }
+}
+@media (prefers-reduced-motion: reduce) { .logo-star .ls-main, .logo-star .ls-s { animation: none; } .logo-star .ls-s { opacity: .9; transform: none; } }
+@media (max-width: 768px) { .logo-star { width: 0.95em; height: 0.95em; margin-right: 3px; } }
