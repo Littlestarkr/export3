@@ -1063,3 +1063,13 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .to-top.show { opacity: 1; visibility: visible; }
 .to-top:hover { background: var(--secondary-color); color: #fff; }
 @media (max-width: 768px) { .to-top { left: 10px; bottom: 10px; width: 38px; height: 38px; } }
+
+/* 로고 앞의 반짝이는 작은 별 */
+.logo-star { width: 0.8em; height: 0.8em; margin-right: 6px; vertical-align: -0.02em; fill: var(--secondary-color, #c5a059); filter: drop-shadow(0 0 3px rgba(197,160,89,.55)); transform-origin: center; animation: logo-twinkle 3.6s ease-in-out infinite; }
+@keyframes logo-twinkle {
+    0%, 100% { transform: scale(0.85) rotate(0deg); opacity: .75; }
+    45% { transform: scale(1.2) rotate(18deg); opacity: 1; filter: drop-shadow(0 0 6px rgba(197,160,89,.95)); }
+    60% { transform: scale(0.95) rotate(0deg); opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) { .logo-star { animation: none; } }
+@media (max-width: 768px) { .logo-star { width: 0.7em; height: 0.7em; margin-right: 5px; } }
