@@ -1,4 +1,4 @@
-// 하위 페이지 공통: 이전 화면으로 돌아가기, 맨 위로, 목차로 돌아가기
+// 하위 페이지 공통: 이전 화면(왼쪽 아래), 맨 위로, 홈(오른쪽 아래), 목차로 돌아가기
 (function () {
     'use strict';
 
@@ -19,6 +19,10 @@
         '<button type="button" class="pf-fn-top" aria-label="맨 위로"><i class="fa-solid fa-arrow-up"></i></button>';
     document.body.appendChild(bar);
     bar.querySelector('.pf-fn-back').addEventListener('click', goBack);
+    var home = document.createElement('div');
+    home.className = 'pf-floatnav pf-floatnav-r';
+    home.innerHTML = '<a href="index.html" class="pf-fn-home"><i class="fa-solid fa-house"></i> 홈</a>';
+    document.body.appendChild(home);
     bar.querySelector('.pf-fn-top').addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
