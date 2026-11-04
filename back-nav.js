@@ -41,6 +41,24 @@
         grp.appendChild(a);
     });
 
+    // 주소에 #가 붙은 채로 열리면 부드러운 스크롤이 긴 문서에서 중간에 멈추므로, 즉시 이동하고 로딩이 끝난 뒤 한 번 더 맞춘다
+    (function () {
+        var h = location.hash;
+        if (h.length < 2) return;
+        var id;
+        try { id = decodeURIComponent(h.slice(1)); } catch (e) { return; }
+        var t = document.getElementById(id);
+        if (!t || t.hidden) return;
+        var de = document.documentElement;
+        function jump() {
+            de.style.scrollBehavior = 'auto';
+            t.scrollIntoView();
+            de.style.scrollBehavior = '';
+        }
+        jump();
+        window.addEventListener('load', jump);
+    })();
+
     // 페이지 안 이동은 history 항목을 쌓지 않아서, '이전 화면'이 항상 직전 페이지로 간다
     document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('a[href^="#"]');
