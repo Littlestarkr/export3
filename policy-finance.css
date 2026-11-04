@@ -851,3 +851,17 @@ html {
 .pf-figure-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #e6e1d4; border-radius: 8px; background: #fff; }
 .pf-figure img { display: block; width: 100%; max-width: 1104px; min-width: 640px; height: auto; }
 .pf-figure figcaption { margin-top: 8px; font-size: 0.82rem; color: #777; line-height: 1.6; }
+
+/* 무역보험 Q&A: 질문만 보이고 '답변 보기'를 누르면 해당 답변만 펼쳐진다 */
+.qa-item { border-top: 1px solid #eceae2; }
+.qa-item:last-of-type { border-bottom: 1px solid #eceae2; }
+.qa-q { list-style: none; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 16px 2px; }
+.qa-q::-webkit-details-marker { display: none; }
+.qa-qt { font-weight: 700; font-size: 0.95rem; color: var(--primary-color); line-height: 1.55; }
+.qa-btn { flex: none; margin-top: 1px; font-size: 0.78rem; font-weight: 700; color: #7a6221; background: #f6f1e2; border: 1px solid #e3d8b5; border-radius: 14px; padding: 3px 11px; white-space: nowrap; }
+.qa-btn::before { content: "답변 보기 ▾"; }
+.qa-item[open] > .qa-q .qa-btn::before { content: "답변 닫기 ▴"; }
+.qa-q:hover .qa-btn { background: #efe6c9; }
+.qa-a { padding: 0 2px 16px; }
+.qa-a > p:first-child { margin-top: 0; }
+@media (max-width: 768px) { .qa-q { flex-direction: column; gap: 8px; } .qa-btn { align-self: flex-start; } }
