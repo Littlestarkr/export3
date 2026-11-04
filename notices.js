@@ -8,6 +8,7 @@
     var PAGE = 10;
     var shown = PAGE;
     var cat = '';
+    var q = '';
     var items = [];
     var $ = function (id) { return document.getElementById(id); };
 
@@ -46,9 +47,15 @@
 
     function render() {
         var list = $('ntList');
-        var rows = items.filter(function (it) { return !cat || it.cat === cat; });
+        var terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+        var rows = items.filter(function (it) {
+            if (cat && it.cat !== cat) return false;
+            if (!terms.length) return true;
+            var hay = [it.title, it.body, it.cat, it.date].join(' ').toLowerCase();
+            return terms.every(function (t) { return hay.indexOf(t) >= 0; });
+        });
         list.textContent = '';
-        if (!rows.length) { state('등록된 알림이 없습니다.'); return; }
+        if (!rows.length) { state(terms.length ? '\u2018' + q.trim() + '\u2019 검색 결과가 없습니다.' : '등록된 알림이 없습니다.'); return; }
         rows.slice(0, shown).forEach(function (it) {
             var card = el('details', 'nt-item' + (it.pin ? ' pin' : ''));
             var sum = el('summary', 'nt-sum');
@@ -70,16 +77,21 @@
             card.appendChild(det);
             list.appendChild(card);
         });
-        $('ntCount').textContent = '총 ' + rows.length + '건';
+        $('ntCount').textContent = (terms.length ? '검색 결과 ' : '총 ') + rows.length + '건';
         $('ntMore').style.display = rows.length > shown ? 'block' : 'none';
     }
 
     function apply(data) {
         items = (data && data.items) || [];
-        shown = PAGE; cat = '';
+        shown = PAGE; cat = ''; q = '';
+        $('ntQ').value = '';
+        $('ntSearch').hidden = !items.length;
         renderFilter();
         render();
     }
+
+    $('ntSearch').addEventListener('submit', function (e) { e.preventDefault(); q = $('ntQ').value; shown = PAGE; render(); });
+    $('ntQ').addEventListener('input', function () { q = this.value; shown = PAGE; render(); });
 
     $('ntMore').addEventListener('click', function () { shown += PAGE; render(); });
 

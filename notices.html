@@ -17,7 +17,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css?v=15">
     <link rel="stylesheet" href="policy-finance.css?v=12">
-    <link rel="stylesheet" href="notices.css?v=3">
+    <link rel="stylesheet" href="notices.css?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -68,7 +68,13 @@
     <section class="pf-section">
         <div class="container nt-wrap">
             <p class="nt-tip">※ 원문 링크를 열면 안내창이 뜰 수 있습니다. 확인을 누르시면 원문이 열립니다.</p>
-            <div class="nt-filter" id="ntFilter" role="group" aria-label="분류 선택" hidden></div>
+            <div class="nt-bar">
+                <div class="nt-filter" id="ntFilter" role="group" aria-label="분류 선택" hidden></div>
+                <form class="nt-search" id="ntSearch" role="search" hidden>
+                    <input type="search" id="ntQ" placeholder="주제어 검색" aria-label="알림 검색" autocomplete="off" maxlength="40">
+                    <button type="submit" aria-label="검색"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
             <div class="nt-list-head"><span id="ntCount"></span></div>
             <div id="ntList" aria-live="polite"><p class="nt-state">불러오는 중입니다…</p></div>
             <button type="button" class="nt-more" id="ntMore" style="display:none">더 보기</button>
@@ -89,7 +95,7 @@
         </div>
     </footer>
 
-    <script src="notices.js?v=3"></script>
+    <script src="notices.js?v=4"></script>
     <script src="back-nav.js?v=2"></script>
 </body>
 

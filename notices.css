@@ -1,7 +1,13 @@
 /* 알림 */
 .nt-wrap { max-width: 820px; margin: 0 auto; }
 .nt-tip { margin: 0 0 16px; padding: 10px 14px; background: #fff8e6; border: 1px solid #f0e2b8; border-radius: 8px; font-size: 0.88rem; color: #6b5a1e; line-height: 1.6; }
-.nt-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.nt-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 18px; }
+.nt-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.nt-search { display: flex; align-items: center; margin-left: auto; border: 1px solid #d8d4c6; background: #fff; border-radius: 20px; overflow: hidden; }
+.nt-search:focus-within { border-color: var(--gold, #c5a059); }
+.nt-search input { border: 0; outline: 0; background: transparent; font: inherit; font-size: 0.9rem; padding: 7px 4px 7px 16px; width: 170px; color: var(--navy, #0d1e38); }
+.nt-search button { border: 0; background: transparent; color: var(--navy, #0d1e38); padding: 7px 14px 7px 8px; cursor: pointer; font-size: 0.9rem; }
+.nt-search button:hover { color: var(--gold, #c5a059); }
 .nt-filter button { border: 1px solid #d8d4c6; background: #fff; color: var(--navy, #0d1e38); border-radius: 20px; padding: 7px 16px; font: inherit; font-size: 0.9rem; cursor: pointer; }
 .nt-filter button:hover { border-color: var(--gold, #c5a059); }
 .nt-filter button.is-active { background: var(--navy, #0d1e38); border-color: var(--navy, #0d1e38); color: #fff; }
@@ -32,4 +38,6 @@
     .nt-sum::after { right: 16px; }
     .nt-detail { margin: 0 16px; }
     .nt-filter button { padding: 6px 13px; font-size: 0.86rem; }
+    .nt-search { margin-left: 0; width: 100%; }
+    .nt-search input { flex: 1; width: auto; }
 }
