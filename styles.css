@@ -1057,3 +1057,9 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .main-footer p.footer-cookie { opacity: 1; color: #8c949e; font-size: 0.72rem; margin-top: 4px; }
 .main-footer p.footer-cookie a { color: #b8a77a; text-decoration: underline; text-underline-offset: 2px; }
 .main-footer p.footer-cookie a:hover { color: #fff; }
+
+/* 홈페이지 '맨 위로' 버튼(왼쪽 아래, 조금 내려가면 나타남) */
+.to-top { position: fixed; left: 16px; bottom: 16px; z-index: 900; width: 42px; height: 42px; border: 0; border-radius: 50%; background: #fff; color: var(--primary-color); box-shadow: 0 4px 14px rgba(0,0,0,.25); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s; }
+.to-top.show { opacity: 1; visibility: visible; }
+.to-top:hover { background: var(--secondary-color); color: #fff; }
+@media (max-width: 768px) { .to-top { left: 10px; bottom: 10px; width: 38px; height: 38px; } }

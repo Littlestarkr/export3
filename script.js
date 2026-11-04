@@ -194,3 +194,16 @@ function togglePrivacy() {
         detail.style.display = 'none';
     }
 }
+// 맨 위로 버튼: 300px 이상 내려가면 왼쪽 아래에 나타난다
+(function () {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'to-top';
+    btn.setAttribute('aria-label', '맨 위로');
+    btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+    document.body.appendChild(btn);
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    const toggle = () => btn.classList.toggle('show', window.scrollY > 300);
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+})();
