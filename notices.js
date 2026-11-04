@@ -3,7 +3,7 @@
     'use strict';
 
     // 앱스 스크립트 배포 후 나온 웹 앱 URL(…/exec)을 여기에 넣는다. 비어 있으면 '곧 문을 엽니다'가 보인다.
-    var NOTICES_URL = '';
+    var NOTICES_URL = 'https://script.google.com/macros/s/AKfycbyfAkcUcnUlin7t66UgXG9wncEeKxPQEFAv8t2R94KIDtNzxmlaLAxOHWDVHGPzYNXu/exec';
 
     var PAGE = 10;
     var shown = PAGE;
