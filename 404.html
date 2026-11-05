@@ -24,6 +24,15 @@
         gtag('js', new Date());
         gtag('config', 'G-J15DSR7PZD');
     </script>
+    <style>
+        .nf-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 32px; }
+        .nf-links .pf-btn { justify-content: center; text-align: center; padding: 11px 18px; }
+        @media (max-width: 768px) {
+            .nf-links { display: grid; grid-template-columns: 1fr 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+            .nf-links .pf-btn { padding: 12px 8px; line-height: 1.35; }
+            .nf-links .pf-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+        }
+    </style>
 </head>
 
 <body>
@@ -60,7 +69,7 @@
         <div class="container" style="text-align:center">
             <p>주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾으시는 내용으로 이동해 주세요.</p>
             <p style="margin-top:24px"><a href="/index.html" class="btn btn-primary">홈으로 가기</a></p>
-            <div class="pf-orglinks" style="justify-content:center;margin-top:32px">
+            <div class="nf-links">
                 <a href="/policy-finance.html" class="pf-btn">정책자금 및 수출금융</a>
                 <a href="/trade-insurance.html" class="pf-btn">무역보험 및 수출 안전망</a>
                 <a href="/global-expansion.html" class="pf-btn">글로벌 진출</a>
