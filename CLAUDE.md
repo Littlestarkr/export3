@@ -70,6 +70,8 @@ There is no linter or test suite configured for this repo.
 
 **인라인 style 금지.** 페이지 마크업에 `style="..."`를 쓰지 않고 클래스로 처리한다. `policy-finance.css` 맨 끝에 보조 클래스(`.u-mt0`·`.u-mt14/18/20/24/28`(위 여백), `.u-pt0`, `.u-red`, `.pf-ext`(바깥 링크 아이콘 크기), `.pf-site-links`)가 있고, 홈 양식 간격은 `.contact-form-wrapper.form-gap`(styles.css), 방명록 안내는 `.gb-check-hint`, 404 전용은 `404.html`의 `<style>`에 있다. 남은 인라인 style은 `guestbook.html`·`notices.html`의 '더 보기' 버튼 `display:none` 두 곳뿐인데, JS(`style.display`)가 켜고 끄므로 그대로 둔다. 새 값이 필요하면 클래스를 만들고, 기존 클래스 이름과 겹치지 않는지 `grep`으로 먼저 확인한다(예: `.gb-note`는 이미 있다).
 
+**하단 상담 안내(`.pf-cta`).** 정책자금·무역보험·글로벌 진출·정부지원사업·고객사·협력사·알림 6개 페이지 `<footer>` 바로 앞에 같은 블록('중소기업의 글로벌 도전을 응원합니다' + 상담 신청 + 카카오톡 문의, 스타일은 `policy-finance.css`)이 있다. 방명록·개인정보·404에는 두지 않는다. 문구를 바꾸면 6곳을 함께 고친다.
+
 **방문 통계(구글 애널리틱스).** 측정 ID `G-J15DSR7PZD`의 gtag 스니펫이 5개 페이지 `</head>` 앞에 있고, 각 페이지 하단에 쿠키 사용 안내 문구가 있다. 상담 신청이 성공하면 `script.js`가 `generate_lead` 이벤트를 보낸다(`form_name: 'consulting'`, 개인정보는 보내지 않는다). GA 관리 > 데이터 표시 > 이벤트에서 이 이벤트를 '주요 이벤트'로 켜 두어야 전환으로 집계된다. 새 페이지를 만들면 같은 스니펫과 안내 문구를 넣는다.
 
 **상담 접수 후 처리(Apps Script, 저장소 밖).** `doPost`는 시트(`Sheet1` A–G열)에 행을 추가하고, 허니팟이 비어 있을 때만 ① 운영자(happyojh@gmail.com)에게 알림 메일, ② 신청자에게 접수 확인 메일(이메일 형식 검증, try/catch, 회신 주소는 운영자), ③ 8열(H, "Report")에 `Y` 표시를 한다. 스크립트를 고치면 배포 관리에서 새 버전으로 다시 배포해야 반영된다. 하루치 묶음 알림은 없다.
