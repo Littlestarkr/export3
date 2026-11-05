@@ -1117,3 +1117,6 @@ textarea:focus-visible,
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* 상담 신청 양식 위 간격 (인라인 style 대체) */
+.contact-form-wrapper.form-gap { margin-top: 40px; }

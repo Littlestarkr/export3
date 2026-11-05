@@ -66,3 +66,4 @@
 .gb-cform textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
 .gb-cform .gb-check { margin: 0; font-size: 0.88rem; }
 .gb-cform .gb-btn { align-self: flex-start; }
+.gb-check-hint { color: #888; }
