@@ -41,7 +41,8 @@
         grp.appendChild(a);
     });
 
-    // 주소에 #가 붙은 채로 열리면 부드러운 스크롤이 긴 문서에서 중간에 멈추므로, 즉시 이동하고 로딩이 끝난 뒤 한 번 더 맞춘다
+    // 주소에 #가 붙은 채로 열리면 부드러운 스크롤이 긴 문서에서 중간에 멈추고, 글꼴·이미지가 늦게 들어오면 문서 높이가 바뀌어 위치가 어긋난다.
+    // 그래서 즉시 이동한 뒤, 사용자가 직접 스크롤하기 전까지 로딩이 끝나는 동안 몇 차례 다시 맞춘다.
     (function () {
         var h = location.hash;
         if (h.length < 2) return;
@@ -50,13 +51,22 @@
         var t = document.getElementById(id);
         if (!t || t.hidden) return;
         var de = document.documentElement;
+        var active = true;
         function jump() {
+            if (!active) return;
             de.style.scrollBehavior = 'auto';
             t.scrollIntoView();
             de.style.scrollBehavior = '';
         }
+        function stop() { active = false; }
+        ['wheel', 'touchstart', 'mousedown', 'keydown'].forEach(function (ev) {
+            window.addEventListener(ev, stop, { passive: true, once: true });
+        });
         jump();
         window.addEventListener('load', jump);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(jump);
+        [300, 800, 1600].forEach(function (ms) { setTimeout(jump, ms); });
+        setTimeout(stop, 2000);
     })();
 
     // 페이지 안 이동은 history 항목을 쌓지 않아서, '이전 화면'이 항상 직전 페이지로 간다
