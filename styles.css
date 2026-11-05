@@ -824,6 +824,7 @@ nav a:hover {
 
 .book-image img {
     max-width: 80%;
+    height: auto;
     box-shadow: 0 20px 40px rgba(13, 30, 56, 0.2);
     border-radius: 5px;
     transition: var(--transition);

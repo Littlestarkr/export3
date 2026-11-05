@@ -12,7 +12,7 @@ This is a static site with no build step, package manager, or test suite — jus
 - `styles.css` — all styling (single file, no preprocessor)
 - `script.js` — all behavior (vanilla JS, no framework/bundler)
 
-Plus static assets: `favicon.svg`, `profile.jpg`, `testimage.png` (book cover).
+Plus static assets: `favicon.svg`, `profile.jpg`, `testimage.webp` (book cover).
 
 ## Running locally
 
@@ -65,6 +65,8 @@ There is no linter or test suite configured for this repo.
 **404 페이지 (`404.html`).** GitHub Pages가 없는 주소에 보여 주는 안내 페이지다. 어떤 깊이의 주소에서도 열리므로 CSS·링크를 모두 루트 기준 절대경로(`/styles.css`, `/index.html`)로 쓰고, `noindex`이며 canonical·og·JSON-LD·`back-nav.js`는 넣지 않는다(sitemap에도 없다). 헤더 메뉴가 바뀌면 이 파일의 메뉴도 함께 고친다.
 
 **접근성.** 10개 페이지(404 포함) 모두 `<body>` 바로 뒤에 '본문 바로가기'(`.skip-link`)가 있고, 이동 대상은 첫 섹션(홈은 `#home`, 하위 페이지는 `#main-content`, 둘 다 `tabindex="-1"`)이다. `<nav>`에는 `aria-label="주 메뉴"`가, 메뉴에 있는 현재 페이지(고객사·협력사/응원 메시지/알림) 링크에는 `aria-current="page"`가 있다. 키보드 포커스 표시(`:focus-visible`), 건너뛰기 링크, '동작 줄이기' 설정 대응은 `styles.css` 맨 끝 블록에 있고, 부드러운 스크롤은 `prefersReducedMotion()`(script.js)·`reduceMotion()`(back-nav.js)이 설정을 따른다. 이력서 모달은 열면 닫기 버튼으로 포커스가 가고, Tab이 모달 밖으로 나가지 않으며, 닫으면 열었던 요소로 포커스가 돌아온다. 새 페이지를 만들면 같은 바로가기·`nav` 속성·`#main-content`를 넣는다.
+
+**이미지.** 페이지에 쓰는 이미지는 WebP(`testimage.webp` 책 표지, `profile.webp` 이력서 사진, `images/*.webp`)이고, 모두 `width`·`height` 속성과 `loading="lazy"`·`decoding="async"`를 둔다(화면 크기는 CSS가 정하고 `height:auto`로 비율을 지킨다). `profile.jpg`는 JSON-LD(`image`)가 가리키므로 지우지 않는다. 공유 미리보기 `og-image.jpg`는 카카오·SNS 호환을 위해 JPG를 유지한다. 새 이미지는 WebP로 변환해(도표·글자 이미지는 무손실) 넣고, 첫 화면에 바로 보이는 이미지가 아니면 lazy를 건다.
 
 **방문 통계(구글 애널리틱스).** 측정 ID `G-J15DSR7PZD`의 gtag 스니펫이 5개 페이지 `</head>` 앞에 있고, 각 페이지 하단에 쿠키 사용 안내 문구가 있다. 상담 신청이 성공하면 `script.js`가 `generate_lead` 이벤트를 보낸다(`form_name: 'consulting'`, 개인정보는 보내지 않는다). GA 관리 > 데이터 표시 > 이벤트에서 이 이벤트를 '주요 이벤트'로 켜 두어야 전환으로 집계된다. 새 페이지를 만들면 같은 스니펫과 안내 문구를 넣는다.
 
