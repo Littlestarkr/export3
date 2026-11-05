@@ -871,3 +871,6 @@ html {
 .qa-jump-label { font-size: 0.8rem; color: #888; margin-right: 2px; }
 .qa-jump a { font-size: 0.88rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; background: var(--secondary-color); border: 1px solid var(--secondary-color); color: var(--primary-color); }
 .qa-jump a:hover { background: #b08d48; border-color: #b08d48; }
+
+.qa-note { margin: 4px 0 6px; font-size: 0.9rem; color: #555; line-height: 1.6; }
+#qna .pf-fund + .pf-fund { margin-top: 20px; }
