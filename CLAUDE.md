@@ -60,6 +60,8 @@ There is no linter or test suite configured for this repo.
 
 **공유 미리보기·검색 등록.** `og-image.jpg`(1200×630, 2026-11 로고 이미지로 교체; 주소 뒤 `?v=3`으로 캐시 갱신, 카카오 공유 디버거에서 캐시 초기화)와 절대 주소 `og:*` 태그, `og:url`, `<link rel="canonical">`을 5개 페이지에 둔다. `robots.txt`(전체 허용 + Sitemap)와 `sitemap.xml`(8개 URL; 주소는 모두 https://www.littlestar.co.kr/ 기준)은 저장소 루트에 있고, 페이지를 추가하면 `sitemap.xml`에도 더한다. 구글 서치콘솔은 `index.html`의 `google-site-verification` 메타로 소유 확인하고 sitemap을 제출했다. 네이버 서치어드바이저는 호스트 단위(`https://littlestarkr.github.io`) 등록만 가능해서, 확인 파일과 메타는 별도 저장소 `Littlestarkr/Littlestarkr.github.io`에 있다(이 저장소에는 없다). 이 두 저장소의 확인 파일·메타는 지우지 않는다.
 
+**구조화 데이터(JSON-LD).** 9개 페이지 모두 `</head>` 앞에 `application/ld+json` 블록이 있다. 홈은 Person(오주현) 중심이고, 하위 8개 페이지는 `WebPage` + `BreadcrumbList`(홈 > 페이지명)이며 `author`는 홈의 Person(`https://www.littlestar.co.kr/#person`)을 가리킨다. 새 페이지를 만들면 `<title>`·description·canonical과 같은 값으로 같은 블록을 넣는다.
+
 **방문 통계(구글 애널리틱스).** 측정 ID `G-J15DSR7PZD`의 gtag 스니펫이 5개 페이지 `</head>` 앞에 있고, 각 페이지 하단에 쿠키 사용 안내 문구가 있다. 상담 신청이 성공하면 `script.js`가 `generate_lead` 이벤트를 보낸다(`form_name: 'consulting'`, 개인정보는 보내지 않는다). GA 관리 > 데이터 표시 > 이벤트에서 이 이벤트를 '주요 이벤트'로 켜 두어야 전환으로 집계된다. 새 페이지를 만들면 같은 스니펫과 안내 문구를 넣는다.
 
 **상담 접수 후 처리(Apps Script, 저장소 밖).** `doPost`는 시트(`Sheet1` A–G열)에 행을 추가하고, 허니팟이 비어 있을 때만 ① 운영자(happyojh@gmail.com)에게 알림 메일, ② 신청자에게 접수 확인 메일(이메일 형식 검증, try/catch, 회신 주소는 운영자), ③ 8열(H, "Report")에 `Y` 표시를 한다. 스크립트를 고치면 배포 관리에서 새 버전으로 다시 배포해야 반영된다. 하루치 묶음 알림은 없다.
