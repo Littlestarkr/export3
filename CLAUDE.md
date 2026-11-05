@@ -50,7 +50,7 @@ There is no linter or test suite configured for this repo.
 
 **고객사·협력사 (`showcase.html`).** 상단 메뉴 '감사·응원 한마디' 바로 앞 항목('고객사·협력사')으로 7개 페이지 메뉴에 연결된다(`showcase.css`·`showcase.js`, `policy-finance.css` 공유). 상단 [고객사]·[협력사] 탭(`.pf-tab`, `?tab=partner`로 바로 열기)으로 두 패널(`#panel-client`, `#panel-partner`)을 전환하며, 각 패널의 `.sc-grid` 안 주석에 카드(`.sc-card`) 템플릿이 있다. 카드를 넣으면 해당 패널의 `.sc-empty`(준비 중 안내)를 지운다. 고객사·협력사 이름, 이미지는 동의를 받은 것만 쓴다. sitemap은 8개 URL(privacy.html 포함).
 
-**하위 페이지 내비게이션 (`back-nav.js`).** policy-finance·trade-insurance·global-expansion·government-support·showcase·guestbook·notices·privacy 8개 페이지가 공통으로 불러온다. 화면 왼쪽 아래에 ‘이전 화면’(같은 사이트에서 왔으면 `history.back()`, 아니면 `index.html#services`)과 ‘맨 위로’ 버튼을, 오른쪽 아래에 ‘홈’ 버튼(`index.html`, `.pf-floatnav-r`)을 띄우고(상단 소개 영역의 ‘돌아가기’ 링크는 모든 하위 페이지에서 없앴다), 각 `.pf-grp` 끝에 ‘목차로 돌아가기’ 링크(같은 패널·섹션의 `.pf-jump`로 이동)를 붙인다. 페이지 안 `#` 이동은 `replaceState`로 처리해 history 항목을 쌓지 않는다. 새 하위 페이지를 만들면 `</body>` 앞에 `<script src="back-nav.js?v=4"></script>`를 넣는다. 이력서 모달(`script.js`)은 열 때 history 항목을 하나 쌓아 브라우저 뒤로가기로도 닫히고, 상·하단에 ‘이전 화면으로 돌아가기’ 버튼이 있다.
+**하위 페이지 내비게이션 (`back-nav.js`).** policy-finance·trade-insurance·global-expansion·government-support·showcase·guestbook·notices·privacy 8개 페이지가 공통으로 불러온다. 화면 왼쪽 아래에 ‘이전 화면’(같은 사이트에서 왔으면 `history.back()`, 아니면 `index.html#services`)과 ‘맨 위로’ 버튼을, 오른쪽 아래에 ‘홈’ 버튼(`index.html`, `.pf-floatnav-r`)을 띄우고(상단 소개 영역의 ‘돌아가기’ 링크는 모든 하위 페이지에서 없앴다), 각 `.pf-grp` 끝에 ‘목차로 돌아가기’ 링크(같은 패널·섹션의 `.pf-jump`로 이동)를 붙인다. 페이지 안 `#` 이동은 `replaceState`로 처리해 history 항목을 쌓지 않는다. 새 하위 페이지를 만들면 `</body>` 앞에 `<script src="back-nav.js?v=5"></script>`를 넣는다. 이력서 모달(`script.js`)은 열 때 history 항목을 하나 쌓아 브라우저 뒤로가기로도 닫히고, 상·하단에 ‘이전 화면으로 돌아가기’ 버튼이 있다.
 
 **홈페이지 '맨 위로' 버튼.** `index.html`은 back-nav.js를 쓰지 않고, `script.js` 맨 끝이 왼쪽 아래 둥근 `.to-top` 버튼(스타일은 `styles.css` 끝)을 만든다. 300px 이상 내려가면 나타난다.
 
@@ -63,6 +63,8 @@ There is no linter or test suite configured for this repo.
 **구조화 데이터(JSON-LD).** 9개 페이지 모두 `</head>` 앞에 `application/ld+json` 블록이 있다. 홈은 Person(오주현) 중심이고, 하위 8개 페이지는 `WebPage` + `BreadcrumbList`(홈 > 페이지명)이며 `author`는 홈의 Person(`https://www.littlestar.co.kr/#person`)을 가리킨다. 새 페이지를 만들면 `<title>`·description·canonical과 같은 값으로 같은 블록을 넣는다.
 
 **404 페이지 (`404.html`).** GitHub Pages가 없는 주소에 보여 주는 안내 페이지다. 어떤 깊이의 주소에서도 열리므로 CSS·링크를 모두 루트 기준 절대경로(`/styles.css`, `/index.html`)로 쓰고, `noindex`이며 canonical·og·JSON-LD·`back-nav.js`는 넣지 않는다(sitemap에도 없다). 헤더 메뉴가 바뀌면 이 파일의 메뉴도 함께 고친다.
+
+**접근성.** 10개 페이지(404 포함) 모두 `<body>` 바로 뒤에 '본문 바로가기'(`.skip-link`)가 있고, 이동 대상은 첫 섹션(홈은 `#home`, 하위 페이지는 `#main-content`, 둘 다 `tabindex="-1"`)이다. `<nav>`에는 `aria-label="주 메뉴"`가, 메뉴에 있는 현재 페이지(고객사·협력사/응원 메시지/알림) 링크에는 `aria-current="page"`가 있다. 키보드 포커스 표시(`:focus-visible`), 건너뛰기 링크, '동작 줄이기' 설정 대응은 `styles.css` 맨 끝 블록에 있고, 부드러운 스크롤은 `prefersReducedMotion()`(script.js)·`reduceMotion()`(back-nav.js)이 설정을 따른다. 이력서 모달은 열면 닫기 버튼으로 포커스가 가고, Tab이 모달 밖으로 나가지 않으며, 닫으면 열었던 요소로 포커스가 돌아온다. 새 페이지를 만들면 같은 바로가기·`nav` 속성·`#main-content`를 넣는다.
 
 **방문 통계(구글 애널리틱스).** 측정 ID `G-J15DSR7PZD`의 gtag 스니펫이 5개 페이지 `</head>` 앞에 있고, 각 페이지 하단에 쿠키 사용 안내 문구가 있다. 상담 신청이 성공하면 `script.js`가 `generate_lead` 이벤트를 보낸다(`form_name: 'consulting'`, 개인정보는 보내지 않는다). GA 관리 > 데이터 표시 > 이벤트에서 이 이벤트를 '주요 이벤트'로 켜 두어야 전환으로 집계된다. 새 페이지를 만들면 같은 스니펫과 안내 문구를 넣는다.
 

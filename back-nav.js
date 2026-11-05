@@ -1,6 +1,7 @@
 // 하위 페이지 공통: 이전 화면(왼쪽 아래), 맨 위로, 홈(오른쪽 아래), 목차로 돌아가기
 (function () {
     'use strict';
+    function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
     function goBack() {
         var sameSite = false;
@@ -24,7 +25,7 @@
     home.innerHTML = '<a href="index.html" class="pf-fn-home"><i class="fa-solid fa-house"></i> 홈</a>';
     document.body.appendChild(home);
     bar.querySelector('.pf-fn-top').addEventListener('click', function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
     });
 
     // 각 세부 항목 끝에 '목차로 돌아가기'
@@ -76,7 +77,8 @@
         var t = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
         if (!t || t.hidden) return;
         e.preventDefault();
-        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        t.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+        if (a.classList.contains('skip-link')) { try { t.focus({ preventScroll: true }); } catch (err) {} }
         try { history.replaceState(history.state, '', a.getAttribute('href')); } catch (err) {}
     });
 })();

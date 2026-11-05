@@ -1081,3 +1081,38 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 }
 @media (prefers-reduced-motion: reduce) { .logo-star .ls-main, .logo-star .ls-s { animation: none; } .logo-star .ls-s { opacity: .9; transform: none; } }
 @media (max-width: 768px) { .logo-star { width: 0.95em; height: 0.95em; margin-right: 3px; } }
+
+/* ===== 접근성: 본문 바로가기, 키보드 포커스 표시, 동작 줄이기 ===== */
+.skip-link {
+    position: absolute;
+    left: 12px;
+    top: -60px;
+    z-index: 3000;
+    padding: 10px 16px;
+    background: #0d1e38;
+    color: #fff;
+    border: 2px solid #d4a853;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: top 0.15s;
+}
+.skip-link:focus { top: 12px; outline: none; }
+#main-content:focus, #home:focus { outline: none; }
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+    outline: 3px solid #b8892f;
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+.main-footer a:focus-visible { outline-color: #f6e3a8; }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

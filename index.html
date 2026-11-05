@@ -17,7 +17,7 @@
     <meta name="google-site-verification" content="3Vu41LtJ_dnUESFBlMa77kqTxxARH-u675GMngm0oTc" />
     <meta name="naver-site-verification" content="982f3058563c95f60581df89c962c6ad3bf28679" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
-    <link rel="stylesheet" href="styles.css?v=20">
+    <link rel="stylesheet" href="styles.css?v=21">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -88,12 +88,13 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#home">본문 바로가기</a>
     <header>
         <div class="container">
             <div class="logo">
                 <h1><svg class="logo-star" viewBox="-6 -6 36 36" aria-hidden="true" focusable="false"><defs><linearGradient id="lsg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e3a8"/><stop offset=".55" stop-color="#d4a853"/><stop offset="1" stop-color="#b8892f"/></linearGradient></defs><path class="ls-main" d="M12.00,1.30 L14.82,8.92 L22.94,9.25 L16.57,14.28 L18.76,22.10 L12.00,17.60 L5.24,22.10 L7.43,14.28 L1.06,9.25 L9.18,8.92Z" fill="url(#lsg)" stroke="#d4a853" stroke-width="1" stroke-linejoin="round"/><path class="ls-s ls-s1" d="M25,-3.2 Q25.756,0.244 29.2,1 Q25.756,1.756 25,5.2 Q24.244,1.756 20.8,1 Q24.244,0.244 25,-3.2Z"/><path class="ls-s ls-s2" d="M-1.5,18.8 Q-0.924,21.424 1.7000000000000002,22 Q-0.924,22.576 -1.5,25.2 Q-2.076,22.576 -4.7,22 Q-2.076,21.424 -1.5,18.8Z"/></svg>Happy Oh <span class="sub-logo">Consulting</span></h1>
             </div>
-            <nav>
+            <nav aria-label="주 메뉴">
                 <ul>
                     <li><a href="#about">소개</a></li>
                     <li><a href="#book">저서</a></li>
@@ -107,7 +108,7 @@
         </div>
     </header>
 
-    <section class="hero" id="home">
+    <section class="hero" id="home" tabindex="-1">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
             <h2 class="animate-up">수출 기업을 위한<br>든든한 컨설팅</h2>
@@ -124,7 +125,7 @@
             <div class="section-header">
                 <span class="section-subtitle">Expertise</span>
                 <h3 class="clickable-title" onclick="openResumeModal()" role="button" tabindex="0"
-                    onkeydown="if(event.key==='Enter')openResumeModal()">
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openResumeModal()}">
                     오주현 경영지도사
                 </h3>
                 <div class="divider"></div>
@@ -663,7 +664,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
     <script>
         function togglePrivacy() {
             var x = document.getElementById("privacy-detail");

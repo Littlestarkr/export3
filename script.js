@@ -101,8 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 window.scrollTo({
                     top: offsetPosition,
-                    behavior: "smooth"
+                    behavior: prefersReducedMotion() ? "auto" : "smooth"
                 });
+                if (this.classList.contains('skip-link')) {
+                    targetElement.focus({ preventScroll: true });
+                }
             }
         });
     });
@@ -139,13 +142,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
 });
 
+// '동작 줄이기' 설정이면 부드러운 스크롤을 쓰지 않는다
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 // 이력서 모달 열기/닫기 (브라우저 뒤로가기 버튼으로도 닫히도록 history 항목을 하나 쌓는다)
+let modalOpener = null;
 function openResumeModal() {
     const modal = document.getElementById('resumeModal');
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     modal.scrollTop = 0;
+    modalOpener = document.activeElement;
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
     try { history.pushState({ resume: true }, ''); } catch (e) {}
 }
 
@@ -154,6 +166,8 @@ function hideResumeModal() {
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (modalOpener && document.contains(modalOpener)) modalOpener.focus({ preventScroll: true });
+    modalOpener = null;
 }
 
 function closeResumeModal() {
@@ -182,6 +196,19 @@ function closeResumeModalOnOverlay(event) {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeResumeModal();
+        return;
+    }
+    // 팝업이 열려 있는 동안 Tab 키가 팝업 밖으로 나가지 않게 한다
+    if (e.key !== 'Tab') return;
+    const modal = document.getElementById('resumeModal');
+    if (!modal || !modal.classList.contains('active')) return;
+    const items = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) {
+        e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+        e.preventDefault(); first.focus();
     }
 });
 
@@ -202,7 +229,7 @@ function togglePrivacy() {
     btn.setAttribute('aria-label', '맨 위로');
     btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
     document.body.appendChild(btn);
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }));
     const toggle = () => btn.classList.toggle('show', window.scrollY > 300);
     window.addEventListener('scroll', toggle, { passive: true });
     toggle();
