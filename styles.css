@@ -1026,7 +1026,7 @@ nav a:hover {
 .writing-links .writing-more:hover { text-decoration: underline; }
 .writing-more i { font-size: 0.75rem; margin-left: 4px; }
 @media (max-width: 1024px) { .writing-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) { .writing-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .writing-card { padding: 16px 14px; } .writing-card h4 { font-size: 1rem; } .writing-card p { font-size: 0.85rem; line-height: 1.55; margin-bottom: 12px; } .writing-icon { font-size: 1.3rem; margin-bottom: 8px; } }
+@media (max-width: 768px) { .writing-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .writing-card { padding: 16px 14px; } .writing-card h4 { font-size: 1rem; } .writing-card p { font-size: 0.85rem; line-height: 1.55; margin-bottom: 12px; } .writing-icon { font-size: 1.3rem; margin-bottom: 8px; } .writing-more { font-size: 0.8rem; white-space: nowrap; } .writing-more i { font-size: 0.65rem; margin-left: 3px; } }
 
 .stat-number sup { font-size: 0.6em; font-weight: 700; vertical-align: super; line-height: 0; margin-left: 1px; }
 
