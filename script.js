@@ -234,3 +234,30 @@ function togglePrivacy() {
     window.addEventListener('scroll', toggle, { passive: true });
     toggle();
 })();
+
+
+// 모바일: 상담 신청 양식 펼치기/접기 (주소가 #contact 이거나 '상담 신청' 링크를 누르면 바로 펼친다)
+(function () {
+    var btn = document.getElementById('contactToggle');
+    var wrap = document.getElementById('contactFormWrap');
+    if (!btn || !wrap) return;
+    function setOpen(open, scroll) {
+        wrap.classList.toggle('is-collapsed', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? '신청 양식 접기' : '상담 신청하기';
+        if (open && scroll) {
+            wrap.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+        }
+    }
+    btn.addEventListener('click', function () {
+        setOpen(wrap.classList.contains('is-collapsed'), true);
+    });
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href="#contact"]');
+        if (a) setOpen(true, false);
+    });
+    if (location.hash === '#contact') setOpen(true, false);
+    window.addEventListener('hashchange', function () {
+        if (location.hash === '#contact') setOpen(true, false);
+    });
+})();

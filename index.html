@@ -22,7 +22,7 @@
     <meta name="google-site-verification" content="3Vu41LtJ_dnUESFBlMa77kqTxxARH-u675GMngm0oTc" />
     <meta name="naver-site-verification" content="982f3058563c95f60581df89c962c6ad3bf28679" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
-    <link rel="stylesheet" href="styles.css?v=23">
+    <link rel="stylesheet" href="styles.css?v=24">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -342,7 +342,11 @@
                     </div>
                 </div>
 
-                <div class="contact-form-wrapper form-gap">
+                <div class="contact-toggle-wrap">
+                    <button type="button" class="btn btn-primary contact-toggle" id="contactToggle" aria-expanded="false" aria-controls="contactFormWrap">상담 신청하기</button>
+                </div>
+
+                <div class="contact-form-wrapper form-gap is-collapsed" id="contactFormWrap">
                     <form id="consultingForm">
                         <div class="form-group hp-field" aria-hidden="true">
                             <label for="website">웹사이트</label>
@@ -669,7 +673,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=5"></script>
     <script>
         function togglePrivacy() {
             var x = document.getElementById("privacy-detail");

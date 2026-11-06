@@ -1122,3 +1122,18 @@ textarea:focus-visible,
 
 /* 상담 신청 양식 위 간격 (인라인 style 대체) */
 .contact-form-wrapper.form-gap { margin-top: 40px; }
+
+/* ===== 모바일: 상담 신청 양식은 버튼을 누르면 펼쳐진다 (PC는 항상 펼침) ===== */
+.contact-toggle-wrap { display: none; }
+@media (max-width: 768px) {
+    .contact-toggle-wrap { display: block; width: 100%; text-align: center; }
+    .contact-toggle { width: 100%; }
+    .contact-toggle[aria-expanded="true"] { background: transparent; border-color: var(--secondary-color); color: var(--primary-color); }
+    .contact-form-wrapper.is-collapsed { display: none; }
+    .contact-toggle-wrap + .contact-form-wrapper { margin-top: 20px; }
+    /* 개인정보 동의 문구가 좁게 꺾이지 않도록: 문구 한 줄, [상세보기]는 아래 줄 */
+    .checkbox-container { flex-wrap: wrap; align-items: flex-start; }
+    .checkbox-container input[type="checkbox"] { flex: none; margin-top: 2px; }
+    .checkbox-container span { flex: 1 1 calc(100% - 34px); word-break: keep-all; }
+    .btn-privacy-detail { margin-left: 28px; }
+}
