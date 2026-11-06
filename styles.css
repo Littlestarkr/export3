@@ -1026,7 +1026,7 @@ nav a:hover {
 .writing-links .writing-more:hover { text-decoration: underline; }
 .writing-more i { font-size: 0.75rem; margin-left: 4px; }
 @media (max-width: 1024px) { .writing-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) { .writing-grid { grid-template-columns: 1fr; gap: 14px; } .writing-card { padding: 22px 20px; } }
+@media (max-width: 768px) { .writing-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .writing-card { padding: 16px 14px; } .writing-card h4 { font-size: 1rem; } .writing-card p { font-size: 0.85rem; line-height: 1.55; margin-bottom: 12px; } .writing-icon { font-size: 1.3rem; margin-bottom: 8px; } }
 
 .stat-number sup { font-size: 0.6em; font-weight: 700; vertical-align: super; line-height: 0; margin-left: 1px; }
 
@@ -1055,6 +1055,8 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .voice-more a { display: inline-block; padding: 11px 24px; border: 1px solid var(--secondary-color); border-radius: 24px; color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.93rem; transition: var(--transition); }
 .voice-more a:hover { background: var(--secondary-color); color: var(--primary-color); }
 @media (max-width: 768px) { .voice-grid { column-count: 1; } .voice-card { padding: 18px 18px 14px; } }
+/* 모바일: 후기는 앞의 3개만 보이고 나머지는 '응원 글 더 보기'(방명록)에서 본다 */
+@media (max-width: 768px) { .voice-card:nth-child(n+4) { display: none; } }
 .main-footer p.footer-cookie { opacity: 1; color: #8c949e; font-size: 0.72rem; margin-top: 4px; }
 .main-footer p.footer-cookie a { color: #b8a77a; text-decoration: underline; text-underline-offset: 2px; }
 .main-footer p.footer-cookie a:hover { color: #fff; }
