@@ -360,5 +360,19 @@
         load();
     }
 
+    // 한마디 남기기 펼침/접기
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('gbToggle');
+        var body = document.getElementById('gbBody');
+        var txt = document.getElementById('gbToggleText');
+        if (!btn || !body) return;
+        btn.addEventListener('click', function () {
+            var open = body.hasAttribute('hidden');
+            if (open) { body.removeAttribute('hidden'); } else { body.setAttribute('hidden', ''); }
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (txt) txt.textContent = open ? '접기' : '펼치기';
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', init);
 })();

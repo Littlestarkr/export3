@@ -67,3 +67,12 @@
 .gb-cform .gb-check { margin: 0; font-size: 0.88rem; }
 .gb-cform .gb-btn { align-self: flex-start; }
 .gb-check-hint { color: #888; }
+
+/* 한마디 남기기 펼침/접기 */
+.gb-form h4 { margin: 0; }
+.gb-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 0; background: none; border: 0; font: inherit; font-size: 1.15rem; font-weight: 700; color: var(--navy, #0d1e38); text-align: left; cursor: pointer; }
+.gb-toggle-hint { font-size: 0.85rem; font-weight: 400; color: #8a7a4a; white-space: nowrap; }
+.gb-toggle-hint i { font-size: 0.75rem; margin-left: 2px; transition: transform 0.2s; }
+.gb-toggle[aria-expanded="true"] .gb-toggle-hint i { transform: rotate(180deg); }
+.gb-body { margin-top: 10px; }
+.gb-body[hidden] { display: none; }
