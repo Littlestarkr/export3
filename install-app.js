@@ -1,7 +1,7 @@
-/* 앱 설치 안내: 상단 메뉴 '앱 설치' 버튼을 누르면 설치 안내문이 펼쳐지고, '닫기'로 닫힌다.
+/* 앱 설치 안내: 맨 아래 푸터의 'Happy Oh 앱 설치' 버튼을 누르면 설치 안내문이 펼쳐지고, '닫기'로 닫힌다.
  * - 크롬이 사이트를 열 때마다 띄우는 자동 설치 안내(미니 인포바)는 막고,
  *   그 설치 기능은 안내문 안의 '지금 설치' 버튼으로 옮긴다(지원하는 브라우저에서만 보인다).
- * - 이미 앱으로 열었거나(설치됨) 설치가 끝나면 '앱 설치' 메뉴는 숨긴다.
+ * - 이미 앱으로 열었거나(설치됨) 설치가 끝나면 푸터 '앱 설치' 줄은 숨긴다.
  * 이 파일은 <head>에서 바로 불러온다(beforeinstallprompt를 놓치지 않기 위해). */
 (function () {
     'use strict';
@@ -43,8 +43,8 @@
 
     function build() {
         var btn = document.getElementById('installToggle');
-        var header = document.querySelector('header');
-        if (!btn || !header) { return; }
+        var footer = document.querySelector('footer');
+        if (!btn || !footer || !footer.parentNode) { return; }
 
         if (isInstalled()) {
             var item = document.getElementById('installItem');
@@ -71,7 +71,7 @@
             '</ul>' +
             '<button type="button" class="install-close">닫기</button>' +
             '</div>';
-        header.appendChild(panel);
+        footer.parentNode.insertBefore(panel, footer);
 
         nowBtn = panel.querySelector('.install-now');
         var closeBtn = panel.querySelector('.install-close');
@@ -80,6 +80,10 @@
         function setOpen(open) {
             panel.hidden = !open;
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+                var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                panel.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
+            }
         }
 
         btn.setAttribute('aria-controls', 'installGuide');

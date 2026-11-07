@@ -1138,12 +1138,12 @@ textarea:focus-visible,
     .btn-privacy-detail { margin-left: 28px; }
 }
 
-/* 상단 메뉴: 앱 설치 버튼과 설치 안내문 */
-.nav-break { display: none; }
-@media (max-width: 768px) { .nav-break { display: block; flex-basis: 100%; height: 0; } }
-nav li[hidden] { display: none; }
-.nav-install { font: inherit; font-weight: 500; color: var(--gold-text); background: none; border: 0; padding: 0; cursor: pointer; }
-.nav-install:hover { color: var(--primary-color); }
+/* 푸터 '앱 설치' 버튼과 설치 안내문 */
+.main-footer p.footer-install { margin: 10px 0 4px; }
+.footer-install[hidden] { display: none; }
+.footer-install-btn { font: inherit; font-size: 0.85rem; color: #d8c48a; background: none; border: 1px solid rgba(216, 196, 138, 0.45); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+.footer-install-btn:hover { color: #fff; border-color: #fff; }
+.footer-install-btn:focus-visible { outline: 2px solid #f6e3a8; outline-offset: 2px; }
 .install-guide { background: #faf8f2; border-top: 1px solid #eee7d3; }
 .install-guide[hidden] { display: none; }
 .install-guide-inner { max-width: 680px; margin: 0 auto; padding: 18px 20px 20px; text-align: left; }
