@@ -56,6 +56,8 @@ There is no linter or test suite configured for this repo.
 
 **홈 화면 아이콘.** `apple-touch-icon.png`(180px)·`icon-192.png`·`icon-512.png`는 `favicon.svg`(금색 별)에서 만든 PNG이고, 10개 페이지 `<head>`의 favicon 줄 바로 뒤에 `link`로 연결돼 있다(404는 루트 절대경로). 안드로이드 크롬의 '홈 화면에 추가'는 추가하는 순간의 아이콘을 저장하므로, 이미 만든 바로가기는 지우고 다시 추가해야 바뀐다. `manifest.webmanifest`(앱 이름 Happy Oh Consulting, `display: standalone`, 아이콘 3종 + 마스크용 `icon-maskable-512.png`)도 같은 자리에 연결돼 있다. 서비스 워커는 일부러 두지 않았다(캐시 때문에 수정이 늦게 보일 수 있다). 새 페이지에도 같은 세 줄(favicon PNG·apple-touch-icon·manifest)을 넣는다.
 
+**상단 메뉴·앱 설치 (`install-app.js`).** 메뉴는 윗줄 '소개·서비스·상담 신청·알림', 아랫줄 '고객사·협력사·응원하기·앱 설치' 순서다(모바일은 `.nav-break`가 줄을 나눈다; '저서'는 메뉴에서 뺐고 홈 `#book` 섹션은 그대로 있다). 10개 페이지(404 포함)의 `<head>` 끝에 `install-app.js`를 불러오며, 크롬이 사이트를 열 때마다 띄우던 자동 설치 안내(`beforeinstallprompt`)는 막고 그 기능을 '앱 설치' 버튼으로 펼쳐지는 안내문(`#installGuide`, 헤더 안에 JS가 만든다)의 '지금 설치' 버튼으로 옮겼다. 안내문에는 안드로이드·아이폰·PC 설치 방법이 있고 '닫기'·Esc로 닫힌다. 이미 앱으로 열었거나 설치가 끝나면 '앱 설치' 메뉴는 숨는다. 헤더 메뉴를 바꾸면 10개 페이지를 함께 고친다. 스타일은 `styles.css` 끝 '앱 설치' 블록이다.
+
 **로고의 반짝이는 별.** 9개 페이지 헤더 로고 `<h1>` 맨 앞에 인라인 SVG `.logo-star`(오각별 + 작은 반짝이 2개, 금색 그라데이션)가 있고, 반짝임(`logo-twinkle`, 3.6초)은 `styles.css` 끝에 있다. '동작 줄이기' 설정에서는 멈춘다. 새 페이지를 만들면 같은 SVG를 넣는다.
 
 **블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#contact` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. `styles.css`는 `?v=2`로 캐시를 갱신한다.

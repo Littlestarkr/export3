@@ -23,7 +23,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=23">
+    <link rel="stylesheet" href="styles.css?v=24">
     <link rel="stylesheet" href="policy-finance.css?v=16">
     <link rel="stylesheet" href="guestbook.css?v=7">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,6 +84,7 @@
   ]
 }
     </script>
+    <script src="install-app.js?v=1"></script>
 </head>
 
 <body>
@@ -98,12 +99,13 @@
             <nav aria-label="주 메뉴">
                 <ul>
                     <li><a href="index.html#about">소개</a></li>
-                    <li><a href="index.html#book">저서</a></li>
                     <li><a href="index.html#services">서비스</a></li>
                     <li><a href="index.html#contact" class="btn-nav">상담 신청</a></li>
-                    <li><a href="showcase.html">고객사·협력사</a></li>
-                    <li><a href="guestbook.html" aria-current="page" class="nav-gold">응원 메시지</a></li>
                     <li><a href="notices.html" class="nav-gold">알림</a></li>
+                    <li class="nav-break" aria-hidden="true"></li>
+                    <li><a href="showcase.html">고객사·협력사</a></li>
+                    <li><a href="guestbook.html" aria-current="page" class="nav-gold">응원하기</a></li>
+                    <li id="installItem"><button type="button" class="nav-install" id="installToggle">앱 설치</button></li>
                 </ul>
             </nav>
         </div>

@@ -1137,3 +1137,23 @@ textarea:focus-visible,
     .checkbox-container span { flex: 1 1 calc(100% - 34px); word-break: keep-all; }
     .btn-privacy-detail { margin-left: 28px; }
 }
+
+/* 상단 메뉴: 앱 설치 버튼과 설치 안내문 */
+.nav-break { display: none; }
+@media (max-width: 768px) { .nav-break { display: block; flex-basis: 100%; height: 0; } }
+nav li[hidden] { display: none; }
+.nav-install { font: inherit; font-weight: 500; color: var(--gold-text); background: none; border: 0; padding: 0; cursor: pointer; }
+.nav-install:hover { color: var(--primary-color); }
+.install-guide { background: #faf8f2; border-top: 1px solid #eee7d3; }
+.install-guide[hidden] { display: none; }
+.install-guide-inner { max-width: 680px; margin: 0 auto; padding: 18px 20px 20px; text-align: left; }
+.install-guide-title { margin: 0 0 6px; font-weight: 700; font-size: 1.05rem; color: var(--primary-color); }
+.install-guide-lead { margin: 0 0 12px; font-size: 0.92rem; line-height: 1.6; color: #555; word-break: keep-all; }
+.install-steps { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.install-steps li { background: #fff; border: 1px solid #e6e1d4; border-radius: 6px; padding: 10px 12px; font-size: 0.9rem; line-height: 1.55; color: #333; word-break: keep-all; }
+.install-steps li.is-me { border-color: var(--secondary-color); border-left-width: 4px; }
+.install-steps strong { display: block; color: var(--primary-color); margin-bottom: 2px; }
+.install-now, .install-close { font: inherit; font-weight: 700; border-radius: 6px; padding: 10px 20px; cursor: pointer; }
+.install-now { background: var(--secondary-color); color: var(--primary-color); border: 0; margin: 0 8px 14px 0; }
+.install-close { background: #fff; color: var(--primary-color); border: 1px solid #cfc7ae; }
+.install-close:hover { background: #f3efe2; }
