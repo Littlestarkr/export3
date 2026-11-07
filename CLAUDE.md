@@ -54,7 +54,7 @@ There is no linter or test suite configured for this repo.
 
 **홈페이지 '맨 위로' 버튼.** `index.html`은 back-nav.js를 쓰지 않고, `script.js` 맨 끝이 왼쪽 아래 둥근 `.to-top` 버튼(스타일은 `styles.css` 끝)을 만든다. 300px 이상 내려가면 나타난다.
 
-**홈 화면 아이콘.** `apple-touch-icon.png`(180px)·`icon-192.png`·`icon-512.png`는 `favicon.svg`(금색 별)에서 만든 PNG이고, 10개 페이지 `<head>`의 favicon 줄 바로 뒤에 `link`로 연결돼 있다(404는 루트 절대경로). 안드로이드 크롬의 '홈 화면에 추가'는 추가하는 순간의 아이콘을 저장하므로, 이미 만든 바로가기는 지우고 다시 추가해야 바뀐다. 새 페이지에도 같은 두 줄을 넣는다.
+**홈 화면 아이콘.** `apple-touch-icon.png`(180px)·`icon-192.png`·`icon-512.png`는 `favicon.svg`(금색 별)에서 만든 PNG이고, 10개 페이지 `<head>`의 favicon 줄 바로 뒤에 `link`로 연결돼 있다(404는 루트 절대경로). 안드로이드 크롬의 '홈 화면에 추가'는 추가하는 순간의 아이콘을 저장하므로, 이미 만든 바로가기는 지우고 다시 추가해야 바뀐다. `manifest.webmanifest`(앱 이름 Happy Oh Consulting, `display: standalone`, 아이콘 3종 + 마스크용 `icon-maskable-512.png`)도 같은 자리에 연결돼 있다. 서비스 워커는 일부러 두지 않았다(캐시 때문에 수정이 늦게 보일 수 있다). 새 페이지에도 같은 세 줄(favicon PNG·apple-touch-icon·manifest)을 넣는다.
 
 **로고의 반짝이는 별.** 9개 페이지 헤더 로고 `<h1>` 맨 앞에 인라인 SVG `.logo-star`(오각별 + 작은 반짝이 2개, 금색 그라데이션)가 있고, 반짝임(`logo-twinkle`, 3.6초)은 `styles.css` 끝에 있다. '동작 줄이기' 설정에서는 멈춘다. 새 페이지를 만들면 같은 SVG를 넣는다.
 

@@ -1,0 +1,16 @@
+{
+  "name": "Happy Oh Consulting",
+  "short_name": "Happy Oh",
+  "description": "오주현 경영지도사 | 무역보험 컨설팅·수출자금조달·정책자금",
+  "lang": "ko",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1e38",
+  "theme_color": "#0d1e38",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
