@@ -34,7 +34,7 @@
     }
 
     function externalUrl(kind) {
-        var url = location.href;
+        var url = location.href.split('#')[0] + '#install';   // 열리자마자 안내문이 펼쳐지도록
         if (kind === 'kakao') {
             return 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url);
         }
@@ -125,6 +125,11 @@
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); }
         });
+
+        // 카카오톡 등에서 '외부 브라우저로 열기'로 넘어온 경우(#install) 안내문을 바로 펼친다.
+        if (location.hash === '#install' && !app) {
+            setTimeout(function () { setOpen(true); }, 400);
+        }
 
         nowBtn.addEventListener('click', function () {
             if (!deferredPrompt) { return; }
