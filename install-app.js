@@ -23,6 +23,25 @@
         return 'pc';
     }
 
+    // 카카오톡·네이버 앱·인스타그램 등 앱 안에서 연 화면(인앱 브라우저)에서는 설치가 되지 않는다.
+    function inApp() {
+        var ua = navigator.userAgent || '';
+        if (/KAKAOTALK/i.test(ua)) { return 'kakao'; }
+        if (/NAVER\(inapp|DaumApps|Instagram|FBAN|FBAV|FB_IAB|; Line\/| Line\//i.test(ua)) { return 'other'; }
+        if (/Android/i.test(ua) && /; wv\)/.test(ua)) { return 'other'; }
+        if (/iPhone|iPad|iPod/i.test(ua) && !/Safari\//.test(ua)) { return 'other'; }
+        return '';
+    }
+
+    function externalUrl(kind) {
+        var url = location.href;
+        if (kind === 'kakao') {
+            return 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url);
+        }
+        var m = url.match(/^https?:\/\/(.*)$/);
+        return 'intent://' + (m ? m[1] : url) + '#Intent;scheme=https;package=com.android.chrome;end';
+    }
+
     function syncNowButton() {
         if (nowBtn) { nowBtn.hidden = !deferredPrompt; }
     }
@@ -53,6 +72,18 @@
         }
 
         var me = platform();
+        var app = inApp();
+        var warnHtml = '';
+        if (app) {
+            var what = app === 'kakao' ? '카카오톡 안에서' : '앱 안에서';
+            warnHtml = '<div class="install-warn"><p><strong>지금은 ' + what + ' 열려 있어 설치가 되지 않습니다.</strong><br>' +
+                (me === 'ios'
+                    ? '아래쪽 또는 위쪽의 공유 버튼에서 \'Safari로 열기\'를 누른 뒤, 사파리에서 설치해 주세요.'
+                    : '오른쪽 아래 ⋮ 메뉴에서 \'다른 브라우저로 열기\'(또는 \'Chrome\')를 선택하거나, 아래 버튼으로 바깥 브라우저를 여세요.') +
+                '</p>' +
+                (me === 'android' ? '<a class="install-ext" href="' + externalUrl(app) + '">' + (app === 'kakao' ? '외부 브라우저로 열기' : '크롬으로 열기') + '</a>' : '') +
+                '</div>';
+        }
         var panel = document.createElement('div');
         panel.className = 'install-guide';
         panel.id = 'installGuide';
@@ -63,6 +94,7 @@
             '<div class="install-guide-inner">' +
             '<p class="install-guide-title">홈 화면에 앱처럼 설치하기</p>' +
             '<p class="install-guide-lead">설치하면 휴대폰 홈 화면·PC 바탕화면의 아이콘으로 Happy Oh Consulting을 바로 열 수 있습니다.</p>' +
+            warnHtml +
             '<button type="button" class="install-now" hidden>지금 설치</button>' +
             '<ul class="install-steps">' +
             '<li' + (me === 'android' ? ' class="is-me"' : '') + '><strong>안드로이드 (크롬)</strong><span>오른쪽 위 ⋮ 메뉴 → \'홈 화면에 추가\'(또는 \'앱 설치\') → \'설치\'</span></li>' +
