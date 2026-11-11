@@ -60,7 +60,7 @@ There is no linter or test suite configured for this repo.
 
 **로고의 반짝이는 별.** 9개 페이지 헤더 로고 `<h1>` 맨 앞에 인라인 SVG `.logo-star`(오각별 + 작은 반짝이 2개, 금색 그라데이션)가 있고, 반짝임(`logo-twinkle`, 3.6초)은 `styles.css` 끝에 있다. '동작 줄이기' 설정에서는 멈춘다. 새 페이지를 만들면 같은 SVG를 넣는다.
 
-**블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#contact` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. 카드 4개 아래 한 줄은 '최신 기고문'(`.writing-latest`, 제목 클릭 시 기사 새 탭)이며 작가님이 격주로 바꾼다: `index.html`의 주석 바로 아래 `href`(기사 주소)·`.writing-latest-date`(날짜)·`.writing-latest-title`(제목) 세 곳만 고친다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
+**블로그 기록 섹션 (`#writings`).** 홈페이지 `#services`와 `#contact` 사이의 카드 4개(칼럼 2종·컨설팅 사례·수출 이야기)로, 각각 네이버 블로그의 해당 분류 목록(`PostList.naver?blogId=happyojh&categoryNo=57/49/55/44` = 중소기업신문/무역신문/컨설팅/수출이야기)으로 새 탭 연결된다. 스타일은 `styles.css` 끝의 `.writing-*` 블록이며 4열→2열(1024px 이하)→1열(768px 이하)로 바뀐다. "4,000여 편"은 블로그 글 수(약 4,280편)를 반올림한 문구다. 잠금(🔒) 분류는 연결하지 않는다. 설명 문구 바로 아래(카드 위) 한 줄은 '최신 기고문'(`.writing-latest`, 제목 클릭 시 기사 새 탭)이며 작가님이 격주로 바꾼다: `index.html`의 주석 바로 아래 `href`(기사 주소)·`.writing-latest-date`(날짜)·`.writing-latest-title`(제목) 세 곳만 고친다. `styles.css`는 `?v=2`로 캐시를 갱신한다.
 
 **공유 미리보기·검색 등록.** `og-image.jpg`(1200×630, 2026-11 로고 이미지로 교체; 주소 뒤 `?v=3`으로 캐시 갱신, 카카오 공유 디버거에서 캐시 초기화)와 절대 주소 `og:*` 태그, `og:url`, `<link rel="canonical">`을 9개 페이지에 둔다(`og:image:alt`·`og:site_name`·`og:locale`·`twitter:card`·`theme-color`도 함께). 새 페이지에도 같은 묶음을 넣는다. `robots.txt`(전체 허용 + Sitemap)와 `sitemap.xml`(9개 URL; 주소는 모두 https://www.littlestar.co.kr/ 기준)은 저장소 루트에 있고, 페이지를 추가하면 `sitemap.xml`에도 더한다. 구글 서치콘솔은 `index.html`의 `google-site-verification` 메타로 소유 확인하고 sitemap을 제출했다. 네이버 서치어드바이저는 호스트 단위(`https://littlestarkr.github.io`) 등록만 가능해서, 확인 파일과 메타는 별도 저장소 `Littlestarkr/Littlestarkr.github.io`에 있다(이 저장소에는 없다). 이 두 저장소의 확인 파일·메타는 지우지 않는다.
 
@@ -76,7 +76,7 @@ There is no linter or test suite configured for this repo.
 
 **하단 상담 안내(`.pf-cta`).** 정책자금·무역보험·글로벌 진출·정부지원사업·고객사·협력사·알림 6개 페이지 `<footer>` 바로 앞에 같은 블록('중소기업의 글로벌 도전을 응원합니다' + 상담 신청 + 카카오톡 문의, 스타일은 `policy-finance.css`)이 있다. 방명록·개인정보·404에는 두지 않는다. 문구를 바꾸면 6곳을 함께 고친다.
 
-**모바일 길이 조절.** 홈 `#voices`(감사와 응원의 한마디) 카드는 6개이며 앞의 3개(에릭쉐프·선달·늘소, 컨설팅 후기 중심)가 모바일(768px 이하)에서만 보이고 나머지는 숨겨진다(`.voice-card:nth-child(n+4)`, PC는 6개 모두). 후기를 추가·교체할 때는 앞 3개가 모바일의 대표 후기라는 점을 기억한다. `#writings` 카드 4개는 모바일에서 2열로 보인다.
+**모바일 길이 조절.** 홈 `#voices`(감사와 응원의 한마디) 카드는 6개이며 앞의 3개(에릭쉐프·선달·늘소, 컨설팅 후기 중심)가 모바일(768px 이하)에서만 보이고 나머지는 숨겨진다(`.voice-card:nth-child(n+4)`, PC는 6개 모두). 후기를 추가·교체할 때는 앞 3개가 모바일의 대표 후기라는 점을 기억한다. `#writings` 카드 4개는 모바일에서 2열로 보인다(열은 `minmax(0, 1fr)`라 휴대폰 글자 크기를 키워도 화면 밖으로 넘치지 않는다).
 
 **모바일 상담 양식 접기.** 모바일(768px 이하)에서는 `#contact`의 양식(`#contactFormWrap`, 기본 `.is-collapsed`)이 접혀 있고 '상담 신청하기' 버튼(`#contactToggle`)을 누르면 펼쳐진다(`script.js` 맨 끝). 주소가 `#contact`이거나(하위 페이지 하단 '상담 신청' 포함) `href="#contact"` 링크를 누르면 바로 펼쳐진다. PC에서는 버튼이 없고 양식이 항상 보인다. 양식의 `id`·허니팟·제출 로직은 그대로다.
 
