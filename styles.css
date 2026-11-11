@@ -1025,6 +1025,15 @@ nav a:hover {
 .writing-links .writing-more { text-decoration: none; }
 .writing-links .writing-more:hover { text-decoration: underline; }
 .writing-more i { font-size: 0.75rem; margin-left: 4px; }
+/* 최신 기고문 (카드 4개 아래 한 줄) */
+.writing-latest { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; background: #fff; border: 1px solid #e6e9ef; border-top: 3px solid var(--secondary-color); border-radius: 6px; padding: 24px 26px; text-decoration: none; color: var(--primary-color); transition: var(--transition); }
+.writing-latest:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(13, 30, 56, 0.12); }
+.writing-latest:hover .writing-latest-title { text-decoration: underline; text-underline-offset: 4px; }
+.writing-latest-label { font-size: 0.85rem; color: #8a7a52; font-weight: 700; letter-spacing: 0.02em; }
+.writing-latest-label i { margin-right: 4px; }
+.writing-latest-date { font-weight: 500; }
+.writing-latest-title { font-size: 1.45rem; line-height: 1.45; color: var(--primary-color); font-weight: 700; word-break: keep-all; }
+@media (max-width: 768px) { .writing-latest { margin-top: 12px; padding: 18px 16px; } .writing-latest-label { font-size: 0.78rem; } .writing-latest-title { font-size: 1.15rem; } .writing-latest .writing-more { white-space: normal; } }
 @media (max-width: 1024px) { .writing-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) { .writing-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .writing-card { padding: 16px 14px; } .writing-card h4 { font-size: 1rem; } .writing-card p { font-size: 0.85rem; line-height: 1.55; margin-bottom: 12px; } .writing-icon { font-size: 1.3rem; margin-bottom: 8px; } .writing-more { font-size: 0.8rem; white-space: nowrap; } .writing-more i { font-size: 0.65rem; margin-left: 3px; } }
 
