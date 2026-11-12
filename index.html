@@ -25,7 +25,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=30">
+    <link rel="stylesheet" href="styles.css?v=31">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -405,6 +405,7 @@
 
                         <button type="submit" class="btn btn-primary full-width">상담 신청하기</button>
                         <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+                        <button type="button" class="btn contact-close" id="contactClose" aria-controls="contactFormWrap">닫기</button>
                     </form>
                 </div>
             </div>
@@ -684,7 +685,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
     <script>
         function togglePrivacy() {
             var x = document.getElementById("privacy-detail");

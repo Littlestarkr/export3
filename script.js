@@ -236,7 +236,7 @@ function togglePrivacy() {
 })();
 
 
-// 모바일: 상담 신청 양식 펼치기/접기 (주소가 #contact 이거나 '상담 신청' 링크를 누르면 바로 펼친다)
+// 상담 신청 양식 펼치기/접기 (PC·모바일 공통) (주소가 #contact 이거나 '상담 신청' 링크를 누르면 바로 펼친다)
 (function () {
     var btn = document.getElementById('contactToggle');
     var wrap = document.getElementById('contactFormWrap');
@@ -246,11 +246,17 @@ function togglePrivacy() {
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         btn.textContent = open ? '신청 양식 접기' : '상담 신청하기';
         if (open && scroll) {
-            wrap.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+            btn.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
         }
     }
     btn.addEventListener('click', function () {
         setOpen(wrap.classList.contains('is-collapsed'), true);
+    });
+    var closeBtn = document.getElementById('contactClose');
+    if (closeBtn) closeBtn.addEventListener('click', function () {
+        setOpen(false, false);
+        btn.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+        btn.focus({ preventScroll: true });
     });
     document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('a[href="#contact"]');
