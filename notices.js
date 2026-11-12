@@ -55,7 +55,7 @@
             return terms.every(function (t) { return hay.indexOf(t) >= 0; });
         });
         list.textContent = '';
-        if (!rows.length) { state(terms.length ? '\u2018' + q.trim() + '\u2019 검색 결과가 없습니다.' : '등록된 알림이 없습니다.'); return; }
+        if (!rows.length) { state(terms.length ? '\u2018' + q.trim() + '\u2019 검색 결과가 없습니다.' : '등록된 핫이슈가 없습니다.'); return; }
         rows.slice(0, shown).forEach(function (it) {
             var card = el('details', 'nt-item' + (it.pin ? ' pin' : ''));
             var sum = el('summary', 'nt-sum');
@@ -95,7 +95,7 @@
 
     $('ntMore').addEventListener('click', function () { shown += PAGE; render(); });
 
-    if (!NOTICES_URL) { state('알림 코너가 곧 문을 엽니다.'); return; }
+    if (!NOTICES_URL) { state('핫이슈 코너가 곧 문을 엽니다.'); return; }
 
     fetch(NOTICES_URL + '?action=list')
         .then(function (r) { return r.json(); })
@@ -108,6 +108,6 @@
             var cached = null;
             try { cached = JSON.parse(localStorage.getItem('ntCache') || 'null'); } catch (e) {}
             if (cached && cached.items) apply(cached);
-            else state('알림을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.');
+            else state('핫이슈를 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.');
         });
 })();
