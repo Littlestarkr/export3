@@ -1132,13 +1132,16 @@ textarea:focus-visible,
 /* 상담 신청 양식 위 간격 (인라인 style 대체) */
 .contact-form-wrapper.form-gap { margin-top: 40px; }
 
-/* ===== 모바일: 상담 신청 양식은 버튼을 누르면 펼쳐진다 (PC는 항상 펼침) ===== */
-.contact-toggle-wrap { display: none; }
+/* ===== 상담 신청 양식은 버튼을 누르면 펼쳐진다 (PC·모바일 공통) ===== */
+.contact-toggle-wrap { display: block; width: 100%; text-align: center; }
+.contact-toggle { scroll-margin-top: 100px; min-width: 280px; font-size: 1.05rem; padding: 14px 40px; }
+.contact-toggle[aria-expanded="true"] { background: transparent; border-color: var(--secondary-color); color: var(--primary-color); }
+.contact-form-wrapper.is-collapsed { display: none; }
+.contact-toggle-wrap + .contact-form-wrapper { margin-top: 24px; }
+.contact-close { display: block; width: 100%; margin-top: 12px; background: transparent; border-color: #c9ced6; color: #555; }
+.contact-close:hover { border-color: var(--primary-color); color: var(--primary-color); }
 @media (max-width: 768px) {
-    .contact-toggle-wrap { display: block; width: 100%; text-align: center; }
-    .contact-toggle { width: 100%; }
-    .contact-toggle[aria-expanded="true"] { background: transparent; border-color: var(--secondary-color); color: var(--primary-color); }
-    .contact-form-wrapper.is-collapsed { display: none; }
+    .contact-toggle { width: 100%; min-width: 0; scroll-margin-top: 16px; }
     .contact-toggle-wrap + .contact-form-wrapper { margin-top: 20px; }
     /* 개인정보 동의 문구가 좁게 꺾이지 않도록: 문구 한 줄, [상세보기]는 아래 줄 */
     .checkbox-container { flex-wrap: wrap; align-items: flex-start; }
