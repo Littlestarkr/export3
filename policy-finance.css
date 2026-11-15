@@ -886,3 +886,6 @@ html {
 .u-mt28 { margin-top: 28px; }
 .u-red { color: #c62828; }
 .pf-site-links { margin-top: auto; display: flex; flex-direction: column; gap: 2px; }
+/* 표에서 두 열에 공통인 칸(colspan): PC는 가운데 정렬, 모바일 카드에서는 다른 칸처럼 왼쪽 정렬 */
+.pf-table td.pf-td-common { text-align: center; vertical-align: middle; }
+@media (max-width: 768px) { .pf-table td.pf-td-common { text-align: left; } }
