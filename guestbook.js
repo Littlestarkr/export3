@@ -311,6 +311,7 @@
             items = list;
             render();
         }).catch(function () {
+            $('gbCount').textContent = '';
             $('gbList').innerHTML = '';
             $('gbList').appendChild(el('div', 'gb-empty', '목록을 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'));
         });
@@ -318,6 +319,7 @@
 
     function init() {
         if (!GUESTBOOK_URL) {
+            $('gbList').innerHTML = '';
             $('gbList').appendChild(el('div', 'gb-empty', '곧 문을 엽니다. 조금만 기다려 주세요.'));
             $('gbSubmit').disabled = true;
             setMsg($('gbMsg'), '준비 중입니다.', false);

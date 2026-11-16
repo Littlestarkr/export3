@@ -25,7 +25,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css?v=28">
     <link rel="stylesheet" href="policy-finance.css?v=21">
-    <link rel="stylesheet" href="guestbook.css?v=7">
+    <link rel="stylesheet" href="guestbook.css?v=8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -152,7 +152,7 @@
             </form>
 
             <div class="gb-list-head"><h4>남겨 주신 글</h4><span id="gbCount"></span></div>
-            <div id="gbList"></div>
+            <div id="gbList" aria-live="polite"><p class="gb-state">불러오는 중입니다…</p></div>
             <button type="button" class="gb-btn sub gb-more" id="gbMore" style="display:none">더 보기</button>
         </div>
     </section>
@@ -171,7 +171,7 @@
         </div>
     </footer>
 
-    <script src="guestbook.js?v=7"></script>
+    <script src="guestbook.js?v=8"></script>
     <script src="back-nav.js?v=5"></script>
 </body>
 
