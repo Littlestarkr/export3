@@ -896,3 +896,8 @@ html {
 .pf-inlink:hover { color: var(--primary-color); }
 /* 대상 품목 아래 제외 물품 안내(별표 주석) */
 .pf-exclude { display: block; margin: 4px 0 2px; font-size: 0.86rem; line-height: 1.6; color: #555; }
+/* 번호(1) 2) 3))가 글자에 들어 있는 목록: 점 불릿 없이 */
+.pf-list.pf-list-num li { padding-left: 4px; }
+.pf-list.pf-list-num li::before { display: none; }
+/* 번호 항목 아래 * 하위 설명: 들여쓰기 + 작은 글씨 */
+.pf-req-sub { display: block; margin: 3px 0 2px; padding-left: 1.4em; font-size: 0.86rem; line-height: 1.6; color: #555; }
