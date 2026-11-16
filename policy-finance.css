@@ -891,3 +891,8 @@ html {
 @media (max-width: 768px) { .pf-table td.pf-td-common { text-align: left; } }
 /* 회색 안내문 속 강조 낱말: 굵게 + 진한 색으로 또렷하게 */
 .u-strong { font-weight: 700; color: #1a1a1a; }
+/* 목록 속 바깥 링크(법령·조회 도구): 금색 글자 + 밑줄 */
+.pf-inlink { color: var(--gold-text, #8a6a1f); text-decoration: underline; text-underline-offset: 2px; }
+.pf-inlink:hover { color: var(--primary-color); }
+/* 대상 품목 아래 제외 물품 안내(별표 주석) */
+.pf-exclude { display: block; margin: 4px 0 2px; font-size: 0.86rem; line-height: 1.6; color: #555; }
