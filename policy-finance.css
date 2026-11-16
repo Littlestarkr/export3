@@ -901,3 +901,5 @@ html {
 .pf-list.pf-list-num li::before { display: none; }
 /* 번호 항목 아래 * 하위 설명: 들여쓰기 + 작은 글씨 */
 .pf-req-sub { display: block; margin: 3px 0 2px; padding-left: 1.4em; font-size: 0.86rem; line-height: 1.6; color: #555; }
+/* 짧은 링크 글자가 중간에서 끊기지 않게(통째로 다음 줄로) */
+.pf-nowrap { white-space: nowrap; }
