@@ -38,6 +38,8 @@
 .gb-btn.sub { background: #eee; color: #444; }
 .gb-btn:disabled { opacity: .6; cursor: default; }
 .gb-more { display: block; margin: 16px auto 0; }
+/* 목록 불러오는 중 표시(핫이슈 .nt-state와 같은 모양) */
+.gb-state { text-align: center; color: #888; padding: 40px 0; line-height: 1.7; }
 .gb-empty { text-align: center; color: #999; padding: 36px 0; }
 @media (max-width: 768px) { .gb-two { grid-template-columns: 1fr; } .gb-form { padding: 18px; } }
 
