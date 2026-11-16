@@ -889,3 +889,5 @@ html {
 /* 표에서 두 열에 공통인 칸(colspan): PC는 가운데 정렬, 모바일 카드에서는 다른 칸처럼 왼쪽 정렬 */
 .pf-table td.pf-td-common { text-align: center; vertical-align: middle; }
 @media (max-width: 768px) { .pf-table td.pf-td-common { text-align: left; } }
+/* 회색 안내문 속 강조 낱말: 굵게 + 진한 색으로 또렷하게 */
+.u-strong { font-weight: 700; color: #1a1a1a; }
