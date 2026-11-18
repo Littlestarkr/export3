@@ -352,3 +352,9 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
     a[href^="http"]::after { content: ""; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* ── 계약서 초안 작성기로 가는 안내(계약서 탭 끝) ── */
+.ed-builder-link strong { display: block; margin-bottom: 4px; color: var(--primary-color); font-size: 1rem; }
+.ed-builder-link p { margin: 0 0 10px; }
+.ed-builder-link .pf-btn { font-weight: 700; }
+.ed-builder-link .pf-btn i { margin: 0 0 0 4px; color: inherit; }
