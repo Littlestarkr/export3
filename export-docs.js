@@ -1,4 +1,4 @@
-/* 수출서류 점검 페이지 (export-docs.html)
+/* 수출서류 점검·작성 페이지 (export-docs.html)
    - 서류 탭 전환(?doc=offer|pi|contract|popi|ci|advice 로 바로 열기)
    - 계약서 ↔ PO·PI 갈래 전환
    - 가상 초안: PC에서는 펼침, 모바일에서는 접힘
@@ -115,7 +115,7 @@
     if (mq.addEventListener) mq.addEventListener('change', syncDrafts);
 
     // 영문 문구 복사: 복사한 글 끝에 안내 문구를 자동으로 붙인다
-    var COPY_NOTE = '\n\n※ 예시 문구입니다. 사용 전 전문가 확인이 필요합니다. (출처: www.littlestar.co.kr 수출서류 점검)';
+    var COPY_NOTE = '\n\n※ 예시 문구입니다. 사용 전 전문가 확인이 필요합니다. (출처: www.littlestar.co.kr 수출서류 점검·작성)';
     function fallbackCopy(text) {
         var ta = document.createElement('textarea');
         ta.value = text;

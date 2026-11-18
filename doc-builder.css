@@ -1,0 +1,102 @@
+/* 수출서류 초안 작성기 (doc-builder.html)
+   contract-builder.css(cb-*)·export-docs.css·policy-finance.css를 함께 쓰고, 여기에는 이 페이지에만 쓰는 db-* 스타일만 둔다. */
+
+/* 서류 고르기 */
+.db-docs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 24px; }
+.db-doc { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border: 1px solid #d9cfb4; border-radius: 10px; background: #fff; cursor: pointer; text-align: center; color: #333; text-decoration: none; }
+.db-doc input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.db-doc span { display: flex; flex-direction: column; gap: 2px; font-size: .9rem; line-height: 1.35; }
+.db-doc small { font-size: .74rem; color: #888; }
+.db-doc-n { display: inline-flex !important; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #eef2f8; color: var(--primary-color); font-size: .78rem; font-weight: 700; }
+.db-doc:hover { border-color: var(--secondary-color); }
+.db-doc:has(input:checked) { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+.db-doc:has(input:checked) small { color: #dfe6f1; }
+.db-doc:has(input:checked) .db-doc-n { background: var(--secondary-color); }
+.db-doc:has(input:focus-visible) { outline: 3px solid var(--secondary-color); outline-offset: 2px; }
+.db-doc-link { border-style: dashed; background: #fbfaf6; }
+.db-doc-link i { font-size: .7rem; color: var(--secondary-color); }
+.db-docs-hint { max-width: 980px; margin: 12px auto 0; }
+
+/* 서류 흐름(이어지는 값) */
+.db-flow { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.db-fl button, .db-fl a { width: 100%; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 8px 9px; border: 1px solid #e3e3e3; border-radius: 8px; background: #f7f8fa; font-family: inherit; font-size: .8rem; color: #333; cursor: pointer; text-align: left; text-decoration: none; position: relative; }
+.db-fl strong { font-size: .86rem; color: var(--primary-color); }
+.db-fl small { color: #666; font-size: .74rem; overflow-wrap: anywhere; }
+.db-fl em { font-style: normal; font-size: .72rem; font-weight: 700; color: #8a5a00; margin-top: 2px; }
+.db-fl-n { position: absolute; top: 6px; right: 8px; font-size: .7rem; color: #aaa; font-weight: 700; }
+.db-fl.is-on button { border-color: var(--primary-color); background: #fff; box-shadow: 0 0 0 2px rgba(13, 30, 56, .12); }
+.db-fl.has-warn button { border-left: 4px solid #e0a72e; }
+.db-fl.has-error button { border-left: 4px solid #c62828; }
+.db-fl.has-error em { color: #a12a1b; }
+.db-fl-c a { border-style: dashed; background: #fff; }
+
+/* 입력 */
+.cb-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; }
+.db-sub-gap { margin-top: 18px; }
+.db-group { margin: 0 0 12px; padding: 12px 14px 2px; background: #f7f8fa; border-radius: 10px; }
+.db-group .cb-choice { margin-bottom: 12px; }
+.db-step5-hint { margin-top: 0; }
+.db-item { grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, .8fr) minmax(0, 1fr) 40px; }
+.db-pack { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding-top: 8px; border-top: 1px dashed #d6d9de; }
+.db-pack .cb-field { margin: 0; }
+.db-pack-t { grid-column: 1 / -1; margin: 0; font-size: .8rem; font-weight: 700; color: #555; }
+.db-pack-t small { font-weight: 400; color: #999; margin-left: 4px; }
+.db-totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 14px; }
+.db-totals p { margin: 0; font-size: .86rem; color: #555; }
+.db-totals strong { display: block; font-size: 1rem; }
+.db-totals small { grid-column: 1 / -1; }
+.db-w-tag { display: inline-block; padding: 0 6px; border-radius: 4px; background: rgba(0, 0, 0, .07); font-size: .72rem; }
+
+/* 항목 점검 */
+.db-need { list-style: none; margin: 18px 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.db-need li { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; background: #fff; border: 1px solid #e3dccb; border-radius: 8px; }
+.db-need li > i { margin-top: 4px; }
+.db-need span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: .9rem; }
+.db-need em { font-style: normal; font-size: .72rem; font-weight: 700; padding: 0 7px; border-radius: 999px; }
+.db-need small { flex-basis: 100%; font-size: .8rem; color: #777; }
+.db-need-ok > i { color: #2e7d32; }
+.db-need-ok em { background: #e6f2e6; color: #2e7d32; }
+.db-need-no > i, .db-need-half > i { color: #c98a00; }
+.db-need-no em { background: #fff1c2; color: #6b4e00; }
+.db-need-half em { background: #fdecea; color: #a5281b; }
+
+/* 초안 */
+.db-doc-out .db-l-ko { display: block; font-size: .72rem; font-weight: 400; color: #888; }
+.db-doc-out .db-v-ko { display: block; margin-top: 2px; font-size: .8rem; color: #666; }
+.db-meta, .db-terms { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: .88rem; }
+.db-meta th, .db-meta td, .db-terms th, .db-terms td { border: 1px solid #ddd; padding: 5px 8px; text-align: left; vertical-align: top; white-space: pre-line; }
+.db-meta th, .db-terms th { width: 32%; background: #f7f8fa; font-weight: 700; }
+.db-parties { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 0 0 14px; }
+.db-parties > div, .db-marks, .db-bank { padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; }
+.db-parties p, .db-marks p, .db-bank p { margin: 0; font-size: .88rem; }
+.db-p-t { font-size: .76rem !important; font-weight: 700; color: #666; margin-bottom: 3px !important; }
+.db-marks { margin: 0 0 12px; }
+.db-items-t td { white-space: normal; }
+.db-items-t .db-foot td { font-weight: 400; background: #fbfaf6; }
+.db-words { font-weight: 700; font-size: .84rem; margin: 2px 0 14px !important; }
+.db-bank { margin: 12px 0; }
+.db-bank .cb-ko { margin-top: 4px; }
+.db-fraud { margin-top: 8px; padding: 8px 10px; border: 2px solid #c0392b; border-radius: 4px; background: #fff7f5; }
+.db-fraud p { color: #5a1f18; }
+.db-sign-1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.db-all { border-color: var(--secondary-color); }
+
+@media (max-width: 1100px) {
+    .db-docs, .db-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+    .db-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .db-doc { flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px; }
+    .db-flow { display: flex; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+    .db-fl { flex: 0 0 132px; }
+    .cb-grid3 { grid-template-columns: 1fr; }
+    .db-item { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .db-pack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .db-totals { grid-template-columns: 1fr; }
+    .db-need { grid-template-columns: 1fr; }
+    .db-meta th, .db-terms th { width: 38%; }
+    .db-sign-1 { grid-template-columns: 1fr; }
+}
+@media print {
+    .db-meta th, .db-terms th { background: #f2f2f2 !important; }
+}

@@ -685,7 +685,36 @@
         var t = new Date(), pz = function (n) { return (n < 10 ? '0' : '') + n; };
         form.elements.date.value = t.getFullYear() + '-' + pz(t.getMonth() + 1) + '-' + pz(t.getDate());
     } catch (e) { /* 무시 */ }
-    addItem();
+    // 수출서류 초안 작성기(doc-builder.html)에서 넘겨준 값: 이 탭의 sessionStorage에서 읽자마자 지운다
+    var handed = false;
+    try {
+        var raw = sessionStorage.getItem('cbHandoff');
+        sessionStorage.removeItem('cbHandoff');
+        var h = raw ? JSON.parse(raw) : null;
+        if (h && h.f) {
+            Object.keys(h.f).forEach(function (k) {
+                var el = form.elements[k];
+                if (!el) return;
+                if (el.type === 'checkbox') el.checked = !!h.f[k];
+                else el.value = h.f[k];   // 라디오 묶음(RadioNodeList)도 value로 고른다
+            });
+            (h.items || []).slice(0, 20).forEach(function (it) {
+                var row = addItem();
+                if (!row) return;
+                ['desc', 'qty', 'unit', 'price'].forEach(function (f) { var el = row.querySelector('[data-f="' + f + '"]'); if (el && it[f] != null) el.value = it[f]; });
+            });
+            handed = true;
+        }
+    } catch (e) { /* 무시 */ }
+    if (!itemsBox.children.length) addItem();
+    if (handed) {
+        var note = document.createElement('p');
+        note.className = 'cb-handoff';
+        note.setAttribute('role', 'status');
+        note.innerHTML = '<i class="fa-solid fa-link" aria-hidden="true"></i> 수출서류 초안 작성기에서 입력한 당사자·품목·조건을 이어받았습니다. 계약번호·계약일과 6·7단계(검사·클레임·준거법)를 확인하세요.';
+        var stepsEl = $('cbSteps');
+        stepsEl.parentNode.insertBefore(note, stepsEl);
+    }
     goStep(1, false);
     update();
 })();
