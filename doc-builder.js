@@ -709,7 +709,6 @@
         $('dbStep5').textContent = STEP5_T[s.doc];
         $('dbStep5Title').textContent = STEP5_T[s.doc];
         $('dbCheckDoc').textContent = DOCS[s.doc].short === 'PI' ? '견적송장(PI)' : DOCS[s.doc].short === 'CI' ? '상업송장(CI)' : DOCS[s.doc].short === 'P/L' ? '포장명세서(P/L)' : DOCS[s.doc].short === 'PO' ? '구매주문서(PO)' : DOCS[s.doc].short;
-        $('dbGenLabel').textContent = ({ offer: '오퍼시트', pi: 'PI', po: 'PO', ci: 'CI', pl: 'P/L', advice: '선적통지' })[s.doc] + ' 초안 만들기';
     }
 
     /* ───────── 서류 흐름 ───────── */
@@ -730,7 +729,7 @@
             var D = DOCS[d], st = tag[d];
             var li = '<li class="db-fl' + (d === s.doc ? ' is-on' : '') + (st ? ' has-' + st : '') + '"><button type="button" data-doc="' + d + '"' + (d === s.doc ? ' aria-current="true"' : '') + '><span class="db-fl-n">' + D.n + '</span><strong>' + esc(D.short) + '</strong>' +
                 info[d].map(function (x) { return '<small>' + esc(x) + '</small>'; }).join('') + (st ? '<em><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> ' + (st === 'error' ? '오류' : '확인') + '</em>' : '') + '</button></li>';
-            if (d === 'po') li += '<li class="db-fl db-fl-c"><a href="contract-builder.html" data-handoff="1"><span class="db-fl-n">4</span><strong>계약서</strong><small>작성기로 이어 쓰기</small></a></li>';
+            if (d === 'pi') li += '<li class="db-fl db-fl-c"><a href="contract-builder.html" data-handoff="1"><span class="db-fl-n">3</span><strong>계약서</strong><small>작성기로 이어 쓰기</small></a></li>';
             return li;
         }).join('');
         $('dbFlow').innerHTML = html;
@@ -860,17 +859,69 @@
         $('cbGenMsg').textContent = msg;
         var show = generated && ok && !errs.length;
         $('cbOut').hidden = !show;
-        if (show) $('cbDoc').innerHTML = renderDoc(ctx.s.doc, ctx, 'html', null);
+        if (show) { $('cbDoc').innerHTML = renderDoc(ctx.s.doc, ctx, 'html', null); $('dbOutName').textContent = DOCS[ctx.s.doc].ko; }
+        if (!pick.hidden) renderPickStatus(ctx);
+    }
+    // '초안 만들기' → 만들 서류부터 고른다
+    var pick = $('dbPick');
+    function openPick(scroll) {
+        pick.hidden = false;
+        genBtn.setAttribute('aria-expanded', 'true');
+        $('dbPickMsg').textContent = '';
+        if (lastCtx) renderPickStatus(lastCtx);
+        if (scroll) pick.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+        $('dbPickT').focus({ preventScroll: !!scroll });
+    }
+    function renderPickStatus(ctx) {
+        Array.prototype.forEach.call(pick.querySelectorAll('[data-st]'), function (el) {
+            var d = el.getAttribute('data-st'), c = { n: 0 };
+            renderDoc(d, ctx, 'text', c);
+            var errs = ctx.k.warns.filter(function (w) { return w.lv === 'error' && (!w.docs || w.docs.indexOf(d) >= 0); }).length;
+            el.className = 'db-pk-st ' + (errs ? 'is-err' : c.n ? 'is-blank' : 'is-ok');
+            el.textContent = errs ? '입력 오류 ' + errs + '건' : c.n ? '빈칸 ' + c.n + '곳' : '빈칸 없음';
+        });
+        Array.prototype.forEach.call(pick.querySelectorAll('[data-pick]'), function (b) {
+            var on = generated && b.getAttribute('data-pick') === ctx.s.doc;
+            b.classList.toggle('is-on', on);
+            if (on) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+        });
     }
     genBtn.addEventListener('click', function () {
         if (!lastCtx) return;
-        if (errorsOf(lastCtx).length) { syncGen(lastCtx); return; }
+        openPick(true);
+    });
+    $('dbRepick').addEventListener('click', function () { openPick(true); });
+    pick.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-pick]');
+        if (!b || !lastCtx) return;
+        var d = b.getAttribute('data-pick');
+        if (d === 'contract') { $('dbToContract').click(); return; }
+        if (d === 'all') {
+            var bad = DOC_KEYS.filter(function (x) { return lastCtx.k.warns.some(function (w) { return w.lv === 'error' && (!w.docs || w.docs.indexOf(x) >= 0); }); });
+            if (bad.length) { $('dbPickMsg').textContent = '입력 오류가 있는 서류(' + bad.map(function (x) { return DOCS[x].short; }).join('·') + ')가 있어 한 파일로 묶을 수 없습니다. ‘조건·서류 점검’에서 고친 뒤 다시 누르세요.'; return; }
+            download('export-documents-DRAFT-' + fileStamp() + '.doc', 'application/msword', '\ufeff' + wordHtml(DOC_KEYS.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), 'Export documents DRAFT'));
+            track('doc_draft_export', { format: 'all', doc_type: 'all' });
+            $('dbPickMsg').textContent = '6종을 한 Word 파일로 내려받았습니다. 파일은 참고용 초안입니다.';
+            return;
+        }
+        selectDoc(d);   // 서류를 바꾸고 다시 계산(입력값은 그대로)
+        if (errorsOf(lastCtx).length) {
+            $('dbPickMsg').textContent = DOCS[d].short + ' 초안에 입력 오류 ' + errorsOf(lastCtx).length + '건이 있습니다. ‘조건·서류 점검’에서 고친 뒤 다시 고르세요.';
+            renderPickStatus(lastCtx);
+            return;
+        }
         generated = true;
+        pick.hidden = true;
+        genBtn.setAttribute('aria-expanded', 'false');
         syncGen(lastCtx);
-        track('doc_draft_generate', { doc_type: lastCtx.s.doc, doc_lang: lastCtx.s.lang });
+        track('doc_draft_generate', { doc_type: d, doc_lang: lastCtx.s.lang });
         $('cbOut').scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
     });
-    [agree1, agree2].forEach(function (c) { c.addEventListener('change', function () { if (lastCtx) syncGen(lastCtx); }); });
+    [agree1, agree2].forEach(function (c) { c.addEventListener('change', function () {
+        if (!lastCtx) return;
+        syncGen(lastCtx);
+        if (!(agree1.checked && agree2.checked)) { pick.hidden = true; genBtn.setAttribute('aria-expanded', 'false'); }
+    }); });
 
     function copyText(text, btn) {
         function done() {

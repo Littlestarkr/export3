@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="policy-finance.css?v=21">
     <link rel="stylesheet" href="export-docs.css?v=5">
     <link rel="stylesheet" href="contract-builder.css?v=2">
-    <link rel="stylesheet" href="doc-builder.css?v=1">
+    <link rel="stylesheet" href="doc-builder.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -152,13 +152,13 @@
             <div class="db-docs" role="radiogroup" aria-label="만들 서류">
                 <label class="db-doc"><input type="radio" name="doc" value="offer" form="cbForm" checked><span class="db-doc-n">1</span><span><strong>오퍼시트</strong><small>Offer sheet</small></span></label>
                 <label class="db-doc"><input type="radio" name="doc" value="pi" form="cbForm"><span class="db-doc-n">2</span><span><strong>견적송장</strong><small>Proforma invoice</small></span></label>
-                <label class="db-doc"><input type="radio" name="doc" value="po" form="cbForm"><span class="db-doc-n">3</span><span><strong>구매주문서</strong><small>PO · 바이어 발행</small></span></label>
-                <a class="db-doc db-doc-link" href="contract-builder.html" id="dbToContract"><span class="db-doc-n">4</span><span><strong>매매계약서 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></strong><small>계약서 작성기로 이어 쓰기</small></span></a>
+                <a class="db-doc db-doc-link" href="contract-builder.html" id="dbToContract"><span class="db-doc-n">3</span><span><strong>매매계약서 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></strong><small>계약서 작성기로 이어 쓰기</small></span></a>
+                <label class="db-doc"><input type="radio" name="doc" value="po" form="cbForm"><span class="db-doc-n">4</span><span><strong>구매주문서</strong><small>PO · 바이어 발행</small></span></label>
                 <label class="db-doc"><input type="radio" name="doc" value="ci" form="cbForm"><span class="db-doc-n">5</span><span><strong>상업송장</strong><small>Commercial invoice</small></span></label>
                 <label class="db-doc"><input type="radio" name="doc" value="pl" form="cbForm"><span class="db-doc-n">6</span><span><strong>포장명세서</strong><small>Packing list</small></span></label>
                 <label class="db-doc"><input type="radio" name="doc" value="advice" form="cbForm"><span class="db-doc-n">7</span><span><strong>선적통지</strong><small>Shipping advice</small></span></label>
             </div>
-            <p class="cb-hint db-docs-hint"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> 계약서 없이 <strong>PO·PI로 진행</strong>하는 거래라면 4번을 건너뛰고 PO(3)와 PI(2)의 조건이 같은지만 맞추면 됩니다. PO는 원래 바이어가 보내는 서류라, 여기서 만든 것은 바이어에게 보낼 양식이거나 받은 PO와 대조하는 용도입니다.</p>
+            <p class="cb-hint db-docs-hint"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> 계약서 없이 <strong>PO·PI로 진행</strong>하는 거래라면 3번을 건너뛰고 PO(4)와 PI(2)의 조건이 같은지만 맞추면 됩니다. PO는 원래 바이어가 보내는 서류라, 여기서 만든 것은 바이어에게 보낼 양식이거나 받은 PO와 대조하는 용도입니다.</p>
 
             <ol class="db-flow" id="dbFlow" aria-label="서류 흐름과 이어지는 값"></ol>
 
@@ -493,12 +493,29 @@
                 <label class="cb-check"><input type="checkbox" id="cbAgree1"> <span><strong>이 도구는 법률·통관 자문이 아니며, 만들어지는 문서는 입력값을 서식에 채운 참고용 초안임을 이해합니다.</strong></span></label>
                 <label class="cb-check"><input type="checkbox" id="cbAgree2"> <span><strong>초안을 그대로 보내지 않고 숫자·계좌·서류 조건을 직접 확인한 뒤 쓰겠습니다. 사용에 따른 판단과 책임은 저에게 있습니다.</strong></span></label>
                 <div class="cb-consent-btns">
-                    <button type="button" class="btn btn-primary" id="cbGen" disabled><i class="fa-solid fa-file-invoice" aria-hidden="true"></i> <span id="dbGenLabel">초안 만들기</span></button>
+                    <button type="button" class="btn btn-primary" id="cbGen" disabled aria-expanded="false" aria-controls="dbPick"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i> 초안 만들기</button>
                     <p class="cb-gen-msg" id="cbGenMsg" aria-live="polite"></p>
                 </div>
             </div>
 
+            <!-- 초안 만들기 → 만들 서류부터 고르기 -->
+            <div class="db-pick cb-noprint" id="dbPick" hidden>
+                <p class="db-pick-t" id="dbPickT" tabindex="-1"><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i> 어떤 서류를 만들까요? <small>거래 순서대로 놓았습니다. 지금까지 입력한 값은 그대로 이어집니다.</small></p>
+                <ul class="db-pick-list" aria-labelledby="dbPickT">
+                    <li><button type="button" data-pick="offer"><span class="db-pk-n">1</span><span class="db-pk-b"><strong>오퍼시트 <small>Offer sheet</small></strong><em>바이어에게 가격·조건을 처음 제안할 때</em><b class="db-pk-st" data-st="offer"></b></span></button></li>
+                    <li><button type="button" data-pick="pi"><span class="db-pk-n">2</span><span class="db-pk-b"><strong>견적송장 <small>Proforma invoice · PI</small></strong><em>조건 확정·선금 청구, 계좌와 사기 경고 포함</em><b class="db-pk-st" data-st="pi"></b></span></button></li>
+                    <li><button type="button" data-pick="contract"><span class="db-pk-n">3</span><span class="db-pk-b"><strong>매매계약서 <small>Sales contract</small></strong><em>고액·반복·외상 거래. 계약서 작성기로 이어 씁니다</em><b class="db-pk-st db-pk-go">작성기로 이동 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></b></span></button></li>
+                    <li><button type="button" data-pick="po"><span class="db-pk-n">4</span><span class="db-pk-b"><strong>구매주문서 <small>Purchase order · PO</small></strong><em>바이어 발행 양식, 받은 PO와 PI 대조</em><b class="db-pk-st" data-st="po"></b></span></button></li>
+                    <li><button type="button" data-pick="ci"><span class="db-pk-n">5</span><span class="db-pk-b"><strong>상업송장 <small>Commercial invoice · CI</small></strong><em>선적·통관용 송장, 선금 차감·잔금 표시</em><b class="db-pk-st" data-st="ci"></b></span></button></li>
+                    <li><button type="button" data-pick="pl"><span class="db-pk-n">6</span><span class="db-pk-b"><strong>포장명세서 <small>Packing list · P/L</small></strong><em>박스 수·박스 번호·순중량·총중량·CBM</em><b class="db-pk-st" data-st="pl"></b></span></button></li>
+                    <li><button type="button" data-pick="advice"><span class="db-pk-n">7</span><span class="db-pk-b"><strong>선적통지 <small>Shipping advice</small></strong><em>선박·B/L·ETD·ETA 안내와 잔금 요청</em><b class="db-pk-st" data-st="advice"></b></span></button></li>
+                    <li class="db-pick-all"><button type="button" data-pick="all"><span class="db-pk-n"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><span class="db-pk-b"><strong>6종 한 파일 <small>Word</small></strong><em>오퍼시트·PI·PO·CI·P/L·선적통지를 한 파일로 내려받기</em></span></button></li>
+                </ul>
+                <p class="cb-gen-msg" id="dbPickMsg" aria-live="polite"></p>
+            </div>
+
             <div class="cb-out" id="cbOut" hidden>
+                <p class="db-out-t cb-noprint">지금 보는 초안: <strong id="dbOutName"></strong> <button type="button" class="pf-btn" id="dbRepick"><i class="fa-solid fa-rotate" aria-hidden="true"></i> 다른 서류 고르기</button></p>
                 <div class="cb-tools cb-noprint">
                     <button type="button" class="pf-btn" data-act="copy"><i class="fa-regular fa-copy" aria-hidden="true"></i> 전체 복사</button>
                     <button type="button" class="pf-btn" data-act="txt"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> 텍스트(.txt)</button>
@@ -563,8 +580,8 @@
     </footer>
 
     <script src="back-nav.js?v=5"></script>
-    <script src="doc-templates.js?v=1"></script>
-    <script src="doc-builder.js?v=1"></script>
+    <script src="doc-templates.js?v=2"></script>
+    <script src="doc-builder.js?v=2"></script>
 </body>
 
 </html>
