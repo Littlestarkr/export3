@@ -899,7 +899,7 @@
         if (d === 'all') {
             var bad = DOC_KEYS.filter(function (x) { return lastCtx.k.warns.some(function (w) { return w.lv === 'error' && (!w.docs || w.docs.indexOf(x) >= 0); }); });
             if (bad.length) { $('dbPickMsg').textContent = '입력 오류가 있는 서류(' + bad.map(function (x) { return DOCS[x].short; }).join('·') + ')가 있어 한 파일로 묶을 수 없습니다. ‘조건·서류 점검’에서 고친 뒤 다시 누르세요.'; return; }
-            download('export-documents-DRAFT-' + fileStamp() + '.doc', 'application/msword', '\ufeff' + wordHtml(DOC_KEYS.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), 'Export documents DRAFT'));
+            saveDocx('export-documents-DRAFT-' + fileStamp(), DOC_KEYS, 'Export documents DRAFT');
             track('doc_draft_export', { format: 'all', doc_type: 'all' });
             $('dbPickMsg').textContent = '6종을 한 Word 파일로 내려받았습니다. 파일은 참고용 초안입니다.';
             return;
@@ -958,18 +958,9 @@
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     }
-    function wordHtml(bodies, title) {
-        return '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>' + esc(title) + '</title><style>' +
-            'body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:10pt;line-height:1.5;color:#111}' +
-            'h4{text-align:center;font-size:16pt;font-family:Georgia,serif;margin:4pt 0}p{margin:0 0 5pt}' +
-            '.cb-doc-sub{text-align:center;color:#555}.cb-doc-stamp{color:#c0392b;font-weight:bold;border:2px solid #c0392b;padding:1pt 6pt;font-size:14pt}' +
-            '.cb-doc-warn{border:2px solid #c0392b;background:#fff7f5;padding:6pt 8pt;color:#5a1f18;font-size:9pt;margin:0 0 10pt}' +
-            '.cb-ko{background:#f3f4f6;border-left:3px solid #bbb;padding:3pt 6pt;color:#333}.cb-ko-k{display:block;font-size:8pt;color:#888;font-weight:bold}' +
-            '.db-l-ko,.db-v-ko{display:block;font-size:8pt;color:#777;font-weight:normal}' +
-            'mark{background:#fff1c2}table{border-collapse:collapse;width:100%;margin:4pt 0 8pt}th,td{border:1px solid #999;padding:3pt 5pt;font-size:9pt;vertical-align:top;text-align:left}td.num,th.num{text-align:right}' +
-            '.db-p-t{font-weight:bold;font-size:8.5pt;color:#555}.db-words{font-weight:bold;font-size:9pt}.db-fraud{border:2px solid #c0392b;padding:4pt 6pt;margin-top:6pt}' +
-            '.cb-sign-line{border-top:1px solid #333;padding-top:3pt;margin-top:24pt}.db-pb{page-break-before:always}' +
-            '</style></head><body>' + bodies.map(function (b, i) { return '<div' + (i ? ' class="db-pb"' : '') + '><p style="text-align:center;color:#c0392b;font-size:24pt;font-weight:bold;margin:0">초안 DRAFT</p>' + b + '</div>'; }).join('') + '</body></html>';
+    var DOCX_FOOT = '초안 DRAFT · 참고용 · 법률·통관 자문 아님 · 보내기 전 직접 확인 필요 · www.littlestar.co.kr/doc-builder.html';
+    function saveDocx(name, keys, title) { // 진짜 Word(.docx) — 휴대폰 뷰어에서도 열린다
+        download(name + '.docx', window.DocxExport.MIME, window.DocxExport.build(keys.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), { title: title, footer: DOCX_FOOT }));
     }
     document.querySelector('.cb-tools').addEventListener('click', function (e) {
         var b = e.target.closest('[data-act]');
@@ -977,8 +968,8 @@
         var act = b.getAttribute('data-act'), d = lastCtx.s.doc, name = DOCS[d].file + '-DRAFT-' + fileStamp();
         if (act === 'copy') copyText(renderDoc(d, lastCtx, 'text', null), b);
         else if (act === 'txt') download(name + '.txt', 'text/plain;charset=utf-8', '﻿' + renderDoc(d, lastCtx, 'text', null).replace(/\n/g, '\r\n'));
-        else if (act === 'doc') download(name + '.doc', 'application/msword', '﻿' + wordHtml([renderDoc(d, lastCtx, 'html', null)], DOCS[d].en + ' DRAFT'));
-        else if (act === 'all') download('export-documents-DRAFT-' + fileStamp() + '.doc', 'application/msword', '﻿' + wordHtml(DOC_KEYS.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), 'Export documents DRAFT'));
+        else if (act === 'doc') saveDocx(name, [d], DOCS[d].en + ' DRAFT');
+        else if (act === 'all') saveDocx('export-documents-DRAFT-' + fileStamp(), DOC_KEYS, 'Export documents DRAFT');
         else if (act === 'print') window.print();
         track('doc_draft_export', { format: act, doc_type: act === 'all' ? 'all' : d });
     });
