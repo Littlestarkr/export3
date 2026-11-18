@@ -133,7 +133,7 @@
         btn.addEventListener('click', function () {
             var p = btn.parentNode.querySelector('.ed-clause-en');
             if (!p) return;
-            var text = p.textContent.trim() + COPY_NOTE;
+            var text = (p.innerText || p.textContent).trim() + COPY_NOTE;
             function done(ok) {
                 btn.classList.toggle('is-done', ok);
                 btn.textContent = ok ? '복사했습니다' : '복사하지 못했습니다';
