@@ -187,7 +187,7 @@
 .ed-soon i { color: var(--secondary-color); margin-right: 4px; }
 
 /* ── 3. 참고 사이트 ── */
-.ed-sites { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+.ed-sites { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 900px; margin-left: auto; margin-right: auto; gap: 20px; margin-top: 30px; }
 
 /* 인쇄 전용 요소는 화면에서 숨긴다 */
 .ed-print-head, .ed-print-foot { display: none; }
