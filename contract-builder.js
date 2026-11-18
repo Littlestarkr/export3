@@ -628,25 +628,13 @@
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     }
-    function wordHtml(model) {
-        var body = renderDoc(model, 'html', null);
-        return '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Sales Contract DRAFT</title><style>' +
-            'body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:10.5pt;line-height:1.6;color:#111}' +
-            'h4{text-align:center;font-size:16pt;font-family:Georgia,serif;margin:4pt 0}h5{font-size:11pt;margin:12pt 0 4pt}p{margin:0 0 6pt}' +
-            '.cb-doc-sub{text-align:center;color:#555}.cb-doc-stamp{color:#c0392b;font-weight:bold;border:2px solid #c0392b;padding:1pt 6pt;font-size:14pt}' +
-            '.cb-doc-warn{border:2px solid #c0392b;background:#fff7f5;padding:6pt 8pt;color:#5a1f18;font-size:9.5pt;margin:0 0 12pt}' +
-            '.cb-ko{background:#f3f4f6;border-left:3px solid #bbb;padding:3pt 6pt;color:#333}.cb-ko-k{display:block;font-size:8pt;color:#888;font-weight:bold}' +
-            'mark{background:#fff1c2}.cb-badge{color:#a5281b;font-size:8pt;font-weight:bold}table{border-collapse:collapse;width:100%;margin:4pt 0}th,td{border:1px solid #999;padding:3pt 5pt;font-size:9.5pt}' +
-            '.cb-sign{margin-top:18pt}.cb-sign div{margin-bottom:18pt}.cb-sign-line{border-top:1px solid #333;padding-top:3pt;margin-top:24pt}' +
-            '</style></head><body><p style="text-align:center;color:#c0392b;font-size:28pt;font-weight:bold;margin:0">초안 DRAFT</p>' + body + '</body></html>';
-    }
     document.querySelector('.cb-tools').addEventListener('click', function (e) {
         var b = e.target.closest('[data-act]');
         if (!b || !lastModel) return;
         var act = b.getAttribute('data-act');
         if (act === 'copy') copyText(renderDoc(lastModel, 'text', null), b);
         else if (act === 'txt') download('sales-contract-DRAFT-' + fileStamp() + '.txt', 'text/plain;charset=utf-8', '﻿' + renderDoc(lastModel, 'text', null).replace(/\n/g, '\r\n'));
-        else if (act === 'doc') download('sales-contract-DRAFT-' + fileStamp() + '.doc', 'application/msword', '﻿' + wordHtml(lastModel));
+        else if (act === 'doc') download('sales-contract-DRAFT-' + fileStamp() + '.docx', window.DocxExport.MIME, window.DocxExport.build([renderDoc(lastModel, 'html', null)], { title: 'Sales Contract DRAFT', footer: '초안 DRAFT · 참고용 · 법률 자문 아님 · 서명 전 전문가 검토 필요 · www.littlestar.co.kr/contract-builder.html' })); // 진짜 Word(.docx)
         else if (act === 'print') window.print();
         track('contract_draft_export', { format: act });
     });
