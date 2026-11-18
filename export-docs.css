@@ -224,6 +224,53 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
 .ed-pay { background: #f1f3f5; color: #555; }
 .ed-law-note { max-width: none; }
 
+/* ── 무역사기 주의(이메일 계좌변경 사기) ── */
+#fraud, #compact { scroll-margin-top: 80px; }
+.ed-fraud-wrap { padding: 26px 0 0; }
+.ed-fraud { max-width: 980px; margin: 0 auto; padding: 22px 26px; background: #fff7f5; border: 2px solid #c0392b; border-radius: 12px; color: #3a2a26; }
+.ed-fraud-head { display: flex; gap: 14px; align-items: center; margin-bottom: 10px; }
+.ed-fraud-head > i { flex: none; width: 46px; height: 46px; border-radius: 50%; background: #c0392b; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.ed-fraud-k { margin: 0; font-size: .82rem; font-weight: 700; color: #a52a1f; }
+.ed-fraud h3 { margin: 2px 0 0; font-size: 1.3rem; line-height: 1.4; color: var(--primary-color); }
+.ed-fraud-lead { margin: 0 0 16px; font-size: .96rem; line-height: 1.75; }
+.ed-fraud-lead strong { color: #8f2318; }
+.ed-fraud-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 26px; }
+.ed-fraud-h { margin: 0 0 8px; font-weight: 700; color: var(--primary-color); padding-left: 10px; border-left: 3px solid #c0392b; }
+.ed-fraud-h small { font-weight: 400; color: #8a6a1f; font-size: .8rem; margin-left: 4px; }
+.ed-fraud-list { margin: 0 0 0 1.3em; padding: 0; }
+.ed-fraud-list li { margin-bottom: 7px; font-size: .92rem; line-height: 1.65; }
+.ed-fraud-list strong { color: #1a1a1a; }
+.ed-clause-fraud { border-left-color: #c0392b; background: #fff; }
+.ed-fraud-ko { margin: 10px 0 0; font-size: .88rem; line-height: 1.65; color: #444; }
+.ed-fraud-note { margin: 10px 0 0; padding: 10px 12px; background: #fff; border: 1px dashed #d9a39b; border-radius: 8px; font-size: .84rem; line-height: 1.65; color: #555; }
+.ed-fraud-note i { color: #c0392b; margin-right: 3px; }
+.ed-fraud-where { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0 0; font-size: .88rem; font-weight: 700; color: #6b2a22; }
+.ed-fraud-where i { color: #c0392b; }
+.ed-fraud-where a { padding: 5px 12px; border: 1px solid #e3b5ae; border-radius: 999px; background: #fff; color: var(--primary-color); font-weight: 700; }
+.ed-fraud-where a:hover { border-color: #c0392b; background: #fdecea; }
+.ed-hero .ed-hero-fraud { border-color: #e8a29a; color: #fff; }
+.ed-hero .ed-hero-fraud i { color: #f3b1a8; margin-right: 4px; }
+
+/* ── 한 장짜리 간이계약서 ── */
+.ed-compact { margin-top: 26px; padding: 22px 24px; background: #fff; border: 1px solid #e6e1d4; border-top: 4px solid var(--primary-color); border-radius: 10px; }
+.ed-compact-k { margin: 0 0 2px; font-size: .82rem; font-weight: 700; color: var(--gold-text, #8a6a1f); }
+.ed-compact-k i { color: var(--secondary-color); margin-right: 3px; }
+.ed-compact h5 { margin: 0 0 8px; font-size: 1.2rem; color: var(--primary-color); }
+.ed-compact-lead { margin: 0 0 14px; font-size: .93rem; line-height: 1.7; color: #444; }
+.ed-compact-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px 24px; }
+.ed-compact-list { margin: 0; padding: 0; list-style: none; counter-reset: cpt; display: grid; gap: 6px; }
+.ed-compact-list li { counter-increment: cpt; display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 8px; padding: 8px 10px; background: #f7f8fb; border-radius: 6px; font-size: .88rem; line-height: 1.55; }
+.ed-compact-list li::before { content: counter(cpt); grid-row: span 2; width: 22px; height: 22px; border-radius: 50%; background: var(--primary-color); color: #fff; font-size: .74rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; margin-top: 1px; }
+.ed-compact-list strong { color: var(--primary-color); }
+.ed-compact-list span { color: #555; }
+.ed-compact-list li.is-key { background: #fff3f1; outline: 1px solid #e3b5ae; }
+.ed-compact-list li.is-key::before { background: #c0392b; }
+.ed-compact-why { padding: 14px 16px; background: #fbfaf6; border: 1px solid #ece4cc; border-radius: 8px; }
+.ed-compact-h { margin: 0 0 6px; font-weight: 700; color: var(--primary-color); }
+.ed-compact-why li { font-size: .9rem; line-height: 1.6; }
+.ed-compact-note { margin: 14px 0 0; font-size: .84rem; line-height: 1.65; color: #555; }
+.ed-compact-note i { color: var(--secondary-color); margin-right: 3px; }
+
 /* 인쇄 전용 요소는 화면에서 숨긴다 */
 .ed-print-head, .ed-print-foot { display: none; }
 
@@ -270,6 +317,13 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
     .ed-law-jump { justify-content: flex-start; }
     .ed-law-jump a { padding: 6px 11px; font-size: .84rem; }
     .ed-law-grid { grid-template-columns: 1fr; gap: 16px; }
+    .ed-fraud-wrap { padding-top: 16px; }
+    .ed-fraud { padding: 18px 16px; }
+    .ed-fraud-head > i { width: 38px; height: 38px; font-size: 1.05rem; }
+    .ed-fraud h3 { font-size: 1.1rem; }
+    .ed-fraud-grid, .ed-compact-grid { grid-template-columns: 1fr; }
+    .ed-hero .pf-hero-btns .ed-hero-fraud { grid-column: 1 / -1; }
+    .ed-compact { padding: 18px 14px; }
     .ed-law-grp { padding: 16px 14px; }
 }
 
@@ -278,7 +332,7 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
     @page { margin: 14mm 12mm 18mm; }
     body { background: #fff; font-size: 10.5pt; }
     header, nav, .skip-link, .pf-floatnav, .pf-cta, .main-footer, .install-guide, #installGuide,
-    .ed-hero, .ed-warn-top, #flow, .ed-tabs, .ed-section-docs > .container > .section-header, .ed-section-docs > .container > .pf-lead,
+    .ed-hero, .ed-warn-top, #fraud, #flow, .ed-tabs, .ed-section-docs > .container > .section-header, .ed-section-docs > .container > .pf-lead,
     .ed-check-btns, .ed-copy, .ed-route, .ed-route-hint, .ed-forms-btns, .ed-soon, #forms .section-header, #forms .pf-lead, .ed-sites, .ed-forms-note-wide, .pf-uplink,
     #laws .section-header, #laws .pf-lead, .ed-law-feature, .ed-law-how, .ed-law-jump, .ed-law-grid { display: none !important; }
     .ed-section-laws { background: #fff; border: 0; }
