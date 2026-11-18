@@ -61,7 +61,7 @@
     var DOCS = {
         offer: { n: 1, short: '오퍼시트', en: 'OFFER SHEET', ko: '오퍼시트(물품 매도 청약서)', file: 'offer-sheet' },
         pi: { n: 2, short: 'PI', en: 'PROFORMA INVOICE', ko: '견적송장(Proforma Invoice)', file: 'proforma-invoice' },
-        po: { n: 3, short: 'PO', en: 'PURCHASE ORDER', ko: '구매주문서(Purchase Order)', file: 'purchase-order' },
+        po: { n: 4, short: 'PO', en: 'PURCHASE ORDER', ko: '구매주문서(Purchase Order)', file: 'purchase-order' },
         ci: { n: 5, short: 'CI', en: 'COMMERCIAL INVOICE', ko: '상업송장(Commercial Invoice)', file: 'commercial-invoice' },
         pl: { n: 6, short: 'P/L', en: 'PACKING LIST', ko: '포장명세서(Packing List)', file: 'packing-list' },
         advice: { n: 7, short: '선적통지', en: 'SHIPPING ADVICE', ko: '선적통지(Shipping Advice)', file: 'shipping-advice' }
