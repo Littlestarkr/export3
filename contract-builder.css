@@ -65,6 +65,10 @@ mark.cb-ph { background: #fff1c2; color: #6b4e00; padding: 0 3px; border-radius:
 .cb-alert { margin: 0 0 12px; padding: 10px 14px; background: #fdecea; border: 1px solid #f2b8b0; border-radius: 8px; color: #8f2318; font-size: .9rem; line-height: 1.6; }
 .cb-alert[hidden] { display: none; }
 
+/* 수출서류 작성기에서 넘겨받은 값 안내 */
+.cb-handoff { max-width: 980px; margin: 18px auto 0; padding: 10px 14px; background: #eef4ee; border: 1px solid #c6dcc6; border-radius: 8px; color: #2f4a2f; font-size: .9rem; line-height: 1.6; }
+.cb-handoff i { margin-right: 4px; color: #2e7d32; }
+
 /* 품목 */
 .cb-items { display: grid; gap: 10px; }
 .cb-item { display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.1fr) 40px; gap: 8px; align-items: end; padding: 12px; background: #f7f8fa; border-radius: 10px; }
