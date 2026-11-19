@@ -250,8 +250,8 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
 .ed-fraud-where a:hover { border-color: #c0392b; background: #fdecea; }
 .ed-hero .ed-hero-fraud { border-color: #e8a29a; color: #fff; }
 .ed-hero .ed-hero-fraud i { color: #f3b1a8; margin-right: 4px; }
-.ed-hero .ed-hero-make { border-color: var(--secondary-color); color: #fff; }
-.ed-hero .ed-hero-make i { color: var(--secondary-color); margin-right: 4px; }
+.ed-hero .ed-hero-make { border-color: var(--secondary-color); }
+.ed-hero .ed-hero-make i { margin-right: 4px; }
 
 /* ── 한 장짜리 간이계약서 ── */
 .ed-compact { margin-top: 26px; padding: 22px 24px; background: #fff; border: 1px solid #e6e1d4; border-top: 4px solid var(--primary-color); border-radius: 10px; }
