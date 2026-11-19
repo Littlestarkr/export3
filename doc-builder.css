@@ -101,7 +101,11 @@
 .db-pk-st.is-ok { background: #e6f2e6; color: #2e7d32; }
 .db-pk-st.is-blank { background: #fff1c2; color: #6b4e00; }
 .db-pk-st.is-err { background: #fdecea; color: #a5281b; }
-.db-pk-go i { margin-left: 2px; }
+.db-pk-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 6px; }
+.db-pk-foot .db-pk-st { margin-top: 0; }
+.db-pk-go { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; padding: 5px 12px; border-radius: 999px; background: var(--primary-color); color: #fff; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+.db-pick-list button:hover .db-pk-go, .db-pick-list button:focus-visible .db-pk-go { background: var(--secondary-color); color: var(--primary-color); }
+.db-pk-b { flex: 1; }
 .db-pick-list li:has([data-pick="contract"]) button { border-style: dashed; background: #fbfaf6; }
 .db-pick-all { grid-column: 1 / -1; }
 .db-pick-all .db-pk-n { background: var(--secondary-color); color: var(--primary-color); }

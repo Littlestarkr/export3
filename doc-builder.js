@@ -913,6 +913,8 @@
             if (on) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
         });
     }
+    // 오류 안내는 목록 아래에 뜨므로(휴대폰에서는 화면 밖) 그 자리로 옮겨 보여 준다
+    function showPickMsg() { $('dbPickMsg').scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'center' }); }
     genBtn.addEventListener('click', function () {
         if (!lastCtx) return;
         openPick(true);
@@ -925,7 +927,7 @@
         if (d === 'contract') { $('dbToContract').click(); return; }
         if (d === 'all') {
             var bad = DOC_KEYS.filter(function (x) { return lastCtx.k.warns.some(function (w) { return w.lv === 'error' && (!w.docs || w.docs.indexOf(x) >= 0); }); });
-            if (bad.length) { $('dbPickMsg').textContent = '입력 오류가 있는 서류(' + bad.map(function (x) { return DOCS[x].short; }).join('·') + ')가 있어 한 파일로 묶을 수 없습니다. ‘조건·서류 점검’에서 고친 뒤 다시 누르세요.'; return; }
+            if (bad.length) { $('dbPickMsg').textContent = '입력 오류가 있는 서류(' + bad.map(function (x) { return DOCS[x].short; }).join('·') + ')가 있어 한 파일로 묶을 수 없습니다. ‘조건·서류 점검’에서 고친 뒤 다시 누르세요.'; showPickMsg(); return; }
             saveDocx('export-documents-DRAFT-' + fileStamp(), DOC_KEYS, 'Export documents DRAFT');
             track('doc_draft_export', { format: 'all', doc_type: 'all' });
             $('dbPickMsg').textContent = '6종을 한 Word 파일로 내려받았습니다. 파일은 참고용 초안입니다.';
@@ -935,6 +937,7 @@
         if (errorsOf(lastCtx).length) {
             $('dbPickMsg').textContent = DOCS[d].short + ' 초안에 입력 오류 ' + errorsOf(lastCtx).length + '건이 있습니다. ‘조건·서류 점검’에서 고친 뒤 다시 고르세요.';
             renderPickStatus(lastCtx);
+            showPickMsg();
             return;
         }
         generated = true;
