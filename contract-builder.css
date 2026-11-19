@@ -88,7 +88,13 @@ mark.cb-ph { background: #fff1c2; color: #6b4e00; padding: 0 3px; border-radius:
 .cb-nav .pf-btn:disabled { opacity: .4; cursor: default; }
 .cb-nav-pos { font-size: .9rem; color: #777; }
 .cb-next { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
-.cb-next:hover { color: var(--primary-color); }
+.cb-next:hover { color: var(--primary-color); background: #fff; }
+/* 휴대폰은 누른 뒤에도 hover가 남아 '다음' 글자가 배경색과 같아지거나 '이전'이 채워진 채 남으므로 hover 모양을 끈다 */
+@media (hover: none) {
+    .cb-nav .pf-btn:hover { background: #fff; color: var(--primary-color); }
+    .cb-nav .cb-next:hover { background: var(--primary-color); color: #fff; }
+}
+.cb-nav .pf-btn:disabled:hover { background: #fff; color: var(--primary-color); }
 
 /* 점검 사이드 */
 .cb-side { position: sticky; top: 90px; padding: 18px 18px 16px; background: #fff; border: 1px solid #e3dccb; border-radius: 12px; max-height: calc(100vh - 110px); overflow: auto; }
