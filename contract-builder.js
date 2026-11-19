@@ -15,6 +15,12 @@
     var COPY_NOTE = '\n\n※ 참고용 예시 문구(초안)입니다. 법률 자문이 아니며, 사용 전 전문가 확인이 필요합니다. (출처: ' + SITE + ')';
     var DOC_HEAD_KO = '초안 DRAFT · 참고용 · 법률 자문 아님';
     var DOC_WARN = '이 문서는 입력한 조건에 맞춰 예시 조항을 자동으로 조합한 참고용 계약서 초안입니다. 완성된 계약서가 아니며 법률 자문이 아닙니다. 서명·사용 전에 반드시 변호사 등 전문가 검토를 받으세요. [ ] 표시는 채워야 할 빈칸, 【확인 필요】 표시는 효력이 나라·사안마다 달라 확실하지 않은 조항입니다.';
+    /* 영문만(lang=en) 출력용: 면책·초안 표시도 영문으로 바꿔 한글이 남지 않게 한다 */
+    var DOC_HEAD_EN = 'DRAFT · FOR REFERENCE ONLY · NOT LEGAL ADVICE';
+    var DOC_WARN_EN = 'This document is a reference draft that automatically combines sample clauses according to the conditions entered. It is not a finished contract and does not constitute legal advice. Before signing or using it, have it reviewed by a lawyer or other qualified professional. [ ] marks blanks to be completed; [TO BE CONFIRMED] marks clauses whose effect may vary by country or case.';
+    var DOC_WARN_END_EN = 'This draft is for reference only. Use it only after adapting it to the transaction and obtaining professional review. The site operator accepts no liability for any loss arising from using this draft as is (the extent to which this statement is effective may also vary by country or case).';
+    var FOOT_KO = '초안 DRAFT · 참고용 · 법률 자문 아님 · 서명 전 전문가 검토 필요 · ' + SITE;
+    var FOOT_EN = 'DRAFT · For reference only · Not legal advice · Professional review required before signing · ' + SITE;
     var DOC_WARN_END = '이 초안은 참고용이며, 거래에 맞게 고치고 전문가 검토를 받은 뒤에만 사용하세요. 이 초안을 그대로 써서 생긴 손해에 대해 사이트 운영자는 책임을 지지 않습니다(이 문장의 효력 범위도 나라·사안에 따라 다를 수 있습니다).';
 
     var SEA_ONLY = ['FAS', 'FOB', 'CFR', 'CIF'];
@@ -402,20 +408,22 @@
         var titleKo = compact ? '간이 물품매매계약서' : '물품매매계약서';
         var noLine = (showEn ? 'Contract No.: ' : '계약번호: ') + fill('{no}', V, showEn ? 'en' : 'ko', out, cnt);
         var esc0 = function (x) { return x; };
+        var enOnly = showEn && !showKo;
+        var dHead = enOnly ? DOC_HEAD_EN : DOC_HEAD_KO, dWarn = enOnly ? DOC_WARN_EN : DOC_WARN, dWarnEnd = enOnly ? DOC_WARN_END_EN : DOC_WARN_END;
         var L = showEn && showKo ? { s: 'SELLER / 매도인', b: 'BUYER / 매수인', sig: 'Signature / 서명', nt: 'Name / Title', dt: 'Date / 날짜' } : showEn ? { s: 'SELLER', b: 'BUYER', sig: 'Signature', nt: 'Name / Title', dt: 'Date' } : { s: '매도인', b: '매수인', sig: '서명', nt: '성명·직위', dt: '날짜' };
         var parts = [];
         if (H) {
-            parts.push('<div class="cb-doc-warn" role="note"><strong>꼭 읽어 주세요 · ' + DOC_HEAD_KO + '</strong><br>' + esc(DOC_WARN) + '<br><small>작성: ' + esc(stamp) + ' · ' + SITE + '</small></div>');
-            parts.push('<p class="cb-doc-sub"><span class="cb-doc-stamp">초안 DRAFT</span></p>');
+            parts.push('<div class="cb-doc-warn" role="note"><strong>' + (enOnly ? 'IMPORTANT · ' : '꼭 읽어 주세요 · ') + dHead + '</strong><br>' + esc(dWarn) + '<br><small>' + (enOnly ? 'Prepared: ' : '작성: ') + esc(stamp) + ' · ' + SITE + '</small></div>');
+            parts.push('<p class="cb-doc-sub"><span class="cb-doc-stamp">' + (enOnly ? 'DRAFT' : '초안 DRAFT') + '</span></p>');
             parts.push('<h4>' + (showEn ? titleEn : titleKo) + '</h4>');
             parts.push('<p class="cb-doc-sub">' + (showEn && showKo ? titleKo + '(초안) · ' : showEn ? 'DRAFT · ' : '(초안) · ') + esc0(noLine) + '</p>');
         } else {
-            parts.push('==================== ' + DOC_HEAD_KO + ' ====================');
-            parts.push(DOC_WARN);
-            parts.push('작성: ' + stamp + ' · ' + SITE);
+            parts.push('==================== ' + dHead + ' ====================');
+            parts.push(dWarn);
+            parts.push((enOnly ? 'Prepared: ' : '작성: ') + stamp + ' · ' + SITE);
             parts.push('==========================================================================');
             parts.push('');
-            parts.push((showEn ? titleEn : titleKo) + '  [DRAFT / 초안]' + (showEn && showKo ? '\n' + titleKo + '(초안)' : ''));
+            parts.push((showEn ? titleEn : titleKo) + (enOnly ? '  [DRAFT]' : '  [DRAFT / 초안]') + (showEn && showKo ? '\n' + titleKo + '(초안)' : ''));
             parts.push(noLine);
             parts.push('');
         }
@@ -432,7 +440,7 @@
         if (!H) parts.push('');
         model.arts.forEach(function (a, i) {
             var n = i + 1;
-            var chk = a.check ? (H ? ' <span class="cb-badge cb-badge-chk">확인 필요</span>' : ' 【확인 필요】') : '';
+            var chk = a.check ? (enOnly ? (H ? ' <span class="cb-badge cb-badge-chk">To be confirmed</span>' : ' [TO BE CONFIRMED]') : (H ? ' <span class="cb-badge cb-badge-chk">확인 필요</span>' : ' 【확인 필요】')) : '';
             var head = showEn ? 'Article ' + n + '. ' + a.titleEn + (showKo ? ' (제' + n + '조 ' + a.titleKo + ')' : '') : '제' + n + '조 ' + a.titleKo;
             parts.push(H ? '<h5>' + esc(head) + chk + '</h5>' : head + chk);
             a.paras.forEach(function (p) {
@@ -453,15 +461,15 @@
         if (H) {
             parts.push('<div class="cb-sign"><div><p><strong>' + L.s + '</strong></p><p>' + sellerName + '</p><p class="cb-sign-line">' + L.sig + '</p><p>' + L.nt + ': ' + sRep + '</p><p>' + L.dt + ':</p></div>' +
                 '<div><p><strong>' + L.b + '</strong></p><p>' + buyerName + '</p><p class="cb-sign-line">' + L.sig + '</p><p>' + L.nt + ': ' + bRep + '</p><p>' + L.dt + ':</p></div></div>');
-            parts.push('<div class="cb-doc-warn cb-doc-warn-end" role="note"><strong>' + DOC_HEAD_KO + '</strong><br>' + esc(DOC_WARN_END) + '</div>');
+            parts.push('<div class="cb-doc-warn cb-doc-warn-end" role="note"><strong>' + dHead + '</strong><br>' + esc(dWarnEnd) + '</div>');
         } else {
             parts.push('');
             parts.push(L.s + ': ' + sellerName + '\n' + L.sig + ': ____________________\n' + L.nt + ': ' + sRep + '\n' + L.dt + ':');
             parts.push('');
             parts.push(L.b + ': ' + buyerName + '\n' + L.sig + ': ____________________\n' + L.nt + ': ' + bRep + '\n' + L.dt + ':');
             parts.push('');
-            parts.push('==================== ' + DOC_HEAD_KO + ' ====================');
-            parts.push(DOC_WARN_END);
+            parts.push('==================== ' + dHead + ' ====================');
+            parts.push(dWarnEnd);
             parts.push('(' + SITE + ')');
         }
         return parts.join(H ? '' : '\n');
@@ -579,7 +587,26 @@
         $('cbGenMsg').textContent = msg;
         var show = generated && ok && !errs.length;
         $('cbOut').hidden = !show;
-        if (show) $('cbDoc').innerHTML = renderDoc(model, 'html', null);
+        if (show) {
+            var lg = model.s.lang || 'both';
+            var doc = $('cbDoc');
+            doc.innerHTML = renderDoc(model, 'html', null);
+            doc.setAttribute('lang', lg === 'ko' ? 'ko' : 'en');
+            Array.prototype.forEach.call(document.querySelectorAll('[data-out-lang]'), function (b) {
+                var on = b.getAttribute('data-out-lang') === lg;
+                b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            var wm = document.querySelector('.cb-print-wm'), ft = document.querySelector('.cb-print-foot');
+            if (wm) wm.textContent = lg === 'en' ? 'DRAFT' : '초안 DRAFT';
+            if (ft) ft.textContent = lg === 'en' ? FOOT_EN : FOOT_KO;
+            // 영문만인데 입력값에 한글이 있으면 알려 준다(영문 계약서에 한글이 섞이지 않게)
+            var hn = $('cbHangul');
+            if (hn) {
+                var hits = lg === 'en' ? (renderDoc(model, 'text', null).match(/[\u3131-\u318E\uAC00-\uD7A3]+/g) || []) : [];
+                hn.hidden = !hits.length;
+                hn.textContent = hits.length ? '영문 초안에 한글 입력값이 ' + hits.length + '곳 남아 있습니다(예: ' + hits.filter(function (w, i) { return hits.indexOf(w) === i; }).slice(0, 3).join(', ') + '). 위 입력 칸을 영문으로 고치세요.' : '';
+            }
+        }
     }
     genBtn.addEventListener('click', function () {
         if (!lastModel) return;
@@ -628,13 +655,22 @@
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     }
+    // 출력 언어 바꾸기: 1단계 '초안 언어'(#cbLang)와 같은 값을 쓴다
+    document.querySelector('.cb-langbar').addEventListener('click', function (e) {
+        var lb = e.target.closest('[data-out-lang]');
+        if (!lb) return;
+        var sel = $('cbLang');
+        sel.value = lb.getAttribute('data-out-lang');
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        track('contract_draft_lang', { doc_lang: sel.value });
+    });
     document.querySelector('.cb-tools').addEventListener('click', function (e) {
         var b = e.target.closest('[data-act]');
         if (!b || !lastModel) return;
         var act = b.getAttribute('data-act');
         if (act === 'copy') copyText(renderDoc(lastModel, 'text', null), b);
         else if (act === 'txt') download('sales-contract-DRAFT-' + fileStamp() + '.txt', 'text/plain;charset=utf-8', '﻿' + renderDoc(lastModel, 'text', null).replace(/\n/g, '\r\n'));
-        else if (act === 'doc') download('sales-contract-DRAFT-' + fileStamp() + '.docx', window.DocxExport.MIME, window.DocxExport.build([renderDoc(lastModel, 'html', null)], { title: 'Sales Contract DRAFT', footer: '초안 DRAFT · 참고용 · 법률 자문 아님 · 서명 전 전문가 검토 필요 · www.littlestar.co.kr/contract-builder.html' })); // 진짜 Word(.docx)
+        else if (act === 'doc') download('sales-contract-DRAFT-' + fileStamp() + '.docx', window.DocxExport.MIME, window.DocxExport.build([renderDoc(lastModel, 'html', null)], { title: 'Sales Contract DRAFT', footer: lastModel.s.lang === 'en' ? FOOT_EN : FOOT_KO, stamp: lastModel.s.lang === 'en' ? 'DRAFT' : '초안 DRAFT' })); // 진짜 Word(.docx)
         else if (act === 'print') window.print();
         track('contract_draft_export', { format: act });
     });

@@ -184,12 +184,12 @@
         this.out.push(para('', { after: 60 })); // 표 바로 뒤 간격(표가 연달아 붙지 않게)
     };
 
-    function bodyXml(htmlParts) {
+    function bodyXml(htmlParts, stamp) {
         var c = new Conv();
         htmlParts.forEach(function (h, i) {
             var doc = new DOMParser().parseFromString('<!DOCTYPE html><html><body><div id="__r">' + h + '</div></body></html>', 'text/html');
             if (i) c.pendingBreak = true;
-            c.addRun('초안 DRAFT', { color: RED, bold: true, size: 48 }, { align: 'center', after: 60 });
+            c.addRun(stamp || '초안 DRAFT', { color: RED, bold: true, size: 48 }, { align: 'center', after: 60 });
             c.flush();
             c.walk(doc.getElementById('__r'), { size: 20 }, {});
             c.flush();
@@ -269,7 +269,7 @@
 
     var MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     /* htmlParts: 화면 초안 HTML 조각 배열(서류 하나에 하나, 둘째부터 새 쪽)
-     * opts: { title, footer } → Blob(.docx) */
+     * opts: { title, footer, stamp(첫머리 큰 표시, 기본 '초안 DRAFT') } → Blob(.docx) */
     function build(htmlParts, opts) {
         opts = opts || {};
         var enc = new TextEncoder();
@@ -277,7 +277,7 @@
             ['[Content_Types].xml', CT],
             ['_rels/.rels', RELS],
             ['docProps/core.xml', coreXml(opts.title || 'DRAFT')],
-            ['word/document.xml', documentXml(bodyXml(htmlParts))],
+            ['word/document.xml', documentXml(bodyXml(htmlParts, opts.stamp))],
             ['word/styles.xml', stylesXml()],
             ['word/footer1.xml', footerXml(opts.footer || '초안 DRAFT')],
             ['word/_rels/document.xml.rels', DOC_RELS]
