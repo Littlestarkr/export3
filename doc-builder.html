@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="styles.css?v=28">
     <link rel="stylesheet" href="policy-finance.css?v=21">
     <link rel="stylesheet" href="export-docs.css?v=5">
-    <link rel="stylesheet" href="contract-builder.css?v=2">
+    <link rel="stylesheet" href="contract-builder.css?v=3">
     <link rel="stylesheet" href="doc-builder.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -516,6 +516,14 @@
 
             <div class="cb-out" id="cbOut" hidden>
                 <p class="db-out-t cb-noprint">지금 보는 초안: <strong id="dbOutName"></strong> <button type="button" class="pf-btn" id="dbRepick"><i class="fa-solid fa-rotate" aria-hidden="true"></i> 다른 서류 고르기</button></p>
+                <div class="cb-langbar cb-noprint" role="group" aria-label="초안 출력 언어">
+                    <span class="cb-langbar-t">출력 언어</span>
+                    <button type="button" class="cb-lang-btn" data-out-lang="en" aria-pressed="false">영문만<small>바이어 송부용</small></button>
+                    <button type="button" class="cb-lang-btn" data-out-lang="both" aria-pressed="false">영문 + 국문<small>내부 검토용</small></button>
+                    <button type="button" class="cb-lang-btn" data-out-lang="ko" aria-pressed="false">국문만<small>참고 번역</small></button>
+                    <p class="cb-langbar-note">고른 언어 그대로 복사·.txt·Word(.docx)·인쇄·6종 한 파일에 나옵니다. ‘영문만’은 면책·초안 표시도 영문으로 바뀝니다.</p>
+                    <p class="cb-hangul" id="cbHangul" role="status" hidden></p>
+                </div>
                 <div class="cb-tools cb-noprint">
                     <button type="button" class="pf-btn" data-act="copy"><i class="fa-regular fa-copy" aria-hidden="true"></i> 전체 복사</button>
                     <button type="button" class="pf-btn" data-act="txt"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> 텍스트(.txt)</button>
@@ -582,7 +590,7 @@
     <script src="back-nav.js?v=5"></script>
     <script src="doc-templates.js?v=2"></script>
     <script src="docx-export.js?v=2"></script>
-    <script src="doc-builder.js?v=3"></script>
+    <script src="doc-builder.js?v=4"></script>
 </body>
 
 </html>
