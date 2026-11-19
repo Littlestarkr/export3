@@ -19,6 +19,12 @@
     var DOC_HEAD_KO = '초안 DRAFT · 참고용 · 법률·통관 자문 아님';
     var DOC_WARN = '이 문서는 입력한 값을 정해진 서식에 자동으로 채운 참고용 초안입니다. 완성된 서류가 아니며 법률·통관 자문이 아닙니다. 보내기 전에 숫자·계좌·서류 조건을 직접 확인하고, 필요하면 관세사 등 전문가 검토를 받으세요. [ ] 표시는 채워야 할 빈칸입니다.';
     var DOC_WARN_END = '이 초안은 참고용이며, 실제 거래·화물·운송서류와 대조해 고친 뒤에만 사용하세요. 이 초안을 그대로 써서 생긴 손해에 대해 사이트 운영자는 책임을 지지 않습니다(이 문장의 효력 범위도 나라·사안에 따라 다를 수 있습니다).';
+    /* 영문만(lang=en) 출력용: 면책·초안 표시도 영문으로 바꿔 한글이 남지 않게 한다(계약서 작성기와 같은 기준) */
+    var DOC_HEAD_EN = 'DRAFT · FOR REFERENCE ONLY · NOT LEGAL OR CUSTOMS ADVICE';
+    var DOC_WARN_EN = 'This document is a reference draft that automatically fills the values entered into a preset form. It is not a finished document and does not constitute legal or customs advice. Before sending it, check all figures, bank details and document terms yourself and, where necessary, have it reviewed by a customs broker or other qualified professional. [ ] marks blanks to be completed.';
+    var DOC_WARN_END_EN = 'This draft is for reference only. Use it only after checking and correcting it against the actual transaction, cargo and transport documents. The site operator accepts no liability for any loss arising from using this draft as is (the extent to which this statement is effective may also vary by country or case).';
+    var FOOT_KO = '초안 DRAFT · 참고용 · 법률·통관 자문 아님 · 보내기 전 직접 확인 필요 · ' + SITE;
+    var FOOT_EN = 'DRAFT · For reference only · Not legal or customs advice · Check before sending · ' + SITE;
 
     var SEA_ONLY = ['FAS', 'FOB', 'CFR', 'CIF'];
     var F_TERMS = ['EXW', 'FCA', 'FAS', 'FOB'];
@@ -485,6 +491,8 @@
         var m = model(doc, s, k);
         var showEn = lang !== 'ko', showKo = lang !== 'en', both2 = showEn && showKo;
         var H = out === 'html', vl = showEn ? 'en' : 'ko';
+        var enOnly = showEn && !showKo;
+        var dHead = enOnly ? DOC_HEAD_EN : DOC_HEAD_KO, dWarn = enOnly ? DOC_WARN_EN : DOC_WARN, dWarnEnd = enOnly ? DOC_WARN_END_EN : DOC_WARN_END;
         var cur = k.cur;
         var parts = [];
         function f(tpl, c) { return fill(tpl, V, vl, out, c === undefined ? cnt : c); }
@@ -518,17 +526,17 @@
 
         // 머리
         if (H) {
-            parts.push('<div class="cb-doc-warn" role="note"><strong>꼭 읽어 주세요 · ' + DOC_HEAD_KO + '</strong><br>' + esc(DOC_WARN) + '<br><small>작성: ' + esc(nowStamp()) + ' · ' + SITE + '</small></div>');
-            parts.push('<p class="cb-doc-sub"><span class="cb-doc-stamp">초안 DRAFT</span></p>');
+            parts.push('<div class="cb-doc-warn" role="note"><strong>' + (enOnly ? 'IMPORTANT · ' : '꼭 읽어 주세요 · ') + dHead + '</strong><br>' + esc(dWarn) + '<br><small>' + (enOnly ? 'Prepared: ' : '작성: ') + esc(nowStamp()) + ' · ' + SITE + '</small></div>');
+            parts.push('<p class="cb-doc-sub"><span class="cb-doc-stamp">' + (enOnly ? 'DRAFT' : '초안 DRAFT') + '</span></p>');
             parts.push('<h4>' + esc(showEn ? m.titleEn : m.titleKo) + '</h4>');
             if (both2) parts.push('<p class="cb-doc-sub">' + esc(m.titleKo) + '(초안)</p>');
         } else {
-            parts.push('==================== ' + DOC_HEAD_KO + ' ====================');
-            parts.push(DOC_WARN);
-            parts.push('작성: ' + nowStamp() + ' · ' + SITE);
+            parts.push('==================== ' + dHead + ' ====================');
+            parts.push(dWarn);
+            parts.push((enOnly ? 'Prepared: ' : '작성: ') + nowStamp() + ' · ' + SITE);
             parts.push('==========================================================================');
             parts.push('');
-            parts.push((showEn ? m.titleEn : m.titleKo) + '  [DRAFT / 초안]' + (both2 ? '\n' + m.titleKo + '(초안)' : ''));
+            parts.push((showEn ? m.titleEn : m.titleKo) + (enOnly ? '  [DRAFT]' : '  [DRAFT / 초안]') + (both2 ? '\n' + m.titleKo + '(초안)' : ''));
             parts.push('');
         }
         // 번호·날짜
@@ -642,12 +650,12 @@
             parts.push('<div class="cb-sign db-sign' + (m.sign.length === 1 ? ' db-sign-1' : '') + '">' + m.sign.map(function (g) {
                 return '<div><p><strong>' + lbl(g.en, g.ko) + '</strong></p><p>' + f(g.name, null) + '</p><p class="cb-sign-line">' + lbl('Signature', '서명') + '</p><p>' + lbl('Name / Title', '성명·직위') + ': ' + f(g.rep) + '</p></div>';
             }).join('') + '</div>');
-            parts.push('<div class="cb-doc-warn cb-doc-warn-end" role="note"><strong>' + DOC_HEAD_KO + '</strong><br>' + esc(DOC_WARN_END) + '</div>');
+            parts.push('<div class="cb-doc-warn cb-doc-warn-end" role="note"><strong>' + dHead + '</strong><br>' + esc(dWarnEnd) + '</div>');
         } else {
             parts.push('');
             m.sign.forEach(function (g) { parts.push(lbl(g.en, g.ko) + ': ' + f(g.name, null) + '\n' + lbl('Signature', '서명') + ': ____________________\n' + lbl('Name / Title', '성명·직위') + ': ' + f(g.rep)); parts.push(''); });
-            parts.push('==================== ' + DOC_HEAD_KO + ' ====================');
-            parts.push(DOC_WARN_END);
+            parts.push('==================== ' + dHead + ' ====================');
+            parts.push(dWarnEnd);
             parts.push('(' + SITE + ')');
         }
         return parts.join(H ? '' : '\n');
@@ -859,7 +867,26 @@
         $('cbGenMsg').textContent = msg;
         var show = generated && ok && !errs.length;
         $('cbOut').hidden = !show;
-        if (show) { $('cbDoc').innerHTML = renderDoc(ctx.s.doc, ctx, 'html', null); $('dbOutName').textContent = DOCS[ctx.s.doc].ko; }
+        if (show) {
+            var lg = ctx.s.lang || 'both', doc = $('cbDoc');
+            doc.innerHTML = renderDoc(ctx.s.doc, ctx, 'html', null);
+            doc.setAttribute('lang', lg === 'ko' ? 'ko' : 'en');
+            $('dbOutName').textContent = DOCS[ctx.s.doc].ko;
+            Array.prototype.forEach.call(document.querySelectorAll('[data-out-lang]'), function (b) {
+                var on = b.getAttribute('data-out-lang') === lg;
+                b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            var wm = document.querySelector('.cb-print-wm'), ft = document.querySelector('.cb-print-foot');
+            if (wm) wm.textContent = lg === 'en' ? 'DRAFT' : '초안 DRAFT';
+            if (ft) ft.textContent = lg === 'en' ? FOOT_EN : FOOT_KO;
+            // 영문만인데 입력값에 한글이 있으면 알려 준다(바이어에게 보낼 서류에 한글이 섞이지 않게). 6종 모두 살핀다.
+            var hn = $('cbHangul');
+            if (hn) {
+                var hits = lg === 'en' ? (DOC_KEYS.map(function (x) { return renderDoc(x, ctx, 'text', null); }).join('\n').match(/[\u3131-\u318E\uAC00-\uD7A3]+/g) || []) : [];
+                hn.hidden = !hits.length;
+                hn.textContent = hits.length ? '영문 초안(6종 서류 기준)에 한글 입력값이 ' + hits.length + '곳 남아 있습니다(예: ' + hits.filter(function (w, i) { return hits.indexOf(w) === i; }).slice(0, 3).join(', ') + '). 위 입력 칸을 영문으로 고치세요.' : '';
+            }
+        }
         if (!pick.hidden) renderPickStatus(ctx);
     }
     // '초안 만들기' → 만들 서류부터 고른다
@@ -958,10 +985,19 @@
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     }
-    var DOCX_FOOT = '초안 DRAFT · 참고용 · 법률·통관 자문 아님 · 보내기 전 직접 확인 필요 · www.littlestar.co.kr/doc-builder.html';
-    function saveDocx(name, keys, title) { // 진짜 Word(.docx) — 휴대폰 뷰어에서도 열린다
-        download(name + '.docx', window.DocxExport.MIME, window.DocxExport.build(keys.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), { title: title, footer: DOCX_FOOT }));
+    function saveDocx(name, keys, title) { // 진짜 Word(.docx) — 휴대폰 뷰어에서도 열린다. 영문만이면 꼬리말·첫머리 표시도 영문
+        var en = lastCtx.s.lang === 'en';
+        download(name + '.docx', window.DocxExport.MIME, window.DocxExport.build(keys.map(function (x) { return renderDoc(x, lastCtx, 'html', null); }), { title: title, footer: en ? FOOT_EN : FOOT_KO, stamp: en ? 'DRAFT' : '초안 DRAFT' }));
     }
+    // 출력 언어 바꾸기: 1단계 '초안 언어'(#cbLang)와 같은 값을 쓴다
+    document.querySelector('.cb-langbar').addEventListener('click', function (e) {
+        var lb = e.target.closest('[data-out-lang]');
+        if (!lb) return;
+        var sel = $('cbLang');
+        sel.value = lb.getAttribute('data-out-lang');
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        track('doc_draft_lang', { doc_lang: sel.value });
+    });
     document.querySelector('.cb-tools').addEventListener('click', function (e) {
         var b = e.target.closest('[data-act]');
         if (!b || !lastCtx) return;
