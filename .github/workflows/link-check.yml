@@ -9,6 +9,9 @@ on:
   schedule:
     - cron: '0 0 * * 1'   # 월요일 00:00 UTC = 09:00 KST
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/link-check-ok.txt', '.github/scripts/check_links.py']   # 확인 목록·점검기를 고치면 바로 다시 점검
 
 permissions:
   contents: read
