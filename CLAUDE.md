@@ -100,3 +100,5 @@ There is no linter or test suite configured for this repo.
 - **2026-11-20쯤**: 구글 서치콘솔 URL 검사에서 홈(`https://www.littlestar.co.kr/`)의 '구글 선택 표준 URL'이 https로 바뀌었는지 확인한다. 2026-11-08 현재 구글 검색 결과에서 홈만 `http://` 주소와 옛 'H' 아이콘으로 나오고, 나머지 페이지는 https다. 안 바뀌면 색인 생성 요청을 다시 한다.
 - **12월 초(위 점검 2주쯤 뒤)**: 키워드 다섯 개(무역보험 컨설팅·환변동보험 가입·단기수출보험 상담·수출신용보증 상담·수출자금조달)를 네이버·구글에서 작가님이 직접 검색해 순위를 알려 주면 함께 검토한다(Claude의 검색 도구는 한국어 순위를 재지 못한다). 2027년 목표: 무역보험 컨설턴트 3위·수출금융 10위·수출 컨설턴트 50위.
 - 앱 설치: 카톡 → '외부 브라우저로 열기' → 설치까지 폰에서 확인했다. 외부 브라우저로 열 때 `#install`로 안내문이 자동으로 펼쳐지는 동작은 PC에서만 시험했고 폰 재확인은 아직이다.
+
+**배포 방식(`.github/workflows/pages.yml`, 2026-11-21 추가).** Settings > Pages > Source를 'GitHub Actions'로 바꾸면 이 워크플로가 사이트를 배포한다: 이 저장소 전체를 루트에, `Littlestarkr/lawsearch`(법령·무역통계·해외인증 길잡이)를 `/lawsearch/`에, `Littlestarkr/claude-code-happyoh`의 PDF 도구 파일(`pdf-merge.html`·`pdf-tool-*`·`pdf-tool.webmanifest`·글꼴)만 `/pdf/`에 묶어 올린다. main 푸시·3시간마다 예약 실행·Actions 탭 수동 실행으로 돈다. 다른 두 저장소를 고친 뒤 바로 반영하려면 수동 실행한다. Source가 'Deploy from a branch'인 동안 이 워크플로가 실패하든 배포되든, 올라가는 내용은 지금 사이트 + 두 폴더라 해가 없다. 사이트 안 링크를 새 주소로 바꾸는 일은 새 주소가 열리는 것을 확인한 뒤 따로 한다.
