@@ -1,0 +1,77 @@
+# www.littlestar.co.kr 배포 (GitHub Pages, 'GitHub Actions' 방식)
+# - 이 저장소(export3) 전체를 사이트 루트에 올리고,
+# - 법령 길잡이 저장소(Littlestarkr/lawsearch)를 /lawsearch/ 에 (무역통계 /lawsearch/trade/, 해외인증 /lawsearch/cert/),
+# - PDF 도구(Littlestarkr/claude-code-happyoh의 pdf-merge.html과 그 파일들)를 /pdf/ 에 함께 올린다.
+# 다른 두 저장소를 고친 뒤에는 아래 예약 실행(3시간마다)을 기다리거나,
+# Actions 탭 > 'Deploy site' > 'Run workflow'를 눌러 바로 반영한다.
+# 이 파일이 동작하려면 저장소 Settings > Pages > Source가 'GitHub Actions'여야 한다.
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */3 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: export3 가져오기
+        uses: actions/checkout@v4
+        with:
+          path: export3
+
+      - name: 법령 길잡이(lawsearch) 가져오기
+        uses: actions/checkout@v4
+        with:
+          repository: Littlestarkr/lawsearch
+          path: lawsearch
+
+      - name: PDF 도구(claude-code-happyoh) 가져오기
+        uses: actions/checkout@v4
+        with:
+          repository: Littlestarkr/claude-code-happyoh
+          path: pdftool
+
+      - name: 사이트 묶기
+        run: |
+          set -euo pipefail
+          mkdir -p _site/lawsearch _site/pdf
+          # 홈 사이트: 지금 브랜치 배포와 같은 파일 (.git·.github만 뺀다)
+          rsync -a --exclude '.git' --exclude '.github' export3/ _site/
+          # 법령 길잡이: 화면에 쓰는 파일만 (시험 파일·중계 서버 코드·설명서 제외)
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'tests' \
+            --exclude 'worker.js' --exclude 'README.md' lawsearch/ _site/lawsearch/
+          # PDF 도구: pdf-merge.html이 쓰는 파일만 (같은 저장소의 다른 페이지는 올리지 않는다)
+          cp pdftool/pdf-merge.html pdftool/pdf-tool-* pdftool/pdf-tool.webmanifest pdftool/fontkit.umd.min.js \
+             pdftool/noto-sans-kr-korean-400.ttf _site/pdf/
+          test -f _site/index.html && test -f _site/CNAME
+          test -f _site/lawsearch/index.html && test -f _site/lawsearch/trade/index.html && test -f _site/lawsearch/cert/index.html
+          test -f _site/pdf/pdf-merge.html && test -f _site/pdf/pdf-tool.webmanifest && test -f _site/pdf/pdf-tool-sw.js
+          echo "묶은 파일 수: $(find _site -type f | wc -l)"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
