@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            // 상담 요청 내용은 선택 항목이다(동의문 '상담 요청 내용 (선택)'과 같게).
 
             const privacyAgreement = document.getElementById('privacy-agreement').checked;
 
             // Google Apps Script Web App URL
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwEGwrbz9cz7T5frNPEV5eaKwmNg-FONevt0blmIJfqow9apbYj7Mwi8NRWQGa_xSZb/exec';
 
-            if (company && name && phone && email && message && privacyAgreement) {
+            if (company.trim() && name.trim() && phone.trim() && email.trim() && privacyAgreement) {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerText;
 
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitBtn.innerText = originalBtnText;
                     });
             } else {
-                setStatus('error', '필수 정보(기업명, 담당자 성함, 연락처, 이메일, 상담 요청 내용)를 모두 입력해 주세요.');
+                setStatus('error', '필수 정보(기업명, 담당자 성함, 연락처, 이메일)를 모두 입력하고 개인정보 수집·이용에 동의해 주세요.');
             }
         });
     }
@@ -265,5 +265,22 @@ function togglePrivacy() {
     if (location.hash === '#contact') setOpen(true, false);
     window.addEventListener('hashchange', function () {
         if (location.hash === '#contact') setOpen(true, false);
+    });
+})();
+
+// 방문 통계: 카카오톡 문의(오픈채팅) 링크 클릭 1건 기록. 개인정보는 보내지 않는다.
+// GA 이벤트 이름 'kakao_click', 매개변수 link_area = 'home_contact'(홈 상담 영역) / 'page_cta'(하위 페이지 하단 상담 안내).
+(function () {
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href*="open.kakao.com"]');
+        if (!a) return;
+        try {
+            if (typeof gtag === 'function') {
+                gtag('event', 'kakao_click', {
+                    link_area: a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
+                    transport_type: 'beacon'
+                });
+            }
+        } catch (err) {}
     });
 })();

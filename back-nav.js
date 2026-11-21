@@ -82,3 +82,20 @@
         try { history.replaceState(history.state, '', a.getAttribute('href')); } catch (err) {}
     });
 })();
+
+// 방문 통계: 카카오톡 문의(오픈채팅) 링크 클릭 1건 기록. 개인정보는 보내지 않는다.
+// GA 이벤트 이름 'kakao_click', 매개변수 link_area = 'home_contact'(홈 상담 영역) / 'page_cta'(하위 페이지 하단 상담 안내).
+(function () {
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href*="open.kakao.com"]');
+        if (!a) return;
+        try {
+            if (typeof gtag === 'function') {
+                gtag('event', 'kakao_click', {
+                    link_area: a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
+                    transport_type: 'beacon'
+                });
+            }
+        } catch (err) {}
+    });
+})();
