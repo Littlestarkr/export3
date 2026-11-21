@@ -17,6 +17,7 @@ import ssl
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "."
@@ -41,8 +42,13 @@ def collect():
     return links
 
 
+def ascii_url(url):
+    """한글 주소(예: law.go.kr/법령/…)를 퍼센트 인코딩해 urllib이 받게 한다."""
+    return urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")
+
+
 def fetch(url, method):
-    req = urllib.request.Request(url, method=method, headers={
+    req = urllib.request.Request(ascii_url(url), method=method, headers={
         "User-Agent": UA, "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
         "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8"})
     ctx = ssl.create_default_context()
@@ -62,13 +68,20 @@ def check_once(url):
                 raise
         return "ok", str(code)
     except urllib.error.HTTPError as e:
-        if e.code in (403, 429, 401):
+        if e.code in (403, 429, 401, 406) or 300 <= e.code < 400:
+            # 406·3xx(쿠키·브라우저 필요 리디렉션)는 자동 접속에서만 생기는 경우가 많다
             return "unsure", f"HTTP {e.code} (자동 접속 차단 가능)"
         return "broken", f"HTTP {e.code}"
     except urllib.error.URLError as e:
         reason = e.reason
         if isinstance(reason, socket.gaierror):
-            return "broken", "주소(도메인)를 찾을 수 없음"
+            host = urllib.parse.urlsplit(url).hostname or ""
+            try:
+                socket.getaddrinfo(host, 443)
+            except socket.gaierror:
+                return "broken", "주소(도메인)를 찾을 수 없음"
+            # 원래 도메인은 살아 있고, 이동한 곳(리디렉션)이 해외에서 안 열리는 경우
+            return "unsure", "이동한 주소에 접속 실패(해외 접속 제한 가능)"
         if isinstance(reason, ssl.SSLError):
             return "unsure", f"보안 연결(SSL) 오류: {reason.__class__.__name__}"
         return "unsure", f"접속 실패: {reason}"
