@@ -60,6 +60,8 @@ There is no linter or test suite configured for this repo.
 
 **홈 '바로 쓰는 수출 도구' 줄 (`.tool-strip`).** `#services`의 서비스 카드 4개 바로 아래 한 줄로, 수출서류 작성기(`doc-builder.html`)·계약서 작성기(`contract-builder.html`)·법령 길잡이(`/lawsearch/`)·무역통계·HS코드(`/lawsearch/trade/`)·해외인증 길잡이(`/lawsearch/cert/`)·PDF 도구(`pdf.littlestar.co.kr/pdf-merge.html`) 6개 칩(`.tool-chip`)이다(2026-11-21). lawsearch·PDF는 새 탭. 스타일은 `styles.css` 끝, 모바일(768px 이하)에서는 2열 격자. 도구 주소가 바뀌면 global-expansion·export-docs의 같은 링크와 함께 고친다.
 
+**공식 명칭·소개 한 줄 (2026-11-21).** 공식 명칭은 'Happy Oh Consulting'(해피오 컨설팅), '리틀스타'는 도메인(littlestar.co.kr)에서 온 약칭·비공식 애칭이다. 홈 첫 화면(`#home`) 설명 문구 아래 금색 테두리 한 줄(`.hero-tagline`, `styles.css` 끝)에 'Happy Oh Consulting은 작은 기업이 글로벌 시장에서 빛나는 별이 되도록 돕는 수출 실무 플랫폼입니다.'가 있고, 13개 페이지(404 포함) 푸터 저작권 줄은 'Happy Oh Consulting (리틀스타)'로 약칭을 병기한다. 홈 JSON-LD `WebSite`의 `alternateName`에 해피오 컨설팅·리틀스타가 있다. 사업자등록 상호는 확인되지 않았으므로 상호처럼 쓰지 않는다.
+
 **홈페이지 '맨 위로' 버튼.** `index.html`은 back-nav.js를 쓰지 않고, `script.js` 맨 끝이 왼쪽 아래 둥근 `.to-top` 버튼(스타일은 `styles.css` 끝)을 만든다. 300px 이상 내려가면 나타난다.
 
 **홈 화면 아이콘.** `apple-touch-icon.png`(180px)·`icon-192.png`·`icon-512.png`는 `favicon.svg`(금색 별)에서 만든 PNG이고, 13개 페이지(404 포함) `<head>`의 favicon 줄 바로 뒤에 `link`로 연결돼 있다(404는 루트 절대경로). 안드로이드 크롬의 '홈 화면에 추가'는 추가하는 순간의 아이콘을 저장하므로, 이미 만든 바로가기는 지우고 다시 추가해야 바뀐다. `manifest.webmanifest`(앱 이름 Happy Oh Consulting, `display: standalone`, 아이콘 3종 + 마스크용 `icon-maskable-512.png`)도 같은 자리에 연결돼 있다. 서비스 워커는 일부러 두지 않았다(캐시 때문에 수정이 늦게 보일 수 있다). 새 페이지에도 같은 세 줄(favicon PNG·apple-touch-icon·manifest)을 넣는다.
