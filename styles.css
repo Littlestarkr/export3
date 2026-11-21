@@ -1198,6 +1198,7 @@ textarea:focus-visible,
 .hero p.hero-tagline { display: inline-block; margin: -16px auto 36px; padding: 10px 22px; border: 1px solid rgba(197, 160, 89, 0.55); border-radius: 999px; background: rgba(13, 30, 56, 0.45); font-size: 1rem; line-height: 1.6; opacity: 1; word-break: keep-all; }
 .hero-tagline i { color: var(--secondary-color); margin-right: 4px; }
 .hero-tagline strong { color: var(--secondary-color); font-weight: 700; }
+.hero-tagline .tg-keep { white-space: nowrap; }
 @media (max-width: 768px) {
     .hero p.hero-tagline { margin: -12px 4px 28px; padding: 10px 16px; border-radius: 14px; font-size: 0.92rem; }
 }
