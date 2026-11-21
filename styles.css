@@ -1176,5 +1176,20 @@ textarea:focus-visible,
 .install-warn p:last-child { margin: 0; }
 .install-ext { display: inline-block; font-weight: 700; text-decoration: none; background: var(--secondary-color); color: var(--primary-color); border-radius: 6px; padding: 10px 18px; }
 
+/* 홈 '바로 쓰는 수출 도구' 줄 (#services 끝) */
+.tool-strip { margin-top: 36px; background: #fff; border: 1px solid #e6e9ef; border-top: 3px solid var(--secondary-color); border-radius: 8px; padding: 22px 26px; display: flex; align-items: center; gap: 18px 24px; flex-wrap: wrap; }
+.tool-strip-title { margin: 0; font-weight: 700; color: var(--primary-color); font-size: 1.05rem; white-space: nowrap; }
+.tool-strip-title i { color: var(--secondary-color); margin-right: 6px; }
+.tool-strip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; flex: 1; }
+.tool-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1px solid #d9dee6; border-radius: 999px; background: #fafbfc; color: var(--primary-color); font-size: 0.92rem; font-weight: 600; text-decoration: none; transition: var(--transition); }
+.tool-chip i { color: var(--gold-text, #8a6d2f); font-size: 0.9rem; }
+.tool-chip:hover { border-color: var(--secondary-color); background: #fff8e8; transform: translateY(-2px); }
+@media (max-width: 768px) {
+    .tool-strip { margin-top: 24px; padding: 16px 14px; flex-direction: column; align-items: stretch; gap: 12px; }
+    .tool-strip-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .tool-strip-list li { min-width: 0; }
+    .tool-chip { width: 100%; height: 100%; padding: 10px 10px; gap: 6px; border-radius: 10px; font-size: 0.8rem; letter-spacing: -0.02em; justify-content: flex-start; word-break: keep-all; }
+    .tool-chip i { font-size: 0.8rem; flex: none; }
+}
 /* 상담 양식: 선택 항목 표시 */
 .form-optional { font-weight: 400; font-size: .85em; color: #888; }
