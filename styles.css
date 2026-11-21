@@ -1201,3 +1201,7 @@ textarea:focus-visible,
 @media (max-width: 768px) {
     .hero p.hero-tagline { margin: -12px 4px 28px; padding: 10px 16px; border-radius: 14px; font-size: 0.92rem; }
 }
+
+/* 홈 푸터 슬로건 (홈에만) */
+.main-footer p.footer-slogan { opacity: 1; color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; margin: 4px 0 10px; word-break: keep-all; }
+.footer-slogan i { font-size: 0.8rem; margin-right: 4px; }
