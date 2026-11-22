@@ -1,6 +1,6 @@
 # www.littlestar.co.kr 배포 (GitHub Pages, 'GitHub Actions' 방식)
 # - 이 저장소(export3) 전체를 사이트 루트에 올리고,
-# - 법령 길잡이 저장소(Littlestarkr/lawsearch)를 /lawsearch/ 에 (무역통계 /lawsearch/trade/, 해외인증 /lawsearch/cert/),
+# - 법령 길잡이 저장소(Littlestarkr/lawsearch)를 /lawsearch/ 에 (무역통계 /lawsearch/trade/, 옛 해외인증 주소 /lawsearch/cert/ 는 cert-guide.html 로 넘기는 안내 페이지),
 # - PDF 도구(Littlestarkr/claude-code-happyoh의 pdf-merge.html과 그 파일들)를 /pdf/ 에 함께 올린다.
 # 다른 두 저장소를 고친 뒤에는 아래 예약 실행(3시간마다)을 기다리거나,
 # Actions 탭 > 'Deploy site' > 'Run workflow'를 눌러 바로 반영한다.
