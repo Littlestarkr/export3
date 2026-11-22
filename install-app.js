@@ -46,6 +46,20 @@
         if (nowBtn) { nowBtn.hidden = !deferredPrompt; }
     }
 
+    // 설치한 앱(standalone)에서 우리 사이트 주소(같은 출처, 예: /lawsearch/)를 '새 탭'(target=_blank)으로 열면
+    // 안드로이드는 앱 안에 새 창을 띄우는데, 그 창에는 이전 화면 기록이 없어서 휴대폰 뒤로가기를 누르면 앱이 닫힌다.
+    // 일반 브라우저에서는 새 탭에서 뒤로가기를 누르면 원래 탭으로 돌아가므로 그대로 두고, 앱에서만 같은 창으로 연다.
+    // (다른 사이트 링크는 앱 위에 브라우저 창으로 열려 뒤로가기로 앱에 돌아오므로 건드리지 않는다.)
+    document.addEventListener('click', function (e) {
+        if (!isInstalled() || e.defaultPrevented) { return; }
+        var a = e.target.closest && e.target.closest('a[target="_blank"][href]');
+        if (!a) { return; }
+        try {
+            if (new URL(a.href, location.href).origin !== location.origin) { return; }
+        } catch (err) { return; }
+        a.removeAttribute('target');
+    }, true);
+
     window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();          // 크롬의 자동 설치 안내 막기
         deferredPrompt = e;
