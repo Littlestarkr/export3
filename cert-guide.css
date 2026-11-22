@@ -1,0 +1,237 @@
+/* =========================================
+   해외인증 조회 가이드 (cert-guide.html)
+   기본 변수·헤더·푸터는 styles.css, 히어로·섹션은 policy-finance.css 를 공유한다.
+   ========================================= */
+
+/* 상단 경고 상자 */
+.cg-warn {
+    margin: 28px auto 0;
+    max-width: 980px;
+    background: #fff8e6;
+    border: 2px solid #d4a853;
+    border-left-width: 6px;
+    border-radius: 10px;
+    padding: 16px 20px;
+    line-height: 1.7;
+    color: #3d3320;
+}
+.cg-warn-title {
+    font-weight: 700;
+    color: #8a6a1f;
+    margin-bottom: 6px;
+}
+.cg-warn-title i { margin-right: 6px; }
+.cg-warn strong { color: var(--primary-color); }
+
+.cg-section { padding: 70px 0; }
+.cg-section-alt { background: var(--accent-color); }
+
+/* 섹션 1: 4단계 카드 */
+.cg-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 36px;
+}
+.cg-step {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.cg-step + .cg-step::before {
+    content: "\f054";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: -17px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    font-size: .9rem;
+}
+.cg-badge {
+    font-size: .82rem;
+    color: #8a6a1f;
+    font-weight: 700;
+}
+.cg-badge span {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #f6e3a8;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 8px;
+    letter-spacing: .5px;
+}
+.cg-step h4 {
+    font-size: 1.15rem;
+    color: var(--primary-color);
+    line-height: 1.4;
+    margin-top: 6px;
+}
+.cg-org { font-size: .84rem; color: #666; }
+.cg-url { font-size: .8rem; color: #8a6a1f; font-weight: 700; word-break: break-all; }
+.cg-role {
+    font-size: .93rem;
+    color: #333;
+    background: var(--accent-color);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 6px 0 2px;
+}
+.cg-k {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 8px;
+}
+.cg-checks { list-style: none; padding: 0; margin: 0; }
+.cg-checks li {
+    position: relative;
+    padding-left: 18px;
+    font-size: .9rem;
+    color: #444;
+    line-height: 1.6;
+    margin-top: 4px;
+}
+.cg-checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: .65em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+.cg-note { font-size: .8rem; color: #777; line-height: 1.55; margin-top: 8px; }
+
+/* 포털 바로가기 단추 */
+.cg-go {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: auto;
+    padding: 10px 14px;
+    border-radius: 6px;
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+    text-align: center;
+    transition: var(--transition);
+}
+.cg-step .cg-checks, .cg-step .cg-note { margin-bottom: 14px; }
+.cg-step .cg-go { margin-top: auto; }
+.cg-go:hover, .cg-go:focus-visible { background: var(--secondary-color); color: var(--primary-color); }
+
+/* 섹션 2: 품목별 카드 */
+.cg-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 36px;
+}
+.cg-item {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-radius: 10px;
+    padding: 24px 22px;
+}
+.cg-item-head { display: flex; align-items: center; gap: 10px; }
+.cg-item-head i { color: var(--secondary-color); font-size: 1.2rem; }
+.cg-item-head h4 { font-size: 1.12rem; color: var(--primary-color); }
+.cg-item-sub { font-size: .85rem; color: #777; margin: 4px 0 6px; }
+.cg-path { font-size: .93rem; color: #333; margin-top: 4px; }
+.cg-path i { color: var(--secondary-color); margin: 0 6px; font-size: .8rem; }
+.cg-portals { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 12px; }
+.cg-portal {
+    border-left: 3px solid var(--secondary-color);
+    background: var(--accent-color);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.cg-portal p { font-size: .9rem; color: #444; line-height: 1.6; }
+.cg-portal .cg-pname { font-weight: 700; color: var(--primary-color); font-size: .98rem; }
+.cg-pname small { display: block; font-weight: 400; color: #777; font-size: .8rem; }
+.cg-portal .cg-go { align-self: flex-start; margin-top: 2px; padding: 8px 12px; font-size: .85rem; }
+.cg-tip { font-size: .86rem; color: #555; margin-top: 12px; line-height: 1.6; }
+.cg-tip i { color: var(--secondary-color); margin-right: 4px; }
+.cg-tip a, .cg-next a, .cg-verify-list a { color: #8a6a1f; font-weight: 700; text-decoration: underline; }
+
+/* 섹션 3: 최종 검증 3원칙 */
+.cg-verify {
+    max-width: 900px;
+    margin: 36px auto 0;
+    background: var(--primary-color);
+    color: #fff;
+    border: 2px solid var(--secondary-color);
+    border-radius: 12px;
+    padding: 28px 30px;
+    line-height: 1.75;
+}
+.cg-verify-title { font-size: 1.25rem; font-weight: 700; color: #f6e3a8; margin-bottom: 8px; }
+.cg-verify > p { opacity: .95; }
+.cg-verify-list { list-style: none; counter-reset: cgv; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
+.cg-verify-list li {
+    counter-increment: cgv;
+    position: relative;
+    padding: 12px 14px 12px 54px;
+    background: rgba(255, 255, 255, .07);
+    border-radius: 8px;
+}
+.cg-verify-list li::before {
+    content: counter(cgv);
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cg-verify-list strong { display: block; color: #f6e3a8; }
+.cg-verify-list a { color: #f6e3a8; }
+.cg-next { max-width: 900px; margin: 22px auto 0; font-size: .92rem; color: #555; }
+.cg-next i { color: var(--secondary-color); margin-right: 6px; }
+.cg-disclaimer {
+    max-width: 900px;
+    margin: 26px auto 0;
+    border: 2px solid #c0392b;
+    border-radius: 10px;
+    background: #fdf2f0;
+    padding: 16px 20px;
+    font-size: .9rem;
+    line-height: 1.7;
+    color: #4a2a25;
+}
+.cg-disclaimer .cg-warn-title { color: #c0392b; }
+
+@media (max-width: 1024px) {
+    .cg-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cg-step + .cg-step::before { display: none; }
+}
+@media (max-width: 768px) {
+    .cg-warn { margin: 20px 0 0; padding: 14px 16px; }
+    .cg-section { padding: 50px 0; }
+    .cg-steps, .cg-items { grid-template-columns: 1fr; gap: 16px; margin-top: 26px; }
+    .cg-verify { padding: 22px 18px; }
+    .cg-verify-list li { padding-left: 50px; }
+    .cg-go { width: 100%; }
+    .cg-portal .cg-go { align-self: stretch; }
+}
