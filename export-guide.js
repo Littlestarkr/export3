@@ -286,9 +286,9 @@
             collect: function (w) { add(ins, 3, w); add('credit', 2, w); add('claim', 2, w); },
             importer: function (w) { add('credit', 3, w); add(ins, 2, w); },
             factoring: function (w) { add('ksure-postship', 3, w); add('ksure-after', 2, w); },
-            // 무역클레임(작가님 확정): 중소중견Plus+(클레임위험 특약)·농수산물패키지(클레임비용위험)·대한상사중재원. 계약서·중재 법령은 보조
+            // 무역클레임(작가님 확정): 무역클레임 대응 가이드(trade-claim.html, 2026-11-22)를 맨 앞에, 중소중견Plus+(클레임위험 특약)·농수산물패키지(클레임비용위험)·대한상사중재원. 계약서·중재 법령은 보조
             tclaim:  function (w) {
-                add('ksure-plus', 3, w); add('kcab', 5, w); add('ksure-agri', a.q3 === 'agri' ? 3 : 1, w);
+                add('trade-claim', 6, w); add('ksure-plus', 3, w); add('kcab', 4, w); add('ksure-agri', a.q3 === 'agri' ? 3 : 1, w);
                 add('contract', 1, w); add('law-adr', 1, w); consultTop = true;
             },
             fx:      function (w) { add('fx', 3, w); add('qna-fx', 2, w); },
