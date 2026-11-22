@@ -200,8 +200,7 @@
             }
             refreshOpts(q);
             updateNext(q);
-            // 하나만 고르는 질문은 고르면 바로 다음으로
-            setTimeout(next, 220);
+            // 2026-11-22 작가님: 하나만 고르는 질문도 자동으로 넘기지 않고 '다음'을 눌러 넘어간다(복수 질문과 같게)
             return;
         }
         var cur = arr(a[q.id]).slice();
