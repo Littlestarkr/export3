@@ -10,7 +10,7 @@
     'use strict';
 
     // 배포 후 export-guide-apps-script.gs 의 웹 앱 URL(…/exec)을 넣는다. 비어 있으면 저장 없이 결과만 보여 준다.
-    var GUIDE_URL = '';
+    var GUIDE_URL = 'https://script.google.com/macros/s/AKfycbw4X0zifJC896j7imvZxbblBC1wA-M0m3ZjB_G2I7MRQQ3yRS-TQdRFTzfnXnhKCtuxAA/exec';
 
     var M = window.EG_MAP;
     if (!M) return;
