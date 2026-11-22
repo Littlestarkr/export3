@@ -672,7 +672,8 @@
         body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(','));
-        if (arr(a.q6).indexOf('etc') >= 0) body.set('q6etc', etcValue());   // '기타'에 적은 글(100자, 2026-11-22 작가님: 시트에 저장) body.set('q7', arr(a.q7).join(','));
+        if (arr(a.q6).indexOf('etc') >= 0) body.set('q6etc', etcValue());   // '기타'에 적은 글(100자, 2026-11-22 작가님: 시트에 저장)
+        body.set('q7', arr(a.q7).join(','));
         body.set('q8', needList(a).join(','));
         body.set('rec', rec.top.map(function (r) { return r.id; }).join(','));
         body.set('v', String(M.version));
