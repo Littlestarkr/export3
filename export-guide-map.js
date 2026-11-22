@@ -174,7 +174,7 @@
             ]
         },
         {
-            id: 'q8', type: 'multi', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '선택 질문입니다. 여러 개 골라도 되고, 건너뛰어도 됩니다.',
+            id: 'q8', type: 'multi', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '꼭 답하지 않아도 됩니다. 여러 개 골라도 되고, 건너뛰어도 됩니다.',
             options: [
                 { v: 'info', label: '수출 자료·도구' },
                 { v: 'market', label: '시장개척·바이어 발굴' },
