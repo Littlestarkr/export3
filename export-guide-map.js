@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 9;
+    var MAP_VERSION = 10;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -33,8 +33,41 @@
         support: '받을 수 있는 정부지원사업을 모른다',
         fraud:   '계좌변경·무역사기가 걱정된다',
         market:  '어느 나라로 갈지 모르겠다',
-        tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다'
+        tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다',
+        etc:     '기타(찾는 서비스 직접 적기)'
     };
+    // '기타'(2026-11-22 작가님): 단계별 목록 맨 끝에 늘 보이고, 고르면 입력칸(100자)이 열린다. 전체 선택에는 넣지 않는다.
+    // 적은 글은 아래 낱말과 맞춰 안내한다(소문자로 바꿔 '포함' 여부만 본다). 시트에는 글을 보내지 않고 '기타' 선택 여부만 저장한다.
+    var ETC_KEYWORDS = [
+        { k: ['전시', '박람회', '엑스포', '상담회', 'expo', 'fair'], ids: ['k-exhib', 'akei'] },
+        { k: ['바이어', '거래처', '수입상', '판로', 'buyer'], ids: ['buyer', 'ksight', 'buykorea'] },
+        { k: ['시장조사', '시장 조사', '유망시장', '유망 시장'], ids: ['k-market', 'trade-stats'] },
+        { k: ['지사'], ids: ['k-branch'] },
+        { k: ['보증', '대출', '융자', '자금', '정책자금', '운전자금', '시설자금'], ids: ['policy-fund', 'guarantee', 'kodit', 'kibo'] },
+        { k: ['무역진흥자금', '무역협회'], ids: ['kita-fund'] },
+        { k: ['수출입은행'], ids: ['exim'] },
+        { k: ['보험', '미수', '대금', '떼일', '떼인', '못 받', '못받'], ids: ['ksure-plus', 'claim'] },
+        { k: ['신용조사', '신용 조사', '신용도'], ids: ['credit'] },
+        { k: ['환율', '환변동', '환리스크', '환 리스크'], ids: ['fx'] },
+        { k: ['인증', '규격', '할랄', 'fda', 'ce마크', 'ce 마크'], ids: ['cert'] },
+        { k: ['hs', '관세', '통관', 'fta', '원산지'], ids: ['trade-stats', 'customs'] },
+        { k: ['법령', '법률', '대외무역법', '관세법'], ids: ['lawsearch'] },
+        { k: ['계약'], ids: ['contract'] },
+        { k: ['서류', '인보이스', 'invoice', '패킹', '오퍼', '선적통지'], ids: ['doc-builder', 'export-docs'] },
+        { k: ['사기', '해킹', '계좌변경', '계좌 변경'], ids: ['fraud'] },
+        { k: ['클레임', '분쟁', '중재', '조정'], ids: ['trade-claim', 'kcab'] },
+        { k: ['바우처'], ids: ['voucher'] },
+        { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd'] },
+        { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['b2c', 'c-more'] },
+        { k: ['b2b', '플랫폼'], ids: ['b-b2b', 'buykorea'] },
+        { k: ['물류', '배송', '운송', '포워딩', '포워더'], ids: ['c-logi', 'customs'] },
+        { k: ['수입보험', '선급금', '원자재 수입'], ids: ['import-ins'] },
+        { k: ['채권', '팩토링', '현금화', '유동화', '네고'], ids: ['ksure-postship'] },
+        { k: ['농산물', '수산물', '식품', '농식품'], ids: ['agri', 'at'] },
+        { k: ['화장품'], ids: ['cosmetic'] },
+        { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
+        { k: ['최신', '공고', '소식'], ids: ['notices'] }
+    ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
     // 2026-11-22 작가님: 10만 달러 이상이어도 바이어·시장·인증은 필요 → 1만 달러 이상은 9개를 먼저 보인다
     var ISSUE_ORDER = {
@@ -214,6 +247,7 @@
         'kon':         { t: 'K-SURE ON(온라인 무역보험)', u: 'trade-insurance.html#kon', d: '무역보험 신청과 조회를 온라인으로 합니다.' },
         'qna-f':       { t: '단기수출보험 Q&A', u: 'trade-insurance.html#qna-f', d: '보험 한도·수출 통지 등 자주 묻는 질문입니다.' },
         'import-ins':  { t: '수입보험', u: 'trade-insurance.html#import', d: '주요 자원·시설재 등을 수입하며 선급금을 먼저 낼 때(수입자용)나 수입자금을 빌릴 때(금융기관용) 대비하는 무보 보험입니다. 대상 품목이 정해져 있으니 지원물품을 확인하세요.' },
+        'c-logi':      { t: 'B2C 물류·통관·결제', u: 'global-expansion.html#c-logi', d: '해외 배송·통관·결제 방법을 정리했습니다.' },
         'fxinfo':      { t: '환율 정보', u: 'trade-insurance.html#fxinfo', d: '무보 환변동보험 홈페이지의 환율 정보로 연결합니다.' },
         'notices':     { t: '핫이슈(최신 공고·수출 소식)', u: 'notices.html', d: '' },
         'ins-cases':   { t: '무역보험 활용사례', u: 'trade-insurance.html#cases', d: '' },
@@ -301,6 +335,7 @@
         questions: QUESTIONS,
         links: LINKS,
         programs: PROGRAMS,
+        etcKeywords: ETC_KEYWORDS,
         extra: EXTRA,
         footLinks: FOOT_LINKS,
         stageMap: STAGE_MAP,
