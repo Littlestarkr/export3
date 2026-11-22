@@ -82,7 +82,7 @@
                 { v: 'y7', label: '창업 7년 이내' },
                 { v: 'y7p', label: '창업 7년 초과' },
                 { v: 'smallbiz', label: '소상공인' },
-                { v: 'small', label: '소기업' },
+                { v: 'small', label: '소기업(소상공인 제외)' },
                 { v: 'medium', label: '중기업' },
                 { v: 'mid', label: '중견기업' },
                 { v: 'large', label: '대기업' },
@@ -223,7 +223,7 @@
     };
 
     var SHORT = {
-        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', smallbiz: '소상공인', small: '소기업', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
