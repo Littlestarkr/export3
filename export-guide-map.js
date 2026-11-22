@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 10;
+    var MAP_VERSION = 11;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -163,7 +163,7 @@
         },
         {
             id: 'q7', type: 'multi', title: '대금은 어떤 방식으로 받나요?', titlePlan: '계획 중인 대금 결제 방식은 무엇인가요?',
-            help: '여러 개를 고를 수 있습니다. 외상거래가 미리 골라져 있으니 맞지 않으면 해제해 주세요.', exclusive: ['unknown'], def: ['deferred'],
+            help: '여러 개를 고를 수 있습니다.', exclusive: ['unknown'],
             options: [
                 { v: 'prepay', label: '선수금' },
                 { v: 'lc', label: '신용장(L/C)' },
