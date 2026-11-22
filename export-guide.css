@@ -258,6 +258,8 @@
 .eg-more-list li { padding: 8px 0; border-bottom: 1px dashed #e3ded0; line-height: 1.6; }
 .eg-more-link { color: var(--primary-color); font-weight: 500; text-decoration: underline; text-decoration-color: var(--secondary-color); }
 .eg-more-why { color: #777; font-size: 0.88rem; }
+.eg-prog-d { display: block; color: #555; font-size: 0.88rem; line-height: 1.55; margin-top: 2px; }
+.eg-prog-note { margin: -4px 0 6px; }
 
 .eg-consult {
     margin: 24px 0 8px;
@@ -307,3 +309,10 @@
     .eg-app { box-shadow: none; border: none; padding: 0; }
     .eg-summary { background: #fff; color: #000; border: 1px solid #000; }
 }
+
+/* 후순위 '더 찾아볼 곳'·맨 아래 고정 줄 (2026-11-22) */
+.eg-extra { list-style: none; padding: 0; margin: 0; }
+.eg-extra-g { margin-top: 10px; }
+.eg-extra-t { display: block; color: var(--primary-color, #1a2a4a); font-size: 0.95rem; margin-bottom: 2px; }
+.eg-foot-links { margin: 18px 0 0; font-size: 0.92rem; color: #555; line-height: 1.8; }
+.eg-foot-links strong { margin-right: 6px; }

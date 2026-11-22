@@ -295,11 +295,25 @@ function togglePrivacy() {
     var wrap = document.getElementById('contactFormWrap');
     if (!msg || !wrap) return;
     window.egLeadSource = 'export_guide';
-    if (!msg.value.trim()) msg.value = text.slice(0, 1500);
+    // 요약 끝에 '(상담 요청 추가 내용): '을 붙여 이어서 적게 하고, 처음 칸을 누르면 커서를 맨 끝(그 문구 뒤)에 둔다(2026-11-22 작가님)
+    var TAIL = '\n(상담 요청 추가 내용): ';
+    if (!msg.value.trim()) {
+        msg.value = text.slice(0, 1500 - TAIL.length) + TAIL;
+        var placed = false;
+        msg.addEventListener('focus', function () {
+            if (placed) return;
+            placed = true;
+            setTimeout(function () {
+                var end = msg.value.length;
+                try { msg.setSelectionRange(end, end); } catch (e) {}
+                msg.scrollTop = msg.scrollHeight;
+            }, 0);
+        });
+    }
     var note = document.createElement('p');
     note.className = 'eg-handoff';
     note.setAttribute('role', 'status');
-    note.textContent = '수출 가이드 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 고치거나 더 적어 보내 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
+    note.textContent = '수출 가이드 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 맨 끝 \'(상담 요청 추가 내용):\' 뒤에 이어서 적어 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
     var form = document.getElementById('consultingForm');
     (form || wrap).insertBefore(note, (form || wrap).firstChild);
     var toggle = document.getElementById('contactToggle');
