@@ -284,6 +284,9 @@
             buyer:   function (w) { add('buyer', 3, w); if (st === 0) add('k-domestic', 2, w); },
             docs:    function (w) { add('doc-builder', 3, w); add('export-docs', 2, w); add('contract', 2, w); },
             collect: function (w) { add(ins, 3, w); add('credit', 2, w); add('claim', 2, w); },
+            importer: function (w) { add('credit', 3, w); add(ins, 2, w); },
+            factoring: function (w) { add('ksure-postship', 3, w); add('ksure-after', 2, w); },
+            tclaim:  function (w) { add('contract', 3, w); add('law-adr', 2, w); add('export-docs', 1, w); consultTop = true; },
             fx:      function (w) { add('fx', 3, w); add('qna-fx', 2, w); },
             fund:    function (w) {
                 add('policy-fund', 3, w); add('guarantee', 2, w); add('semas-innov', 3, w);

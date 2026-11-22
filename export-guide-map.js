@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 2;
+    var MAP_VERSION = 3;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -23,23 +23,26 @@
     var ISSUES = {
         buyer:   '바이어를 못 찾겠다',
         docs:    '수출서류·계약서가 어렵다',
-        collect: '대금을 못 받을까 걱정된다(바이어 신용)',
+        collect: '대금을 못 받을까 걱정된다',
+        importer: '수입자 신용조사가 필요하다',
+        factoring: '수출채권 유동화(선적 후 대금 조기 현금화)가 필요하다',
         fx:      '환율 변동이 부담된다',
         fund:    '생산·선적 전 자금이 부족하다',
         cert:    '해외인증·규제를 모른다',
         hs:      'HS코드·관세·통관을 모른다',
         support: '받을 수 있는 정부지원사업을 모른다',
         fraud:   '계좌변경·무역사기가 걱정된다',
-        market:  '어느 나라로 갈지 모르겠다'
+        market:  '어느 나라로 갈지 모르겠다',
+        tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다'
     };
     // 단계별로 먼저 보이는 6개(순서대로). 나머지는 '다른 어려움 더 보기'
     var ISSUE_ORDER = {
         s0: ['market', 'buyer', 'support', 'cert', 'hs', 'docs'],
         s1: ['buyer', 'docs', 'hs', 'cert', 'support', 'fraud'],
-        s2: ['buyer', 'docs', 'fraud', 'collect', 'support', 'hs'],
-        s3: ['collect', 'buyer', 'fund', 'docs', 'support', 'fraud'],
-        s4: ['collect', 'fund', 'fx', 'market', 'buyer', 'cert'],
-        s5: ['fx', 'collect', 'fund', 'market', 'cert', 'buyer']
+        s2: ['buyer', 'docs', 'collect', 'importer', 'fraud', 'support'],
+        s3: ['collect', 'importer', 'buyer', 'fund', 'factoring', 'tclaim'],
+        s4: ['collect', 'importer', 'fund', 'factoring', 'fx', 'tclaim'],
+        s5: ['fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund']
     };
     var ISSUE_HELP = {
         s0: '어디서부터 시작할지 막막하신가요? 가장 가까운 것을 골라 주세요.',
@@ -120,7 +123,7 @@
             ]
         },
         {
-            id: 'q6', type: 'multi', max: 3, title: '지금 가장 어려운 점은 무엇인가요?', help: '최대 3개까지 고를 수 있습니다.',
+            id: 'q6', type: 'multi', title: '지금 어려운 점은 무엇인가요? (복수 선택 가능)', help: '해당하는 것을 모두 골라 주세요.',
             options: Object.keys(ISSUES).map(function (k) { return { v: k, label: ISSUES[k] }; })
         },
         {
@@ -162,6 +165,9 @@
         'ksure-dplus': { t: '단기수출보험(다이렉트-중소Plus+)', u: 'trade-insurance.html#ksure-dplus', d: '소액 외상 수출의 대금 미회수에 대비하는 비대면 무역보험 상품입니다.' },
         'ksure-plus':  { t: '단기수출보험(중소중견Plus+)', u: 'trade-insurance.html#ksure-plus', d: '외상·추심 수출의 대금 미회수에 대비하는 무역보험 상품입니다(중계무역 포함).' },
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
+        'ksure-postship': { t: '수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
+        'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
+        'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
         'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
         'claim-exempt':{ t: '면책사례(중계무역 조달 차질 등)', u: 'trade-insurance.html#claim-exempt', d: '중계무역 등에서 자주 생기는 면책 사례를 정리했습니다.' },
         'policy-fund': { t: '정책자금 안내', u: 'policy-finance.html?org=kosmes', d: '기관별 정책자금의 대상·한도·금리를 정리했습니다.' },
