@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             setStatus('success', `감사합니다, ${name}님. 상담 신청이 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.`);
                             form.reset();
                             // 방문 통계: 상담 신청 1건 기록 (개인정보는 전송하지 않음)
-                            try { if (typeof gtag === 'function') { gtag('event', 'generate_lead', { form_name: 'consulting' }); } } catch (e) {}
+                            try { if (typeof gtag === 'function') { gtag('event', 'generate_lead', window.egLeadSource ? { form_name: 'consulting', lead_source: window.egLeadSource } : { form_name: 'consulting' }); } } catch (e) {}
                         } else {
                             throw new Error(response && response.error ? String(response.error) : 'unknown error');
                         }
@@ -277,10 +277,31 @@ function togglePrivacy() {
         try {
             if (typeof gtag === 'function') {
                 gtag('event', 'kakao_click', {
-                    link_area: a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
+                    link_area: a.closest('.eg-consult') ? 'export_guide' : a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
                     transport_type: 'beacon'
                 });
             }
         } catch (err) {}
     });
+})();
+
+// 수출 가이드 도구(export-guide.html)에서 '상담 신청서로' 넘어오면 결과 요약을 '상담 요청 내용'에 채운다.
+// sessionStorage 'egHandoff'는 읽자마자 지운다. 신청 성공 시 generate_lead 에 lead_source 'export_guide'가 붙는다.
+(function () {
+    var text = '';
+    try { text = sessionStorage.getItem('egHandoff') || ''; sessionStorage.removeItem('egHandoff'); } catch (e) { return; }
+    if (!text) return;
+    var msg = document.getElementById('message');
+    var wrap = document.getElementById('contactFormWrap');
+    if (!msg || !wrap) return;
+    window.egLeadSource = 'export_guide';
+    if (!msg.value.trim()) msg.value = text.slice(0, 1500);
+    var note = document.createElement('p');
+    note.className = 'eg-handoff';
+    note.setAttribute('role', 'status');
+    note.textContent = '수출 가이드 도구 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 고치거나 더 적어 보내 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
+    var form = document.getElementById('consultingForm');
+    (form || wrap).insertBefore(note, (form || wrap).firstChild);
+    var toggle = document.getElementById('contactToggle');
+    if (wrap.classList.contains('is-collapsed') && toggle) toggle.click();
 })();

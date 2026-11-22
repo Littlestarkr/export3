@@ -84,7 +84,7 @@
 })();
 
 // 방문 통계: 카카오톡 문의(오픈채팅) 링크 클릭 1건 기록. 개인정보는 보내지 않는다.
-// GA 이벤트 이름 'kakao_click', 매개변수 link_area = 'home_contact'(홈 상담 영역) / 'page_cta'(하위 페이지 하단 상담 안내).
+// GA 이벤트 이름 'kakao_click', 매개변수 link_area = 'home_contact'(홈 상담 영역) / 'page_cta'(하위 페이지 하단 상담 안내) / 'export_guide'(수출 가이드 도구 결과의 상담 상자).
 (function () {
     document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('a[href*="open.kakao.com"]');
@@ -92,7 +92,7 @@
         try {
             if (typeof gtag === 'function') {
                 gtag('event', 'kakao_click', {
-                    link_area: a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
+                    link_area: a.closest('.eg-consult') ? 'export_guide' : a.closest('#contact') ? 'home_contact' : (a.closest('.pf-cta') ? 'page_cta' : 'other'),
                     transport_type: 'beacon'
                 });
             }
