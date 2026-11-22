@@ -329,3 +329,12 @@
 .eg-etc input:focus { outline: 2px solid var(--secondary-color, #c9a227); outline-offset: 1px; }
 .eg-etc .eg-note { margin-top: 6px; }
 .eg-etc-nomatch { background: #fff8e6; border-left: 3px solid var(--secondary-color, #c9a227); padding: 8px 10px; border-radius: 4px; font-size: 0.92rem; }
+
+/* 결과 화면 '수출 5단계 로드맵' 한 줄 (2026-11-22) */
+.eg-roadmap { margin: 0 0 14px; padding: 12px 14px; background: #fff8e6; border: 1px solid #e8d49c; border-radius: 8px; font-size: 0.93rem; line-height: 1.7; color: #3d3320; }
+.eg-roadmap:empty { display: none; }
+.eg-roadmap > i { color: #8a6a1f; }
+.eg-roadmap-main { font-weight: 700; color: var(--primary-color, #0d1e38); text-decoration: underline; text-decoration-color: var(--secondary-color, #c5a059); text-underline-offset: 3px; }
+.eg-roadmap-rel { color: #555; }
+.eg-start-roadmap { margin: 4px 0 14px; }
+.eg-start-roadmap i { color: #8a6a1f; }

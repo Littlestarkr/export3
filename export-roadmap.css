@@ -1,0 +1,269 @@
+/* =========================================
+   수출 5단계 로드맵 (export-roadmap.html)
+   기본 변수·헤더·푸터는 styles.css, 히어로·섹션은 policy-finance.css,
+   상단 경고(.cg-warn)·면책(.cg-disclaimer)은 cert-guide.css 를 공유한다.
+   ========================================= */
+
+.rm-section { padding: 70px 0; }
+.rm-print { font: inherit; cursor: pointer; }
+
+/* 한눈에 보기 타임라인 */
+.rm-overview ol {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    position: relative;
+}
+.rm-overview ol::before {
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 22px;
+    height: 3px;
+    background: var(--secondary-color);
+    opacity: .5;
+}
+.rm-overview li { position: relative; }
+.rm-overview a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    padding: 0 8px 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 10px;
+}
+.rm-overview a:hover strong { color: #8a6a1f; }
+.rm-dot {
+    position: relative;
+    z-index: 1;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #f6e3a8;
+    border: 3px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.15rem;
+}
+.rm-overview strong { font-size: .98rem; line-height: 1.4; }
+.rm-overview small { font-size: .8rem; color: #666; line-height: 1.45; }
+.rm-hint { margin-top: 14px; font-size: .86rem; color: #666; text-align: center; }
+.rm-hint i { color: var(--secondary-color); margin-right: 4px; }
+
+/* 단계 카드 */
+.rm-steps { display: flex; flex-direction: column; gap: 28px; margin-top: 40px; }
+.rm-step {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-left: 6px solid var(--secondary-color);
+    border-radius: 12px;
+    padding: 26px 28px 20px;
+    scroll-margin-top: 20px;
+}
+.rm-step:focus { outline: none; }
+.rm-step-head { display: flex; gap: 16px; align-items: flex-start; }
+.rm-num {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #f6e3a8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.rm-kicker { font-size: .78rem; font-weight: 700; letter-spacing: .8px; color: #8a6a1f; }
+.rm-step-head h4 { font-size: 1.3rem; color: var(--primary-color); line-height: 1.35; margin: 2px 0 6px; }
+.rm-goal {
+    font-size: .95rem;
+    color: #333;
+    background: var(--accent-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    line-height: 1.6;
+}
+
+.rm-body {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 28px;
+    margin-top: 18px;
+}
+.rm-k {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 8px;
+    padding-left: 8px;
+    border-left: 3px solid var(--secondary-color);
+}
+.rm-col .rm-k + * { margin-bottom: 18px; }
+
+.rm-tasks, .rm-sub, .rm-checks, .rm-orgs { list-style: none; margin: 0; padding: 0; }
+.rm-tasks > li {
+    position: relative;
+    padding: 0 0 12px 18px;
+    font-size: .92rem;
+    color: #444;
+    line-height: 1.7;
+}
+.rm-tasks > li::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: .7em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+.rm-tasks strong { color: var(--primary-color); margin-right: 4px; }
+.rm-sub { margin-top: 6px; }
+.rm-sub li { position: relative; padding-left: 14px; margin-top: 4px; }
+.rm-sub li::before { content: "–"; position: absolute; left: 0; color: #8a6a1f; }
+
+.rm-more {
+    display: inline-block;
+    margin: 2px 2px 0 0;
+    padding: 0 8px;
+    border: 1px solid #e2d6b8;
+    border-radius: 999px;
+    font-size: .8rem;
+    color: var(--primary-color);
+    background: #fffaf0;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.rm-more:hover { background: var(--secondary-color); color: #fff; border-color: var(--secondary-color); }
+
+.rm-orgs { display: flex; flex-wrap: wrap; gap: 8px; }
+.rm-orgs a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.rm-orgs a:hover { background: #8a6a1f; }
+
+.rm-checks li {
+    position: relative;
+    padding: 8px 10px 8px 34px;
+    margin-bottom: 8px;
+    background: #fff8e6;
+    border-radius: 6px;
+    font-size: .9rem;
+    color: #3d3320;
+    line-height: 1.65;
+}
+.rm-checks li::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 11px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #b8892f;
+    border-radius: 3px;
+    background: #fff;
+}
+
+/* '공고 확인' 표시 (trade-claim 의 .tc-chk 와 같은 모양) */
+.rm-chk {
+    display: inline-block;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #a5281b;
+    font-size: .72rem;
+    font-weight: 700;
+    vertical-align: 1px;
+    white-space: nowrap;
+}
+
+.rm-step-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px dashed #e6e1d4;
+}
+.rm-step-foot .pf-uplink { margin-top: 0; }
+.rm-next { font-weight: 700; color: var(--primary-color); text-decoration: none; font-size: .92rem; }
+.rm-next:hover { color: #8a6a1f; }
+.rm-next i { margin-left: 4px; color: var(--secondary-color); }
+
+.rm-disclaimer { margin-top: 36px; }
+.rm-print-foot { display: none; }
+
+@media (min-width: 769px) {
+    .rm-step, #overview { scroll-margin-top: 90px; }
+}
+
+@media (max-width: 768px) {
+    .rm-section { padding: 44px 0; }
+    .rm-overview ol { grid-template-columns: 1fr; gap: 6px; }
+    .rm-overview ol::before { left: 22px; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto; }
+    .rm-overview a { flex-direction: row; align-items: center; text-align: left; gap: 12px; padding: 4px 0; }
+    .rm-overview a > strong { flex: 0 0 auto; }
+    .rm-overview small { flex: 1 1 auto; }
+    .rm-hint { text-align: left; }
+    .rm-step { padding: 20px 16px 16px; border-left-width: 4px; }
+    .rm-num { width: 42px; height: 42px; font-size: 1.15rem; }
+    .rm-step-head h4 { font-size: 1.15rem; }
+    .rm-body { grid-template-columns: 1fr; gap: 6px; }
+    .rm-more { white-space: normal; }
+}
+
+/* 인쇄·PDF: 종이 점검표로 쓸 수 있게 */
+@media print {
+    header, .pf-floatnav, .pf-floatnav-r, .pf-cta, footer, .skip-link, .pf-hero-btns, .rm-hint, .rm-step-foot, #installGuide { display: none !important; }
+    .pf-hero { padding: 0 0 8px !important; background: none !important; color: #000 !important; }
+    .pf-hero h2, .pf-hero p, .pf-hero .section-subtitle { color: #000 !important; }
+    .rm-section { padding: 10px 0; }
+    .rm-overview ol::before { display: none; }
+    .rm-dot, .rm-num { background: #fff; color: #000; border: 2px solid #000; }
+    .rm-step { break-inside: avoid; page-break-inside: avoid; border: 1px solid #999; border-left: 4px solid #999; box-shadow: none; }
+    .rm-orgs a { background: #fff; color: #000; border: 1px solid #999; }
+    .rm-orgs a[target="_blank"]::after { content: " (" attr(href) ")"; font-weight: 400; font-size: .7rem; word-break: break-all; }
+    .rm-orgs a.rm-nourl::after { content: none; }
+    .rm-orgs a .pf-ext { display: none; }
+    .rm-checks li { background: #fff; border: 1px solid #ccc; }
+    .rm-more { border: none; background: none; padding: 0 4px 0 0; text-decoration: underline; }
+    .rm-print-foot {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 8pt;
+        color: #555;
+        text-align: center;
+    }
+    @page { margin: 14mm 12mm 16mm; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rm-more, .rm-orgs a { transition: none; }
+}
