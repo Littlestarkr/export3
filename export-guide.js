@@ -268,6 +268,7 @@
         var names = hit.slice(0, 2).map(function (t) {
             if (t.indexOf('need:') === 0) return "'" + label('q8', t.slice(5)) + "'";
             if (t.indexOf('form:') === 0) return "'" + label('q4', t.slice(5)) + "'";
+            if (t.indexOf('pay:') === 0) return "'" + label('q7', t.slice(4)) + "'";
             return "'" + M.issues[t] + "'";
         });
         return names.join('·') + '를 골라서';
@@ -324,11 +325,12 @@
 
         // 3) 수출 형태(Q4)
         forms.forEach(function (f) {
-            var w = "수출 형태로 '" + label('q4', f) + "'를 골라서";
+            var w = "거래 형태로 '" + label('q4', f) + "'를 골라서";
             if (f === 'local') { add('k-domestic', 2, w); add('qna-fx', 2, w); }
             if (f === 'b2c') add('b2c', 2, w);
             if (f === 'b2b') { add('buyer', 2, w); add('doc-builder', 1, w); }
             if (f === 'relay') { add('ksure-plus', 2, w); add('claim-exempt', 2, w); }
+            if (f === 'import') { add('import-ins', 3, w); add('customs', 2, w); add('trade-stats', 1, w); add('lawsearch', 1, w); }
             if (f === 'other') consultTop = true;
         });
 
@@ -390,10 +392,29 @@
         });
         var progIds = progs.map(function (r) { return r.id; });
         var rest = list.slice(3).filter(function (id) { return progIds.indexOf(id) < 0; });
+        var moreIds = rest.slice(0, 4);
+        // 후순위 '더 찾아볼 곳': 고른 항목과 겹치는 묶음의 기관을 모두(위에서 나온 곳은 빼고)
+        pays.forEach(function (p) { tags.push('pay:' + p); });
+        var shown = topIds.concat(progIds, moreIds);
+        var extra = [];
+        (M.extra || []).forEach(function (g) {
+            if (!g.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
+            var ids = [];
+            g.items.forEach(function (it) {
+                if (!M.links[it.id] || shown.indexOf(it.id) >= 0) return;
+                if (it.st && it.st.indexOf(st) < 0) return;
+                if (it.on && !it.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
+                var sm = M.stageMap[it.id];
+                if (sm && sm.hard && sm.s[st] === 0) return;
+                ids.push(it.id); shown.push(it.id);
+            });
+            if (ids.length) extra.push({ t: g.t, ids: ids });
+        });
         return {
+            extra: extra,
             top: topIds.map(function (id) { return { id: id, why: why(id) }; }),
             progs: progs,
-            more: rest.slice(0, 4).map(function (id) { return { id: id, why: why(id) }; }),
+            more: moreIds.map(function (id) { return { id: id, why: why(id) }; }),
             consultTop: consultTop
         };
     }
@@ -440,7 +461,7 @@
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
-        L.push('수출 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
+        L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (label('q3', a.q3) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).map(function (k) { return M.issues[k]; }).join(', ') || '-'));
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
@@ -501,6 +522,33 @@
             li.appendChild(linkEl(r.id, 'eg-more-link'));
             li.appendChild(el('span', 'eg-more-why', ' — ' + r.why));
             more.appendChild(li);
+        });
+
+        // 후순위 '더 찾아볼 곳'
+        var xl = $('egExtraList');
+        xl.textContent = '';
+        $('egExtraBox').hidden = !rec.extra.length;
+        rec.extra.forEach(function (g) {
+            var li = el('li', 'eg-extra-g');
+            li.appendChild(el('strong', 'eg-extra-t', g.t));
+            var ul = el('ul', 'eg-more-list');
+            g.ids.forEach(function (id) {
+                var x = el('li');
+                x.appendChild(linkEl(id, 'eg-more-link'));
+                if (M.links[id].d) x.appendChild(el('span', 'eg-prog-d', M.links[id].d));
+                ul.appendChild(x);
+            });
+            li.appendChild(ul);
+            xl.appendChild(li);
+        });
+
+        // 맨 아래 고정 줄(최신 공고·사례)
+        var fl = $('egFootLinks');
+        fl.textContent = '';
+        (M.footLinks || []).forEach(function (id, i) {
+            if (!M.links[id]) return;
+            if (i) fl.appendChild(document.createTextNode(' · '));
+            fl.appendChild(linkEl(id, 'eg-more-link'));
         });
 
         // 수출 형태별 참고
