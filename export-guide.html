@@ -25,7 +25,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css?v=28">
     <link rel="stylesheet" href="policy-finance.css?v=22">
-    <link rel="stylesheet" href="export-guide.css?v=6">
+    <link rel="stylesheet" href="export-guide.css?v=7">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -143,6 +143,7 @@
                         <label class="eg-check"><input type="checkbox" id="egConsent"> <span>고른 답을 이름·연락처 없이 통계용으로 저장하는 데 동의합니다(선택). 저장하면 이 기기에서만 이전 결과를 다시 볼 수 있습니다. <a href="privacy.html">개인정보 처리방침</a></span></label>
                     </div>
                     <input type="text" id="egHp" class="hp-field" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <p class="eg-note eg-start-roadmap"><i class="fa-solid fa-route" aria-hidden="true"></i> 수출 전 과정을 순서대로 먼저 보고 싶다면 <a href="export-roadmap.html">수출 5단계 로드맵</a></p>
                     <button type="button" class="btn btn-primary eg-begin" id="egBegin">시작하기 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
                     <div class="eg-history" id="egHistory" hidden>
                         <h4>이 기기에 저장한 이전 결과</h4>
@@ -183,6 +184,7 @@
                     <h3 class="eg-h" id="egResTitle" tabindex="-1">가이드 결과</h3>
                     <p class="eg-summary" id="egSummary"></p>
                     <p class="eg-save" id="egSaveMsg" role="status" aria-live="polite"></p>
+                    <p class="eg-roadmap" id="egRoadmap"></p>
 
                     <div id="egTopWrap">
                         <h4 class="eg-sub">먼저 볼 곳</h4>
@@ -270,8 +272,8 @@
         </div>
     </footer>
 
-    <script src="export-guide-map.js?v=17"></script>
-    <script src="export-guide.js?v=15"></script>
+    <script src="export-guide-map.js?v=18"></script>
+    <script src="export-guide.js?v=16"></script>
     <script src="back-nav.js?v=6"></script>
 </body>
 

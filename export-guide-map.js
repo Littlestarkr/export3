@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 11;
+    var MAP_VERSION = 12;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -249,6 +249,7 @@
         'import-ins':  { t: '수입보험', u: 'trade-insurance.html#import', d: '주요 자원·시설재 등을 수입하며 선급금을 먼저 낼 때(수입자용)나 수입자금을 빌릴 때(금융기관용) 대비하는 무보 보험입니다. 대상 품목이 정해져 있으니 지원물품을 확인하세요.' },
         'c-logi':      { t: 'B2C 물류·통관·결제', u: 'global-expansion.html#c-logi', d: '해외 배송·통관·결제 방법을 정리했습니다.' },
         'fxinfo':      { t: '환율 정보', u: 'trade-insurance.html#fxinfo', d: '무보 환변동보험 홈페이지의 환율 정보로 연결합니다.' },
+        'roadmap':     { t: '수출 5단계 로드맵', u: 'export-roadmap.html', d: '' },
         'notices':     { t: '핫이슈(최신 공고·수출 소식)', u: 'notices.html', d: '' },
         'ins-cases':   { t: '무역보험 활용사례', u: 'trade-insurance.html#cases', d: '' },
         'k-cases':     { t: 'KOTRA 활용사례', u: 'global-expansion.html#k-cases', d: '' }
@@ -309,7 +310,19 @@
         { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] }
     ];
     // 결과 맨 아래 고정 줄
-    var FOOT_LINKS = ['notices', 'ins-cases', 'k-cases'];
+    var FOOT_LINKS = ['roadmap', 'notices', 'ins-cases', 'k-cases'];
+
+    // 수출 5단계 로드맵(export-roadmap.html) 연결 (2026-11-22, PRD '5단계 수출 실행 로드맵 페이지 PRD' 6장)
+    // 실적 구간은 '규모', 로드맵 단계는 '거래 순서'라 1:1이 아니다. 먼저 볼 단계만 추천하고, 고른 어려움의 단계를 함께 보여 준다.
+    var ROADMAP = {
+        url: 'export-roadmap.html',
+        names: ['', '수출 준비도 점검', '바이어 발굴', '거래조건 검토', '금융·보험 설계', '선적·대금 회수·사후관리'],
+        // 실적 구간 → 먼저 볼 단계. s0 은 진행 거래(q1b)가 협상·첫 주문이면 3단계
+        stage: { s0: 1, s1: 2, s2: 2, s3: 3, s4: 4, s5: 4 },
+        s0Deal: { nego: 3, order: 3 },
+        // 어려운 점(Q6) → 관련 단계
+        issue: { market: 1, cert: 1, hs: 1, support: 1, buyer: 2, docs: 3, importer: 3, fraud: 3, tclaim: 3, fund: 4, collect: 4, factoring: 4, fx: 4 }
+    };
 
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
@@ -338,6 +351,7 @@
         etcKeywords: ETC_KEYWORDS,
         extra: EXTRA,
         footLinks: FOOT_LINKS,
+        roadmap: ROADMAP,
         stageMap: STAGE_MAP,
         formLinks: FORM_LINKS,
         short: SHORT

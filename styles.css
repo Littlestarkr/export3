@@ -1215,3 +1215,17 @@ textarea:focus-visible,
 
 /* 이력서 학력: "박사과정(재)"가 줄 끝에서 끊기지 않게 */
 .resume-keep { white-space: nowrap; }
+
+/* 홈 서비스 위 '수출 5단계 로드맵' 한 줄 배너 (2026-11-22) */
+.roadmap-banner { display: flex; align-items: center; gap: 12px 16px; margin: 0 0 28px; padding: 14px 20px; background: var(--primary-color); color: #fff; border-radius: 10px; border-left: 5px solid var(--secondary-color); text-decoration: none; transition: var(--transition); }
+.roadmap-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(13, 30, 56, .18); }
+.roadmap-banner-badge { flex: none; padding: 3px 10px; border-radius: 999px; background: var(--secondary-color); color: var(--primary-color); font-size: .8rem; font-weight: 700; }
+.roadmap-banner-text { flex: 1; font-size: .95rem; line-height: 1.5; color: #e8ecf3; }
+.roadmap-banner-text strong { color: #f6e3a8; margin-right: 8px; font-size: 1.02rem; }
+.roadmap-banner > i { color: var(--secondary-color); }
+@media (max-width: 768px) {
+    .roadmap-banner { flex-wrap: wrap; padding: 12px 14px; margin-bottom: 20px; }
+    .roadmap-banner-text { flex-basis: calc(100% - 30px); font-size: .88rem; }
+    .roadmap-banner-text strong { display: block; margin: 0 0 2px; }
+}
+@media (prefers-reduced-motion: reduce) { .roadmap-banner:hover { transform: none; } }

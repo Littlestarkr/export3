@@ -522,6 +522,39 @@
         return L.join('\n');
     }
 
+    /* ---------- 수출 5단계 로드맵 한 줄 ---------- */
+    function renderRoadmap() {
+        var box = $('egRoadmap'), R = M.roadmap;
+        if (!box || !R) return;
+        box.textContent = '';
+        var main = R.stage[a.q1] || 1;
+        if (a.q1 === 's0' && R.s0Deal[a.q1b]) main = R.s0Deal[a.q1b];
+        function stepLink(n, cls, text) {
+            var x = el('a', cls, text);
+            x.href = R.url + '#step' + n;
+            x.dataset.egLink = 'roadmap-step' + n;
+            return x;
+        }
+        var ic = el('i', 'fa-solid fa-route');
+        ic.setAttribute('aria-hidden', 'true');
+        box.appendChild(ic);
+        box.appendChild(document.createTextNode(' 수출 5단계 로드맵에서는 '));
+        box.appendChild(stepLink(main, 'eg-roadmap-main', main + '단계 ' + R.names[main] + '부터 보세요'));
+        var rel = [];
+        arr(a.q6).forEach(function (k) {
+            var n = R.issue[k];
+            if (n && n !== main && rel.indexOf(n) < 0) rel.push(n);
+        });
+        rel.sort();
+        if (rel.length) {
+            box.appendChild(el('span', 'eg-roadmap-rel', ' · 고른 어려움과 관련된 단계: '));
+            rel.forEach(function (n, i) {
+                if (i) box.appendChild(document.createTextNode(', '));
+                box.appendChild(stepLink(n, 'eg-more-link', n + '단계 ' + R.names[n]));
+            });
+        }
+    }
+
     /* ---------- 결과 화면 ---------- */
     function finish() {
         var rec = renderResult(false);
@@ -536,6 +569,8 @@
         show(vRes);
         var rec = recommend();
         $('egSummary').textContent = oneLine();
+
+        renderRoadmap();
 
         var top = $('egTop');
         top.textContent = '';
