@@ -46,6 +46,8 @@
     function arr(v) { return Array.isArray(v) ? v : []; }
     // Q3 품목은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개)도 읽는다.
     function items(o) { var v = (o || a).q3; return typeof v === 'string' ? (v ? [v] : []) : arr(v); }
+    // '기타'에 적은 글(Q6). 화면에는 textContent·value 로만 넣는다(HTML로 넣지 않음)
+    function etcValue() { return String(a.q6etc || '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 100); }
     function hasItem(v) { return items().indexOf(v) >= 0; }
     // Q8은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개, 옛 'tool' 코드)도 읽는다.
     function needList(a) {
@@ -146,7 +148,9 @@
             cb.type = 'checkbox';
             cb.id = 'egAll';
             cb.addEventListener('change', function () {
-                a[q.id] = cb.checked ? q.options.map(function (o) { return o.v; }) : [];
+                var keepEtc = arr(a[q.id]).indexOf('etc') >= 0;
+                a[q.id] = cb.checked ? allVals(q) : [];
+                if (keepEtc) a[q.id].push('etc');
                 if (cb.checked) $('egMore').open = true;
                 $('egMsg').textContent = '';
                 refreshOpts(q);
@@ -164,8 +168,8 @@
         var more = [];
         if (q.id === 'q6') {
             var order = M.issueOrder[a.q1] || M.issueOrder.s0;
-            var first = order.map(function (k) { return { v: k, label: M.issues[k] }; });
-            more = opts.filter(function (o) { return order.indexOf(o.v) < 0; });
+            var first = order.concat(['etc']).map(function (k) { return { v: k, label: M.issues[k] }; });
+            more = opts.filter(function (o) { return order.indexOf(o.v) < 0 && o.v !== 'etc'; });
             opts = first;
         }
         var box = $('egOpts');
@@ -250,9 +254,19 @@
         refreshOpts(q);
         updateNext(q);
     }
+    // 전체 선택이 고르는 값(Q6 '기타'는 직접 적는 칸이라 빼고)
+    function allVals(q) { return q.options.map(function (o) { return o.v; }).filter(function (v) { return v !== 'etc'; }); }
     function refreshOpts(q) {
         var all = $('egAll');
-        if (all && q.selectAll) all.checked = q.options.every(function (o) { return isSel(q, o.v); });
+        if (all && q.selectAll) all.checked = allVals(q).every(function (v) { return isSel(q, v); });
+        // '기타' 입력칸(Q6)
+        var eb = $('egEtcBox');
+        if (eb) {
+            var showEtc = q.id === 'q6' && isSel(q, 'etc');
+            eb.hidden = !showEtc;
+            var inp = $('egEtc');
+            if (showEtc && inp.value !== (a.q6etc || '')) inp.value = a.q6etc || '';
+        }
         Array.prototype.forEach.call(vQ.querySelectorAll('.eg-opt'), function (b) {
             var on = isSel(q, b.dataset.v);
             b.classList.toggle('is-on', on);
@@ -281,6 +295,7 @@
         if (step >= visible().length) finish(); else renderQ();
     }
     $('egNext').addEventListener('click', next);
+    $('egEtc').addEventListener('input', function () { a.q6etc = this.value.slice(0, 100); });
     $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); } });
     $('egSkip').addEventListener('click', function () {
         var q = visible()[step];
@@ -348,6 +363,17 @@
             market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); }
         };
         issues.forEach(function (k) { if (I[k]) I[k]("'" + M.issues[k] + "'를 골라서"); });
+        // '기타'에 적은 글: 사이트 서비스 낱말과 맞으면 그곳을 추천, 맞는 게 없으면 상담 상자를 위로
+        var etcNoMatch = false;
+        var etcText = issues.indexOf('etc') >= 0 ? etcValue() : '';
+        if (etcText) {
+            var low = etcText.toLowerCase(), hit = 0;
+            (M.etcKeywords || []).forEach(function (g) {
+                if (!g.k.some(function (w) { return low.indexOf(w) >= 0; })) return;
+                g.ids.forEach(function (id, j) { if (M.links[id]) { add(id, j === 0 ? 5 : 3, "'기타'에 적어 주신 내용과 관련된 곳이라서"); hit++; } });
+            });
+            if (!hit) { etcNoMatch = true; consultTop = true; }
+        } else if (issues.indexOf('etc') >= 0) consultTop = true;
 
         // 3) 수출 형태(Q4)
         forms.forEach(function (f) {
@@ -441,7 +467,8 @@
             top: topIds.map(function (id) { return { id: id, why: why(id) }; }),
             progs: progs,
             more: moreIds.map(function (id) { return { id: id, why: why(id) }; }),
-            consultTop: consultTop
+            consultTop: consultTop,
+            etcNoMatch: etcNoMatch
         };
     }
 
@@ -476,7 +503,7 @@
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + ' 단계';
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
-        var iss = arr(a.q6).map(function (k) { return M.issues[k]; });
+        var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
         s += iss.length ? '가장 큰 어려움은 ' + iss.join(' / ') + '입니다.' : '어려운 점은 고르지 않았습니다.';
         return s;
     }
@@ -489,7 +516,8 @@
         L.push(s1);
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
-        L.push('어려운 점: ' + (arr(a.q6).map(function (k) { return M.issues[k]; }).join(', ') || '-'));
+        L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
+        if (arr(a.q6).indexOf('etc') >= 0 && etcValue()) L.push('기타(찾는 서비스): ' + etcValue());
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
         return L.join('\n');
     }
@@ -598,6 +626,7 @@
         $('egLocalNote').hidden = !(forms.length === 1 && forms[0] === 'local');
 
         // 상담 상자 위치: '전문가 상담'·'기타'를 고르면 추천 위로
+        $('egEtcNoMatch').hidden = !rec.etcNoMatch;
         var consult = $('egConsult');
         var anchor = rec.consultTop ? $('egTopWrap') : $('egFormsAnchor');
         anchor.parentNode.insertBefore(consult, rec.consultTop ? anchor : anchor.nextSibling);
@@ -642,7 +671,8 @@
         body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || '');
         body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
-        body.set('q6', arr(a.q6).join(',')); body.set('q7', arr(a.q7).join(','));
+        body.set('q6', arr(a.q6).join(','));
+        if (arr(a.q6).indexOf('etc') >= 0) body.set('q6etc', etcValue());   // '기타'에 적은 글(100자, 2026-11-22 작가님: 시트에 저장) body.set('q7', arr(a.q7).join(','));
         body.set('q8', needList(a).join(','));
         body.set('rec', rec.top.map(function (r) { return r.id; }).join(','));
         body.set('v', String(M.version));

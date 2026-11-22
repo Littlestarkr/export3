@@ -320,3 +320,12 @@
 /* Q6 '전체 선택'(안내문 끝, 2026-11-22) */
 .eg-all { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; font-weight: 700; color: var(--primary-color, #1a2a4a); cursor: pointer; white-space: nowrap; }
 .eg-all input { width: 18px; height: 18px; accent-color: var(--secondary-color, #c9a227); cursor: pointer; }
+
+/* Q6 '기타' 입력칸(2026-11-22) */
+.eg-etc { margin-top: 12px; }
+.eg-etc-l { display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 4px; color: var(--primary-color, #1a2a4a); }
+.eg-etc input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #cfc8b4; border-radius: 8px; font-size: 1rem; }
+.eg-etc input::placeholder { color: #9a9a9a; }
+.eg-etc input:focus { outline: 2px solid var(--secondary-color, #c9a227); outline-offset: 1px; }
+.eg-etc .eg-note { margin-top: 6px; }
+.eg-etc-nomatch { background: #fff8e6; border-left: 3px solid var(--secondary-color, #c9a227); padding: 8px 10px; border-radius: 4px; font-size: 0.92rem; }
