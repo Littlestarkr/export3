@@ -286,7 +286,11 @@
             collect: function (w) { add(ins, 3, w); add('credit', 2, w); add('claim', 2, w); },
             importer: function (w) { add('credit', 3, w); add(ins, 2, w); },
             factoring: function (w) { add('ksure-postship', 3, w); add('ksure-after', 2, w); },
-            tclaim:  function (w) { add('contract', 3, w); add('law-adr', 2, w); add('export-docs', 1, w); consultTop = true; },
+            // 무역클레임(작가님 확정): 중소중견Plus+(클레임위험 특약)·농수산물패키지(클레임비용위험)·대한상사중재원. 계약서·중재 법령은 보조
+            tclaim:  function (w) {
+                add('ksure-plus', 3, w); add('kcab', 5, w); add('ksure-agri', a.q3 === 'agri' ? 3 : 1, w);
+                add('contract', 1, w); add('law-adr', 1, w); consultTop = true;
+            },
             fx:      function (w) { add('fx', 3, w); add('qna-fx', 2, w); },
             fund:    function (w) {
                 add('policy-fund', 3, w); add('guarantee', 2, w); add('semas-innov', 3, w);
@@ -314,7 +318,7 @@
         // 4) 규모(Q2)·품목(Q3)
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
-        if (has2('smallbiz')) { add('semas-innov', 3, '수출실적이 있는 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
+        if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
         var w3 = "품목으로 '" + label('q3', a.q3) + "'을 골라서";
         if (a.q3 === 'agri') { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
         if (a.q3 === 'cosmetic') { add('cosmetic', 2, w3); add('cert', 1, w3); }

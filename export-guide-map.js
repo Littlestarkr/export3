@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 3;
+    var MAP_VERSION = 4;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -35,14 +35,15 @@
         market:  '어느 나라로 갈지 모르겠다',
         tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다'
     };
-    // 단계별로 먼저 보이는 6개(순서대로). 나머지는 '다른 어려움 더 보기'
+    // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
+    // 2026-11-22 작가님: 10만 달러 이상이어도 바이어·시장·인증은 필요 → 1만 달러 이상은 9개를 먼저 보인다
     var ISSUE_ORDER = {
         s0: ['market', 'buyer', 'support', 'cert', 'hs', 'docs'],
         s1: ['buyer', 'docs', 'hs', 'cert', 'support', 'fraud'],
-        s2: ['buyer', 'docs', 'collect', 'importer', 'fraud', 'support'],
-        s3: ['collect', 'importer', 'buyer', 'fund', 'factoring', 'tclaim'],
-        s4: ['collect', 'importer', 'fund', 'factoring', 'fx', 'tclaim'],
-        s5: ['fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund']
+        s2: ['buyer', 'docs', 'collect', 'importer', 'fraud', 'support', 'cert', 'hs'],
+        s3: ['buyer', 'collect', 'importer', 'fund', 'market', 'cert', 'docs', 'factoring', 'tclaim'],
+        s4: ['buyer', 'market', 'cert', 'collect', 'importer', 'fund', 'factoring', 'fx', 'tclaim'],
+        s5: ['buyer', 'market', 'cert', 'fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund']
     };
     var ISSUE_HELP = {
         s0: '어디서부터 시작할지 막막하신가요? 가장 가까운 것을 골라 주세요.',
@@ -152,7 +153,7 @@
     // 안내할 곳. ext: 새 탭
     var LINKS = {
         'k-domestic':  { t: 'KOTRA 내수기업 수출기업화', u: 'global-expansion.html#k-domestic', d: '전년도 통관 실적 10만 달러 미만 기업의 첫 수출을 돕는 사업입니다(로컬 수취액은 실적에서 제외).' },
-        'semas-innov': { t: '소진공 혁신성장촉진자금(혁신형)', u: 'policy-finance.html?org=semas#semas-direct', d: '수출 연 1천 달러 이상 소상공인이 보는 정책자금입니다. 업종·규모·한도 등 세부 요건은 소진공 공고를 확인하세요.' },
+        'semas-innov': { t: '소진공 혁신성장촉진자금(혁신형)', u: 'policy-finance.html?org=semas#semas-direct', d: "'수출 소상공인'(최근 1년 이내 직·간접 수출실적 1,000달러 이상인 소상공인)이 대상인 정책자금입니다. 한도·금리·업종 등 세부 요건은 소진공 공고를 확인하세요." },
         'trade-stats': { t: '무역통계·HS코드 길잡이', u: 'https://www.littlestar.co.kr/lawsearch/trade/', ext: true, d: '품목(HS코드)별 수출 통계와 유망 시장을 찾아봅니다.' },
         'buyer':       { t: '바이어 발굴 안내', u: 'global-expansion.html#buyer', d: 'K-SIGHT·트라이빅·Trade Map·B2B 플랫폼 등 바이어 찾는 길을 모았습니다.' },
         'b2c':         { t: 'B2C 온라인 판매(역직구) 시작 순서', u: 'global-expansion.html#c-flow', d: '플랫폼 선택부터 물류·결제까지 7단계로 정리했습니다.' },
@@ -167,6 +168,7 @@
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
         'ksure-postship': { t: '수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
         'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
+        'kcab':        { t: '대한상사중재원(중재·조정)', u: 'https://www.kcab.or.kr/', d: '무역클레임이 당사자 합의로 풀리지 않을 때 상사중재·조정을 신청하는 기관입니다. 절차·비용은 공식 사이트에서 확인하세요.', ext: true },
         'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
         'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
         'claim-exempt':{ t: '면책사례(중계무역 조달 차질 등)', u: 'trade-insurance.html#claim-exempt', d: '중계무역 등에서 자주 생기는 면책 사례를 정리했습니다.' },
