@@ -44,6 +44,13 @@
         return n;
     }
     function arr(v) { return Array.isArray(v) ? v : []; }
+    // Q8은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개, 옛 'tool' 코드)도 읽는다.
+    function needList(a) {
+        var v = typeof a.q8 === 'string' ? (a.q8 ? [a.q8] : []) : arr(a.q8);
+        var out = [];
+        v.forEach(function (c) { if (c === 'tool') c = 'info'; if (out.indexOf(c) < 0) out.push(c); });
+        return out;
+    }
     // Q2(창업 연차·기업 규모)는 복수 선택. 예전 기록(문자열)도 읽는다.
     function has2(v) { return (Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])).indexOf(v) >= 0; }
     function stageIdx(v) {
@@ -337,9 +344,11 @@
         });
 
         // 7) 필요(Q8)
-        if (a.q8 === 'tool') { add('doc-builder', 1, '바로 쓸 도구가 필요하다고 해서'); add('trade-stats', 1, '바로 쓸 도구가 필요하다고 해서'); }
-        if (a.q8 === 'fund') { add('policy-fund', 1, '자금·지원사업 신청 길이 필요하다고 해서'); add('voucher', 1, '자금·지원사업 신청 길이 필요하다고 해서'); }
-        if (a.q8 === 'consult') consultTop = true;
+        var needs = needList(a);
+        if (needs.indexOf('info') >= 0) { var wi = '수출 자료·도구가 필요하다고 해서'; add('doc-builder', 1, wi); add('trade-stats', 1, wi); add('export-docs', 1, wi); }
+        if (needs.indexOf('market') >= 0) { var wm = '시장개척·바이어 발굴이 필요하다고 해서'; add('buyer', 1, wm); add('k-market', 1, wm); add('trade-stats', 1, wm); }
+        if (needs.indexOf('fund') >= 0) { var wf = '자금·무역보험·지원사업이 필요하다고 해서'; add('policy-fund', 1, wf); add(ins, 1, wf); add('voucher', 1, wf); }
+        if (needs.indexOf('consult') >= 0) consultTop = true;
 
         // 자격 기준 거르기
         var list = order.filter(function (id) {
@@ -406,7 +415,7 @@
         L.push('수출 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (label('q3', a.q3) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).map(function (k) { return M.issues[k]; }).join(', ') || '-'));
-        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (a.q8 ? label('q8', a.q8) : '-'));
+        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
         return L.join('\n');
     }
 
@@ -415,7 +424,7 @@
         var rec = renderResult(false);
         ga('guide_complete', {
             stage: a.q1, size: arr(a.q2).join(','), item: a.q3 || '',
-            forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: a.q8 || ''
+            forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: needList(a).join(',')
         });
         maybeSave(rec);
     }
@@ -475,7 +484,7 @@
         fBox.hidden = !anyForm;
         $('egLocalNote').hidden = !(forms.length === 1 && forms[0] === 'local');
 
-        // 상담 상자 위치: '전문가와 상담'·'기타'를 고르면 추천 위로
+        // 상담 상자 위치: '전문가 상담'·'기타'를 고르면 추천 위로
         var consult = $('egConsult');
         var anchor = rec.consultTop ? $('egTopWrap') : $('egFormsAnchor');
         anchor.parentNode.insertBefore(consult, rec.consultTop ? anchor : anchor.nextSibling);
@@ -521,7 +530,7 @@
         body.set('q2', arr(a.q2).join(',')); body.set('q3', a.q3 || '');
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(',')); body.set('q7', arr(a.q7).join(','));
-        body.set('q8', a.q8 || '');
+        body.set('q8', needList(a).join(','));
         body.set('rec', rec.top.map(function (r) { return r.id; }).join(','));
         body.set('v', String(M.version));
         msg.textContent = '저장하는 중입니다…';

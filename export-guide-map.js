@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 5;
+    var MAP_VERSION = 6;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -140,12 +140,12 @@
             ]
         },
         {
-            id: 'q8', type: 'one', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '선택 질문입니다. 건너뛰어도 됩니다.',
+            id: 'q8', type: 'many', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '선택 질문입니다. 여러 개 골라도 되고, 건너뛰어도 됩니다.',
             options: [
-                { v: 'info', label: '직접 찾아볼 자료' },
-                { v: 'tool', label: '바로 쓸 도구' },
-                { v: 'fund', label: '자금·지원사업 신청 길' },
-                { v: 'consult', label: '전문가와 상담' }
+                { v: 'info', label: '수출 자료·도구' },
+                { v: 'market', label: '시장개척·바이어 발굴' },
+                { v: 'fund', label: '자금·무역보험·지원사업' },
+                { v: 'consult', label: '전문가 상담' }
             ]
         }
     ];
