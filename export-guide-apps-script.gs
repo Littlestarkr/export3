@@ -38,7 +38,7 @@ var L = {
   q5: { undecided: '미정', cnjp: '중국·일본', sea: '동남아', na: '미국·캐나다', eu: '유럽', mea: '중동·아프리카', other: '그 밖의 지역' },
   q6: { buyer: '바이어 발굴', docs: '서류·계약서', collect: '대금 미회수', importer: '수입자 신용조사', factoring: '수출채권 유동화', tclaim: '무역클레임', fx: '환율', fund: '자금', cert: '해외인증·규제', hs: 'HS코드·관세·통관', support: '정부지원사업', fraud: '무역사기', market: '시장 선택' },
   q7: { prepay: '선수금', lc: '신용장(L/C)', collection: '추심(D/P, D/A)', deferred: '외상거래', other: '기타', unknown: '아직 모름' },
-  q8: { info: '자료', tool: '도구', fund: '자금·지원사업', consult: '상담' }
+  q8: { info: '자료·도구', market: '시장·바이어', fund: '자금·보험·지원사업', consult: '상담', tool: '자료·도구' }
 };
 
 function json_(o) {
@@ -132,7 +132,7 @@ function doPost(e) {
       many_('q5', p.q5),
       many_('q6', p.q6),
       many_('q7', p.q7),
-      one_('q8', p.q8),
+      many_('q8', p.q8),
       ids_(p.rec),
       String(p.v || '').replace(/[^0-9.]/g, '').slice(0, 6),
       '',
