@@ -123,6 +123,8 @@
         var qs = visible();
         if (step >= qs.length) { finish(); return; }
         var q = qs[step];
+        // 기본값(작가님 2026-11-22: Q7은 외상거래 미리 선택). 처음 볼 때만 넣고, 사용자가 바꾼 값(빈 선택 포함)은 그대로 둔다.
+        if (q.def && a[q.id] === undefined) a[q.id] = q.def.slice();
         var total = qs.length;
         $('egStep').textContent = (step + 1) + ' / ' + total;
         $('egBar').value = step + 1;
