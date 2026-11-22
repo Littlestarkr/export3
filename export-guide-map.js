@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 6;
+    var MAP_VERSION = 7;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -166,15 +166,17 @@
         'ksure-dplus': { t: '단기수출보험(다이렉트-중소Plus+)', u: 'trade-insurance.html#ksure-dplus', d: '소액 외상 수출의 대금 미회수에 대비하는 비대면 무역보험 상품입니다.' },
         'ksure-plus':  { t: '단기수출보험(중소중견Plus+)', u: 'trade-insurance.html#ksure-plus', d: '외상·추심 수출의 대금 미회수에 대비하는 무역보험 상품입니다(중계무역 포함).' },
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
-        'ksure-postship': { t: '수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
+        'ksure-postship': { t: '무보 수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
         'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
         'trade-claim': { t: '무역클레임 대응 가이드', u: 'trade-claim.html#matrix', d: '클레임 접수 직후의 무료 자문부터 알선·조정, 미수채권 추심, 회수불능 확인까지 상황별로 찾아갈 곳을 정리했습니다.' },
         'kcab':        { t: '대한상사중재원(중재·조정)', u: 'https://www.kcab.or.kr/', d: '무역클레임이 당사자 합의로 풀리지 않을 때 상사중재·조정을 신청하는 기관입니다. 절차·비용은 공식 사이트에서 확인하세요.', ext: true },
         'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
         'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
         'claim-exempt':{ t: '면책사례(중계무역 조달 차질 등)', u: 'trade-insurance.html#claim-exempt', d: '중계무역 등에서 자주 생기는 면책 사례를 정리했습니다.' },
+        'kosmes-dom':  { t: '중진공 신시장진출지원자금(내수기업 수출기업화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 미만인 수출 초보기업 등이 대상인 정책자금입니다(수출지원사업 참여기업 등도 포함). 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
+        'kosmes-glb':  { t: '중진공 신시장진출지원자금(수출기업 글로벌화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 이상인 수출 유망기업 등이 대상인 정책자금입니다. 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
         'policy-fund': { t: '정책자금 안내', u: 'policy-finance.html?org=kosmes', d: '기관별 정책자금의 대상·한도·금리를 정리했습니다.' },
-        'guarantee':   { t: '수출신용보증(선적 전)', u: 'trade-insurance.html#guarantee', d: '수출 계약을 근거로 생산·선적 전 자금을 빌릴 때 보증을 받습니다.' },
+        'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'trade-insurance.html#guarantee', d: '수출 계약을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다. 보증 한도·요건은 무보 안내를 확인하세요.' },
         'fx':          { t: '환변동보험', u: 'trade-insurance.html#fx', d: '환율 하락으로 생기는 손실에 대비하는 무역보험 상품입니다.' },
         'qna-fx':      { t: '환변동보험 Q&A', u: 'trade-insurance.html#qna-fx', d: '로컬 수출만 하는 경우 가입 여부 등 자주 묻는 질문 15개입니다.' },
         'k-market':    { t: 'KOTRA 해외시장조사', u: 'global-expansion.html#k-market', d: '목표 시장의 바이어·경쟁 동향을 KOTRA 무역관이 조사해 줍니다.' },
@@ -216,6 +218,25 @@
         'claim':       { s: [0, 0, 1, 1, 1, 1] }
     };
 
+    // 고른 항목에 맞는 지원사업(작가님 2026-11-22): 수출실적 단계(st)에서 대상이 될 수 있고, 고른 항목(on)과 하나라도 겹치면 개수 제한 없이 모두 보여 준다.
+    // st 는 확인된 자격 기준만 반영한다(KOTRA 내수기업 수출기업화: 전년도 통관 10만 달러 미만, 작가님 확인 / 중진공 신시장진출지원자금: 최근 1년 직·간접 10만 달러 경계, 중진공 정책자금 기초 가이드 / 소진공 혁신성장촉진자금(혁신형): 수출 소상공인 1천 달러 이상, 작가님 확인).
+    // 확인 못 한 사업은 전 단계(ALL)로 두고 설명에 '공고 확인'을 적는다. on: 애로(Q6) 코드, 'need:' 필요(Q8), 'form:' 수출 형태(Q4), 'item:' 품목(Q3)
+    var ALL = [0, 1, 2, 3, 4, 5];
+    var PROGRAMS = [
+        { id: 'k-domestic', st: [0, 1, 2, 3], on: ['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local'] },
+        { id: 'kosmes-dom', st: [0, 1, 2, 3], on: ['fund', 'support', 'need:fund'] },
+        { id: 'kosmes-glb', st: [4, 5], on: ['fund', 'support', 'need:fund'] },
+        { id: 'semas-innov', st: [2, 3, 4, 5], size: 'smallbiz', on: ['fund', 'support', 'need:fund'] },
+        // 무보 수출신용보증(작가님 2026-11-22: 실적 크기와 상관없이 자금을 고르면 추천). 보증 요건은 무역보험 페이지·무보 공고 확인
+        { id: 'guarantee', st: ALL, on: ['fund', 'need:fund'] },
+        { id: 'ksure-postship', st: ALL, on: ['fund', 'factoring', 'need:fund'] },
+        { id: 'voucher', st: ALL, on: ['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund'] },
+        { id: 'k-market', st: ALL, on: ['buyer', 'market', 'need:market'] },
+        { id: 'k-branch', st: ALL, on: ['buyer', 'market', 'need:market'] },
+        { id: 'at', st: ALL, item: 'agri', on: ['fund', 'support', 'need:fund'] },
+        { id: 'rnd', st: ALL, age: ['startup', 'y7'], on: ['support', 'fund', 'need:fund'] }
+    ];
+
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
         local: ['k-domestic', 'qna-fx'],
@@ -238,6 +259,7 @@
         issueHelp: ISSUE_HELP,
         questions: QUESTIONS,
         links: LINKS,
+        programs: PROGRAMS,
         stageMap: STAGE_MAP,
         formLinks: FORM_LINKS,
         short: SHORT

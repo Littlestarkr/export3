@@ -264,6 +264,15 @@
     });
 
     /* ---------- 추천 계산 ---------- */
+    function tagWhy(hit) {
+        var names = hit.slice(0, 2).map(function (t) {
+            if (t.indexOf('need:') === 0) return "'" + label('q8', t.slice(5)) + "'";
+            if (t.indexOf('form:') === 0) return "'" + label('q4', t.slice(5)) + "'";
+            return "'" + M.issues[t] + "'";
+        });
+        return names.join('·') + '를 골라서';
+    }
+
     function recommend() {
         var st = stageIdx(a.q1);
         var stShort = M.stages[st].short;
@@ -364,9 +373,27 @@
             R[id].forEach(function (r) { if (r[0] > best[0]) best = r; });
             return best[1];
         };
+        // 고른 항목에 맞는 지원사업: 단계 자격이 맞고 고른 항목과 겹치는 것을 모두(먼저 볼 곳에 이미 나온 것은 빼고)
+        var tags = issues.slice();
+        needList(a).forEach(function (n) { tags.push('need:' + n); });
+        forms.forEach(function (f) { tags.push('form:' + f); });
+        var topIds = list.slice(0, 3);
+        var progs = [];
+        (M.programs || []).forEach(function (pg) {
+            if (pg.st.indexOf(st) < 0 || !M.links[pg.id]) return;
+            if (pg.size && !has2(pg.size)) return;
+            if (pg.item && a.q3 !== pg.item) return;
+            if (pg.age && !pg.age.some(has2)) return;
+            var hit = pg.on.filter(function (t) { return tags.indexOf(t) >= 0; });
+            if (!hit.length || topIds.indexOf(pg.id) >= 0) return;
+            progs.push({ id: pg.id, why: tagWhy(hit) });
+        });
+        var progIds = progs.map(function (r) { return r.id; });
+        var rest = list.slice(3).filter(function (id) { return progIds.indexOf(id) < 0; });
         return {
-            top: list.slice(0, 3).map(function (id) { return { id: id, why: why(id) }; }),
-            more: list.slice(3, 7).map(function (id) { return { id: id, why: why(id) }; }),
+            top: topIds.map(function (id) { return { id: id, why: why(id) }; }),
+            progs: progs,
+            more: rest.slice(0, 4).map(function (id) { return { id: id, why: why(id) }; }),
             consultTop: consultTop
         };
     }
@@ -453,6 +480,17 @@
             body.appendChild(go);
             card.appendChild(body);
             top.appendChild(card);
+        });
+
+        var pl = $('egProgList');
+        pl.textContent = '';
+        $('egProgBox').hidden = !rec.progs.length;
+        rec.progs.forEach(function (r) {
+            var li = el('li');
+            li.appendChild(linkEl(r.id, 'eg-more-link'));
+            li.appendChild(el('span', 'eg-more-why', ' — ' + r.why));
+            li.appendChild(el('span', 'eg-prog-d', M.links[r.id].d));
+            pl.appendChild(li);
         });
 
         var more = $('egMoreList');

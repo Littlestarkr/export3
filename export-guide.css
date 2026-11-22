@@ -258,6 +258,8 @@
 .eg-more-list li { padding: 8px 0; border-bottom: 1px dashed #e3ded0; line-height: 1.6; }
 .eg-more-link { color: var(--primary-color); font-weight: 500; text-decoration: underline; text-decoration-color: var(--secondary-color); }
 .eg-more-why { color: #777; font-size: 0.88rem; }
+.eg-prog-d { display: block; color: #555; font-size: 0.88rem; line-height: 1.55; margin-top: 2px; }
+.eg-prog-note { margin: -4px 0 6px; }
 
 .eg-consult {
     margin: 24px 0 8px;
