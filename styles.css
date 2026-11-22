@@ -322,6 +322,15 @@ nav a:hover {
     font-size: 0.95rem;
 }
 
+/* 학력: 학위마다 한 줄, 낱말 중간에서 끊기지 않게 */
+.resume-edu {
+    word-break: keep-all;
+}
+
+.resume-nb {
+    white-space: nowrap;
+}
+
 .resume-label {
     flex-shrink: 0;
     width: 70px;
