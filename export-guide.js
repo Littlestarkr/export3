@@ -19,6 +19,7 @@
 
     var KAKAO = 'https://open.kakao.com/o/sYyKojDh';
     var HIST_KEY = 'egHistory';
+    var NOW_KEY = 'egNow';   // 이 탭에서 마지막으로 본 결과(뒤로가기 복원용, sessionStorage)
     var LAST_KEY = 'egLast';
     var HAND_KEY = 'egHandoff';
     var HIST_MAX = 5;
@@ -117,7 +118,7 @@
         renderStart();
     });
     $('egBegin').addEventListener('click', function () {
-        a = {}; step = 0; saved = null;
+        a = {}; step = 0; saved = null; nowClear();
         if (!started) { started = true; ga('guide_start'); }
         renderQ();
         scrollToApp();
@@ -565,8 +566,9 @@
         maybeSave(rec);
     }
 
-    function renderResult(fromHistory) {
+    function renderResult(fromHistory, restoring) {
         show(vRes);
+        nowSet({ a: a, saved: saved, fromHistory: !!fromHistory });
         var rec = recommend();
         $('egSummary').textContent = oneLine();
 
@@ -671,6 +673,7 @@
             $('egSaveMsg').textContent = '이 기기에 저장해 둔 결과입니다(접수번호 ' + saved.id + ').';
         }
         lastSummary = summaryText(true);
+        if (restoring) return rec;
         $('egResTitle').focus({ preventScroll: true });
         scrollToApp();
         return rec;
@@ -773,7 +776,7 @@
     });
     $('egPrint').addEventListener('click', function () { window.print(); });
     $('egRestart').addEventListener('click', function () {
-        a = {}; step = 0; saved = null;
+        a = {}; step = 0; saved = null; nowClear();
         renderStart();
         scrollToApp();
     });
@@ -783,5 +786,39 @@
     });
     $('egToKakao').href = KAKAO;
 
-    renderStart();
+    /* ---------- 뒤로가기로 돌아왔을 때 결과 화면 되살리기 ----------
+       결과의 '바로 가기'로 다른 페이지에 갔다가 뒤로가기로 돌아오면, 브라우저가 페이지를 새로 읽는 경우
+       (설치한 앱·메모리 부족 등) 시작 화면이 나와 결과가 사라진다. 그래서 결과를 그 탭의 sessionStorage에만
+       잠시 담아 두고, '뒤로/앞으로' 이동으로 열렸을 때만 결과와 스크롤 위치를 되살린다(새로 열면 시작 화면). */
+    function nowSet(v) { try { sessionStorage.setItem(NOW_KEY, JSON.stringify(v)); } catch (e) {} }
+    function nowClear() { try { sessionStorage.removeItem(NOW_KEY); } catch (e) {} }
+    function navType() {
+        try {
+            var n = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+            if (n && n.type) return n.type;
+            if (performance.navigation) return performance.navigation.type === 2 ? 'back_forward' : 'other';
+        } catch (e) {}
+        return 'other';
+    }
+    window.addEventListener('pagehide', function () {
+        if (vRes.hidden) { nowClear(); return; }
+        var v = null;
+        try { v = JSON.parse(sessionStorage.getItem(NOW_KEY) || 'null'); } catch (e) {}
+        if (v) { v.y = window.pageYOffset; nowSet(v); }
+    });
+    (function boot() {
+        var v = null;
+        if (navType() === 'back_forward') {
+            try { v = JSON.parse(sessionStorage.getItem(NOW_KEY) || 'null'); } catch (e) {}
+        }
+        if (!v || !v.a || !v.a.q1) { nowClear(); renderStart(); return; }
+        a = v.a; a.q3 = items(a); saved = v.saved || null; step = 0;
+        renderResult(v.fromHistory, true);
+        var y = v.y || 0;
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        var go = function () { window.scrollTo(0, y); };
+        go();
+        window.addEventListener('load', go);
+        setTimeout(go, 300);
+    })();
 })();
