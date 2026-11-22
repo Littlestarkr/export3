@@ -137,26 +137,7 @@
         title.textContent = (q.id === 'q7' && isPlan() && q.titlePlan) ? q.titlePlan : q.title;
         var help = q.help || '';
         if (q.id === 'q6') help = (M.issueHelp[a.q1] || '') + ' ' + help;
-        var helpEl = $('egHelp');
-        helpEl.textContent = help;
-        // '전체 선택'(2026-11-22 작가님, Q6만): 안내문 끝의 체크 상자. 접힌 보기까지 모두 고르고, 하나라도 풀면 체크가 풀린다
-        if (q.selectAll) {
-            var lab = el('label', 'eg-all');
-            var cb = el('input');
-            cb.type = 'checkbox';
-            cb.id = 'egAll';
-            cb.addEventListener('change', function () {
-                a[q.id] = cb.checked ? q.options.map(function (o) { return o.v; }) : [];
-                if (cb.checked) $('egMore').open = true;
-                $('egMsg').textContent = '';
-                refreshOpts(q);
-                updateNext(q);
-            });
-            lab.appendChild(cb);
-            lab.appendChild(document.createTextNode(' 전체 선택'));
-            helpEl.appendChild(document.createTextNode(' '));
-            helpEl.appendChild(lab);
-        }
+        $('egHelp').textContent = help;
         $('egMsg').textContent = '';
 
         var opts = q.options.slice();
@@ -196,7 +177,6 @@
 
         $('egPrev').disabled = step === 0;
         $('egSkip').hidden = !q.optional;
-        refreshOpts(q);
         updateNext(q);
         title.focus({ preventScroll: true });
     }
@@ -251,8 +231,6 @@
         updateNext(q);
     }
     function refreshOpts(q) {
-        var all = $('egAll');
-        if (all && q.selectAll) all.checked = q.options.every(function (o) { return isSel(q, o.v); });
         Array.prototype.forEach.call(vQ.querySelectorAll('.eg-opt'), function (b) {
             var on = isSel(q, b.dataset.v);
             b.classList.toggle('is-on', on);
