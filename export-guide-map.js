@@ -125,7 +125,7 @@
             ]
         },
         {
-            id: 'q6', type: 'multi', title: '지금 어려운 점은 무엇인가요? (복수 선택 가능)', help: '해당하는 것을 모두 골라 주세요.',
+            id: 'q6', type: 'multi', title: '지금 어려운 점은 무엇인가요? (복수 선택 가능)', help: '해당하는 것을 모두 골라 주세요.', selectAll: true,
             options: Object.keys(ISSUES).map(function (k) { return { v: k, label: ISSUES[k] }; })
         },
         {
