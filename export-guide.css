@@ -316,3 +316,7 @@
 .eg-extra-t { display: block; color: var(--primary-color, #1a2a4a); font-size: 0.95rem; margin-bottom: 2px; }
 .eg-foot-links { margin: 18px 0 0; font-size: 0.92rem; color: #555; line-height: 1.8; }
 .eg-foot-links strong { margin-right: 6px; }
+
+/* Q6 '전체 선택'(안내문 끝, 2026-11-22) */
+.eg-all { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; font-weight: 700; color: var(--primary-color, #1a2a4a); cursor: pointer; white-space: nowrap; }
+.eg-all input { width: 18px; height: 18px; accent-color: var(--secondary-color, #c9a227); cursor: pointer; }
