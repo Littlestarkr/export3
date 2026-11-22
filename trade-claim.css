@@ -1,0 +1,107 @@
+/* =========================================
+   무역클레임 대응 가이드 (trade-claim.html)
+   경고 상자·카드·면책 상자는 cert-guide.css 의 .cg-* 를 함께 쓴다.
+   ========================================= */
+
+/* 공고 확인 표시 */
+.tc-chk {
+    display: inline-block;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #a5281b;
+    font-size: .72rem;
+    font-weight: 700;
+    vertical-align: 1px;
+    white-space: nowrap;
+}
+.tc-p { font-size: .93rem; color: #444; line-height: 1.7; margin: 6px 0 12px; }
+.tc-p a { color: #8a6a1f; font-weight: 700; text-decoration: underline; }
+
+/* 상황별 추천 카드 */
+.tc-sits {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+}
+.tc-sit {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scroll-margin-top: 90px;
+}
+.tc-sit-k { font-size: .78rem; font-weight: 700; color: #8a6a1f; letter-spacing: .5px; }
+.tc-sit h4 { font-size: 1.02rem; color: var(--primary-color); line-height: 1.45; }
+.tc-sit h4 small { display: block; font-size: .8rem; font-weight: 400; color: #777; margin-top: 2px; }
+.tc-sit ul { list-style: none; padding: 0; margin: 0 0 6px; }
+.tc-sit li {
+    position: relative;
+    padding-left: 16px;
+    font-size: .86rem;
+    color: #444;
+    line-height: 1.55;
+    margin-top: 5px;
+}
+.tc-sit li::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: .62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+.tc-sit-go {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 10px;
+    border-radius: 6px;
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: .84rem;
+    text-align: center;
+    transition: var(--transition);
+}
+.tc-sit-go:hover, .tc-sit-go:focus-visible { background: var(--secondary-color); color: var(--primary-color); }
+
+/* 4단계 */
+.tc-step {
+    max-width: 980px;
+    margin: 30px auto 0;
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-left: 5px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 24px 24px 22px;
+    scroll-margin-top: 90px;
+}
+.tc-step h4 { font-size: 1.2rem; color: var(--primary-color); margin: 8px 0 4px; }
+.tc-step .cg-portals { margin-top: 12px; }
+.tc-step .cg-portal p strong { color: var(--primary-color); }
+.tc-step .cg-checks { margin: 2px 0 4px; }
+.cg-portal .cg-go.tc-go2 { background: #fff; color: var(--primary-color); border: 1px solid var(--primary-color); }
+.cg-portal .cg-go.tc-go2:hover, .cg-portal .cg-go.tc-go2:focus-visible { background: var(--secondary-color); border-color: var(--secondary-color); }
+.tc-step .cg-portal { flex-flow: row wrap; align-items: center; }
+.tc-step .cg-portal > p, .tc-step .cg-portal > ul { flex: 1 1 100%; }
+.tc-step .cg-portal .cg-go { align-self: auto; }
+
+@media (max-width: 1024px) {
+    .tc-sits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+    .tc-sits { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
+    .tc-step { padding: 18px 16px; margin-top: 22px; }
+    .tc-step .cg-portal .cg-go { width: 100%; }
+    .tc-sit, .tc-step { scroll-margin-top: 10px; }
+}

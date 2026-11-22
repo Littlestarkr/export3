@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 4;
+    var MAP_VERSION = 5;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -168,6 +168,7 @@
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
         'ksure-postship': { t: '수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
         'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
+        'trade-claim': { t: '무역클레임 대응 가이드', u: 'trade-claim.html#matrix', d: '클레임 접수 직후의 무료 자문부터 알선·조정, 미수채권 추심, 회수불능 확인까지 상황별로 찾아갈 곳을 정리했습니다.' },
         'kcab':        { t: '대한상사중재원(중재·조정)', u: 'https://www.kcab.or.kr/', d: '무역클레임이 당사자 합의로 풀리지 않을 때 상사중재·조정을 신청하는 기관입니다. 절차·비용은 공식 사이트에서 확인하세요.', ext: true },
         'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
         'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
