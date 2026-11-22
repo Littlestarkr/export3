@@ -44,6 +44,8 @@
         return n;
     }
     function arr(v) { return Array.isArray(v) ? v : []; }
+    // Q2(창업 연차·기업 규모)는 복수 선택. 예전 기록(문자열)도 읽는다.
+    function has2(v) { return (Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])).indexOf(v) >= 0; }
     function stageIdx(v) {
         for (var i = 0; i < M.stages.length; i++) if (M.stages[i].v === v) return i;
         return 0;
@@ -138,7 +140,17 @@
         box.textContent = '';
         box.setAttribute('role', q.type === 'one' ? 'radiogroup' : 'group');
         box.setAttribute('aria-labelledby', 'egTitle');
-        opts.forEach(function (o) { box.appendChild(optBtn(q, o)); });
+        box.classList.toggle('eg-opts-grouped', !!q.groups);
+        if (q.groups) {
+            q.groups.forEach(function (g) {
+                box.appendChild(el('p', 'eg-grp-h', g.label));
+                var sub = el('div', 'eg-opts');
+                opts.forEach(function (o) { if (g.vs.indexOf(o.v) >= 0) sub.appendChild(optBtn(q, o)); });
+                box.appendChild(sub);
+            });
+        } else {
+            opts.forEach(function (o) { box.appendChild(optBtn(q, o)); });
+        }
 
         var moreWrap = $('egMore');
         var moreBox = $('egMoreOpts');
@@ -191,6 +203,9 @@
             cur.splice(i, 1);
         } else {
             var ex = q.exclusive || [];
+            (q.groups || []).forEach(function (g) {
+                if (g.vs.indexOf(v) >= 0) cur = cur.filter(function (x) { return g.vs.indexOf(x) < 0; });
+            });
             if (ex.indexOf(v) >= 0) cur = [];
             else cur = cur.filter(function (x) { return ex.indexOf(x) < 0; });
             if (q.max && cur.length >= q.max) {
@@ -277,7 +292,7 @@
             },
             cert:    function (w) { add('cert', 3, w); if (a.q3 === 'cosmetic') add('cosmetic', 2, w); },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
-            support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (a.q2 === 'startup') add('rnd', 2, w); },
+            support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
             market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); }
         };
@@ -294,8 +309,9 @@
         });
 
         // 4) 규모(Q2)·품목(Q3)
-        if (a.q2 === 'startup') add('rnd', 2, '창업 3년 이내 기업이라서');
-        if (a.q2 === 'smallbiz') { add('semas-innov', 3, '수출실적이 있는 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
+        if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
+        if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
+        if (has2('smallbiz')) { add('semas-innov', 3, '수출실적이 있는 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
         var w3 = "품목으로 '" + label('q3', a.q3) + "'을 골라서";
         if (a.q3 === 'agri') { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
         if (a.q3 === 'cosmetic') { add('cosmetic', 2, w3); add('cert', 1, w3); }
@@ -322,7 +338,7 @@
         var list = order.filter(function (id) {
             var sm = M.stageMap[id];
             if (sm && sm.hard && sm.s[st] === 0) return false;
-            if (sm && sm.size && a.q2 !== sm.size) return false;
+            if (sm && sm.size && !has2(sm.size)) return false;
             return S[id] > 0;
         });
         list.sort(function (x, y) { return (S[y] - S[x]) || (order.indexOf(x) - order.indexOf(y)); });
@@ -340,8 +356,8 @@
 
     function linkUrl(id) {
         if (id === 'policy-fund') {
-            if (a.q2 === 'smallbiz') return 'policy-finance.html?org=semas';
-            if (a.q2 === 'mid') return 'policy-finance.html';
+            if (has2('smallbiz')) return 'policy-finance.html?org=semas';
+            if (has2('mid') || has2('large')) return 'policy-finance.html';
             return 'policy-finance.html?org=kosmes';
         }
         return M.links[id].u;
@@ -357,9 +373,14 @@
 
     /* ---------- 요약 문장 ---------- */
     function listLabels(qid, vals) { return arr(vals).map(function (v) { return label(qid, v); }).join(', '); }
+    function q2Short() {
+        var p = (Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])).map(function (v) { return M.short.q2[v]; }).filter(Boolean);
+        if (p.length === 1 && /^창업/.test(p[0])) p.push('기업');
+        return p.join(' ');
+    }
     function oneLine() {
         var st = M.stages[stageIdx(a.q1)];
-        var who = M.short.q2[a.q2] || '기업';
+        var who = q2Short() || '기업';
         var bits = [label('q3', a.q3), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + ' 단계';
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + '인 단계';
@@ -376,7 +397,7 @@
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
         L.push('수출 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
-        L.push('규모: ' + (M.short.q2[a.q2] || '-') + ' / 품목: ' + (label('q3', a.q3) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
+        L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (label('q3', a.q3) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).map(function (k) { return M.issues[k]; }).join(', ') || '-'));
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (a.q8 ? label('q8', a.q8) : '-'));
         return L.join('\n');
@@ -386,7 +407,7 @@
     function finish() {
         var rec = renderResult(false);
         ga('guide_complete', {
-            stage: a.q1, size: a.q2 || '', item: a.q3 || '',
+            stage: a.q1, size: arr(a.q2).join(','), item: a.q3 || '',
             forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: a.q8 || ''
         });
         maybeSave(rec);
@@ -490,7 +511,7 @@
         body.set('id', id);
         body.set('website', $('egHp').value || '');
         body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || '');
-        body.set('q2', a.q2 || ''); body.set('q3', a.q3 || '');
+        body.set('q2', arr(a.q2).join(',')); body.set('q3', a.q3 || '');
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(',')); body.set('q7', arr(a.q7).join(','));
         body.set('q8', a.q8 || '');

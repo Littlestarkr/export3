@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 1;
+    var MAP_VERSION = 2;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -67,12 +67,23 @@
             ]
         },
         {
-            id: 'q2', type: 'one', title: '회사 규모는 어느 쪽인가요?',
+            id: 'q2', type: 'multi', title: '회사는 어느 쪽인가요? (복수 선택 가능)',
+            help: '창업 연차에서 하나, 기업 규모에서 하나씩 고를 수 있습니다. 한쪽만 골라도 됩니다.',
+            // 같은 묶음 안에서는 하나만(다른 것을 누르면 바뀜) → '소기업+대기업' 같은 모순 조합이 생기지 않는다
+            groups: [
+                { label: '창업 연차', vs: ['startup', 'y7', 'y7p'] },
+                { label: '기업 규모', vs: ['smallbiz', 'small', 'medium', 'mid', 'large', 'etc'] }
+            ],
             options: [
                 { v: 'startup', label: '예비창업·창업 3년 이내' },
+                { v: 'y7', label: '창업 7년 이내' },
+                { v: 'y7p', label: '창업 7년 초과' },
                 { v: 'smallbiz', label: '소상공인' },
-                { v: 'sme', label: '중소기업' },
-                { v: 'mid', label: '중견기업' }
+                { v: 'small', label: '소기업' },
+                { v: 'medium', label: '중기업' },
+                { v: 'mid', label: '중견기업' },
+                { v: 'large', label: '대기업' },
+                { v: 'etc', label: '기타' }
             ]
         },
         {
@@ -206,7 +217,7 @@
     };
 
     var SHORT = {
-        q2: { startup: '창업 3년 이내', smallbiz: '소상공인', sme: '중소기업', mid: '중견기업' },
+        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', smallbiz: '소상공인', small: '소기업', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
