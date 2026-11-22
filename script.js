@@ -285,7 +285,7 @@ function togglePrivacy() {
     });
 })();
 
-// 수출 가이드 도구(export-guide.html)에서 '상담 신청서로' 넘어오면 결과 요약을 '상담 요청 내용'에 채운다.
+// 수출 가이드(export-guide.html)에서 '상담 신청서로' 넘어오면 결과 요약을 '상담 요청 내용'에 채운다.
 // sessionStorage 'egHandoff'는 읽자마자 지운다. 신청 성공 시 generate_lead 에 lead_source 'export_guide'가 붙는다.
 (function () {
     var text = '';
@@ -299,7 +299,7 @@ function togglePrivacy() {
     var note = document.createElement('p');
     note.className = 'eg-handoff';
     note.setAttribute('role', 'status');
-    note.textContent = '수출 가이드 도구 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 고치거나 더 적어 보내 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
+    note.textContent = '수출 가이드 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 고치거나 더 적어 보내 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
     var form = document.getElementById('consultingForm');
     (form || wrap).insertBefore(note, (form || wrap).firstChild);
     var toggle = document.getElementById('contactToggle');

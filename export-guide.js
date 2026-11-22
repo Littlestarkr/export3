@@ -1,5 +1,5 @@
 /* =========================================
-   수출 가이드 도구 (export-guide.html)
+   수출 가이드 (export-guide.html)
    - 질문·링크·점수 데이터는 export-guide-map.js(window.EG_MAP)
    - 규칙 기반, 브라우저 안에서 계산한다. 이름·연락처는 받지 않는다.
    - GUIDE_URL(Apps Script 웹 앱 주소)을 넣고, 방문자가 '저장 동의'를 체크한 경우에만
@@ -399,7 +399,7 @@
     function summaryText(withId) {
         var st = M.stages[stageIdx(a.q1)];
         var L = [];
-        L.push('[수출 가이드 도구 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
+        L.push('[수출 가이드 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
