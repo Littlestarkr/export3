@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 8;
+    var MAP_VERSION = 9;
 
     // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
     var STAGES = [
@@ -91,7 +91,7 @@
             ]
         },
         {
-            id: 'q3', type: 'one', title: '어떤 품목인가요?',
+            id: 'q3', type: 'multi', title: '어떤 품목인가요?', help: '여러 개를 고를 수 있습니다.',
             options: [
                 { v: 'consumer', label: '소비재' },
                 { v: 'industrial', label: '산업재·부품' },

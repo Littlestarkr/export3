@@ -44,6 +44,9 @@
         return n;
     }
     function arr(v) { return Array.isArray(v) ? v : []; }
+    // Q3 품목은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개)도 읽는다.
+    function items(o) { var v = (o || a).q3; return typeof v === 'string' ? (v ? [v] : []) : arr(v); }
+    function hasItem(v) { return items().indexOf(v) >= 0; }
     // Q8은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개, 옛 'tool' 코드)도 읽는다.
     function needList(a) {
         var v = typeof a.q8 === 'string' ? (a.q8 ? [a.q8] : []) : arr(a.q8);
@@ -98,6 +101,7 @@
             b.textContent = (h.t || '') + ' · ' + h.id + ' · 수출실적 ' + st.short;
             b.addEventListener('click', function () {
                 a = JSON.parse(JSON.stringify(h.a || {}));
+                a.q3 = items(a);
                 saved = { id: h.id, fromHistory: true };
                 renderResult(true);
             });
@@ -306,16 +310,16 @@
             factoring: function (w) { add('ksure-postship', 3, w); add('ksure-after', 2, w); },
             // 무역클레임(작가님 확정): 무역클레임 대응 가이드(trade-claim.html, 2026-11-22)를 맨 앞에, 중소중견Plus+(클레임위험 특약)·농수산물패키지(클레임비용위험)·대한상사중재원. 계약서·중재 법령은 보조
             tclaim:  function (w) {
-                add('trade-claim', 6, w); add('ksure-plus', 3, w); add('kcab', 4, w); add('ksure-agri', a.q3 === 'agri' ? 3 : 1, w);
+                add('trade-claim', 6, w); add('ksure-plus', 3, w); add('kcab', 4, w); add('ksure-agri', hasItem('agri') ? 3 : 1, w);
                 add('contract', 1, w); add('law-adr', 1, w); consultTop = true;
             },
             fx:      function (w) { add('fx', 3, w); add('qna-fx', 2, w); },
             fund:    function (w) {
                 add('policy-fund', 3, w); add('guarantee', 2, w); add('semas-innov', 3, w);
                 if (st >= 4) add('exim', 2, w);
-                if (a.q3 === 'agri') add('at', 2, w);
+                if (hasItem('agri')) add('at', 2, w);
             },
-            cert:    function (w) { add('cert', 3, w); if (a.q3 === 'cosmetic') add('cosmetic', 2, w); },
+            cert:    function (w) { add('cert', 3, w); if (hasItem('cosmetic')) add('cosmetic', 2, w); },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
@@ -338,10 +342,10 @@
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
         if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
-        var w3 = "품목으로 '" + label('q3', a.q3) + "'을 골라서";
-        if (a.q3 === 'agri') { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
-        if (a.q3 === 'cosmetic') { add('cosmetic', 2, w3); add('cert', 1, w3); }
-        if (a.q3 === 'service') add('ksure-service', 2, w3);
+        var w3 = "품목으로 '" + listLabels('q3', items()) + "'을 골라서";
+        if (hasItem('agri')) { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
+        if (hasItem('cosmetic')) { add('cosmetic', 2, w3); add('cert', 1, w3); }
+        if (hasItem('service')) add('ksure-service', 2, w3);
 
         // 5) 시장(Q5)
         if (mk.indexOf('undecided') >= 0) { add('trade-stats', 1, '목표 시장이 아직 미정이라서'); add('k-market', 1, '목표 시장이 아직 미정이라서'); }
@@ -384,7 +388,7 @@
         (M.programs || []).forEach(function (pg) {
             if (pg.st.indexOf(st) < 0 || !M.links[pg.id]) return;
             if (pg.size && !has2(pg.size)) return;
-            if (pg.item && a.q3 !== pg.item) return;
+            if (pg.item && !hasItem(pg.item)) return;
             if (pg.age && !pg.age.some(has2)) return;
             var hit = pg.on.filter(function (t) { return tags.indexOf(t) >= 0; });
             if (!hit.length || topIds.indexOf(pg.id) >= 0) return;
@@ -446,7 +450,7 @@
     function oneLine() {
         var st = M.stages[stageIdx(a.q1)];
         var who = q2Short() || '기업';
-        var bits = [label('q3', a.q3), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
+        var bits = [listLabels('q3', items()), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + ' 단계';
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
@@ -462,7 +466,7 @@
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
-        L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (label('q3', a.q3) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
+        L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).map(function (k) { return M.issues[k]; }).join(', ') || '-'));
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
         return L.join('\n');
@@ -472,7 +476,7 @@
     function finish() {
         var rec = renderResult(false);
         ga('guide_complete', {
-            stage: a.q1, size: arr(a.q2).join(','), item: a.q3 || '',
+            stage: a.q1, size: arr(a.q2).join(','), item: items().join(','),
             forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: needList(a).join(',')
         });
         maybeSave(rec);
@@ -614,7 +618,7 @@
         body.set('id', id);
         body.set('website', $('egHp').value || '');
         body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || '');
-        body.set('q2', arr(a.q2).join(',')); body.set('q3', a.q3 || '');
+        body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(',')); body.set('q7', arr(a.q7).join(','));
         body.set('q8', needList(a).join(','));
