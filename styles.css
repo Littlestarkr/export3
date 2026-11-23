@@ -1211,7 +1211,7 @@ textarea:focus-visible,
 .tool-chip.is-featured { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
 .tool-chip.is-featured i { color: var(--secondary-color); }
 .tool-chip.is-featured:hover { background: #1a2f52; border-color: var(--secondary-color); color: #fff; }
-.eg-handoff { background: #fff8e6; border: 1px solid #d4a853; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; line-height: 1.6; font-size: 0.92rem; color: #3d3320; }
+.eg-handoff { scroll-margin-top: 100px; background: #fff8e6; border: 1px solid #d4a853; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; line-height: 1.6; font-size: 0.92rem; color: #3d3320; }
 
 /* 이력서 학력: "박사과정(재)"가 줄 끝에서 끊기지 않게 */
 .resume-keep { white-space: nowrap; }
@@ -1229,3 +1229,6 @@ textarea:focus-visible,
     .roadmap-banner-text strong { display: block; margin: 0 0 2px; }
 }
 @media (prefers-reduced-motion: reduce) { .roadmap-banner:hover { transform: none; } }
+@media (max-width: 768px) {
+    .eg-handoff { scroll-margin-top: 16px; }
+}
