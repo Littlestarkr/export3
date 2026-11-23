@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 21;
+    var MAP_VERSION = 22;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -138,8 +138,8 @@
             options: [
                 { v: 'pre', label: '예비창업자' },
                 { v: 'startup', label: '창업 3년 이내' },
-                { v: 'y7', label: '창업 7년 이내' },
-                { v: 'y7p', label: '창업 7년 초과' },
+                { v: 'y7', label: '3년 초과~7년 이내' },
+                { v: 'y7p', label: '7년 초과' },
                 { v: 'youth', label: '청년기업(대표자 만 39세 이하)' },
                 { v: 'women', label: '여성기업' },
                 { v: 'disabled', label: '장애인기업' },
@@ -637,7 +637,7 @@
     };
 
     var SHORT = {
-        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 3년 초과~7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
