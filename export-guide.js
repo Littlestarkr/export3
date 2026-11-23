@@ -247,7 +247,7 @@
         } else {
             var ex = q.exclusive || [];
             (q.groups || []).forEach(function (g) {
-                if (g.vs.indexOf(v) >= 0) cur = cur.filter(function (x) { return g.vs.indexOf(x) < 0; });
+                if (!g.multi && g.vs.indexOf(v) >= 0) cur = cur.filter(function (x) { return g.vs.indexOf(x) < 0; });
             });
             if (ex.indexOf(v) >= 0) cur = [];
             else cur = cur.filter(function (x) { return ex.indexOf(x) < 0; });
@@ -393,10 +393,15 @@
             if (f === 'other') consultTop = true;
         });
 
-        // 4) 규모(Q2)·품목(Q3)
+        // 4) 규모·우대 조건(Q2)·품목(Q3)
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
         if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
+        var prefPicked = (M.prefVals || []).filter(has2);
+        if (prefPicked.length) {
+            var prefPts = (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0 || needList(a).indexOf('fund') >= 0) ? 3 : 2;
+            add('pref-cond', prefPts, "우대 조건('" + listLabels('q2', prefPicked) + "')을 골라서");
+        }
         var w3 = "품목으로 '" + listLabels('q3', items()) + "'을 골라서";
         if (hasItem('agri')) { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
         if (hasItem('cosmetic')) { add('cosmetic', 2, w3); add('cert', 1, w3); }
@@ -499,8 +504,10 @@
     /* ---------- 요약 문장 ---------- */
     function listLabels(qid, vals) { return arr(vals).map(function (v) { return label(qid, v); }).join(', '); }
     function q2Short() {
-        var p = (Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])).map(function (v) { return M.short.q2[v]; }).filter(Boolean);
-        if (p.length === 1 && /^창업/.test(p[0])) p.push('기업');
+        var q2v = Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : []);
+        var p = q2v.map(function (v) { return M.short.q2[v]; }).filter(Boolean);
+        var hasSize = ['smallbiz', 'small', 'medium', 'mid', 'large'].some(function (v) { return q2v.indexOf(v) >= 0; });
+        if (p.length && !hasSize) p.push('기업');
         return p.join(' ');
     }
     function oneLine() {
@@ -522,7 +529,7 @@
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
-        L.push('창업 연차·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
+        L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
         if (arr(a.q6).indexOf('etc') >= 0 && etcValue()) L.push('기타(찾는 서비스): ' + etcValue());
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
