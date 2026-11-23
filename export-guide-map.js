@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 14;
+    var MAP_VERSION = 15;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -224,32 +224,61 @@
         'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
         'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
         'claim-exempt':{ t: '면책사례(중계무역 조달 차질 등)', u: 'trade-insurance.html#claim-exempt', d: '중계무역 등에서 자주 생기는 면책 사례를 정리했습니다.' },
-        'kosmes-dom':  { t: '중진공 신시장진출지원자금(내수기업 수출기업화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 미만인 수출 초보기업 등이 대상인 정책자금입니다(수출지원사업 참여기업 등도 포함). 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
-        'kosmes-glb':  { t: '중진공 신시장진출지원자금(수출기업 글로벌화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 이상인 수출 유망기업 등이 대상인 정책자금입니다. 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
+        'kosmes-dom':  { t: '중진공 신시장진출지원자금(내수기업 수출기업화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 1달러~10만 달러 미만 수출 초보 중소기업(소상공인 포함) 대상 직접대출(운전 연 10억 원 이내). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-glb':  { t: '중진공 신시장진출지원자금(수출기업 글로벌화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 이상 수출 유망 중소기업(소상공인 포함) 대상(연 30억 원·운전 10억·고성장기업 60억 이내). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-youth':{ t: '중진공 청년전용창업자금', u: 'policy-finance.html?org=kosmes#kosmes-startup', d: '대표자 만 39세 이하·업력 3년 미만(일부 우수기업 7년 미만) 청년창업기업 대상 직접대출. 고정금리 연 2.5%, 최대 1억 원(제조·중점 2억 원). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-startup':{ t: '중진공 혁신창업사업화자금(창업기반지원자금)', u: 'policy-finance.html?org=kosmes#kosmes-startup', d: '업력 7년 미만(신산업 10년) 창업 중소기업 대상. 기준금리-0.3%p, 연 60억 원(운전 5억 원) 이내. 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-devtech':{ t: '중진공 개발기술사업화자금', u: 'policy-finance.html?org=kosmes#kosmes-startup', d: '우수 기술·특허·R&D 성과를 사업화하려는 중소기업 대상 직접대출(연 30억~60억 원 이내). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-growth':{ t: '중진공 신성장기반자금(혁신성장지원자금)', u: 'policy-finance.html?org=kosmes#kosmes-growth', d: '업력 7년 이상 중소기업의 생산성 향상·고부가가치화를 돕는 자금(연 60억 원·운전 5억 원 이내, 스케일업금융 포함). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-smart':{ t: '중진공 신성장기반자금(제조현장스마트화·Net-Zero)', u: 'policy-finance.html?org=kosmes#kosmes-growth', d: '스마트공장·ICT 자동화(연 100억 원 이내) 및 저탄소·친환경 전환 Net-Zero 유망기업(연 60억 원 이내) 자금입니다.' },
+        'kosmes-restart':{ t: '중진공 재도약지원자금(재창업자금)', u: 'policy-finance.html?org=kosmes#kosmes-restart', d: '폐업 이력이 있는 성실 경영 재창업자 대상 운전·시설자금(성실경영 심층평가 통과 시 금리 -0.3%p 우대·운전 연 10억 원). 세부 요건은 중진공 공고를 확인하세요.' },
+        'kosmes-urgent':{ t: '중진공 긴급경영안정자금', u: 'policy-finance.html?org=kosmes#kosmes-urgent', d: '환율 피해·주요 거래처 도산·원자재 급등 등 일시적 경영애로(매출·영업이익 10% 이상 감소 등) 중소기업 대상 최대 10억 원.' },
+        'semas-disabled':{ t: '소진공 장애인기업지원자금', u: 'policy-finance.html?org=semas#semas-proxy', d: '장애인기업확인서·장애인복지카드 소지 소상공인 대상 저금리 고정금리 자금(한도 1억 원, 7년·거치 2년). 최신 금리·요건은 소진공 공고를 확인하세요.' },
+        'semas-youth': { t: '소진공 청년고용연계자금', u: 'policy-finance.html?org=semas#semas-proxy', d: '업력 3년 미만 만 39세 이하 청년 소상공인(또는 청년 고용 소상공인) 대상. 한도 7천만 원, 5년(거치 2년, 기준금리+0.0%p).' },
+        'semas-general':{ t: '소진공 일반경영안정자금', u: 'policy-finance.html?org=semas#semas-proxy', d: '업력과 무관하게 모든 소상공인이 이용할 수 있는 대리대출. 한도 7천만 원, 5년(거치 2년, 기준금리+0.6%p).' },
+        'semas-maker': { t: '소진공 소공인특화자금', u: 'policy-finance.html?org=semas#semas-proxy', d: '제조업을 영위하는 상시근로자 10인 미만 소공인 대상. 운전 1억 원·시설 5억 원 한도.' },
+        'semas-retry': { t: '소진공 재도전특별자금', u: 'policy-finance.html?org=semas#semas-direct', d: '희망리턴패키지 수료·재창업 초기·성실상환 재도전 소상공인 대상 직접대출(일반형 7천만·희망형 1억·도약형 2억 원).' },
+        'semas-online':{ t: '소진공 상생성장지원자금', u: 'policy-finance.html?org=semas#semas-direct', d: '온라인 플랫폼 입점·TOPS·브랜드 소상공인 대상 운전·시설 직접대출.' },
+        'semas-temp':  { t: '소진공 일시적경영애로자금', u: 'policy-finance.html?org=semas#semas-direct', d: '연매출 1억 4백만 원 미만·업력 7년 미만 일시적 경영애로 소상공인 대상(한도 7천만 원, 기준금리+0.0%p).' },
         'policy-fund': { t: '정책자금 안내', u: 'policy-finance.html?org=kosmes', d: '기관별 정책자금의 대상·한도·금리를 정리했습니다.' },
         'pref-cond':   { t: '기업 금융 우대조건·지원제도 매칭', u: 'policy-finance.html#preferential-conditions', d: '창업·청년·여성·장애인·사회적기업·벤처·이노비즈·메인비즈·연구소 등 우대조건별 금리 인하·보증료 감면·한도 확대와 공공조달·세제·R&D 혜택을 한눈에 비교합니다.' },
-        'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'trade-insurance.html#guarantee', d: '수출 계약을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다. 보증 한도·요건은 무보 안내를 확인하세요.' },
+        'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'policy-finance.html?org=ksure#ksure-presh', d: '수출 계약·신용장을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다(모든 수출기업 대상). 보증 한도·요건은 무보 안내를 확인하세요.' },
         'fx':          { t: '환변동보험', u: 'trade-insurance.html#fx', d: '환율 하락으로 생기는 손실에 대비하는 무역보험 상품입니다.' },
         'qna-fx':      { t: '환변동보험 Q&A', u: 'trade-insurance.html#qna-fx', d: '로컬 수출만 하는 경우 가입 여부 등 자주 묻는 질문 15개입니다.' },
         'k-market':    { t: 'KOTRA 해외시장조사', u: 'global-expansion.html#k-market', d: '목표 시장의 바이어·경쟁 동향을 KOTRA 무역관이 조사해 줍니다.' },
         'k-branch':    { t: 'KOTRA 지사화사업', u: 'global-expansion.html#k-branch', d: '해외 무역관이 현지 지사 역할을 대신해 줍니다.' },
         'nationgrade': { t: '국가등급·국별인수방침', u: 'trade-insurance.html#nationgrade', d: '나라별 위험도와 무역보험 인수 방침을 확인합니다.' },
         'exim':        { t: '수출입은행 수출금융', u: 'policy-finance.html?org=exim', d: '수출 실적·계약을 바탕으로 한 수출입은행 대출을 정리했습니다.' },
+        'exim-promo':  { t: '수출입은행 수출촉진자금', u: 'policy-finance.html?org=exim#exim-promo', d: '내수기업 수출 전환·수출 확대를 위한 시설투자·기술개발·해외시장개척 자금(소요자금 90% 이내, 해외시장개척 중소 30억 원 한도).' },
+        'exim-growth': { t: '수출입은행 수출성장자금', u: 'policy-finance.html?org=exim#exim-growth', d: '과거 수출실적(또는 원부자재 공급실적) 범위 내 수출 운전자금 일괄 지원(중소 350억~500억, 중견 500억~800억 원 이내).' },
+        'exim-perform':{ t: '수출입은행 수출이행자금', u: 'policy-finance.html?org=exim#exim-perform', d: '수출계약별 제작이행~대금회수 자금((계약금액-기수령액)×90% 이내). 대·중견·중소기업 모두 이용 가능.' },
         'lawsearch':   { t: '법령 길잡이', u: 'https://www.littlestar.co.kr/lawsearch/', ext: true, d: '대외무역법·관세법 등 수출 관련 법령을 쉽게 찾아봅니다.' },
         'customs':     { t: '관세청 유니패스 안내', u: 'global-expansion.html#customs', d: '수출 신고·통관 진행 조회 등 관세청 서비스입니다.' },
         'rnd':         { t: '창업·R&D 지원사업', u: 'government-support.html#rnd', d: '예비창업패키지·TIPS 등 창업 기업용 지원사업입니다.' },
-        'hope':        { t: '희망리턴패키지', u: 'government-support.html#hope', d: '소상공인 재기·전환을 돕는 소진공 사업입니다.' },
+        'hope':        { t: '소진공 희망리턴패키지', u: 'government-support.html#hope', d: '폐업·재창업·재도전 소상공인의 재기·전환을 돕는 소진공 사업입니다.' },
         'agri':        { t: '농산물 수출 지원', u: 'global-expansion.html#agri', d: '농식품 수출 지원사업과 기관을 정리했습니다.' },
         'ksure-agri':  { t: '농수산물 패키지 보험', u: 'trade-insurance.html#ksure-agri', d: '농수산물 수출에 특화된 단기수출보험입니다.' },
         'at':          { t: 'aT 농식품 수출자금', u: 'policy-finance.html?org=at', d: '농식품 수출업체용 운영·시설 자금입니다.' },
+        'at-ops':      { t: 'aT 농식품 글로벌육성지원자금(운영자금)', u: 'policy-finance.html?org=at#at-ops', d: '농식품 수출용 원료·부자재 구입·저장·가공 운영자금. 고정금리 2.5%(농업경영체)·3.0%(일반) 또는 변동, 업체당 200억 원 이내(1년).' },
+        'at-facility': { t: 'aT 농식품 글로벌육성지원자금(시설자금)', u: 'policy-finance.html?org=at#at-facility', d: '농식품 저장·가공·부대시설·물류장비 현대화 시설자금. 고정금리 2.0%(농업경영체)·3.0%(일반) 또는 변동, 30억 원 이내(10년·거치 3년).' },
         'cosmetic':    { t: '화장품 수출 지원', u: 'global-expansion.html#cosmetic', d: '화장품 수출 규제·지원 기관을 정리했습니다.' },
         'ksure-service': { t: '서비스보험(일시결제방식)', u: 'trade-insurance.html#ksure-service', d: '서비스·콘텐츠 수출 대금 미회수에 대비하는 무역보험입니다.' },
-        // 후순위 '더 찾아볼 곳'(2026-11-22 작가님): 자금·바이어·무역보험을 고르면 관련 기관을 모두 아래쪽에 보여 준다
+        // 신용보증기금 상품별(2026-11-23)
         'kodit':       { t: '신용보증기금 보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '성장단계별 보증 중 수출중소기업 종합지원(희망·진입·확장·주력·스타 단계) 등 수출 우대 보증이 있습니다. 단계 기준·한도는 신보 공고를 확인하세요.' },
-        'kibo':        { t: '기술보증기금 수출기업보증', u: 'policy-finance.html?org=kibo#kibo-export', d: '기술혁신선도형 수출기업에 보증비율·보증료를 우대합니다. 대상 요건은 기보 공고를 확인하세요.' },
-        'seoul-shinbo':{ t: '지역신용보증재단(서울신용보증재단)', u: 'policy-finance.html?org=seoul', d: '사이트에는 서울신용보증재단 보증상품을 연결해 두었습니다. 다른 지역 기업은 소재지의 신용보증재단 공고를 확인하세요.' },
-        'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하)에 수출마케팅·수출이행 자금을 은행을 통해 융자합니다. 신청 시기는 협회 안내를 확인하세요.' },
-        'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'trade-insurance.html#ksure-direct', d: '수출초보 중소기업이 온라인으로 보증·대출을 받는 상품입니다. 매출·신용등급·직수출실적 기준은 무보 안내를 확인하세요.' },
+        'kodit-export':{ t: '신보 수출중소기업 종합지원보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '수출 역량 단계별(희망·진입·확장·주력·스타) 모든 수출 중소기업 우대 보증입니다. 세부 한도·요건은 신보 공고를 확인하세요.' },
+        'kodit-startup':{ t: '신보 창업기업 대상 보증(창업단계 프로그램)', u: 'policy-finance.html?org=kodit#kodit-start', d: '예비창업·창업 7년 이내 기업 대상 창업보증(Start-up Nest·유망창업·고용안전 등)입니다.' },
+        'kodit-youth': { t: '신보 청년희망드림보증', u: 'policy-finance.html?org=kodit#kodit-start', d: '창업 7년 이내·대표자 만 17~39세 청년창업기업 우대 보증(한도 3억 원, 보증비율 95%, 보증료 연 0.3% 고정, 신보 공고 확인).' },
+        'kodit-senior':{ t: '신보 신중년행복드림보증', u: 'policy-finance.html?org=kodit#kodit-start', d: '만 49세 이상 중장년 기업가 대상 우대 보증(한도 3억 원, 보증비율 95%·보증료 차감, 세부 업력·요건은 신보 공고 확인).' },
+        'kodit-mature':{ t: '신보 성숙단계 지속성장 지원보증', u: 'policy-finance.html?org=kodit#kodit-mature', d: '성장 궤도에 오른 기업의 중견기업 도약·안정 고용을 지원하는 유동화회사보증·혁신리딩기업·고용의 질 우수기업 보증입니다.' },
+        'kodit-retry': { t: '신보 재도전·재창업 지원보증', u: 'policy-finance.html?org=kodit#kodit-retry', d: '실패기업의 재도전·재창업 지원 프로그램 및 재창업지원특례보증입니다.' },
+        'kodit-service':{ t: '신보 유망서비스·신한류 해외진출 지원보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '유망·특화 서비스기업 보증 및 문화콘텐츠 해외진출(신한류) 지원 보증입니다.' },
+        'kodit-esg':   { t: '신보 소부장·스마트공장 특화보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '소재·부품·장비 경쟁력 강화 보증, 스마트공장 특화지원 및 신성장동력산업 보증입니다.' },
+        'kodit-mainbiz':{ t: '신보 경영혁신형(메인비즈) 우대보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '메인비즈 인증 기업 보증료율 0.1~0.2%p 차감·보증비율 85~90% 우대 및 매출채권보험 할인입니다.' },
+        // 후순위 '더 찾아볼 곳' 및 기보·지역신보·무역협회·무보 다이렉트
+        'kibo':        { t: '기술보증기금 수출기업보증', u: 'policy-finance.html?org=kibo#kibo-export', d: '수출예상·실적·주력·유망 기술혁신선도형 중소기업 대상 보증비율 90~95%·보증료 0.2~0.4%p 감면(벤처·이노비즈·연구소·창업·소셜벤처·재도전 보증 포함).' },
+        'seoul-shinbo':{ t: '지역신용보증재단(서울신용보증재단) 보증', u: 'policy-finance.html?org=seoul#seoul-products', d: '창업·장애인·일자리/사회적·ESG·미래성장·모바일 자동심사 보증상품 안내(서울 외 지역은 소재지 신용보증재단 공고 확인).' },
+        'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하) 대상 수출마케팅·수출이행 자금(최고 3억 원, 연 2.5~3.0% 고정금리).' },
+        'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'policy-finance.html?org=ksure#ksure-direct', d: '매출 1억~100억 원·직수출 1만~200만 달러 미만(1만 달러 미만 시 간접수출 인정) 수출초보 중소기업용 비대면 100% 보증(한도 5천만~1억 원).' },
         'ksight':      { t: 'K-SIGHT·트라이빅 바이어 검색', u: 'global-expansion.html#b-search', d: '무보 K-SIGHT와 KOTRA 트라이빅으로 해외 바이어 정보를 찾아봅니다.' },
         'b-data':      { t: '무역데이터로 바이어 찾기(Trade Map·트레이드잇)', u: 'global-expansion.html#b-data', d: '실제 수입 실적·수입국 통계로 바이어와 시장을 찾습니다.' },
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
@@ -297,30 +326,200 @@
         'claim':       { s: [0, 0, 1, 1, 1, 1, 1] }
     };
 
-    // 고른 항목에 맞는 지원사업(작가님 2026-11-22): 수출실적 단계(st)에서 대상이 될 수 있고, 고른 항목(on)과 하나라도 겹치면 개수 제한 없이 모두 보여 준다.
-    // st 는 확인된 자격 기준만 반영한다(KOTRA 내수기업 수출기업화: 전년도 통관 10만 달러 미만, 작가님 확인 / 중진공 신시장진출지원자금: 최근 1년 직·간접 10만 달러 경계, 중진공 정책자금 기초 가이드 / 소진공 혁신성장촉진자금(혁신형): 수출 소상공인 1천 달러 이상, 작가님 확인).
-    // 확인 못 한 사업은 전 단계(ALL)로 두고 설명에 '공고 확인'을 적는다. on: 애로(Q6) 코드, 'need:' 필요(Q8), 'form:' 수출 형태(Q4), 'item:' 품목(Q3)
-    var ALL = [0, 1, 2, 3, 4, 5, 6];
+    // 조건에 맞는 정책금융·지원사업 전체 매칭(2026-11-23 작가님):
+    // 8가지 질문 중 어느 하나의 조건이라도 해당하면 지원 가능한 금융·지원사업을 빠짐없이 추천한다.
+    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원
     var PROGRAMS = [
-        { id: 'k-domestic', st: [0, 1, 2, 3], on: ['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local'] },
-        { id: 'kosmes-dom', st: [0, 1, 2, 3], on: ['fund', 'support', 'need:fund'] },
-        { id: 'kosmes-glb', st: [4, 5, 6], on: ['fund', 'support', 'need:fund'] },
-        { id: 'semas-innov', st: [2, 3, 4, 5, 6], size: 'smallbiz', on: ['fund', 'support', 'need:fund'] },
-        // 무보 수출신용보증(작가님 2026-11-22: 실적 크기와 상관없이 자금을 고르면 추천). 보증 요건은 무역보험 페이지·무보 공고 확인
-        { id: 'guarantee', st: ALL, on: ['fund', 'need:fund'] },
-        { id: 'ksure-postship', st: ALL, on: ['fund', 'factoring', 'need:fund'] },
-        { id: 'voucher', st: ALL, on: ['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund'] },
-        { id: 'k-market', st: ALL, on: ['buyer', 'market', 'need:market'] },
-        { id: 'k-branch', st: ALL, on: ['buyer', 'market', 'need:market'] },
-        { id: 'at', st: ALL, item: 'agri', on: ['fund', 'support', 'need:fund'] },
-        { id: 'rnd', st: ALL, age: ['startup', 'y7'], on: ['support', 'fund', 'need:fund'] }
+        // ── 최우선 추천 (pri: 1) ──
+        { id: 'semas-disabled', pri: 1, match: function (c) {
+            return (c.disabled && !c.has2('medium') && !c.has2('mid') && !c.has2('large'))
+                ? '장애인기업이라서(최우선 추천 · 저금리 고정금리)' : '';
+        }},
+        { id: 'kosmes-youth', pri: 1, match: function (c) {
+            return (c.youth && c.under7 && c.sme)
+                ? '청년·창업기업이라서(최우선 추천 · 연 2.5% 고정금리)' : '';
+        }},
+
+        // ── 소상공인시장진흥공단 (소진공) ──
+        { id: 'semas-innov', pri: 2, match: function (c) {
+            return (c.smallbiz && c.st >= 2) ? '최근 1년 수출실적 1천 달러 이상 소상공인이라서' : '';
+        }},
+        { id: 'semas-youth', pri: 2, match: function (c) {
+            return (c.smallbiz && c.youth) ? '청년 소상공인이라서' : '';
+        }},
+        { id: 'semas-general', pri: 2, match: function (c) {
+            return c.smallbiz ? '소상공인이라서' : '';
+        }},
+        { id: 'semas-retry', pri: 2, match: function (c) {
+            return (c.restart && (c.smallbiz || (!c.has2('medium') && !c.has2('mid') && !c.has2('large'))))
+                ? '재도전·재창업 소상공인이라서' : '';
+        }},
+        { id: 'hope', pri: 2, match: function (c) {
+            if (c.restart) return '재도전·재창업 기업이라서';
+            if (c.smallbiz && c.wantsFund) return '소상공인 재기·전환 지원 대상이라서';
+            return '';
+        }},
+        { id: 'semas-online', pri: 2, match: function (c) {
+            return (c.smallbiz && c.b2c) ? 'B2C 온라인 판매 소상공인이라서' : '';
+        }},
+        { id: 'semas-maker', pri: 3, match: function (c) {
+            return (c.smallbiz && (c.industrial || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
+                ? '제조업 영위 소공인(상시근로자 10인 미만) 해당 시' : '';
+        }},
+        { id: 'semas-temp', pri: 3, match: function (c) {
+            return (c.smallbiz && c.under7 && c.wantsFund) ? '업력 7년 미만 소상공인 경영애로 자금 검토 대상이라서' : '';
+        }},
+
+        // ── 중소벤처기업진흥공단 (중진공, 소상공인 포함 중소기업) ──
+        { id: 'kosmes-dom', pri: 2, match: function (c) {
+            return (c.st >= 1 && c.st <= 3 && c.sme) ? '수출실적 1달러~10만 달러 미만 중소기업(소상공인 포함)이라서' : '';
+        }},
+        { id: 'kosmes-glb', pri: 2, match: function (c) {
+            return (c.st >= 4 && c.sme) ? '수출실적 10만 달러 이상 중소기업(소상공인 포함)이라서' : '';
+        }},
+        { id: 'kosmes-startup', pri: 2, match: function (c) {
+            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업이라서' : '';
+        }},
+        { id: 'kosmes-devtech', pri: 2, match: function (c) {
+            return ((c.lab || c.venture || c.innobiz) && c.sme) ? '기술·연구소·혁신인증 보유 중소기업이라서' : '';
+        }},
+        { id: 'kosmes-growth', pri: 2, match: function (c) {
+            return (c.over7 && c.sme) ? '창업 7년 이상 중소기업이라서' : '';
+        }},
+        { id: 'kosmes-smart', pri: 2, match: function (c) {
+            return (c.esg && c.sme) ? '소부장·스마트공장·ESG 우대조건이라서' : '';
+        }},
+        { id: 'kosmes-restart', pri: 2, match: function (c) {
+            return (c.restart && c.sme) ? '재도전·재창업 중소기업이라서' : '';
+        }},
+        { id: 'kosmes-urgent', pri: 3, match: function (c) {
+            return ((c.issues.indexOf('fx') >= 0 || c.wantsFund) && c.sme && c.st >= 1)
+                ? '환율 피해·일시적 경영애로 긴급자금 검토 대상이라서' : '';
+        }},
+
+        // ── 기업 금융 우대조건 종합 매칭 ──
+        { id: 'pref-cond', pri: 2, match: function (c) {
+            return c.pref.length ? "우대 조건('" + c.prefLabels + "')을 골라서" : '';
+        }},
+
+        // ── 한국농수산식품유통공사 (aT) ──
+        { id: 'at-ops', pri: 2, match: function (c) {
+            return c.agri ? '농수산식품 수출(예정)기업이라서' : '';
+        }},
+        { id: 'at-facility', pri: 2, match: function (c) {
+            return c.agri ? '농수산식품 수출(예정)기업이라서' : '';
+        }},
+
+        // ── 한국무역보험공사 (무보) ──
+        { id: 'guarantee', pri: 2, match: function () {
+            return '모든 수출기업 대상(선적 전 제작·조달 자금 보증)이라서';
+        }},
+        { id: 'ksure-postship', pri: 2, match: function () {
+            return '모든 수출기업 대상(선적 후 수출채권 조기 현금화·포괄매입 보증)이라서';
+        }},
+        { id: 'ksure-direct', pri: 2, match: function (c) {
+            return (c.st >= 3 && c.st <= 5 && c.sme) ? '수출실적 1만~200만 달러 미만 수출초보 중소기업 대상이라서' : '';
+        }},
+
+        // ── 신용보증기금 (신보) ──
+        { id: 'kodit-export', pri: 2, match: function (c) {
+            return c.sme ? '모든 수출 중소기업 대상(수출 역량 단계별 종합지원)이라서' : '';
+        }},
+        { id: 'kodit-startup', pri: 2, match: function (c) {
+            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업이라서' : '';
+        }},
+        { id: 'kodit-youth', pri: 2, match: function (c) {
+            return (c.youth && c.under7 && c.sme) ? '청년·창업 7년 이내 기업이라서' : '';
+        }},
+        { id: 'kodit-senior', pri: 2, match: function (c) {
+            if (c.restart && c.sme) return '재창업·중장년 기업이라서';
+            if (c.over7 && c.sme) return '창업 7년 이상·중장년 기업 검토 대상이라서';
+            return '';
+        }},
+        { id: 'kodit-retry', pri: 2, match: function (c) {
+            return (c.restart && c.sme) ? '재도전·재창업 중소기업이라서' : '';
+        }},
+        { id: 'kodit-mainbiz', pri: 2, match: function (c) {
+            return (c.mainbiz && c.sme) ? '메인비즈 인증 중소기업이라서' : '';
+        }},
+        { id: 'kodit-service', pri: 2, match: function (c) {
+            return (c.service && c.sme) ? '서비스·콘텐츠 수출기업이라서' : '';
+        }},
+        { id: 'kodit-esg', pri: 2, match: function (c) {
+            if (c.esg && c.sme) return '소부장·스마트공장·ESG 우대조건이라서';
+            if (c.industrial && c.sme) return '산업재·부품 중소기업이라서';
+            return '';
+        }},
+        { id: 'kodit-mature', pri: 3, match: function (c) {
+            return ((c.over7 || c.st >= 5 || c.has2('mid')) && c.smeOrMid)
+                ? '업력 7년 이상·100만 달러 이상·중견 도약 기업이라서' : '';
+        }},
+
+        // ── 기술보증기금 (기보) ──
+        { id: 'kibo', pri: 2, match: function (c) {
+            if (!c.sme) return '';
+            if (c.venture || c.innobiz || c.lab) return '벤처·이노비즈·연구소 보유 기술중소기업이라서';
+            if (c.under7 || c.mainbiz || c.st >= 1) return '기술혁신선도형 수출·창업 중소기업 검토 대상이라서';
+            return '';
+        }},
+
+        // ── 지역신용보증재단 (서울신용보증재단) ──
+        { id: 'seoul-shinbo', pri: 2, match: function (c) {
+            if (c.smallbiz || c.disabled || c.social) return '소상공인·장애인·사회적기업 보증 대상이라서';
+            if (c.has2('small') || c.under7 || c.esg) return '소기업·창업·ESG 기업 지역신용보증 검토 대상이라서';
+            return '';
+        }},
+
+        // ── 한국수출입은행 (수은) ──
+        { id: 'exim-growth', pri: 2, match: function (c) {
+            return (c.st >= 1 && c.smeOrMid) ? '수출실적 보유 중소·중견기업 운전자금 대상이라서' : '';
+        }},
+        { id: 'exim-perform', pri: 2, match: function (c) {
+            return (c.st >= 1 || (c.st === 0 && c.a.q1b === 'order')) ? '수출계약 이행 자금 대상이라서' : '';
+        }},
+        { id: 'exim-promo', pri: 3, match: function (c) {
+            return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
+        }},
+
+        // ── 한국무역협회 (KITA) ──
+        { id: 'kita-fund', pri: 3, match: function (c) {
+            return (c.sme && c.st >= 1) ? '수출실적 2천만 달러 이하 무역협회 회원사 대상이라서' : '';
+        }},
+
+        // ── 비금융 수출·창업 지원사업 ──
+        { id: 'k-domestic', pri: 2, match: function (c) {
+            return (c.st <= 3 && c.hasAny(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']))
+                ? c.whyTags(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']) : '';
+        }},
+        { id: 'voucher', pri: 2, match: function (c) {
+            return c.hasAny(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund'])
+                ? c.whyTags(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']) : '';
+        }},
+        { id: 'k-market', pri: 3, match: function (c) {
+            return c.hasAny(['buyer', 'market', 'need:market']) ? c.whyTags(['buyer', 'market', 'need:market']) : '';
+        }},
+        { id: 'k-branch', pri: 3, match: function (c) {
+            return c.hasAny(['buyer', 'market', 'need:market']) ? c.whyTags(['buyer', 'market', 'need:market']) : '';
+        }},
+        { id: 'rnd', pri: 2, match: function (c) {
+            if (!c.under7) return '';
+            if (c.hasAny(['support', 'fund', 'need:fund'])) return c.whyTags(['support', 'fund', 'need:fund']);
+            if (c.venture || c.lab || c.youth) return '창업 7년 이내·기술/청년 기업이라서';
+            return '';
+        }}
     ];
 
     // 후순위 '더 찾아볼 곳'(2026-11-22 작가님): 묶음의 on 과 고른 항목이 겹치면 묶음 안 기관을 모두 아래쪽에 보여 준다(위에서 이미 나온 곳은 뺀다).
-    // 항목별 on 이 있으면 그 항목은 그 조건일 때만, st 가 있으면 그 수출실적 단계에서만 보인다. 'pay:' 는 결제 방식(Q7)
+    // 항목별 on 이 있으면 그 항목은 그 조건일 때만, st 가 있으면 그 수출실적 단계에서만, skipIf 가 있으면 해당 세부 상품이 이미 노출됐을 때 생략한다.
     var EXTRA = [
         { t: '자금·보증 기관', on: ['fund', 'need:fund'],
-          items: [{ id: 'policy-fund' }, { id: 'guarantee' }, { id: 'kodit' }, { id: 'kibo' }, { id: 'seoul-shinbo' }, { id: 'kita-fund' }, { id: 'ksure-direct', st: [3, 4, 5, 6] }, { id: 'exim' }] },
+          items: [
+              { id: 'policy-fund' }, { id: 'guarantee' },
+              { id: 'kodit', skipIf: ['kodit-export', 'kodit-startup', 'kodit-youth', 'kodit-senior', 'kodit-retry'] },
+              { id: 'kibo' }, { id: 'seoul-shinbo' }, { id: 'kita-fund' },
+              { id: 'ksure-direct', st: [3, 4, 5] },
+              { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
+          ] },
         { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
           items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'buykorea' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'b2c' }, { id: 'c-more' }] },
         { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
