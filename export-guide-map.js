@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 16;
+    var MAP_VERSION = 17;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -68,6 +68,7 @@
         { k: ['화장품'], ids: ['cosmetic'] },
         { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
+        { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
@@ -279,6 +280,7 @@
         'seoul-shinbo':{ t: '지역신용보증재단(서울신용보증재단) 보증', u: 'policy-finance.html?org=seoul#seoul-products', d: '창업·장애인·일자리/사회적·ESG·미래성장·모바일 자동심사 보증상품 안내(서울 외 지역은 소재지 신용보증재단 공고 확인).' },
         'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하) 대상 수출마케팅·수출이행 자금(최고 3억 원, 연 2.5~3.0% 고정금리).' },
         'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'policy-finance.html?org=ksure#ksure-direct', d: '매출 1억~100억 원·직수출 1만~200만 달러 미만(1만 달러 미만 시 간접수출 인정) 수출초보 중소기업용 비대면 100% 보증(한도 5천만~1억 원).' },
+        'trade-sure':  { t: '무역보험공사 TRADE-SURE 컨설팅(무료)', u: 'https://ksure.or.kr/rh-kr/cntnts/i-287/web.do', ext: true, d: '연간 수출실적 US$1천만 미만 수출(예정) 중소기업에 무역·법무·회계·관세 등 1:1 맞춤형 무료 컨설팅을 기업당 총 6회 제공합니다. 신청 절차는 무보 안내를 확인하세요.' },
         'ksight':      { t: 'K-SIGHT·트라이빅 바이어 검색', u: 'global-expansion.html#b-search', d: '무보 K-SIGHT와 KOTRA 트라이빅으로 해외 바이어 정보를 찾아봅니다.' },
         'b-data':      { t: '무역데이터로 바이어 찾기(Trade Map·트레이드잇)', u: 'global-expansion.html#b-data', d: '실제 수입 실적·수입국 통계로 바이어와 시장을 찾습니다.' },
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
@@ -423,6 +425,9 @@
         }},
         { id: 'ksure-direct', pri: 2, match: function (c) {
             return (c.st >= 3 && c.st <= 5 && c.sme) ? '수출실적 1만~200만 달러 미만 수출초보 중소기업 대상이라서' : '';
+        }},
+        { id: 'trade-sure', pri: 2, match: function (c) {
+            return (c.st <= 5 && c.sme) ? '연간 수출실적 1천만 달러 미만 수출(예정) 중소기업 대상(무료 1:1 컨설팅 총 6회)이라서' : '';
         }},
 
         // ── 신용보증기금 (신보) ──
