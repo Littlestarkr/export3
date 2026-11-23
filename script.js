@@ -316,26 +316,34 @@ function togglePrivacy() {
     note.textContent = '수출 가이드 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 맨 끝 \'(상담 요청 추가 내용):\' 뒤에 이어서 적어 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
     var form = document.getElementById('consultingForm');
     (form || wrap).insertBefore(note, (form || wrap).firstChild);
-    // 양식을 펼친 채로 '상담 요청 내용'이 든 신청서 첫머리(이 안내 문구)로 바로 이동한다.
-    // 예전에는 단추 클릭으로 펼친 뒤 브라우저가 주소의 #contact(Contact Info 맨 위)로 다시 끌어올려,
-    // 카카오톡·이메일 단추부터 보이고 양식은 한참 아래에 있었다(2026-11-24 작가님).
+    // 양식을 펼치고, 요약이 든 '상담 요청 내용' 칸 자체를 화면 가운데로 옮긴 뒤 커서를 맨 끝
+    // ('(상담 요청 추가 내용): ' 뒤)에 둔다(2026-11-24 작가님, 예전 형태).
+    // 주소의 #contact 때문에 브라우저가 불러오기 끝에 Contact Info 맨 위로 다시 끌어올리므로 주소에서 #contact를 지우고,
+    // 글꼴·이미지가 늦게 들어와 자리가 밀리는 휴대폰을 위해 잠시 뒤 몇 번 더 맞춘다(방문자가 화면을 만지면 멈춘다).
     var toggle = document.getElementById('contactToggle');
     wrap.classList.remove('is-collapsed');
     if (toggle) {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.textContent = '신청 양식 접기';
     }
-    function goForm() {
-        note.scrollIntoView({ behavior: 'auto', block: 'start' });
+    try { if (location.hash === '#contact') history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
+    var touched = false;
+    function stop() { touched = true; }
+    ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(function (ev) {
+        window.addEventListener(ev, stop, { once: true, passive: true });
+    });
+    function goMsg() {
+        if (touched) return;
+        try { msg.scrollIntoView({ behavior: 'instant', block: 'center' }); } catch (e) { msg.scrollIntoView(false); }
+        if (document.activeElement !== msg) {
+            try { msg.focus({ preventScroll: true }); } catch (e) { msg.focus(); }
+        }
+        var end = msg.value.length;
+        try { msg.setSelectionRange(end, end); } catch (e) {}
+        msg.scrollTop = msg.scrollHeight;
     }
-    goForm();
-    // 주소의 #contact 로 브라우저가 페이지를 다 불러온 뒤 다시 옮기므로, 불러오기가 끝난 뒤 한 번 더 맞춘다.
-    // 그다음 '상담 요청 내용' 칸 맨 끝('(상담 요청 추가 내용): ' 뒤)에 입력 커서를 둔다(2026-11-24 작가님, 예전 형태).
-    // 화면은 안내 문구 위치 그대로 두고(preventScroll), 휴대폰 키보드가 올라오면 브라우저가 칸을 보이게 올린다.
-    function goCaret() {
-        goForm();
-        try { msg.focus({ preventScroll: true }); } catch (e) { msg.focus(); }
-    }
-    if (document.readyState === 'complete') setTimeout(goCaret, 0);
-    else window.addEventListener('load', function () { setTimeout(goCaret, 0); });
+    goMsg();
+    function later() { [0, 300, 800, 1500].forEach(function (ms) { setTimeout(goMsg, ms); }); }
+    if (document.readyState === 'complete') later();
+    else window.addEventListener('load', later);
 })();
