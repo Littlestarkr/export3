@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 18;
+    var MAP_VERSION = 19;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -339,7 +339,7 @@
 
     // 조건에 맞는 정책금융·지원사업 전체 매칭(2026-11-23 작가님):
     // 8가지 질문 중 어느 하나의 조건이라도 해당하면 지원 가능한 금융·지원사업을 빠짐없이 추천한다.
-    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원
+    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = IBK기업은행(금융상품 추천순위 맨 마지막)
     var PROGRAMS = [
         // ── 최우선 추천 (pri: 1) ──
         { id: 'semas-disabled', pri: 1, match: function (c) {
@@ -497,31 +497,6 @@
             return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
         }},
 
-        // ── IBK기업은행 ──
-        { id: 'ibk-export', pri: 2, match: function () {
-            return '모든 수출기업 대상(IBK 무역금융·관세피해 지원대출)이라서';
-        }},
-        { id: 'ibk-youth', pri: 2, match: function (c) {
-            return (c.youth && c.under7 && c.sme) ? '청년·창업기업 대상(IBK유망청년창업대출)이라서' : '';
-        }},
-        { id: 'ibk-startup', pri: 2, match: function (c) {
-            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업 대상(IBK혁신창업·스텝업·스타트업대출)이라서' : '';
-        }},
-        { id: 'ibk-venture', pri: 2, match: function (c) {
-            return ((c.venture || c.innobiz || c.lab) && c.sme) ? '벤처·이노비즈·연구소 보유 중소기업 대상(IBK벤처·첨단혁신·R&D대출)이라서' : '';
-        }},
-        { id: 'ibk-esg', pri: 2, match: function (c) {
-            return (c.esg && c.sme) ? '소부장·ESG 우대조건(ESG경영 성공지원 대출)이라서' : '';
-        }},
-        { id: 'ibk-smallbiz', pri: 2, match: function (c) {
-            return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·성장촉진 대출)이라서' : '';
-        }},
-        { id: 'ibk-online', pri: 3, match: function (c) {
-            if (c.b2c && c.sme) return 'B2C 온라인 판매·비대면 보증부대출 대상이라서';
-            if ((c.smallbiz || c.has2('small')) && c.sme) return '소상공인·소기업 비대면 보증부대출 대상이라서';
-            return '';
-        }},
-
         // ── 비금융 수출·창업 지원사업 ──
         { id: 'k-domestic', pri: 2, match: function (c) {
             return (c.st <= 3 && c.hasAny(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']))
@@ -541,6 +516,31 @@
             if (!c.under7) return '';
             if (c.hasAny(['support', 'fund', 'need:fund'])) return c.whyTags(['support', 'fund', 'need:fund']);
             if (c.venture || c.lab || c.youth) return '창업 7년 이내·기술/청년 기업이라서';
+            return '';
+        }},
+
+        // ── IBK기업은행 (금융상품 추천순위 맨 마지막 · pri: 4) ──
+        { id: 'ibk-export', pri: 4, match: function () {
+            return '모든 수출기업 대상(IBK 무역금융·관세피해 지원대출)이라서';
+        }},
+        { id: 'ibk-youth', pri: 4, match: function (c) {
+            return (c.youth && c.under7 && c.sme) ? '청년·창업기업 대상(IBK유망청년창업대출)이라서' : '';
+        }},
+        { id: 'ibk-startup', pri: 4, match: function (c) {
+            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업 대상(IBK혁신창업·스텝업·스타트업대출)이라서' : '';
+        }},
+        { id: 'ibk-venture', pri: 4, match: function (c) {
+            return ((c.venture || c.innobiz || c.lab) && c.sme) ? '벤처·이노비즈·연구소 보유 중소기업 대상(IBK벤처·첨단혁신·R&D대출)이라서' : '';
+        }},
+        { id: 'ibk-esg', pri: 4, match: function (c) {
+            return (c.esg && c.sme) ? '소부장·ESG 우대조건(ESG경영 성공지원 대출)이라서' : '';
+        }},
+        { id: 'ibk-smallbiz', pri: 4, match: function (c) {
+            return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·성장촉진 대출)이라서' : '';
+        }},
+        { id: 'ibk-online', pri: 4, match: function (c) {
+            if (c.b2c && c.sme) return 'B2C 온라인 판매·비대면 보증부대출 대상이라서';
+            if ((c.smallbiz || c.has2('small')) && c.sme) return '소상공인·소기업 비대면 보증부대출 대상이라서';
             return '';
         }}
     ];
