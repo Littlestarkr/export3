@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 20;
+    var MAP_VERSION = 21;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -131,12 +131,13 @@
             help: '창업 연차와 기업 규모는 하나씩, 우대 조건은 해당하는 것을 모두 고를 수 있습니다. 해당하는 항목만 골라도 됩니다.',
             // 창업 연차·기업 규모는 같은 묶음 안에서 하나만(모순 조합 방지), 우대 조건(multi: true)은 복수 선택
             groups: [
-                { label: '창업 연차', vs: ['startup', 'y7', 'y7p'] },
+                { label: '창업 연차', vs: ['pre', 'startup', 'y7', 'y7p'] },
                 { label: '우대 조건 (복수 선택 가능)', multi: true, vs: PREF_VALS },
                 { label: '기업 규모', vs: ['smallbiz', 'small', 'medium', 'mid', 'large', 'etc'] }
             ],
             options: [
-                { v: 'startup', label: '예비창업·창업 3년 이내' },
+                { v: 'pre', label: '예비창업자' },
+                { v: 'startup', label: '창업 3년 이내' },
                 { v: 'y7', label: '창업 7년 이내' },
                 { v: 'y7p', label: '창업 7년 초과' },
                 { v: 'youth', label: '청년기업(대표자 만 39세 이하)' },
@@ -400,7 +401,7 @@
                 ? '제조업 영위 소공인(상시근로자 10인 미만) 해당 시' : '';
         }},
         { id: 'semas-temp', pri: 3, match: function (c) {
-            return (c.smallbiz && c.under7 && c.wantsFund && (c.rev === 0 || c.rev <= 2))
+            return (c.smallbiz && c.under7 && !c.pre && c.wantsFund && (c.rev === 0 || c.rev <= 2))
                 ? '업력 7년 미만 소상공인 경영애로 자금 검토 대상이라서' : '';
         }},
 
@@ -412,7 +413,8 @@
             return (c.st >= 4 && c.sme) ? '수출실적 10만 달러 이상 중소기업(소상공인 포함)이라서' : '';
         }},
         { id: 'kosmes-startup', pri: 2, match: function (c) {
-            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업이라서' : '';
+            if (!c.under7 || !c.sme) return '';
+            return c.pre ? '예비창업자(창업기반지원자금) 대상이라서' : '창업 7년 미만 중소기업이라서';
         }},
         { id: 'kosmes-devtech', pri: 2, match: function (c) {
             return ((c.lab || c.venture || c.innobiz) && c.sme) ? '기술·연구소·혁신인증 보유 중소기업이라서' : '';
@@ -472,7 +474,8 @@
             return c.sme ? '모든 수출 중소기업 대상(수출 역량 단계별 종합지원)이라서' : '';
         }},
         { id: 'kodit-startup', pri: 2, match: function (c) {
-            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업이라서' : '';
+            if (!c.under7 || !c.sme) return '';
+            return c.pre ? '예비창업자(예비창업·창업단계 보증) 대상이라서' : '창업 7년 미만 중소기업이라서';
         }},
         { id: 'kodit-youth', pri: 2, match: function (c) {
             return (c.youth && c.under7 && c.sme) ? '청년·창업 7년 이내 기업이라서' : '';
@@ -556,6 +559,7 @@
             return '';
         }},
         { id: 'rnd', pri: 2, match: function (c) {
+            if (c.pre) return '예비창업자(예비창업패키지·창업지원사업)라서';
             if (c.rev === 1) return '전년도 매출 1억 원 미만 초기 기업(창업지원사업)이라서';
             if (c.rev === 3 && c.sme) return '전년도 매출 5억~20억 원 미만 성장 초입 소기업(디딤돌 R&D 자격 구간)이라서';
             if (!c.under7) return '';
@@ -633,7 +637,7 @@
     };
 
     var SHORT = {
-        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
