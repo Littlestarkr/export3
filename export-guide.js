@@ -63,14 +63,14 @@
         for (var i = 0; i < M.stages.length; i++) if (M.stages[i].v === v) return i;
         return 0;
     }
-    function revIdx(v) {
-        var list = M.revenues || [];
-        for (var i = 0; i < list.length; i++) if (list[i].v === v) return i + 1;
-        return 0;
-    }
     function revObj(v) {
-        var idx = revIdx(v);
-        return idx ? M.revenues[idx - 1] : null;
+        var list = M.revenues || [];
+        for (var i = 0; i < list.length; i++) if (list[i].v === v) return list[i];
+        return null;
+    }
+    function revIdx(v) {
+        var rv = revObj(v);
+        return rv ? (rv.tier || 0) : 0;
     }
     function qById(id) {
         for (var i = 0; i < M.questions.length; i++) {
@@ -469,23 +469,24 @@
         if (needs.indexOf('fund') >= 0) { var wf = '자금·무역보험·지원사업이 필요하다고 해서'; add('policy-fund', 1, wf); add(ins, 1, wf); add('voucher', 1, wf); }
         if (needs.indexOf('consult') >= 0) consultTop = true;
 
-        // 7-2) 전년도 매출실적 5단계(2026-11-23 작가님)
+        // 7-2) 최근 1년(또는 전년도) 매출실적 구간(2026-11-23 작가님)
         var rev = revIdx(a.q1r);
+        var noRev = a.q1r === 'r0';
         if (rev === 1) {
-            var wr1 = '전년도 매출 1억 원 미만 초기 기업이라서';
+            var wr1 = noRev ? '매출 없음 초기 기업이라서' : '매출 1억 원 미만 초기 기업이라서';
             add('rnd', 2, wr1); add('k-aitc', 2, wr1);
             if (st <= 3) add('k-domestic', 2, wr1);
         } else if (rev === 2) {
-            var wr2 = '전년도 매출 1억~5억 원 미만 소상공인·소기업이라서';
+            var wr2 = '매출 1억~5억 원 미만 소상공인·소기업이라서';
             add('voucher', 2, wr2); add('policy-fund', 1, wr2);
         } else if (rev === 3) {
-            var wr3 = '전년도 매출 5억~20억 원 미만 성장 초입 소기업이라서';
+            var wr3 = '매출 5억~20억 원 미만 성장 초입 소기업이라서';
             add('buyer', 2, wr3); add('rnd', 1, wr3);
         } else if (rev === 4) {
-            var wr4 = '전년도 매출 20억~100억 원 미만 본격 성장 중소기업이라서';
+            var wr4 = '매출 20억~100억 원 미만 본격 성장 중소기업이라서';
             add('ksure-plus', 2, wr4); add('guarantee', 2, wr4); add('k-branch', 2, wr4);
         } else if (rev === 5) {
-            var wr5 = '전년도 매출 100억 원 이상 중기업·강소기업이라서';
+            var wr5 = '매출 100억 원 이상 중기업·강소기업이라서';
             add('fx', 2, wr5); add('ksure-postship', 2, wr5); add('exim', 2, wr5);
         }
 
@@ -494,7 +495,7 @@
         needs.forEach(function (n) { tags.push('need:' + n); });
         forms.forEach(function (f) { tags.push('form:' + f); });
         var ctx = {
-            st: st, rev: rev, a: a, has2: has2, hasItem: hasItem,
+            st: st, rev: rev, noRev: noRev, a: a, has2: has2, hasItem: hasItem,
             forms: forms, issues: issues, pays: pays, needs: needs, tags: tags,
             pref: prefPicked, prefLabels: prefPicked.length ? listLabels('q2', prefPicked) : '',
             smallbiz: has2('smallbiz'),
@@ -627,8 +628,9 @@
         var rv = revObj(a.q1r);
         var who = q2Short() || '기업';
         var bits = [listLabels('q3', items()), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
-        var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rv ? ' · 전년도 매출 ' + rv.short : '') + ' 단계';
-        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (rv ? '(전년도 매출 ' + rv.short + ')' : '') + '인 단계';
+        var rvTxt = rv ? (rv.v === 'r0' ? '매출 없음' : '매출 ' + rv.short) : '';
+        var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rvTxt ? ' · ' + rvTxt : '') + ' 단계';
+        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (rvTxt ? '(' + rvTxt + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
         s += iss.length ? '가장 큰 어려움은 ' + iss.join(' / ') + '입니다.' : '어려운 점은 고르지 않았습니다.';
@@ -641,7 +643,7 @@
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
-        if (a.q1r) L.push('전년도 매출실적: ' + label('q1r', a.q1r));
+        if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
