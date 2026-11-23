@@ -897,10 +897,17 @@
         } else fallback();
     }
     $('egToForm').addEventListener('click', function () {
-        try { sessionStorage.setItem(HAND_KEY, lastSummary); } catch (e) {}
         pingContact('form');
         ga('guide_to_contact', { method: 'form' });
     });
+    // 결과 화면이 떠 있으면 이 페이지의 모든 '상담 신청'(결과 상자 단추·상단 메뉴·하단 상담 안내) 링크가
+    // 결과 요약을 상담 신청서로 넘긴다. 예전에는 결과 상자 단추만 넘겨서, 하단 '상담 신청'으로 가면 칸이 비었다(2026-11-24).
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest && e.target.closest('a[href$="index.html#contact"]');
+        if (!link || vRes.hidden || !lastSummary) return;
+        try { sessionStorage.setItem(HAND_KEY, lastSummary); } catch (err) {}
+        if (link.id !== 'egToForm') ga('guide_to_contact', { method: 'form', link_area: link.closest('nav') ? 'menu' : 'page_cta' });
+    }, true);
     $('egToKakao').addEventListener('click', function () {
         copyText(lastSummary, function (ok) {
             $('egCopyMsg').textContent = ok ? '결과 요약을 복사했습니다. 카카오톡 대화창에 붙여 넣어 주세요.' : '';
