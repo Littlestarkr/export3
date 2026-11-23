@@ -316,6 +316,20 @@ function togglePrivacy() {
     note.textContent = '수출 가이드 결과 요약을 \'상담 요청 내용\'에 넣어 두었습니다. 맨 끝 \'(상담 요청 추가 내용):\' 뒤에 이어서 적어 주세요. 기업명·성함·연락처·이메일은 직접 입력해 주세요.';
     var form = document.getElementById('consultingForm');
     (form || wrap).insertBefore(note, (form || wrap).firstChild);
+    // 양식을 펼친 채로 '상담 요청 내용'이 든 신청서 첫머리(이 안내 문구)로 바로 이동한다.
+    // 예전에는 단추 클릭으로 펼친 뒤 브라우저가 주소의 #contact(Contact Info 맨 위)로 다시 끌어올려,
+    // 카카오톡·이메일 단추부터 보이고 양식은 한참 아래에 있었다(2026-11-24 작가님).
     var toggle = document.getElementById('contactToggle');
-    if (wrap.classList.contains('is-collapsed') && toggle) toggle.click();
+    wrap.classList.remove('is-collapsed');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.textContent = '신청 양식 접기';
+    }
+    function goForm() {
+        note.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+    goForm();
+    // 주소의 #contact 로 브라우저가 페이지를 다 불러온 뒤 다시 옮기므로, 불러오기가 끝난 뒤 한 번 더 맞춘다.
+    if (document.readyState === 'complete') setTimeout(goForm, 0);
+    else window.addEventListener('load', function () { setTimeout(goForm, 0); });
 })();
