@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 22;
+    var MAP_VERSION = 23;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -20,13 +20,14 @@
         { v: 's6', label: '1천만 달러 이상', short: '1천만 달러 이상' }
     ];
 
-    // 전년도 매출실적 5단계(2026-11-23 작가님). 순서 = 1~5단계
+    // 최근 1년(또는 전년도) 매출실적 6구간(매칭 5단계, 2026-11-23 작가님: 매출 없음과 1억 원 미만 구분)
     var REVENUES = [
-        { v: 'r1', label: '1억 원 미만 (매출 없음 포함)', short: '1억 원 미만' },
-        { v: 'r2', label: '1억 ~ 5억 원 미만', short: '1억~5억 원' },
-        { v: 'r3', label: '5억 ~ 20억 원 미만', short: '5억~20억 원' },
-        { v: 'r4', label: '20억 ~ 100억 원 미만', short: '20억~100억 원' },
-        { v: 'r5', label: '100억 원 이상', short: '100억 원 이상' }
+        { v: 'r0', label: '매출 없음', short: '매출 없음', tier: 1 },
+        { v: 'r1', label: '1억 원 미만', short: '1억 원 미만', tier: 1 },
+        { v: 'r2', label: '1억 ~ 5억 원 미만', short: '1억~5억 원', tier: 2 },
+        { v: 'r3', label: '5억 ~ 20억 원 미만', short: '5억~20억 원', tier: 3 },
+        { v: 'r4', label: '20억 ~ 100억 원 미만', short: '20억~100억 원', tier: 4 },
+        { v: 'r5', label: '100억 원 이상', short: '100억 원 이상', tier: 5 }
     ];
 
     // 애로사항(Q6) 10개
@@ -108,12 +109,12 @@
     var QUESTIONS = [
         {
             id: 'q1', type: 'one', title: '최근 1년(또는 전년도) 수출 및 매출실적은 얼마인가요?',
-            help: '수출실적(직수출·로컬 수출·온라인 해외 판매 합산)과 전년도 매출실적을 각각 하나씩 골라 주세요. 정확히 모르면 전년도 기준 대략적인 구간을 골라 주세요.',
+            help: '수출실적(직수출·로컬 수출·온라인 해외 판매 합산)과 최근 1년(또는 전년도) 매출실적을 각각 하나씩 골라 주세요. 정확히 모르면 대략적인 구간을 골라 주세요.',
             subLabel: '최근 1년(또는 전년도) 수출실적',
             options: STAGES.map(function (s) { return { v: s.v, label: s.label }; }),
             extraOne: {
                 id: 'q1r',
-                label: '전년도 매출실적은 얼마인가요?',
+                label: '최근 1년(또는 전년도) 매출실적은 얼마인가요?',
                 options: REVENUES.map(function (r) { return { v: r.v, label: r.label }; })
             }
         },
@@ -380,7 +381,7 @@
         }},
         { id: 'semas-general', pri: 2, match: function (c) {
             if (c.smallbiz) return '소상공인이라서';
-            if (c.rev === 2 && c.sme) return '전년도 매출 1억~5억 원 미만 소상공인·소기업 대상이라서';
+            if (c.rev === 2 && c.sme) return '매출 1억~5억 원 미만 소상공인·소기업 대상이라서';
             return '';
         }},
         { id: 'semas-retry', pri: 2, match: function (c) {
@@ -389,7 +390,7 @@
         }},
         { id: 'hope', pri: 2, match: function (c) {
             if (c.restart) return '재도전·재창업 기업이라서';
-            if (c.rev === 2 && c.sme) return '전년도 매출 1억~5억 원 미만 소상공인·소기업 재기·전환 지원 대상이라서';
+            if (c.rev === 2 && c.sme) return '매출 1억~5억 원 미만 소상공인·소기업 재기·전환 지원 대상이라서';
             if (c.smallbiz && c.wantsFund) return '소상공인 재기·전환 지원 대상이라서';
             return '';
         }},
@@ -448,11 +449,11 @@
 
         // ── 한국무역보험공사 (무보) ──
         { id: 'guarantee', pri: 2, match: function (c) {
-            if (c.rev === 4) return '전년도 매출 20억~100억 원 미만 본격 성장 중소기업(무보 선적 전 신용보증)이라서';
+            if (c.rev === 4) return '매출 20억~100억 원 미만 본격 성장 중소기업(무보 선적 전 신용보증)이라서';
             return '모든 수출기업 대상(선적 전 제작·조달 자금 보증)이라서';
         }},
         { id: 'ksure-postship', pri: 2, match: function (c) {
-            if (c.rev === 5) return '전년도 매출 100억 원 이상 중기업·강소기업(포괄보증·선적 후 보증) 대상이라서';
+            if (c.rev === 5) return '매출 100억 원 이상 중기업·강소기업(포괄보증·선적 후 보증) 대상이라서';
             return '모든 수출기업 대상(선적 후 수출채권 조기 현금화·포괄매입 보증)이라서';
         }},
         { id: 'ksure-direct', pri: 2, match: function (c) {
@@ -460,10 +461,10 @@
                 ? '매출 1억~100억 원·수출실적 1만~200만 달러 미만 수출초보 중소기업 대상이라서' : '';
         }},
         { id: 'ksure-plus', pri: 2, match: function (c) {
-            return (c.rev === 4 && c.smeOrMid) ? '전년도 매출 20억~100억 원 미만 본격 성장 중소기업(단기수출보험)이라서' : '';
+            return (c.rev === 4 && c.smeOrMid) ? '매출 20억~100억 원 미만 본격 성장 중소기업(단기수출보험)이라서' : '';
         }},
         { id: 'fx', pri: 2, match: function (c) {
-            return (c.rev === 5) ? '전년도 매출 100억 원 이상 중기업·강소기업(환변동보험 설계)이라서' : '';
+            return (c.rev === 5) ? '매출 100억 원 이상 중기업·강소기업(환변동보험 설계)이라서' : '';
         }},
         { id: 'trade-sure', pri: 2, match: function (c) {
             return (c.st <= 5 && c.sme) ? '연간 수출실적 1천만 달러 미만 수출(예정) 중소기업 대상(무료 1:1 컨설팅 총 6회)이라서' : '';
@@ -500,7 +501,7 @@
             return '';
         }},
         { id: 'kodit-mature', pri: 3, match: function (c) {
-            if (c.rev === 5 && c.smeOrMid) return '전년도 매출 100억 원 이상 중기업·강소기업 지속성장·중견 도약 보증 대상이라서';
+            if (c.rev === 5 && c.smeOrMid) return '매출 100억 원 이상 중기업·강소기업 지속성장·중견 도약 보증 대상이라서';
             return ((c.over7 || c.st >= 5 || c.has2('mid')) && c.smeOrMid)
                 ? '업력 7년 이상·100만 달러 이상·중견 도약 기업이라서' : '';
         }},
@@ -508,14 +509,14 @@
         // ── 기술보증기금 (기보) ──
         { id: 'kibo', pri: 2, match: function (c) {
             if (c.venture || c.innobiz || c.lab) return '벤처·이노비즈·연구소 보유 기술수출기업이라서';
-            if (c.rev === 3 && c.sme) return '전년도 매출 5억~20억 원 미만 성장 초입 소기업(기보 진입·수출기업보증)이라서';
+            if (c.rev === 3 && c.sme) return '매출 5억~20억 원 미만 성장 초입 소기업(기보 진입·수출기업보증)이라서';
             return '모든 수출(예정)기업 대상(기보 수출기업보증)이라서';
         }},
 
         // ── 지역신용보증재단 (서울신용보증재단) ──
         { id: 'seoul-shinbo', pri: 2, match: function (c) {
             if (c.smallbiz || c.disabled || c.social) return '소상공인·장애인·사회적기업 보증 대상이라서';
-            if (c.rev === 2 && c.sme) return '전년도 매출 1억~5억 원 미만 소상공인·소기업 지역신용보증 대상이라서';
+            if (c.rev === 2 && c.sme) return '매출 1억~5억 원 미만 소상공인·소기업 지역신용보증 대상이라서';
             if (c.has2('small') || c.under7 || c.esg) return '소기업·창업·ESG 기업 지역신용보증 검토 대상이라서';
             return '';
         }},
@@ -528,40 +529,41 @@
             return (c.st >= 1 || (c.st === 0 && c.a.q1b === 'order')) ? '수출계약 이행 자금 대상이라서' : '';
         }},
         { id: 'exim-promo', pri: 3, match: function (c) {
-            if (c.rev === 5) return '전년도 매출 100억 원 이상 중기업·강소기업(해외투자·중장기 수출금융) 대상이라서';
+            if (c.rev === 5) return '매출 100억 원 이상 중기업·강소기업(해외투자·중장기 수출금융) 대상이라서';
             return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
         }},
 
         // ── 비금융 수출·창업 지원사업 ──
         { id: 'k-aitc', pri: 2, match: function (c) {
-            return c.rev === 1 ? '전년도 매출 1억 원 미만 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서' : '';
+            if (c.rev !== 1) return '';
+            return c.noRev ? '매출 없음 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서' : '매출 1억 원 미만 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서';
         }},
         { id: 'k-domestic', pri: 2, match: function (c) {
             if (c.st <= 3 && c.hasAny(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']))
                 return c.whyTags(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']);
-            if (c.rev === 1 && c.st <= 3) return '전년도 매출 1억 원 미만 초기 기업(기초 수출 준비)이라서';
+            if (c.rev === 1 && c.st <= 3) return c.noRev ? '매출 없음 초기 기업(기초 수출 준비)이라서' : '매출 1억 원 미만 초기 기업(기초 수출 준비)이라서';
             return '';
         }},
         { id: 'voucher', pri: 2, match: function (c) {
             if (c.hasAny(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']))
                 return c.whyTags(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']);
-            if (c.rev === 2) return '전년도 매출 1억~5억 원 미만 초보 수출바우처 대상이라서';
+            if (c.rev === 2) return '매출 1억~5억 원 미만 초보 수출바우처 대상이라서';
             return '';
         }},
         { id: 'k-market', pri: 3, match: function (c) {
             if (c.hasAny(['buyer', 'market', 'need:market'])) return c.whyTags(['buyer', 'market', 'need:market']);
-            if (c.rev === 3) return '전년도 매출 5억~20억 원 미만 본격 바이어 발굴·시장조사 대상이라서';
+            if (c.rev === 3) return '매출 5억~20억 원 미만 본격 바이어 발굴·시장조사 대상이라서';
             return '';
         }},
         { id: 'k-branch', pri: 3, match: function (c) {
             if (c.hasAny(['buyer', 'market', 'need:market'])) return c.whyTags(['buyer', 'market', 'need:market']);
-            if (c.rev === 4) return '전년도 매출 20억~100억 원 미만 본격 성장 중소기업(KOTRA 지사화사업)이라서';
+            if (c.rev === 4) return '매출 20억~100억 원 미만 본격 성장 중소기업(KOTRA 지사화사업)이라서';
             return '';
         }},
         { id: 'rnd', pri: 2, match: function (c) {
             if (c.pre) return '예비창업자(예비창업패키지·창업지원사업)라서';
-            if (c.rev === 1) return '전년도 매출 1억 원 미만 초기 기업(창업지원사업)이라서';
-            if (c.rev === 3 && c.sme) return '전년도 매출 5억~20억 원 미만 성장 초입 소기업(디딤돌 R&D 자격 구간)이라서';
+            if (c.rev === 1) return c.noRev ? '매출 없음 초기 기업(창업지원사업)이라서' : '매출 1억 원 미만 초기 기업(창업지원사업)이라서';
+            if (c.rev === 3 && c.sme) return '매출 5억~20억 원 미만 성장 초입 소기업(디딤돌 R&D 자격 구간)이라서';
             if (!c.under7) return '';
             if (c.hasAny(['support', 'fund', 'need:fund'])) return c.whyTags(['support', 'fund', 'need:fund']);
             if (c.venture || c.lab || c.youth) return '창업 7년 이내·기술/청년 기업이라서';
