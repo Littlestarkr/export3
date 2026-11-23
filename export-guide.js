@@ -668,7 +668,12 @@
         var ic = el('i', 'fa-solid fa-route');
         ic.setAttribute('aria-hidden', 'true');
         box.appendChild(ic);
-        box.appendChild(document.createTextNode(' 수출 5단계 로드맵에서는 '));
+        box.appendChild(document.createTextNode(' '));
+        var top = el('a', 'eg-more-link', '수출 5단계 로드맵');
+        top.href = R.url;
+        top.dataset.egLink = 'roadmap-top';
+        box.appendChild(top);
+        box.appendChild(document.createTextNode('에서는 '));
         box.appendChild(stepLink(main, 'eg-roadmap-main', main + '단계 ' + R.names[main] + '부터 보세요'));
         var rel = [];
         arr(a.q6).forEach(function (k) {
