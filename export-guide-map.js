@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 17;
+    var MAP_VERSION = 18;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -69,6 +69,7 @@
         { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
+        { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['ibk-export', 'ibk-smallbiz'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
@@ -281,6 +282,14 @@
         'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하) 대상 수출마케팅·수출이행 자금(최고 3억 원, 연 2.5~3.0% 고정금리).' },
         'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'policy-finance.html?org=ksure#ksure-direct', d: '매출 1억~100억 원·직수출 1만~200만 달러 미만(1만 달러 미만 시 간접수출 인정) 수출초보 중소기업용 비대면 100% 보증(한도 5천만~1억 원).' },
         'trade-sure':  { t: '무역보험공사 TRADE-SURE 컨설팅(무료)', u: 'https://ksure.or.kr/rh-kr/cntnts/i-287/web.do', ext: true, d: '연간 수출실적 US$1천만 미만 수출(예정) 중소기업에 무역·법무·회계·관세 등 1:1 맞춤형 무료 컨설팅을 기업당 총 6회 제공합니다. 신청 절차는 무보 안내를 확인하세요.' },
+        // IBK기업은행 기업대출(2026-11-23)
+        'ibk-export':  { t: 'IBK기업은행 무역금융·관세피해 지원대출', u: 'policy-finance.html?org=ibk#ibk-export', d: '외화획득 단계별 무역금융, 통상환경 변화 대응 IBK관세피해기업 지원대출, 철강산업 수출공급 활성화 지원대출(무보 보증 연계) 등 수출기업 전용 대출입니다.' },
+        'ibk-youth':   { t: 'IBK기업은행 IBK유망청년창업대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신용보증기금·기술보증기금과 업무협약으로 유망 청년창업기업에 운전자금을 지원하는 전용 상품입니다(고정·변동·혼합).' },
+        'ibk-startup': { t: 'IBK기업은행 창업·스타트업 대출(혁신창업·스텝업·스타트업)', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신보·기보 보증서 협약 창업전용 대출(IBK혁신창업대출·IBK스텝업대출·IBK스타트업대출)입니다.' },
+        'ibk-venture': { t: 'IBK기업은행 벤처·혁신·R&D 대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: 'IBK벤처기업대출·벤처투자매칭대출·첨단혁신 성장유망기업대출·AI 대전환 도약대출·i-ONE중기부R&D신용대출(운전·시설자금)입니다.' },
+        'ibk-esg':     { t: 'IBK기업은행 ESG경영 성공지원 시설자금 대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '환경(E)·사회(S)·지배구조(G) 우수 중소기업의 운전·시설자금을 지원하는 대출입니다(고정·변동·혼합).' },
+        'ibk-smallbiz':{ t: 'IBK기업은행 소상공인 대출(가치성장·경영안정·희망Dream·성장촉진)', u: 'policy-finance.html?org=ibk#ibk-smallbiz', d: '수출혁신·기술 소상공인 가치성장대출, 경영안정대출, 희망Dream대출, 성장촉진 보증부대출 및 i-ONE소상공인대출입니다.' },
+        'ibk-online':  { t: 'IBK기업은행 비대면 보증부대출(이지원·원스탑플러스·e커머스)', u: 'policy-finance.html?org=ibk#ibk-online', d: '영업점 방문 없이 신청하는 신보 100% 보증 IBK 이지원보증부대출, 기보 원스탑플러스 보증부대출, 네이버 스마트스토어 e커머스 소상공인 성공 보증부대출입니다.' },
         'ksight':      { t: 'K-SIGHT·트라이빅 바이어 검색', u: 'global-expansion.html#b-search', d: '무보 K-SIGHT와 KOTRA 트라이빅으로 해외 바이어 정보를 찾아봅니다.' },
         'b-data':      { t: '무역데이터로 바이어 찾기(Trade Map·트레이드잇)', u: 'global-expansion.html#b-data', d: '실제 수입 실적·수입국 통계로 바이어와 시장을 찾습니다.' },
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
@@ -486,6 +495,31 @@
         }},
         { id: 'exim-promo', pri: 3, match: function (c) {
             return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
+        }},
+
+        // ── IBK기업은행 ──
+        { id: 'ibk-export', pri: 2, match: function () {
+            return '모든 수출기업 대상(IBK 무역금융·관세피해 지원대출)이라서';
+        }},
+        { id: 'ibk-youth', pri: 2, match: function (c) {
+            return (c.youth && c.under7 && c.sme) ? '청년·창업기업 대상(IBK유망청년창업대출)이라서' : '';
+        }},
+        { id: 'ibk-startup', pri: 2, match: function (c) {
+            return (c.under7 && c.sme) ? '창업 7년 미만 중소기업 대상(IBK혁신창업·스텝업·스타트업대출)이라서' : '';
+        }},
+        { id: 'ibk-venture', pri: 2, match: function (c) {
+            return ((c.venture || c.innobiz || c.lab) && c.sme) ? '벤처·이노비즈·연구소 보유 중소기업 대상(IBK벤처·첨단혁신·R&D대출)이라서' : '';
+        }},
+        { id: 'ibk-esg', pri: 2, match: function (c) {
+            return (c.esg && c.sme) ? '소부장·ESG 우대조건(ESG경영 성공지원 대출)이라서' : '';
+        }},
+        { id: 'ibk-smallbiz', pri: 2, match: function (c) {
+            return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·성장촉진 대출)이라서' : '';
+        }},
+        { id: 'ibk-online', pri: 3, match: function (c) {
+            if (c.b2c && c.sme) return 'B2C 온라인 판매·비대면 보증부대출 대상이라서';
+            if ((c.smallbiz || c.has2('small')) && c.sme) return '소상공인·소기업 비대면 보증부대출 대상이라서';
+            return '';
         }},
 
         // ── 비금융 수출·창업 지원사업 ──
