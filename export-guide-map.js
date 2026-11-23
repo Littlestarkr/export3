@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 23;
+    var MAP_VERSION = 24;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -114,7 +114,7 @@
             options: STAGES.map(function (s) { return { v: s.v, label: s.label }; }),
             extraOne: {
                 id: 'q1r',
-                label: '최근 1년(또는 전년도) 매출실적은 얼마인가요?',
+                label: '최근 1년(또는 전년도) 매출실적',
                 options: REVENUES.map(function (r) { return { v: r.v, label: r.label }; })
             }
         },
