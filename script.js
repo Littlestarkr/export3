@@ -330,11 +330,12 @@ function togglePrivacy() {
     }
     goForm();
     // 주소의 #contact 로 브라우저가 페이지를 다 불러온 뒤 다시 옮기므로, 불러오기가 끝난 뒤 한 번 더 맞춘다.
-    // 그다음 '상담 요청 내용' 칸 맨 끝('(상담 요청 추가 내용): ' 뒤)에 입력 커서를 둔다(2026-11-24 작가님, 예전 형태).
-    // 화면은 안내 문구 위치 그대로 두고(preventScroll), 휴대폰 키보드가 올라오면 브라우저가 칸을 보이게 올린다.
+    // '상담 요청 내용' 칸에는 자동으로 커서를 두지 않는다. 자동 포커스하면 칸 안이 맨 끝으로 내려가
+    // 요약의 처음 부분이 안 보였다(2026-11-24 작가님). 칸 안은 맨 위(요약 첫 줄)부터 보이게 두고,
+    // 방문자가 칸을 처음 누를 때 위 focus 처리로 커서가 맨 끝('(상담 요청 추가 내용): ' 뒤)에 간다.
     function goCaret() {
         goForm();
-        try { msg.focus({ preventScroll: true }); } catch (e) { msg.focus(); }
+        msg.scrollTop = 0;
     }
     if (document.readyState === 'complete') setTimeout(goCaret, 0);
     else window.addEventListener('load', function () { setTimeout(goCaret, 0); });
