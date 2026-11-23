@@ -24,7 +24,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css?v=28">
-    <link rel="stylesheet" href="policy-finance.css?v=22">
+    <link rel="stylesheet" href="policy-finance.css?v=23">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -116,12 +116,568 @@
             <h2>정책자금 및 수출금융</h2>
             <p>소상공인부터 수출 중소기업까지, <br class="pf-br">기관별로 어떤 자금이 있는지 한눈에 살펴보세요.</p>
             <div class="pf-hero-btns">
+                <a href="#preferential-conditions" class="btn btn-primary">금융 우대조건</a>
                 <a href="#part1" class="btn btn-primary">1부 · 정책금융 탐색 채널</a>
                 <a href="https://ols.semas.or.kr/ols/man/SMAN019M/page.do" target="_blank" rel="noopener noreferrer" class="pf-hero-rate"><i class="fa-solid fa-percent"></i> 소진공 기준금리 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <a href="https://www.kosmes.or.kr/nsh/SH/SIT/SHSIT031M0.do?page=08" target="_blank" rel="noopener noreferrer" class="pf-hero-rate"><i class="fa-solid fa-percent"></i> 중진공 기준금리 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <a href="#part2" class="btn btn-primary">2부 · 기관별 자금 안내</a>
             </div>
-            <p class="pf-asof"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> 페이지 최종 수정 <time datetime="2026-11-19">2026년 11월 19일</time> · 한도·금리 등은 각 기관 공식 안내를 옮겨 적은 시점 기준이며(원문과 다시 대조한 날짜가 아닙니다), 기관 공고에 따라 수시로 바뀝니다. 신청 전 항목 아래 원문 링크에서 최신 내용을 확인하세요.</p>
+            <p class="pf-asof"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> 페이지 최종 수정 <time datetime="2026-11-23">2026년 11월 23일</time> · 한도·금리 등은 각 기관 공식 안내를 옮겨 적은 시점 기준이며(원문과 다시 대조한 날짜가 아닙니다), 기관 공고에 따라 수시로 바뀝니다. 신청 전 항목 아래 원문 링크에서 최신 내용을 확인하세요.</p>
+        </div>
+    </section>
+
+    <!-- 금융 우대조건 -->
+    <section id="preferential-conditions" class="pf-section bg-light pf-pref-section">
+        <div class="container">
+            <div class="pf-pref-inner">
+                <!-- 섹션 헤더 -->
+                <div class="pf-pref-header">
+                    <span class="pf-pref-eyebrow">FINANCING PREFERENTIAL CONDITIONS</span>
+                    <h3 class="pf-pref-title">기업 금융 우대조건 및 지원제도 매칭</h3>
+                    <p class="pf-pref-desc">
+                        정책자금 신청 전 우리 회사가 보유한(또는 취득 가능한) 우대조건을 먼저 확인하세요.
+                        금리 인하·보증료 감면·한도 확대는 물론 공공조달·세제·R&amp;D 혜택까지 한눈에 비교할 수 있습니다.
+                    </p>
+                </div>
+
+                <!-- 카테고리 탭 & 전체 펼치기 버튼 -->
+                <div class="pf-pref-controls">
+                    <div class="pf-pref-tabs" role="tablist" aria-label="우대조건 카테고리">
+                        <button type="button" class="pf-pref-tab is-active" role="tab" aria-selected="true" data-filter="all">전체 보기 (13)</button>
+                        <button type="button" class="pf-pref-tab" role="tab" aria-selected="false" data-filter="startup">창업·연령 (3)</button>
+                        <button type="button" class="pf-pref-tab" role="tab" aria-selected="false" data-filter="social">여성·장애인·사회적 (3)</button>
+                        <button type="button" class="pf-pref-tab" role="tab" aria-selected="false" data-filter="cert">혁신인증·연구소 (4)</button>
+                        <button type="button" class="pf-pref-tab" role="tab" aria-selected="false" data-filter="extra">수출·ESG·지역 시너지 (3)</button>
+                    </div>
+                    <button type="button" class="pf-pref-toggle-all" id="pfToggleAllBtn">모두 펼치기</button>
+                </div>
+
+                <!-- 아코디언 카드 목록 -->
+                <div class="pf-pref-list" id="pfCardList">
+
+                    <!-- 1. 창업기업 -->
+                    <details class="pf-pref-card" data-category="startup" open>
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">창업·연령</span>
+                                    <span class="pf-pref-card-title">창업기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 예비창업자 및 창업 후 7년 이내 기업 (신산업 분야는 10년 이내)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">시설금리 -0.6%p</span>
+                                    <span class="pf-pref-badge">보증비율 90~100%</span>
+                                    <span class="pf-pref-badge is-gold">공공구매 8% 이상</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 창업기반지원자금 (시설 기준금리 -0.6%p, 한도 60억 / 운전자금 우대)</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 예비창업자 사전보증, 맞춤형 창업성장 프로그램 (보증비율 90~100%, 보증료 감면)</li>
+                                    <li><span class="pf-pref-org">[신용보증기금]</span> Start-up Nest, 창업활성화 맞춤형 보증, 소상공인 특례보증 (창업 3년 이내 최대 5억)</li>
+                                    <li><span class="pf-pref-org">[한국무역보험공사]</span> 창업·수출초보기업 보험·보증료 할인 및 부보율 우대</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · R&amp;D · 사업화</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[지방중기청·창업진흥원]</span> 창업기업 확인서 발급 시 공공기관 연간 구매액의 <strong>8% 이상</strong> 우선구매</li>
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> TIPS 프로그램(R&amp;D 5~8억), 딥테크 R&amp;D(PoC 1~2억, PoM 6~10억)</li>
+                                    <li><span class="pf-pref-org">[중기부·창업진흥원]</span> 예비·초기·창업도약·초격차 스타트업 패키지 사업화 자금 연계</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 2. 청년창업기업 / 청년기업 -->
+                    <details class="pf-pref-card" data-category="startup">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">창업·연령</span>
+                                    <span class="pf-pref-card-title">청년창업기업 / 청년기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 대표자(실제경영자) 만 39세 이하, 업력 3~7년 이내 (사업별 상이)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">연 2.5% 고정금리</span>
+                                    <span class="pf-pref-badge">보증료 연 0.3% 고정</span>
+                                    <span class="pf-pref-badge is-gold">취득세 감면 5년 우대</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 청년전용창업자금 (창업 3년 미만, <strong>연 2.5% 고정금리</strong>, 최대 1억 / 제조·중점 2억, 직접대출)</li>
+                                    <li><span class="pf-pref-org">[소상공인시장진흥공단]</span> 청년고용연계자금 (업력 3년 미만 청년 소상공인 저금리 융자)</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 청년창업기업 우대 프로그램 (5년 이내, 한도 3억, <strong>보증료 연 0.3% 고정</strong>, 보증비율 95~100%)</li>
+                                    <li><span class="pf-pref-org">[신용보증기금]</span> 청년희망드림보증 (7년 이내, 한도 3억, 보증료 0.3% 고정, 보증비율 95%)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 세제 · R&amp;D · 육성</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[국세청·지자체]</span> 청년창업벤처기업 취득세(75%)·재산세 감면 대상 기간 확대 (일반 4년 → <strong>5년 이내</strong>)</li>
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> 딥테크 R&amp;D 우대 대상 포함</li>
+                                    <li><span class="pf-pref-org">[중진공·소진공]</span> 청년창업사관학교 입교·사업화 연계, 통상임대료 부담경감 우대</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 3. 재창업·중장년 기업 -->
+                    <details class="pf-pref-card" data-category="startup">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">창업·연령</span>
+                                    <span class="pf-pref-card-title">재창업 · 중장년 기술창업기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 폐업 후 재창업 7년 이내 / 만 40세 이상 기술경력자</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">시설금리 -0.3%p</span>
+                                    <span class="pf-pref-badge">3회 제한 예외</span>
+                                    <span class="pf-pref-badge is-gold">재도전성공패키지</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 재창업자금 (성실경영평가 통과 시 시설 -0.3%p, 한도 60억, 5년 내 3회 제한 예외)</li>
+                                    <li><span class="pf-pref-org">[소상공인시장진흥공단]</span> 재도전 특별자금 (초기 7천만원 / 성실상환 도약형 2억, 저금리 직접대출)</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 재도전·재창업 재기지원보증, 중장년 기술경력자 창업보증</li>
+                                    <li><span class="pf-pref-org">[신용보증기금]</span> 신중년행복드림보증 (한도 3억, 보증비율 95%, 보증료 차감)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 재기 · 사업화 · 보육</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 재창업자금 지원기업 대상 이행보증 및 재기지원사업 연계</li>
+                                    <li><span class="pf-pref-org">[중기부·창업진흥원]</span> 재도전성공패키지(사업화 자금·멘토링) 및 중장년 기술창업센터 입주·보육</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 4. 여성기업 -->
+                    <details class="pf-pref-card" data-category="social">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">사회적 가치</span>
+                                    <span class="pf-pref-card-title">여성기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 여성이 소유하고 실질적으로 경영하는 기업 (여성기업확인서 발급)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">금리 0.1%p 인하</span>
+                                    <span class="pf-pref-badge">대출한도 최대 100억</span>
+                                    <span class="pf-pref-badge is-gold">공공구매 물품·용역 5%</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 포용금융 <strong>금리 0.1%p 인하</strong>, 최대 대출한도 <strong>100억 확대</strong>(운전자금 연간 10억 우대), 우선도평가 기본인증</li>
+                                    <li><span class="pf-pref-org">[시중은행·보증기관]</span> 여성기업 전용 보증 및 대출 금리 우대 상품 연계</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · 판로 · R&amp;D</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[조달청·공공기관·한국여성경제인협회]</span> 공공기관 물품·용역 <strong>5%</strong>, 공사 <strong>3%</strong> 우선구매 의무, 입찰 실무교육·맞춤형 입찰정보 제공</li>
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> 딥테크 R&amp;D 우대 대상</li>
+                                    <li><span class="pf-pref-org">[한국여성경제인협회]</span> 여성창업 액셀러레이팅, 판로역량 강화, 맞춤형 인력 매칭, 펨테크 육성</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 5. 장애인기업 -->
+                    <details class="pf-pref-card" data-category="social">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">사회적 가치</span>
+                                    <span class="pf-pref-card-title">장애인기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 장애인이 소유·경영하는 기업 (중기업은 장애인 30% 이상 고용, 확인서 발급)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">금리 0.1%p 인하</span>
+                                    <span class="pf-pref-badge">대출한도 최대 100억</span>
+                                    <span class="pf-pref-badge is-gold">5천만원 이하 1인 수의계약</span>
+                                    <span class="pf-pref-badge is-gold">조달 가점 최대 5점</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 포용금융 <strong>금리 0.1%p 인하</strong>, 정책자금 <strong>최대 대출한도 100억</strong> 및 운전자금 연간 10억 우대</li>
+                                    <li><span class="pf-pref-org">[소상공인시장진흥공단]</span> 장애인기업지원자금 (특별경영안정자금 저금리·고정금리 융자)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · 수출 · 경영특화</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[조달청·공공기관]</span> 구매총액 <strong>1% 이상</strong> 우선구매, <strong>5천만원 이하 1인 수의계약</strong>, 조달 적격심사 신인도 <strong>가점 최대 5점</strong>, MAS 등록 지원</li>
+                                    <li><span class="pf-pref-org">[장애인기업종합지원센터]</span> 창업 사업화, 국내외 전시회·수출지원, 제품디자인·시제품, 1인 사업주 보조공학기기 및 업무지원인 서비스</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 6. 사회적기업 -->
+                    <details class="pf-pref-card" data-category="social">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">사회적 가치</span>
+                                    <span class="pf-pref-card-title">사회적기업 / 사회적경제기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 사회적기업 인증, 소셜벤처 판별기업, 협동조합 등</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">금리 0.1%p 인하</span>
+                                    <span class="pf-pref-badge">대출한도 최대 100억</span>
+                                    <span class="pf-pref-badge is-gold">R&amp;D 가점 1점</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 포용금융 <strong>금리 0.1%p 인하</strong>, 최대 한도 <strong>100억</strong>, 신성장기반자금(업력 7년 이상) 운전자금 별도 지원, 우선도평가 기본인증</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 소셜벤처 임팩트 보증 (소셜벤처 판별기업 대상)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · R&amp;D · 수출</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> 중소기업 기술개발(R&amp;D) <strong>가점 1점</strong> 및 딥테크 R&amp;D 우대</li>
+                                    <li><span class="pf-pref-org">[산업부·KOTRA·사회적기업진흥원]</span> 소부장·그린·서비스 분야 수출지원사업 우대</li>
+                                    <li><span class="pf-pref-org">[조달청·공공기관]</span> 사회적기업 제품 우선구매 및 적격심사 신인도 가점</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 7. 벤처기업 -->
+                    <details class="pf-pref-card" data-category="cert">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">혁신인증·연구소</span>
+                                    <span class="pf-pref-card-title">벤처기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 벤처투자 · 연구개발 · 혁신성장 유형 중 1개 충족 (벤처기업확인서 발급)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">기보 한도 50~70억</span>
+                                    <span class="pf-pref-badge">중진공 한도 100억</span>
+                                    <span class="pf-pref-badge is-gold">법인세 5년 50% 감면</span>
+                                    <span class="pf-pref-badge is-gold">취득세 75% 감면</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 · 상장 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 보증한도 확대 (일반 30억 → <strong>50억</strong>, 이행·전자상거래 <strong>70억</strong>)</li>
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 혁신성장지원자금 최대 한도 <strong>100억</strong> 우대, 정책자금 우선도평가 기본인증</li>
+                                    <li><span class="pf-pref-org">[한국무역보험공사]</span> 보험·보증료 할인 및 부보율 우대</li>
+                                    <li><span class="pf-pref-org">[한국거래소(KRX)]</span> 코스닥 상장 심사기준 완화 (자기자본 30억→15억, 이익·매출 기준 50% 완화)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 세제 · R&amp;D · 인력 · 광고</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[국세청·지자체]</span> 창업벤처(창업 3년 내 확인) <strong>법인·소득세 5년 50% 감면</strong>, <strong>취득세 75% 감면</strong>, 재산세 3년 면제+2년 50% 감면</li>
+                                    <li><span class="pf-pref-org">[중기부·과기정통부]</span> R&amp;D 가점 1점, 기업부설연구소 전담요원 <strong>2명</strong> 완화, 스톡옵션 한도 50% 확대, 공공연 연구인력 파견 자격</li>
+                                    <li><span class="pf-pref-org">[공정위·한국방송광고진흥공사]</span> 대기업 M&amp;A 계열편입 7~10년 유예, TV·라디오 광고비 <strong>최대 70% 할인</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 8. 이노비즈 -->
+                    <details class="pf-pref-card" data-category="cert">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">혁신인증·연구소</span>
+                                    <span class="pf-pref-card-title">이노비즈 (INNO-BIZ · 기술혁신형)</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 업력 3년 이상 기술혁신형 중소기업 (현장평가 700점·기술평가 B등급 이상)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">기보 50억·-0.2%p</span>
+                                    <span class="pf-pref-badge">무보 20% 할인·1.5배</span>
+                                    <span class="pf-pref-badge is-gold">조달 가점 최대 2.5점</span>
+                                    <span class="pf-pref-badge is-gold">세무조사 2~3년 유예</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 · 보험 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 보증한도 <strong>50억(이행 70억)</strong>, 보증비율 최대 100%, 보증료 <strong>-0.2%p 감면</strong></li>
+                                    <li><span class="pf-pref-org">[NH농협은행]</span> 이노비즈 채움금융 대출금리 <strong>최대 1.65%p 우대</strong></li>
+                                    <li><span class="pf-pref-org">[한국무역보험공사]</span> 무역보증보험료 <strong>20% 할인</strong> 및 이용한도 <strong>1.5배</strong></li>
+                                    <li><span class="pf-pref-org">[신용보증기금·서울보증보험]</span> 신보 매출채권보험 15% 할인 / 서울보증 한도 30억·이행요율 10% 할인</li>
+                                    <li><span class="pf-pref-org">[중진공·한국은행·KRX]</span> 중진공 우선도평가 및 한도 100억, 한은 혁신기업 자금, 코스닥 요건 완화</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · 세제 · 지재권 · 인력</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[조달청]</span> 물품구매 적격심사 신인도 <strong>가점 2.0점(제조 2.5점)</strong>, 일반용역 <strong>1.5점</strong></li>
+                                    <li><span class="pf-pref-org">[국세청·관세청·지자체]</span> 수도권 취득세 중과(3배) 면제, 세무조사 유예(수도권 2년·지방 3년), 관세조사 1년 유예, 납세담보 1억 면제, 부가세 조기환급, 세금포인트 2배</li>
+                                    <li><span class="pf-pref-org">[특허청·중기부·병무청]</span> 특허 우선심사, 임치수수료 1/3 감면, R&amp;D 가점 1점, 수출바우처·글로벌강소기업 우대, 병역특례 가점(4~5점), 방송광고 70% 할인</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 9. 메인비즈 -->
+                    <details class="pf-pref-card" data-category="cert">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">혁신인증·연구소</span>
+                                    <span class="pf-pref-card-title">메인비즈 (MAIN-BIZ · 경영혁신형)</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 업력 3년 이상 경영혁신형 중소기업 (현장평가 700점 이상 또는 PMS 3등급 이상)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">신보 -0.1~0.2%p</span>
+                                    <span class="pf-pref-badge">농협 최대 1.65%p 우대</span>
+                                    <span class="pf-pref-badge is-gold">조달 가점 최대 2.5점</span>
+                                    <span class="pf-pref-badge is-gold">세무조사 2~3년 유예</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 · 보험 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[신용보증기금]</span> 보증료율 <strong>0.1~0.2%p 차감</strong>, 보증비율 85~90% 우대, 매출채권보험 5~15% 할인, 컨설팅 비용 90~100% 지원</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 보증료율 0.1%p 우대</li>
+                                    <li><span class="pf-pref-org">[NH농협은행·서울보증보험]</span> 농협 대출금리 <strong>최대 1.65%p 우대</strong> / 서울보증 한도 확대 및 요율 10% 할인</li>
+                                    <li><span class="pf-pref-org">[중진공·한국은행]</span> 정책자금 우선도평가 기본인증 및 한도 100억 우대, 한은 혁신기업 자금</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · 세제 · 수출 · 인력</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[조달청]</span> 나라장터 물품구매 적격심사 <strong>가점 2.0점(제조 2.5점)</strong>, 일반용역 <strong>1.5점</strong></li>
+                                    <li><span class="pf-pref-org">[국세청·관세청]</span> 정기 세무조사 유예(수도권 2년·지방 3년), 관세조사 1년 유예, 세금포인트 2배 적립</li>
+                                    <li><span class="pf-pref-org">[중기부·병무청·코바코]</span> R&amp;D 가점 1점, 수출바우처·수출인큐베이터 가점, 공영홈쇼핑 우대, 방송광고 70% 할인, 병역특례 가산점</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 10. 기업부설연구소 / 연구개발전담부서 -->
+                    <details class="pf-pref-card" data-category="cert">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">혁신인증·연구소</span>
+                                    <span class="pf-pref-card-title">기업부설연구소 / 연구개발전담부서</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 「기초연구법」 제14조의2에 따라 인적·물적 요건을 갖추어 인정받은 조직</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">개발기술자금 -0.3%p</span>
+                                    <span class="pf-pref-badge">기보 R&amp;D보증</span>
+                                    <span class="pf-pref-badge is-gold">연구인력 연봉 40~50% 지원</span>
+                                    <span class="pf-pref-badge is-gold">R&amp;D 세액공제</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 정책자금 우선도평가 기본인증, 개발기술사업화자금(시설 기준금리 -0.3%p, 한도 30억) 연계</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> R&amp;D보증 및 성장보증 (AI·R&amp;D·IP 보유기업 대상 최대 300억)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ R&amp;D · 인건비 · 세제</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> 산학연 Collabo R&amp;D 등 주요 R&amp;D 주관기관 필수 요건</li>
+                                    <li><span class="pf-pref-org">[중기부·TIPA]</span> 신진·고경력 연구인력 채용(최대 3년, 연봉 40~50%), 공공연 파견(연봉 50%), 현장맞춤형 인턴(최대 1,520만원) 지원</li>
+                                    <li><span class="pf-pref-org">[국세청]</span> 연구·인력개발비 세액공제 등 R&amp;D 세제 혜택 기본 요건</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 11. 수출실적 및 유망수출기업 -->
+                    <details class="pf-pref-card" data-category="extra">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">시너지 우대</span>
+                                    <span class="pf-pref-card-title">수출실적 보유 · 유망수출기업</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 직·간접 수출실적 보유 (1천불 이상 소상공인, 10만불·50만불 이상 중소기업, 글로벌강소기업 등)</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">무보 보험료 최대 90% 할인</span>
+                                    <span class="pf-pref-badge">중진공 한도 60~100억</span>
+                                    <span class="pf-pref-badge is-gold">소진공 1천불 이상 10억</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 · 무역보험 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 내수기업 수출기업화(10억), 수출기업 글로벌화(-0.3%p, 30~60억), 수출 50만불·20%↑ 시 운전자금 10억 및 5년 내 횟수 1회 추가, 글로벌강소기업 1000+ <strong>한도 100억</strong></li>
+                                    <li><span class="pf-pref-org">[한국무역보험공사]</span> '수출성장 플래닛' 선정 시 수출신용보증 특별한도 <strong>최대 100억</strong>, 보증비율 <strong>100%</strong>, 보험·보증료 <strong>최대 90% 할인</strong></li>
+                                    <li><span class="pf-pref-org">[소진공·지역신보]</span> 수출 1천불 이상 소상공인 혁신성장촉진자금(최대 10억), 수출유망 특례보증(7천만원)</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 수출 지원사업 시너지</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중기부·KOTRA·중진공]</span> 수출바우처, 해외규격인증, 해외지사화, 글로벌강소기업 1000+ 선정 및 전용 트랙 우대</li>
+                                    <li><span class="pf-pref-org">[KTNET]</span> 간접수출(구매확인서·내국신용장) 실적도 공식 수출실적으로 인정되어 동일 우대 적용</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 12. 소부장·스마트공장·ESG·혁신제품 -->
+                    <details class="pf-pref-card" data-category="extra">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">시너지 우대</span>
+                                    <span class="pf-pref-card-title">소부장 · 스마트공장 · ESG · 혁신제품</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 스마트공장 도입, 혁신제품 지정, NET·NEP·녹색인증, 소부장 전문·강소기업, ESG 우수기업</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">스마트화 자금 100억</span>
+                                    <span class="pf-pref-badge">정책자금 한도 100억</span>
+                                    <span class="pf-pref-badge is-gold">R&amp;D·수출 우대</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 제조현장스마트화자금(기준금리 -0.3%p, <strong>한도 100억</strong>), 녹색전환·Net-Zero 유망기업 자금</li>
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 소부장 강소100·초격차 스타트업·아기/예비유니콘·농어촌ESG 인증기업 <strong>대출한도 100억</strong> 우대</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 공공조달 · R&amp;D · 수출</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[조달청]</span> 혁신제품 지정 시 공공기관 시범구매 및 수의계약 판로 연계</li>
+                                    <li><span class="pf-pref-org">[산업부·중기부]</span> NET·NEP·녹색인증·뿌리기술·ESG 우수기업 R&amp;D 가점(1점) 및 소부장·그린 수출지원 우대</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 13. 고용·상생 우수기업 및 비수도권·인구감소지역 -->
+                    <details class="pf-pref-card" data-category="extra">
+                        <summary class="pf-pref-summary">
+                            <div class="pf-pref-summary-main">
+                                <div class="pf-pref-summary-top">
+                                    <span class="pf-pref-cat-pill">시너지 우대</span>
+                                    <span class="pf-pref-card-title">고용·상생 우수기업 &amp; 지방·인구감소지역</span>
+                                </div>
+                                <p class="pf-pref-req">요건: 일자리 으뜸·인재육성형·성과공유·납품대금 연동제 동행기업 / 비수도권 및 89개 인구감소지역 소재</p>
+                                <div class="pf-pref-badges">
+                                    <span class="pf-pref-badge">지방 한도 70억</span>
+                                    <span class="pf-pref-badge">우수기업 한도 100억</span>
+                                    <span class="pf-pref-badge is-gold">R&amp;D·수출 가점</span>
+                                </div>
+                            </div>
+                            <span class="pf-pref-chevron" aria-hidden="true">▼</span>
+                        </summary>
+                        <div class="pf-pref-body">
+                            <div class="pf-pref-box is-fin">
+                                <h4 class="pf-pref-box-title">💳 금융 우대지원</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 비수도권(지방) 소재 기업 일반 대출한도 확대(<strong>60억 → 70억</strong>)</li>
+                                    <li><span class="pf-pref-org">[중소벤처기업진흥공단]</span> 일자리 으뜸·인재육성형·성과공유·납품대금 연동제 동행·일·생활 균형 우수기업 <strong>한도 100억</strong> 우대</li>
+                                    <li><span class="pf-pref-org">[기술보증기금]</span> 일자리창출 지원(굿잡보증) 보증료·보증비율 우대</li>
+                                </ul>
+                            </div>
+                            <div class="pf-pref-box is-nonfin">
+                                <h4 class="pf-pref-box-title">🏛️ 지역·인력·수출 우대</h4>
+                                <ul class="pf-pref-ul">
+                                    <li><span class="pf-pref-org">[행정안전부·중기부]</span> 89개 인구감소지역 및 비수도권 소재 기업 수출지원사업·R&amp;D·연구인력 채용지원 시 우대 가점</li>
+                                    <li><span class="pf-pref-org">[중기부]</span> 지역특화산업육성 및 지역특화 프로젝트(레전드 50+) 연계 지원</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                </div><!-- /.pf-pref-list -->
+
+                <!-- 하단: 확인서 발급 및 자가진단 바로가기 -->
+                <div class="pf-pref-links-wrap">
+                    <h4 class="pf-pref-links-title">📌 우대조건 증빙 발급처 &amp; 정책자금 자가진단</h4>
+                    <div class="pf-pref-links-grid">
+                        <a href="https://www.smes.go.kr" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">기업 확인서</span>
+                            <span class="pf-pref-link-name">중소벤처24 (창업·벤처·메인비즈)</span>
+                            <span class="pf-pref-link-url">smes.go.kr ↗</span>
+                        </a>
+                        <a href="https://www.innobiz.net" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">기술혁신 인증</span>
+                            <span class="pf-pref-link-name">이노비즈넷 (INNO-BIZ)</span>
+                            <span class="pf-pref-link-url">innobiz.net ↗</span>
+                        </a>
+                        <a href="https://www.smpp.go.kr" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">여성·장애인·공공구매</span>
+                            <span class="pf-pref-link-name">공공구매종합정보망 (SMPP)</span>
+                            <span class="pf-pref-link-url">smpp.go.kr ↗</span>
+                        </a>
+                        <a href="https://www.utradehub.or.kr" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">간접수출 실적</span>
+                            <span class="pf-pref-link-name">KTNET uTradeHub</span>
+                            <span class="pf-pref-link-url">utradehub.or.kr ↗</span>
+                        </a>
+                        <a href="https://www.kosmes.or.kr" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">정책자금 자가진단</span>
+                            <span class="pf-pref-link-name">중진공 정책자금 내비게이션</span>
+                            <span class="pf-pref-link-url">kosmes.or.kr ↗</span>
+                        </a>
+                        <a href="https://www.bizinfo.go.kr" target="_blank" rel="noopener noreferrer" class="pf-pref-link-item">
+                            <span class="pf-pref-link-cat">통합 공고 조회</span>
+                            <span class="pf-pref-link-name">기업마당 (맞춤형 지원사업)</span>
+                            <span class="pf-pref-link-url">bizinfo.go.kr ↗</span>
+                        </a>
+                    </div>
+                    <p class="pf-pref-note">※ 우대 금리·보증료율·한도 및 가점 기준은 기관 공고와 예산 사정에 따라 수시로 바뀌므로, 신청 전 해당 기관의 최신 공고를 반드시 확인하세요.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -366,7 +922,7 @@
         </div>
     </footer>
 
-    <script src="policy-finance.js"></script>
+    <script src="policy-finance.js?v=2"></script>
     <script src="back-nav.js?v=6"></script>
 </body>
 

@@ -54,3 +54,53 @@
         if (org) show(org);
     } catch (e) { /* 무시 */ }
 })();
+
+/* 금융 우대조건 섹션 (#preferential-conditions): 카테고리 필터 & 모두 펼치기/접기 */
+(function () {
+    'use strict';
+
+    var section = document.getElementById('preferential-conditions');
+    if (!section) return;
+
+    var tabs = Array.prototype.slice.call(section.querySelectorAll('.pf-pref-tab'));
+    var cards = Array.prototype.slice.call(section.querySelectorAll('.pf-pref-card'));
+    var toggleAllBtn = section.querySelector('#pfToggleAllBtn');
+    if (!tabs.length || !cards.length || !toggleAllBtn) return;
+
+    function getVisibleCards() {
+        return cards.filter(function (c) { return !c.classList.contains('is-hidden'); });
+    }
+
+    function updateToggleLabel() {
+        var visible = getVisibleCards();
+        var allOpen = visible.length > 0 && visible.every(function (c) { return c.open; });
+        toggleAllBtn.textContent = allOpen ? '모두 접기' : '모두 펼치기';
+    }
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (t) {
+                var on = t === tab;
+                t.classList.toggle('is-active', on);
+                t.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+
+            var filter = tab.getAttribute('data-filter');
+            cards.forEach(function (card) {
+                var match = filter === 'all' || card.getAttribute('data-category') === filter;
+                card.classList.toggle('is-hidden', !match);
+            });
+            updateToggleLabel();
+        });
+    });
+
+    toggleAllBtn.addEventListener('click', function () {
+        var visible = getVisibleCards();
+        var allOpen = visible.length > 0 && visible.every(function (c) { return c.open; });
+        visible.forEach(function (c) { c.open = !allOpen; });
+        updateToggleLabel();
+    });
+
+    cards.forEach(function (c) { c.addEventListener('toggle', updateToggleLabel); });
+    updateToggleLabel();
+})();
