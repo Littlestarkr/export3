@@ -23,15 +23,17 @@
  */
 
 var SHEET_NAME = 'Responses';
-var HEAD = ['접수번호', '저장시각', '수출실적', '진행거래', '연차·규모', '품목', '수출형태', '시장', '어려운점', '결제방식', '필요', '추천', '매핑버전', '상담이동', '상태', '어려운점_기타'];
+var HEAD = ['접수번호', '저장시각', '수출실적', '진행거래', '연차·규모', '품목', '수출형태', '시장', '어려운점', '결제방식', '필요', '추천', '매핑버전', '상담이동', '상태', '어려운점_기타', '매출실적'];
 var COL_CONTACT = 14;
 var COL_ETC = 16;   // 2026-11-22 맨 끝에 추가: 기존 열(상담이동 14·상태 15) 위치는 그대로
+var COL_REV = 17;   // 2026-11-23 맨 끝에 추가: 전년도 매출실적 5단계(기존 열 위치 유지)
 var MAX_TOTAL = 2000;
 var BURST = 30;   // 1분 동안 이보다 많이 들어오면 '검토대기'
 
 // 페이지(export-guide-map.js)의 코드 → 시트에 적을 한글. 여기 없는 코드는 버린다.
 var L = {
   q1: { s0: '없음', s1: '1천 달러 미만', s2: '1천~1만 달러', s3: '1만~10만 달러', s4: '10만~100만 달러', s5: '100만~1천만 달러', s6: '1천만 달러 이상' },
+  q1r: { r1: '1억 원 미만(매출 없음 포함)', r2: '1억~5억 원 미만', r3: '5억~20억 원 미만', r4: '20억~100억 원 미만', r5: '100억 원 이상' },
   q1b: { prep: '준비 중', nego: '협상·샘플 진행', order: '첫 주문 받음' },
   q2: { startup: '예비창업·창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', youth: '청년기업(만 39세 이하)', women: '여성기업', disabled: '장애인기업', social: '사회적기업', venture: '벤처기업', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '기업부설연구소·전담부서', restart: '재창업·중장년 기업', esg_local: '소부장·ESG·비수도권 등', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '기타' },
   q3: { consumer: '소비재', industrial: '산업재·부품', agri: '농수산식품', cosmetic: '화장품', service: '서비스·콘텐츠', etc: '기타' },
@@ -57,6 +59,7 @@ function sheet_() {
     sh.getRange('B:B').setNumberFormat('@');
   }
   if (!sh.getRange(1, COL_ETC).getValue()) sh.getRange(1, COL_ETC).setValue(HEAD[COL_ETC - 1]);   // 예전 시트에도 새 열 제목을 붙인다
+  if (!sh.getRange(1, COL_REV).getValue()) sh.getRange(1, COL_REV).setValue(HEAD[COL_REV - 1]);
   return sh;
 }
 
@@ -146,7 +149,8 @@ function doPost(e) {
       String(p.v || '').replace(/[^0-9.]/g, '').slice(0, 6),
       '',
       status,
-      String(p.q6 || '').split(',').indexOf('etc') >= 0 ? text_(p.q6etc) : ''
+      String(p.q6 || '').split(',').indexOf('etc') >= 0 ? text_(p.q6etc) : '',
+      one_('q1r', p.q1r)
     ]);
     return json_({ result: 'success' });
   } finally {

@@ -63,8 +63,20 @@
         for (var i = 0; i < M.stages.length; i++) if (M.stages[i].v === v) return i;
         return 0;
     }
+    function revIdx(v) {
+        var list = M.revenues || [];
+        for (var i = 0; i < list.length; i++) if (list[i].v === v) return i + 1;
+        return 0;
+    }
+    function revObj(v) {
+        var idx = revIdx(v);
+        return idx ? M.revenues[idx - 1] : null;
+    }
     function qById(id) {
-        for (var i = 0; i < M.questions.length; i++) if (M.questions[i].id === id) return M.questions[i];
+        for (var i = 0; i < M.questions.length; i++) {
+            if (M.questions[i].id === id) return M.questions[i];
+            if (M.questions[i].extraOne && M.questions[i].extraOne.id === id) return M.questions[i].extraOne;
+        }
         return null;
     }
     function label(qid, v) {
@@ -107,7 +119,8 @@
             var b = el('button', 'eg-hist-item');
             b.type = 'button';
             var st = M.stages[stageIdx(h.a && h.a.q1)];
-            b.textContent = (h.t || '') + ' · ' + h.id + ' · 수출실적 ' + st.short;
+            var rv = revObj(h.a && h.a.q1r);
+            b.textContent = (h.t || '') + ' · ' + h.id + ' · 수출 ' + st.short + (rv ? ' · 매출 ' + rv.short : '');
             b.addEventListener('click', function () {
                 a = JSON.parse(JSON.stringify(h.a || {}));
                 a.q3 = items(a);
@@ -181,18 +194,42 @@
         }
         var box = $('egOpts');
         box.textContent = '';
-        box.setAttribute('role', q.type === 'one' ? 'radiogroup' : 'group');
-        box.setAttribute('aria-labelledby', 'egTitle');
-        box.classList.toggle('eg-opts-grouped', !!q.groups);
-        if (q.groups) {
-            q.groups.forEach(function (g) {
-                box.appendChild(el('p', 'eg-grp-h', g.label));
-                var sub = el('div', 'eg-opts');
-                opts.forEach(function (o) { if (g.vs.indexOf(o.v) >= 0) sub.appendChild(optBtn(q, o)); });
-                box.appendChild(sub);
-            });
+        if (q.extraOne) {
+            box.removeAttribute('role');
+            box.removeAttribute('aria-labelledby');
+            box.classList.add('eg-opts-grouped');
+            var h1 = el('p', 'eg-grp-h', q.subLabel || q.title);
+            h1.id = 'egGrp1';
+            box.appendChild(h1);
+            var sub1 = el('div', 'eg-opts');
+            sub1.setAttribute('role', 'radiogroup');
+            sub1.setAttribute('aria-labelledby', 'egGrp1');
+            opts.forEach(function (o) { sub1.appendChild(optBtn(q, o)); });
+            box.appendChild(sub1);
+
+            var h2 = el('p', 'eg-grp-h', q.extraOne.label);
+            h2.id = 'egGrp2';
+            box.appendChild(h2);
+            var sub2 = el('div', 'eg-opts');
+            sub2.setAttribute('role', 'radiogroup');
+            sub2.setAttribute('aria-labelledby', 'egGrp2');
+            var qSub = { id: q.extraOne.id, type: 'one', options: q.extraOne.options };
+            q.extraOne.options.forEach(function (o) { sub2.appendChild(optBtn(qSub, o)); });
+            box.appendChild(sub2);
         } else {
-            opts.forEach(function (o) { box.appendChild(optBtn(q, o)); });
+            box.setAttribute('role', q.type === 'one' ? 'radiogroup' : 'group');
+            box.setAttribute('aria-labelledby', 'egTitle');
+            box.classList.toggle('eg-opts-grouped', !!q.groups);
+            if (q.groups) {
+                q.groups.forEach(function (g) {
+                    box.appendChild(el('p', 'eg-grp-h', g.label));
+                    var sub = el('div', 'eg-opts');
+                    opts.forEach(function (o) { if (g.vs.indexOf(o.v) >= 0) sub.appendChild(optBtn(q, o)); });
+                    box.appendChild(sub);
+                });
+            } else {
+                opts.forEach(function (o) { box.appendChild(optBtn(q, o)); });
+            }
         }
 
         var moreWrap = $('egMore');
@@ -218,6 +255,7 @@
     function optBtn(q, o) {
         var b = el('button', 'eg-opt', o.label);
         b.type = 'button';
+        b.dataset.qid = q.id;
         b.dataset.v = o.v;
         if (q.type === 'one') b.setAttribute('role', 'radio');
         b.setAttribute(q.type === 'one' ? 'aria-checked' : 'aria-pressed', isSel(q, o.v) ? 'true' : 'false');
@@ -227,6 +265,7 @@
     }
     function pick(q, v) {
         $('egMsg').textContent = '';
+        var stepQ = visible()[step] || q;
         if (q.type === 'one') {
             var changed = a[q.id] !== v;
             a[q.id] = v;
@@ -235,8 +274,8 @@
             if ((q.id === 'q1' || q.id === 'q1b') && changed && arr(a.q7).indexOf('unknown') >= 0 && !isPlan()) {
                 a.q7 = arr(a.q7).filter(function (x) { return x !== 'unknown'; });
             }
-            refreshOpts(q);
-            updateNext(q);
+            refreshOpts(stepQ);
+            updateNext(stepQ);
             // 2026-11-22 작가님: 하나만 고르는 질문도 자동으로 넘기지 않고 '다음'을 눌러 넘어간다(복수 질문과 같게)
             return;
         }
@@ -258,8 +297,8 @@
             cur.push(v);
         }
         a[q.id] = cur;
-        refreshOpts(q);
-        updateNext(q);
+        refreshOpts(stepQ);
+        updateNext(stepQ);
     }
     // 전체 선택이 고르는 값(Q6 '기타'는 직접 적는 칸이라 빼고)
     function allVals(q) { return q.options.map(function (o) { return o.v; }).filter(function (v) { return v !== 'etc'; }); }
@@ -275,12 +314,15 @@
             if (showEtc && inp.value !== (a.q6etc || '')) inp.value = a.q6etc || '';
         }
         Array.prototype.forEach.call(vQ.querySelectorAll('.eg-opt'), function (b) {
-            var on = isSel(q, b.dataset.v);
+            var qid = b.dataset.qid || q.id;
+            var on = (qid === q.id) ? isSel(q, b.dataset.v) : (a[qid] === b.dataset.v);
+            var isRadio = b.getAttribute('role') === 'radio';
             b.classList.toggle('is-on', on);
-            b.setAttribute(q.type === 'one' ? 'aria-checked' : 'aria-pressed', on ? 'true' : 'false');
+            b.setAttribute(isRadio ? 'aria-checked' : 'aria-pressed', on ? 'true' : 'false');
         });
     }
     function answered(q) {
+        if (q.extraOne) return !!a[q.id] && !!a[q.extraOne.id];
         return q.type === 'one' ? !!a[q.id] : arr(a[q.id]).length > 0;
     }
     function updateNext(q) {
@@ -426,12 +468,32 @@
         if (needs.indexOf('fund') >= 0) { var wf = '자금·무역보험·지원사업이 필요하다고 해서'; add('policy-fund', 1, wf); add(ins, 1, wf); add('voucher', 1, wf); }
         if (needs.indexOf('consult') >= 0) consultTop = true;
 
+        // 7-2) 전년도 매출실적 5단계(2026-11-23 작가님)
+        var rev = revIdx(a.q1r);
+        if (rev === 1) {
+            var wr1 = '전년도 매출 1억 원 미만 초기 기업이라서';
+            add('rnd', 2, wr1); add('k-aitc', 2, wr1);
+            if (st <= 3) add('k-domestic', 2, wr1);
+        } else if (rev === 2) {
+            var wr2 = '전년도 매출 1억~5억 원 미만 소상공인·소기업이라서';
+            add('voucher', 2, wr2); add('policy-fund', 1, wr2);
+        } else if (rev === 3) {
+            var wr3 = '전년도 매출 5억~20억 원 미만 성장 초입 소기업이라서';
+            add('buyer', 2, wr3); add('rnd', 1, wr3);
+        } else if (rev === 4) {
+            var wr4 = '전년도 매출 20억~100억 원 미만 본격 성장 중소기업이라서';
+            add('ksure-plus', 2, wr4); add('guarantee', 2, wr4); add('k-branch', 2, wr4);
+        } else if (rev === 5) {
+            var wr5 = '전년도 매출 100억 원 이상 중기업·강소기업이라서';
+            add('fx', 2, wr5); add('ksure-postship', 2, wr5); add('exim', 2, wr5);
+        }
+
         // 8) 조건별 정책금융·지원사업 전체 평가(2026-11-23: 어느 한 조건이라도 해당하면 모두 매칭, pri=1은 최우선 추천)
         var tags = issues.slice();
         needs.forEach(function (n) { tags.push('need:' + n); });
         forms.forEach(function (f) { tags.push('form:' + f); });
         var ctx = {
-            st: st, a: a, has2: has2, hasItem: hasItem,
+            st: st, rev: rev, a: a, has2: has2, hasItem: hasItem,
             forms: forms, issues: issues, pays: pays, needs: needs, tags: tags,
             pref: prefPicked, prefLabels: prefPicked.length ? listLabels('q2', prefPicked) : '',
             smallbiz: has2('smallbiz'),
@@ -560,10 +622,11 @@
     }
     function oneLine() {
         var st = M.stages[stageIdx(a.q1)];
+        var rv = revObj(a.q1r);
         var who = q2Short() || '기업';
         var bits = [listLabels('q3', items()), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
-        var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + ' 단계';
-        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + '인 단계';
+        var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rv ? ' · 전년도 매출 ' + rv.short : '') + ' 단계';
+        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (rv ? '(전년도 매출 ' + rv.short + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
         s += iss.length ? '가장 큰 어려움은 ' + iss.join(' / ') + '입니다.' : '어려운 점은 고르지 않았습니다.';
@@ -576,6 +639,7 @@
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
         L.push(s1);
+        if (a.q1r) L.push('전년도 매출실적: ' + label('q1r', a.q1r));
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
@@ -621,7 +685,7 @@
     function finish() {
         var rec = renderResult(false);
         ga('guide_complete', {
-            stage: a.q1, size: arr(a.q2).join(','), item: items().join(','),
+            stage: a.q1, revenue: a.q1r || '', size: arr(a.q2).join(','), item: items().join(','),
             forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: needList(a).join(',')
         });
         maybeSave(rec);
@@ -773,7 +837,7 @@
         body.set('action', 'save');
         body.set('id', id);
         body.set('website', $('egHp').value || '');
-        body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || '');
+        body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || ''); body.set('q1r', a.q1r || '');
         body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(','));
