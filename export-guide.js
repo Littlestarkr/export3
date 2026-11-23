@@ -91,6 +91,9 @@
     }
     function show(view) {
         [vStart, vQ, vRes].forEach(function (v) { v.hidden = v !== view; });
+        // 질문에 답하는 동안에는 떠 있는 '이전 화면'·'홈' 단추(back-nav.js)를 숨긴다. 휴대폰에서 보기 단추 위에 겹쳐
+        // 화면을 넘기다 잘못 눌리거나 질문의 '이전'으로 착각해 홈으로 나가 버리던 문제(2026-11-24)
+        document.body.classList.toggle('eg-asking', view === vQ);
     }
     function scrollToApp(instant) {
         var reduce = instant || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);

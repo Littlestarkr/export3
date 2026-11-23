@@ -360,3 +360,6 @@
     font-weight: 600;
     color: var(--gold-text, #8a6a1f);
 }
+
+/* 질문 화면에서는 떠 있는 이전 화면·맨 위로·홈 단추를 숨긴다(export-guide.js의 show()가 body.eg-asking을 붙인다) */
+body.eg-asking .pf-floatnav { display: none; }
