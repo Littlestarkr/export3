@@ -7,16 +7,17 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 12;
+    var MAP_VERSION = 13;
 
-    // 수출실적 6단계(핵심 축). 순서 = 단계 번호(0~5)
+    // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
         { v: 's0', label: '없음', short: '실적 없음' },
         { v: 's1', label: '1천 달러 미만', short: '1천 달러 미만' },
         { v: 's2', label: '1천 달러 이상 ~ 1만 달러 미만', short: '1천~1만 달러' },
         { v: 's3', label: '1만 달러 이상 ~ 10만 달러 미만', short: '1만~10만 달러' },
         { v: 's4', label: '10만 달러 이상 ~ 100만 달러 미만', short: '10만~100만 달러' },
-        { v: 's5', label: '100만 달러 이상', short: '100만 달러 이상' }
+        { v: 's5', label: '100만 달러 이상 ~ 1천만 달러 미만', short: '100만~1천만 달러' },
+        { v: 's6', label: '1천만 달러 이상', short: '1천만 달러 이상' }
     ];
 
     // 애로사항(Q6) 10개
@@ -76,7 +77,8 @@
         s2: ['buyer', 'docs', 'collect', 'importer', 'fraud', 'support', 'cert', 'hs'],
         s3: ['buyer', 'collect', 'importer', 'fund', 'market', 'cert', 'docs', 'factoring', 'tclaim'],
         s4: ['buyer', 'market', 'cert', 'collect', 'importer', 'fund', 'factoring', 'fx', 'tclaim'],
-        s5: ['buyer', 'market', 'cert', 'fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund']
+        s5: ['buyer', 'market', 'cert', 'fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund'],
+        s6: ['buyer', 'market', 'cert', 'fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund']
     };
     var ISSUE_HELP = {
         s0: '어디서부터 시작할지 막막하신가요? 가장 가까운 것을 골라 주세요.',
@@ -84,7 +86,8 @@
         s2: '거래를 늘리며 서류·대금을 다지는 단계입니다.',
         s3: '바이어가 늘고 외상·자금 문제가 생기는 단계입니다.',
         s4: '규모가 커지며 위험 관리가 필요한 단계입니다.',
-        s5: '신시장·대형 거래를 다지는 단계입니다.'
+        s5: '신시장·대형 거래를 다지는 단계입니다.',
+        s6: '대형 거래·글로벌 확장을 관리하는 단계입니다.'
     };
 
     // 질문. type: one(하나) | multi(여러 개). optional: 건너뛸 수 있음. when: 보일 조건
@@ -258,36 +261,36 @@
     // 단계 × 서비스 표(PRD). 2 = 단계 기본 추천(●), 1 = 애로·조건과 겹칠 때 추천(○), 0 = 이 단계 기본 추천 없음
     // 'hard' 는 자격 기준이라 0 인 단계에서는 어떤 경우에도 띄우지 않는다.
     var STAGE_MAP = {
-        'k-domestic':  { s: [2, 2, 2, 2, 0, 0], hard: true },
-        'semas-innov': { s: [0, 0, 2, 2, 2, 2], hard: true, size: 'smallbiz' },
-        'trade-stats': { s: [2, 2, 1, 1, 1, 1] },
-        'buyer':       { s: [2, 2, 2, 1, 1, 1] },
-        'b2c':         { s: [1, 1, 1, 1, 0, 0] },
-        'cert':        { s: [1, 1, 1, 1, 1, 1] },
-        'voucher':     { s: [1, 2, 2, 2, 1, 1] },
-        'doc-builder': { s: [1, 2, 2, 2, 1, 1] },
-        'fraud':       { s: [1, 2, 2, 2, 1, 1] },
-        'ksure-dplus': { s: [0, 1, 1, 1, 0, 0] },
-        'ksure-plus':  { s: [0, 0, 1, 2, 2, 2] },
-        'credit':      { s: [0, 0, 1, 1, 2, 2] },
-        'policy-fund': { s: [1, 1, 1, 1, 2, 2] },
-        'guarantee':   { s: [0, 0, 1, 1, 2, 2] },
-        'fx':          { s: [0, 0, 0, 1, 2, 2] },
-        'k-market':    { s: [1, 1, 1, 1, 2, 2] },
-        'k-branch':    { s: [0, 0, 1, 1, 2, 2] },
-        'exim':        { s: [0, 0, 0, 0, 1, 2] },
-        'claim':       { s: [0, 0, 1, 1, 1, 1] }
+        'k-domestic':  { s: [2, 2, 2, 2, 0, 0, 0], hard: true },
+        'semas-innov': { s: [0, 0, 2, 2, 2, 2, 2], hard: true, size: 'smallbiz' },
+        'trade-stats': { s: [2, 2, 1, 1, 1, 1, 1] },
+        'buyer':       { s: [2, 2, 2, 1, 1, 1, 1] },
+        'b2c':         { s: [1, 1, 1, 1, 0, 0, 0] },
+        'cert':        { s: [1, 1, 1, 1, 1, 1, 1] },
+        'voucher':     { s: [1, 2, 2, 2, 1, 1, 1] },
+        'doc-builder': { s: [1, 2, 2, 2, 1, 1, 1] },
+        'fraud':       { s: [1, 2, 2, 2, 1, 1, 1] },
+        'ksure-dplus': { s: [0, 1, 1, 1, 0, 0, 0] },
+        'ksure-plus':  { s: [0, 0, 1, 2, 2, 2, 2] },
+        'credit':      { s: [0, 0, 1, 1, 2, 2, 2] },
+        'policy-fund': { s: [1, 1, 1, 1, 2, 2, 2] },
+        'guarantee':   { s: [0, 0, 1, 1, 2, 2, 2] },
+        'fx':          { s: [0, 0, 0, 1, 2, 2, 2] },
+        'k-market':    { s: [1, 1, 1, 1, 2, 2, 2] },
+        'k-branch':    { s: [0, 0, 1, 1, 2, 2, 2] },
+        'exim':        { s: [0, 0, 0, 0, 1, 2, 2] },
+        'claim':       { s: [0, 0, 1, 1, 1, 1, 1] }
     };
 
     // 고른 항목에 맞는 지원사업(작가님 2026-11-22): 수출실적 단계(st)에서 대상이 될 수 있고, 고른 항목(on)과 하나라도 겹치면 개수 제한 없이 모두 보여 준다.
     // st 는 확인된 자격 기준만 반영한다(KOTRA 내수기업 수출기업화: 전년도 통관 10만 달러 미만, 작가님 확인 / 중진공 신시장진출지원자금: 최근 1년 직·간접 10만 달러 경계, 중진공 정책자금 기초 가이드 / 소진공 혁신성장촉진자금(혁신형): 수출 소상공인 1천 달러 이상, 작가님 확인).
     // 확인 못 한 사업은 전 단계(ALL)로 두고 설명에 '공고 확인'을 적는다. on: 애로(Q6) 코드, 'need:' 필요(Q8), 'form:' 수출 형태(Q4), 'item:' 품목(Q3)
-    var ALL = [0, 1, 2, 3, 4, 5];
+    var ALL = [0, 1, 2, 3, 4, 5, 6];
     var PROGRAMS = [
         { id: 'k-domestic', st: [0, 1, 2, 3], on: ['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local'] },
         { id: 'kosmes-dom', st: [0, 1, 2, 3], on: ['fund', 'support', 'need:fund'] },
-        { id: 'kosmes-glb', st: [4, 5], on: ['fund', 'support', 'need:fund'] },
-        { id: 'semas-innov', st: [2, 3, 4, 5], size: 'smallbiz', on: ['fund', 'support', 'need:fund'] },
+        { id: 'kosmes-glb', st: [4, 5, 6], on: ['fund', 'support', 'need:fund'] },
+        { id: 'semas-innov', st: [2, 3, 4, 5, 6], size: 'smallbiz', on: ['fund', 'support', 'need:fund'] },
         // 무보 수출신용보증(작가님 2026-11-22: 실적 크기와 상관없이 자금을 고르면 추천). 보증 요건은 무역보험 페이지·무보 공고 확인
         { id: 'guarantee', st: ALL, on: ['fund', 'need:fund'] },
         { id: 'ksure-postship', st: ALL, on: ['fund', 'factoring', 'need:fund'] },
@@ -302,7 +305,7 @@
     // 항목별 on 이 있으면 그 항목은 그 조건일 때만, st 가 있으면 그 수출실적 단계에서만 보인다. 'pay:' 는 결제 방식(Q7)
     var EXTRA = [
         { t: '자금·보증 기관', on: ['fund', 'need:fund'],
-          items: [{ id: 'policy-fund' }, { id: 'guarantee' }, { id: 'kodit' }, { id: 'kibo' }, { id: 'seoul-shinbo' }, { id: 'kita-fund' }, { id: 'ksure-direct', st: [3, 4, 5] }, { id: 'exim' }] },
+          items: [{ id: 'policy-fund' }, { id: 'guarantee' }, { id: 'kodit' }, { id: 'kibo' }, { id: 'seoul-shinbo' }, { id: 'kita-fund' }, { id: 'ksure-direct', st: [3, 4, 5, 6] }, { id: 'exim' }] },
         { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
           items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'buykorea' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'b2c' }, { id: 'c-more' }] },
         { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
@@ -318,7 +321,7 @@
         url: 'export-roadmap.html',
         names: ['', '수출 준비도 점검', '바이어 발굴', '거래조건 검토', '금융·보험 설계', '선적·대금 회수·사후관리'],
         // 실적 구간 → 먼저 볼 단계. s0 은 진행 거래(q1b)가 협상·첫 주문이면 3단계
-        stage: { s0: 1, s1: 2, s2: 2, s3: 3, s4: 4, s5: 4 },
+        stage: { s0: 1, s1: 2, s2: 2, s3: 3, s4: 4, s5: 4, s6: 4 },
         s0Deal: { nego: 3, order: 3 },
         // 어려운 점(Q6) → 관련 단계
         issue: { market: 1, cert: 1, hs: 1, support: 1, buyer: 2, docs: 3, importer: 3, fraud: 3, tclaim: 3, fund: 4, collect: 4, factoring: 4, fx: 4 }

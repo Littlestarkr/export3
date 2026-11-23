@@ -80,10 +80,16 @@
     function show(view) {
         [vStart, vQ, vRes].forEach(function (v) { v.hidden = v !== view; });
     }
-    function scrollToApp() {
-        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var top = root.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth > 768 ? 90 : 10);
-        if (Math.abs(window.pageYOffset - top) > 40) window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+    function scrollToApp(instant) {
+        var reduce = instant || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        var top = Math.max(0, root.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth > 768 ? 90 : 10));
+        if (window.pageYOffset > top || top - window.pageYOffset > 40) {
+            if (reduce) {
+                try { window.scrollTo({ top: top, behavior: 'instant' }); } catch (e) { window.scrollTo(0, top); }
+            } else {
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        }
     }
 
     /* ---------- 시작 화면 ---------- */
@@ -293,16 +299,16 @@
             return;
         }
         step++;
-        if (step >= visible().length) finish(); else renderQ();
+        if (step >= visible().length) finish(); else { renderQ(); scrollToApp(true); }
     }
     $('egNext').addEventListener('click', next);
     $('egEtc').addEventListener('input', function () { a.q6etc = this.value.slice(0, 100); });
-    $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); } });
+    $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); scrollToApp(true); } });
     $('egSkip').addEventListener('click', function () {
         var q = visible()[step];
         if (q) delete a[q.id];
         step++;
-        if (step >= visible().length) finish(); else renderQ();
+        if (step >= visible().length) finish(); else { renderQ(); scrollToApp(true); }
     });
 
     /* ---------- 추천 계산 ---------- */
