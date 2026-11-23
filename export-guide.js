@@ -407,7 +407,7 @@
             },
             cert:    function (w) { add('cert', 3, w); if (hasItem('cosmetic')) add('cosmetic', 2, w); },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
-            support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('startup') || has2('y7')) add('rnd', 2, w); },
+            support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
             market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); }
         };
@@ -436,6 +436,7 @@
         });
 
         // 4) 규모·우대 조건(Q2)·품목(Q3)
+        if (has2('pre')) add('rnd', 3, '예비창업자(예비창업패키지 등)라서');
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
         if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
@@ -499,8 +500,9 @@
             smallbiz: has2('smallbiz'),
             sme: !has2('mid') && !has2('large'),
             smeOrMid: !has2('large'),
-            under3: has2('startup'),
-            under7: has2('startup') || has2('y7'),
+            pre: has2('pre'),
+            under3: has2('pre') || has2('startup'),
+            under7: has2('pre') || has2('startup') || has2('y7'),
             over7: has2('y7p'),
             youth: has2('youth'),
             women: has2('women'),
