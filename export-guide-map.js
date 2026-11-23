@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 13;
+    var MAP_VERSION = 14;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -67,6 +67,7 @@
         { k: ['농산물', '수산물', '식품', '농식품'], ids: ['agri', 'at'] },
         { k: ['화장품'], ids: ['cosmetic'] },
         { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
+        { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
@@ -90,6 +91,8 @@
         s6: '대형 거래·글로벌 확장을 관리하는 단계입니다.'
     };
 
+    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'restart', 'esg_local'];
+
     // 질문. type: one(하나) | multi(여러 개). optional: 건너뛸 수 있음. when: 보일 조건
     var QUESTIONS = [
         {
@@ -108,16 +111,27 @@
         },
         {
             id: 'q2', type: 'multi', title: '회사는 어느 쪽인가요? (복수 선택 가능)',
-            help: '창업 연차에서 하나, 기업 규모에서 하나씩 고를 수 있습니다. 한쪽만 골라도 됩니다.',
-            // 같은 묶음 안에서는 하나만(다른 것을 누르면 바뀜) → '소기업+대기업' 같은 모순 조합이 생기지 않는다
+            help: '창업 연차와 기업 규모는 하나씩, 우대 조건은 해당하는 것을 모두 고를 수 있습니다. 해당하는 항목만 골라도 됩니다.',
+            // 창업 연차·기업 규모는 같은 묶음 안에서 하나만(모순 조합 방지), 우대 조건(multi: true)은 복수 선택
             groups: [
                 { label: '창업 연차', vs: ['startup', 'y7', 'y7p'] },
+                { label: '우대 조건 (복수 선택 가능)', multi: true, vs: PREF_VALS },
                 { label: '기업 규모', vs: ['smallbiz', 'small', 'medium', 'mid', 'large', 'etc'] }
             ],
             options: [
                 { v: 'startup', label: '예비창업·창업 3년 이내' },
                 { v: 'y7', label: '창업 7년 이내' },
                 { v: 'y7p', label: '창업 7년 초과' },
+                { v: 'youth', label: '청년기업(대표자 만 39세 이하)' },
+                { v: 'women', label: '여성기업' },
+                { v: 'disabled', label: '장애인기업' },
+                { v: 'social', label: '사회적기업' },
+                { v: 'venture', label: '벤처기업' },
+                { v: 'innobiz', label: '이노비즈' },
+                { v: 'mainbiz', label: '메인비즈' },
+                { v: 'lab', label: '기업부설연구소·전담부서' },
+                { v: 'restart', label: '재창업·중장년 기업' },
+                { v: 'esg_local', label: '소부장·ESG·비수도권 등' },
                 { v: 'smallbiz', label: '소상공인' },
                 { v: 'small', label: '소기업(소상공인 제외)' },
                 { v: 'medium', label: '중기업' },
@@ -213,6 +227,7 @@
         'kosmes-dom':  { t: '중진공 신시장진출지원자금(내수기업 수출기업화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 미만인 수출 초보기업 등이 대상인 정책자금입니다(수출지원사업 참여기업 등도 포함). 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
         'kosmes-glb':  { t: '중진공 신시장진출지원자금(수출기업 글로벌화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 이상인 수출 유망기업 등이 대상인 정책자금입니다. 한도·금리·세부 요건은 중진공 융자계획 공고를 확인하세요.' },
         'policy-fund': { t: '정책자금 안내', u: 'policy-finance.html?org=kosmes', d: '기관별 정책자금의 대상·한도·금리를 정리했습니다.' },
+        'pref-cond':   { t: '기업 금융 우대조건·지원제도 매칭', u: 'policy-finance.html#preferential-conditions', d: '창업·청년·여성·장애인·사회적기업·벤처·이노비즈·메인비즈·연구소 등 우대조건별 금리 인하·보증료 감면·한도 확대와 공공조달·세제·R&D 혜택을 한눈에 비교합니다.' },
         'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'trade-insurance.html#guarantee', d: '수출 계약을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다. 보증 한도·요건은 무보 안내를 확인하세요.' },
         'fx':          { t: '환변동보험', u: 'trade-insurance.html#fx', d: '환율 하락으로 생기는 손실에 대비하는 무역보험 상품입니다.' },
         'qna-fx':      { t: '환변동보험 Q&A', u: 'trade-insurance.html#qna-fx', d: '로컬 수출만 하는 경우 가입 여부 등 자주 묻는 질문 15개입니다.' },
@@ -338,7 +353,7 @@
     };
 
     var SHORT = {
-        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { startup: '창업 3년 이내', y7: '창업 7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
@@ -348,6 +363,7 @@
         issues: ISSUES,
         issueOrder: ISSUE_ORDER,
         issueHelp: ISSUE_HELP,
+        prefVals: PREF_VALS,
         questions: QUESTIONS,
         links: LINKS,
         programs: PROGRAMS,
