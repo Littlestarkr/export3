@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 15;
+    var MAP_VERSION = 16;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -339,6 +339,10 @@
             return (c.youth && c.under7 && c.sme)
                 ? '청년·창업기업이라서(최우선 추천 · 연 2.5% 고정금리)' : '';
         }},
+        { id: 'kita-fund', pri: 1, match: function (c) {
+            return c.sme
+                ? '수출 2천만 달러 이하 무역협회 회원사 대상(최우선 추천 · 연평균 2.75% 고정금리)' : '';
+        }},
 
         // ── 소상공인시장진흥공단 (소진공) ──
         { id: 'semas-innov', pri: 2, match: function (c) {
@@ -457,10 +461,8 @@
 
         // ── 기술보증기금 (기보) ──
         { id: 'kibo', pri: 2, match: function (c) {
-            if (!c.sme) return '';
-            if (c.venture || c.innobiz || c.lab) return '벤처·이노비즈·연구소 보유 기술중소기업이라서';
-            if (c.under7 || c.mainbiz || c.st >= 1) return '기술혁신선도형 수출·창업 중소기업 검토 대상이라서';
-            return '';
+            if (c.venture || c.innobiz || c.lab) return '벤처·이노비즈·연구소 보유 기술수출기업이라서';
+            return '모든 수출(예정)기업 대상(기보 수출기업보증)이라서';
         }},
 
         // ── 지역신용보증재단 (서울신용보증재단) ──
@@ -479,11 +481,6 @@
         }},
         { id: 'exim-promo', pri: 3, match: function (c) {
             return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
-        }},
-
-        // ── 한국무역협회 (KITA) ──
-        { id: 'kita-fund', pri: 3, match: function (c) {
-            return (c.sme && c.st >= 1) ? '수출실적 2천만 달러 이하 무역협회 회원사 대상이라서' : '';
         }},
 
         // ── 비금융 수출·창업 지원사업 ──
