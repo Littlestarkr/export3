@@ -330,6 +330,12 @@ function togglePrivacy() {
     }
     goForm();
     // 주소의 #contact 로 브라우저가 페이지를 다 불러온 뒤 다시 옮기므로, 불러오기가 끝난 뒤 한 번 더 맞춘다.
-    if (document.readyState === 'complete') setTimeout(goForm, 0);
-    else window.addEventListener('load', function () { setTimeout(goForm, 0); });
+    // 그다음 '상담 요청 내용' 칸 맨 끝('(상담 요청 추가 내용): ' 뒤)에 입력 커서를 둔다(2026-11-24 작가님, 예전 형태).
+    // 화면은 안내 문구 위치 그대로 두고(preventScroll), 휴대폰 키보드가 올라오면 브라우저가 칸을 보이게 올린다.
+    function goCaret() {
+        goForm();
+        try { msg.focus({ preventScroll: true }); } catch (e) { msg.focus(); }
+    }
+    if (document.readyState === 'complete') setTimeout(goCaret, 0);
+    else window.addEventListener('load', function () { setTimeout(goCaret, 0); });
 })();
