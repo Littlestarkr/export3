@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 24;
+    var MAP_VERSION = 25;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -303,10 +303,9 @@
         'ibk-export':  { t: 'IBK기업은행 무역금융·관세피해 지원대출', u: 'policy-finance.html?org=ibk#ibk-export', d: '외화획득 단계별 무역금융, 통상환경 변화 대응 IBK관세피해기업 지원대출, 철강산업 수출공급 활성화 지원대출(무보 보증 연계) 등 수출기업 전용 대출입니다.' },
         'ibk-youth':   { t: 'IBK기업은행 IBK유망청년창업대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신용보증기금·기술보증기금과 업무협약으로 유망 청년창업기업에 운전자금을 지원하는 전용 상품입니다(고정·변동·혼합).' },
         'ibk-startup': { t: 'IBK기업은행 창업·스타트업 대출(혁신창업·스텝업·스타트업)', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신보·기보 보증서 협약 창업전용 대출(IBK혁신창업대출·IBK스텝업대출·IBK스타트업대출)입니다.' },
-        'ibk-venture': { t: 'IBK기업은행 벤처·혁신·R&D 대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: 'IBK벤처기업대출·벤처투자매칭대출·첨단혁신 성장유망기업대출·AI 대전환 도약대출·i-ONE중기부R&D신용대출(운전·시설자금)입니다.' },
+        'ibk-venture': { t: 'IBK기업은행 벤처·첨단혁신 대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: 'IBK벤처기업대출·벤처투자매칭대출·첨단혁신 성장유망기업대출·AI 대전환 도약대출(운전·시설자금, 영업점)입니다.' },
         'ibk-esg':     { t: 'IBK기업은행 ESG경영 성공지원 시설자금 대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '환경(E)·사회(S)·지배구조(G) 우수 중소기업의 운전·시설자금을 지원하는 대출입니다(고정·변동·혼합).' },
-        'ibk-smallbiz':{ t: 'IBK기업은행 소상공인 대출(가치성장·경영안정·희망Dream·성장촉진)', u: 'policy-finance.html?org=ibk#ibk-smallbiz', d: '수출혁신·기술 소상공인 가치성장대출, 경영안정대출, 희망Dream대출, 성장촉진 보증부대출 및 i-ONE소상공인대출입니다.' },
-        'ibk-online':  { t: 'IBK기업은행 비대면 보증부대출(이지원·원스탑플러스·e커머스)', u: 'policy-finance.html?org=ibk#ibk-online', d: '영업점 방문 없이 신청하는 신보 100% 보증 IBK 이지원보증부대출, 기보 원스탑플러스 보증부대출, 네이버 스마트스토어 e커머스 소상공인 성공 보증부대출입니다.' },
+        'ibk-smallbiz':{ t: 'IBK기업은행 소상공인 대출(가치성장·경영안정·희망Dream·골목상권)', u: 'policy-finance.html?org=ibk#ibk-smallbiz', d: '수출혁신·기술 소상공인 가치성장대출, 경영안정대출, 희망Dream대출, 골목상권 활성화 보증부대출(영업점)입니다.' },
         'ksight':      { t: 'K-SIGHT·트라이빅 바이어 검색', u: 'global-expansion.html#b-search', d: '무보 K-SIGHT와 KOTRA 트라이빅으로 해외 바이어 정보를 찾아봅니다.' },
         'b-data':      { t: '무역데이터로 바이어 찾기(Trade Map·트레이드잇)', u: 'global-expansion.html#b-data', d: '실제 수입 실적·수입국 통계로 바이어와 시장을 찾습니다.' },
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
@@ -581,18 +580,13 @@
             return (c.under7 && c.sme) ? '창업 7년 미만 중소기업 대상(IBK혁신창업·스텝업·스타트업대출)이라서' : '';
         }},
         { id: 'ibk-venture', pri: 4, match: function (c) {
-            return ((c.venture || c.innobiz || c.lab) && c.sme) ? '벤처·이노비즈·연구소 보유 중소기업 대상(IBK벤처·첨단혁신·R&D대출)이라서' : '';
+            return ((c.venture || c.innobiz || c.lab) && c.sme) ? '벤처·이노비즈·연구소 보유 중소기업 대상(IBK벤처·첨단혁신 대출)이라서' : '';
         }},
         { id: 'ibk-esg', pri: 4, match: function (c) {
             return (c.esg && c.sme) ? '소부장·ESG 우대조건(ESG경영 성공지원 대출)이라서' : '';
         }},
         { id: 'ibk-smallbiz', pri: 4, match: function (c) {
-            return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·성장촉진 대출)이라서' : '';
-        }},
-        { id: 'ibk-online', pri: 4, match: function (c) {
-            if (c.b2c && c.sme) return 'B2C 온라인 판매·비대면 보증부대출 대상이라서';
-            if ((c.smallbiz || c.has2('small')) && c.sme) return '소상공인·소기업 비대면 보증부대출 대상이라서';
-            return '';
+            return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·골목상권 대출)이라서' : '';
         }}
     ];
 
