@@ -426,6 +426,61 @@
         if (needs.indexOf('fund') >= 0) { var wf = '자금·무역보험·지원사업이 필요하다고 해서'; add('policy-fund', 1, wf); add(ins, 1, wf); add('voucher', 1, wf); }
         if (needs.indexOf('consult') >= 0) consultTop = true;
 
+        // 8) 조건별 정책금융·지원사업 전체 평가(2026-11-23: 어느 한 조건이라도 해당하면 모두 매칭, pri=1은 최우선 추천)
+        var tags = issues.slice();
+        needs.forEach(function (n) { tags.push('need:' + n); });
+        forms.forEach(function (f) { tags.push('form:' + f); });
+        var ctx = {
+            st: st, a: a, has2: has2, hasItem: hasItem,
+            forms: forms, issues: issues, pays: pays, needs: needs, tags: tags,
+            pref: prefPicked, prefLabels: prefPicked.length ? listLabels('q2', prefPicked) : '',
+            smallbiz: has2('smallbiz'),
+            sme: !has2('mid') && !has2('large'),
+            smeOrMid: !has2('large'),
+            under3: has2('startup'),
+            under7: has2('startup') || has2('y7'),
+            over7: has2('y7p'),
+            youth: has2('youth'),
+            women: has2('women'),
+            disabled: has2('disabled'),
+            social: has2('social'),
+            venture: has2('venture'),
+            innobiz: has2('innobiz'),
+            mainbiz: has2('mainbiz'),
+            lab: has2('lab'),
+            restart: has2('restart'),
+            esg: has2('esg_local'),
+            agri: hasItem('agri'),
+            service: hasItem('service'),
+            industrial: hasItem('industrial'),
+            b2c: forms.indexOf('b2c') >= 0,
+            wantsFund: issues.indexOf('fund') >= 0 || issues.indexOf('factoring') >= 0 || needs.indexOf('fund') >= 0,
+            hasAny: function (list) { return list.some(function (t) { return tags.indexOf(t) >= 0; }); },
+            whyTags: function (list) { return tagWhy(list.filter(function (t) { return tags.indexOf(t) >= 0; })); }
+        };
+        var matchedProgs = [];
+        var priMap = {};
+        (M.programs || []).forEach(function (pg, idx) {
+            if (!M.links[pg.id]) return;
+            var w = '';
+            if (typeof pg.match === 'function') {
+                w = pg.match(ctx) || '';
+            } else {
+                if (pg.st && pg.st.indexOf(st) < 0) return;
+                if (pg.size && !has2(pg.size)) return;
+                if (pg.item && !hasItem(pg.item)) return;
+                if (pg.age && !pg.age.some(has2)) return;
+                var hit = (pg.on || []).filter(function (t) { return tags.indexOf(t) >= 0; });
+                if (hit.length) w = tagWhy(hit);
+            }
+            if (!w) return;
+            var pri = pg.pri || 2;
+            priMap[pg.id] = pri;
+            if (pri === 1) add(pg.id, 7, w);
+            matchedProgs.push({ id: pg.id, why: w, pri: pri, ord: idx });
+        });
+        matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
+
         // 자격 기준 거르기
         var list = order.filter(function (id) {
             var sm = M.stageMap[id];
@@ -439,23 +494,15 @@
             R[id].forEach(function (r) { if (r[0] > best[0]) best = r; });
             return best[1];
         };
-        // 고른 항목에 맞는 지원사업: 단계 자격이 맞고 고른 항목과 겹치는 것을 모두(먼저 볼 곳에 이미 나온 것은 빼고)
-        var tags = issues.slice();
-        needList(a).forEach(function (n) { tags.push('need:' + n); });
-        forms.forEach(function (f) { tags.push('form:' + f); });
         var topIds = list.slice(0, 3);
-        var progs = [];
-        (M.programs || []).forEach(function (pg) {
-            if (pg.st.indexOf(st) < 0 || !M.links[pg.id]) return;
-            if (pg.size && !has2(pg.size)) return;
-            if (pg.item && !hasItem(pg.item)) return;
-            if (pg.age && !pg.age.some(has2)) return;
-            var hit = pg.on.filter(function (t) { return tags.indexOf(t) >= 0; });
-            if (!hit.length || topIds.indexOf(pg.id) >= 0) return;
-            progs.push({ id: pg.id, why: tagWhy(hit) });
-        });
+        var progs = matchedProgs.filter(function (r) { return topIds.indexOf(r.id) < 0; });
         var progIds = progs.map(function (r) { return r.id; });
-        var rest = list.slice(3).filter(function (id) { return progIds.indexOf(id) < 0; });
+        var rest = list.slice(3).filter(function (id) {
+            if (progIds.indexOf(id) >= 0) return false;
+            if (id === 'at' && (progIds.indexOf('at-ops') >= 0 || progIds.indexOf('at-facility') >= 0)) return false;
+            if (id === 'exim' && (progIds.indexOf('exim-growth') >= 0 || progIds.indexOf('exim-perform') >= 0 || progIds.indexOf('exim-promo') >= 0)) return false;
+            return true;
+        });
         var moreIds = rest.slice(0, 4);
         // 후순위 '더 찾아볼 곳': 고른 항목과 겹치는 묶음의 기관을 모두(위에서 나온 곳은 빼고)
         pays.forEach(function (p) { tags.push('pay:' + p); });
@@ -466,6 +513,7 @@
             var ids = [];
             g.items.forEach(function (it) {
                 if (!M.links[it.id] || shown.indexOf(it.id) >= 0) return;
+                if (it.skipIf && it.skipIf.some(function (sid) { return shown.indexOf(sid) >= 0; })) return;
                 if (it.st && it.st.indexOf(st) < 0) return;
                 if (it.on && !it.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
                 var sm = M.stageMap[it.id];
@@ -476,7 +524,7 @@
         });
         return {
             extra: extra,
-            top: topIds.map(function (id) { return { id: id, why: why(id) }; }),
+            top: topIds.map(function (id) { return { id: id, why: why(id), pri: priMap[id] || 0 }; }),
             progs: progs,
             more: moreIds.map(function (id) { return { id: id, why: why(id) }; }),
             consultTop: consultTop,
@@ -594,7 +642,10 @@
             var card = el('article', 'eg-card');
             card.appendChild(el('span', 'eg-card-n', String(i + 1)));
             var body = el('div', 'eg-card-body');
-            body.appendChild(el('h4', 'eg-card-t', L.t));
+            var h = el('h4', 'eg-card-t');
+            if (r.pri === 1) h.appendChild(el('span', 'eg-pri-badge', '최우선 추천'));
+            h.appendChild(document.createTextNode(L.t));
+            body.appendChild(h);
             body.appendChild(el('p', 'eg-card-why', r.why));
             body.appendChild(el('p', 'eg-card-d', L.d));
             var go = linkEl(r.id, 'eg-card-go', '바로 가기');
@@ -610,8 +661,11 @@
         var pl = $('egProgList');
         pl.textContent = '';
         $('egProgBox').hidden = !rec.progs.length;
+        var cnt = $('egProgCnt');
+        if (cnt) cnt.textContent = rec.progs.length ? '(' + rec.progs.length + '건)' : '';
         rec.progs.forEach(function (r) {
             var li = el('li');
+            if (r.pri === 1) li.appendChild(el('span', 'eg-pri-badge', '최우선 추천'));
             li.appendChild(linkEl(r.id, 'eg-more-link'));
             li.appendChild(el('span', 'eg-more-why', ' — ' + r.why));
             li.appendChild(el('span', 'eg-prog-d', M.links[r.id].d));

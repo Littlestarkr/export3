@@ -339,3 +339,24 @@
 .eg-roadmap-rel { color: #555; }
 .eg-start-roadmap { margin: 4px 0 14px; }
 .eg-start-roadmap i { color: #8a6a1f; }
+
+/* 최우선 추천 배지 및 건수 표시 (2026-11-23) */
+.eg-pri-badge {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #fef3c7;
+    border: 1px solid #d4a853;
+    color: #7c580a;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.eg-prog-cnt {
+    margin-left: 6px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--gold-text, #8a6a1f);
+}
