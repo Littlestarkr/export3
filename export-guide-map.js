@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 25;
+    var MAP_VERSION = 26;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [

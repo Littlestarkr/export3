@@ -452,7 +452,12 @@
                 if (st >= 4) add('exim', 2, w);
                 if (hasItem('agri')) add('at', 2, w);
             },
-            cert:    function (w) { add('cert', 3, w); if (hasItem('cosmetic')) add('cosmetic', 2, w); },
+            // '해외인증·규제를 모른다'(2026-11-24): 고르면 해외인증 조회 가이드가 '먼저 볼 곳'에 오도록 6점(전엔 3점이라 상위 3곳에 못 들었다)
+            cert:    function (w) {
+                add('cert', 6, w);
+                if (hasItem('cosmetic')) add('cosmetic', 2, w);
+                if (hasItem('agri')) add('agri', 2, w);
+            },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
