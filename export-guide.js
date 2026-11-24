@@ -524,7 +524,7 @@
         if (hasItem('electronics')) { add('cert-elec', 2, w3); add('customs', 2, w3); }
         if (hasItem('industrial')) { add('buyer', 1, w3); add('customs', 1, w3); add('guarantee', 1, w3); }
         if (hasItem('service')) add('ksure-service', 2, w3);
-        if (hasItem('etc') && pickedItems.length === 1) consultTop = true;
+        if (hasItem('etc')) consultTop = true;
 
         // 5) 시장(Q5)
         if (mk.indexOf('undecided') >= 0) { add('trade-stats', 1, '목표 시장이 아직 미정이라서'); add('k-market', 1, '목표 시장이 아직 미정이라서'); }
@@ -917,6 +917,112 @@
         box.hidden = !n;
     }
 
+    /* ---------- 품목별 핵심 체크·추천 기관(URL 중복 제거 + 교차 조건, 2026-11-24) ---------- */
+    function normUrl(u) {
+        return String(u || '').toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
+    }
+    function renderItemGuide() {
+        var box = $('egItemGuide');
+        if (!box) return;
+        box.textContent = '';
+        var IG = M.itemGuides || {};
+        var picked = items().filter(function (v) { return !!IG[v]; });
+        if (!picked.length) { box.hidden = true; return; }
+        box.hidden = false;
+
+        var st = stageIdx(a.q1);
+        var iss = arr(a.q6);
+        var alerts = [], tips = [], priTips = [];
+        var byUrl = {}, progs = [];
+
+        function addProg(p, pinned) {
+            var key = normUrl(p.url);
+            if (!key) return;
+            if (byUrl[key]) {
+                if (pinned) byUrl[key].pinned = true;
+                return;
+            }
+            var item = { name: p.name, url: p.url, desc: p.desc, ext: !!p.ext, pinned: !!pinned };
+            byUrl[key] = item;
+            progs.push(item);
+        }
+
+        picked.forEach(function (v) {
+            var g = IG[v];
+            var lbl = label('q3', v) || v;
+            if (g.priorityTip) priTips.push({ label: lbl, text: g.priorityTip });
+            var cr = g.crossRule || null;
+            var hit = false;
+            if (cr) {
+                if (cr.stageZero && st === 0) hit = true;
+                if (cr.issues && cr.issues.some(function (k) { return iss.indexOf(k) >= 0; })) hit = true;
+            }
+            if (hit && cr.alert && alerts.indexOf(cr.alert) < 0) alerts.push(cr.alert);
+            if (hit && cr.tip && tips.indexOf(cr.tip) < 0) tips.push(cr.tip);
+            var pinNames = (hit && cr.pinTop) ? cr.pinTop : [];
+            if (hit && cr.extraPrograms) {
+                cr.extraPrograms.forEach(function (ep) { addProg(ep, pinNames.indexOf(ep.name) >= 0); });
+            }
+            (g.programs || []).forEach(function (p) {
+                addProg(p, pinNames.indexOf(p.name) >= 0);
+            });
+        });
+
+        // 교차 조건에 걸린 우선 확인 기관은 목록 상단으로 올린다(원래 순서는 유지)
+        var sorted = progs.filter(function (p) { return p.pinned; }).concat(progs.filter(function (p) { return !p.pinned; }));
+
+        box.appendChild(el('h4', 'eg-sub', '품목별 핵심 체크·추천 기관'));
+
+        alerts.forEach(function (t) {
+            var p = el('p', 'eg-ig-alert');
+            var ic = el('i', 'fa-solid fa-triangle-exclamation');
+            ic.setAttribute('aria-hidden', 'true');
+            p.appendChild(ic);
+            p.appendChild(document.createTextNode(' ' + t));
+            box.appendChild(p);
+        });
+        tips.forEach(function (t) {
+            var p = el('p', 'eg-ig-tip');
+            var ic = el('i', 'fa-solid fa-lightbulb');
+            ic.setAttribute('aria-hidden', 'true');
+            p.appendChild(ic);
+            p.appendChild(document.createTextNode(' ' + t));
+            box.appendChild(p);
+        });
+        if (priTips.length) {
+            var ulT = el('ul', 'eg-ig-tips');
+            priTips.forEach(function (pt) {
+                var li = el('li');
+                li.appendChild(el('span', 'eg-ig-badge', pt.label));
+                li.appendChild(document.createTextNode(pt.text));
+                ulT.appendChild(li);
+            });
+            box.appendChild(ulT);
+        }
+        if (sorted.length) {
+            var ulP = el('ul', 'eg-more-list');
+            sorted.forEach(function (p) {
+                var li = el('li');
+                if (p.pinned) li.appendChild(el('span', 'eg-ig-pin', '우선 확인'));
+                var x = el('a', 'eg-more-link', p.name);
+                x.href = p.url;
+                x.dataset.egLink = 'item-guide:' + p.name;
+                if (p.ext) {
+                    x.target = '_blank';
+                    x.rel = 'noopener noreferrer';
+                    var ic = el('i', 'fa-solid fa-arrow-up-right-from-square pf-ext');
+                    ic.setAttribute('aria-hidden', 'true');
+                    x.appendChild(document.createTextNode(' '));
+                    x.appendChild(ic);
+                }
+                li.appendChild(x);
+                if (p.desc) li.appendChild(el('span', 'eg-prog-d', p.desc));
+                ulP.appendChild(li);
+            });
+            box.appendChild(ulP);
+        }
+    }
+
     /* ---------- 결과 화면 ---------- */
     function finish() {
         var rec = renderResult(false);
@@ -937,6 +1043,7 @@
         renderDealFund();
 
         renderAiPicks();
+        renderItemGuide();
 
         var top = $('egTop');
         top.textContent = '';

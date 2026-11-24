@@ -454,3 +454,67 @@ body.eg-asking .pf-floatnav { display: none; }
     .eg-df-title { font-size: 1.08rem; }
 }
 @media print { .eg-df { break-inside: auto; } .eg-df-card, .eg-df-steps > li { break-inside: avoid; } .eg-df-cta { display: none; } .eg-df-other:not([open]) > :not(summary) { display: block; } }
+
+/* 품목별 핵심 체크·추천 기관 (#egItemGuide, 2026-11-24) */
+.eg-item-guide { margin: 18px 0; }
+.eg-item-guide[hidden] { display: none; }
+.eg-ig-alert {
+    margin: 0 0 10px;
+    padding: 11px 14px;
+    border: 1px solid #f3b4b4;
+    border-left: 4px solid #c0392b;
+    border-radius: 8px;
+    background: #fff5f5;
+    color: #7f1d1d;
+    font-size: 0.91rem;
+    line-height: 1.6;
+    font-weight: 600;
+}
+.eg-ig-tip {
+    margin: 0 0 10px;
+    padding: 10px 14px;
+    border: 1px solid #e8d49c;
+    border-left: 4px solid var(--secondary-color, #c5a059);
+    border-radius: 8px;
+    background: #fffaf0;
+    color: #3d3320;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+.eg-ig-tips {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 12px 14px;
+    background: #f7f9fc;
+    border: 1px solid #d5dcea;
+    border-radius: 8px;
+}
+.eg-ig-tips li { padding: 5px 0; line-height: 1.6; font-size: 0.92rem; color: #2a3342; border-top: 1px dashed #d5dcea; }
+.eg-ig-tips li:first-child { border-top: 0; padding-top: 0; }
+.eg-ig-tips li:last-child { padding-bottom: 0; }
+.eg-ig-badge {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+.eg-ig-pin {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: #fef3c7;
+    border: 1px solid #d4a853;
+    color: #7c580a;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.45;
+}
+

@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 39;
+    var MAP_VERSION = 40;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -189,11 +189,11 @@
                 { v: 'cosmetic', label: '화장품·뷰티', sub: '스킨케어·미용기기' },
                 { v: 'agri', label: '농수산·가공식품', sub: 'K-푸드·건강기능식품' },
                 { v: 'consumer', label: '생활·패션·일반소비재', sub: '의류·잡화·유아·반려동물' },
-                { v: 'medical', label: '의료기기·바이오·헬스케어' },
-                { v: 'electronics', label: '전기·전자·IT기기', sub: '가전·스마트기기' },
-                { v: 'industrial', label: '기계·장비·소재·부품', sub: '금속·화학·산업용' },
+                { v: 'medical', label: '의료기기·바이오·헬스케어', sub: '의료기기·진단·건강관리' },
+                { v: 'electronics', label: '전기·전자·IT기기', sub: '가전·스마트기기·부품' },
+                { v: 'industrial', label: '기계·장비·소재·부품', sub: '산업용·소부장·금속·화학' },
                 { v: 'service', label: '서비스·SW·콘텐츠', sub: '앱·게임·디자인·용역' },
-                { v: 'etc', label: '기타' }
+                { v: 'etc', label: '기타', sub: '복합·특수 품목' }
             ]
         },
         {
@@ -824,6 +824,89 @@
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
+    // 품목별 핵심 체크·추천 기관·교차 조건 안내(2026-11-24, 8개 품목 세분화)
+    // 복수 품목 선택 시 결과 화면(#egItemGuide)에서 URL 기준으로 중복 제거한다.
+    // 지원 비율·한도 등 해마다 바뀌는 수치는 최신 공고 확인 안내를 함께 적는다.
+    var ITEM_GUIDES = {
+        cosmetic: {
+            priorityTip: 'EU CPNP(현지 책임자 RP·PIF 준비), 미국 FDA, 중국 NMPA 등 국가별 화장품 등록 및 라벨링 규제를 먼저 확인하세요.',
+            programs: [
+                { name: '해외규격인증획득지원센터', url: 'https://www.smes.go.kr/globalcerti/main.do', ext: true, desc: 'CPNP·할랄(패스트트랙) 및 NMPA 등 화장품 해외인증 비용 지원(지원 비율·한도는 최신 공고 확인)' },
+                { name: '해외지식재산센터 (IP-DESK)', url: 'https://www.ip-navi.or.kr', ext: true, desc: '해외 상표 출원 비용 지원 및 K-뷰티 브랜드 무단선점·위조품 대응' },
+                { name: 'KOTRA 한류박람회·유통망 협력', url: 'https://www.kotra.or.kr', ext: true, desc: 'K-뷰티 특화 해외 판촉전 및 현지 온·오프라인 유통망 입점 연계' }
+            ],
+            crossRule: { issues: ['cert', 'hs'], pinTop: ['해외규격인증획득지원센터', '해외지식재산센터 (IP-DESK)'] }
+        },
+        agri: {
+            priorityTip: '수출국 검역·성분규제·라벨링 현지화가 핵심입니다. aT 농식품글로벌성장패키지는 수출바우처와 중복 불가하므로 유리한 쪽을 선택하세요.',
+            programs: [
+                { name: 'aT 수출종합지원시스템', url: 'https://global.at.or.kr', ext: true, desc: '농식품글로벌성장패키지 및 현지화(라벨링·FDA·할랄 등) 지원(지원 비율·한도는 최신 공고 확인)' },
+                { name: '수산물 수출정보포털 (K-Seafood)', url: 'https://www.kfishinfo.co.kr', ext: true, desc: '수산가공식품 수출 통계, 해외시장 정보 및 수산물 특화 수출지원사업' },
+                { name: '해외규격인증획득지원센터', url: 'https://www.smes.go.kr/globalcerti/main.do', ext: true, desc: '할랄(패스트트랙) 및 식품 안전·규격 해외인증 비용 지원(지원 비율·한도는 최신 공고 확인)' }
+            ],
+            crossRule: { issues: ['support', 'buyer', 'market'], tip: '농식품 기업은 KOTRA 수출바우처와 aT 농식품글로벌성장패키지 중복 지원이 불가하니 조건을 비교하세요.' }
+        },
+        consumer: {
+            priorityTip: 'B2C 역직구(아마존·쇼피 등)나 해외 유통망 입점 전에 진출국 상표권 출원(IP-DESK)을 먼저 챙기세요.',
+            programs: [
+                { name: 'KOTRA 파워셀러·1무역관 1유통망', url: 'https://www.kotra.or.kr', ext: true, desc: '글로벌 이커머스 파워셀러 육성 및 해외 현지 유력 유통망 입점·판촉 지원' },
+                { name: '고비즈코리아 (글로벌쇼핑몰 지원)', url: 'https://kr.gobizkorea.com', ext: true, desc: '아마존·쇼피·큐텐 등 글로벌 온라인몰 입점, 상세페이지 제작 및 공동물류 연계' },
+                { name: '해외지식재산센터 (IP-DESK)', url: 'https://www.ip-navi.or.kr', ext: true, desc: '해외 상표·디자인 출원 비용 지원 및 현지 지재권 침해 예방' }
+            ],
+            crossRule: { issues: ['buyer', 'market'], pinTop: ['KOTRA 파워셀러·1무역관 1유통망', '고비즈코리아 (글로벌쇼핑몰 지원)'] }
+        },
+        medical: {
+            priorityTip: '수출국 인허가(FDA·CE·PMDA) 및 품질인증 요건 확인이 최우선입니다. 인허가 기간과 비용을 고려해 지원사업을 먼저 확보하세요.',
+            programs: [
+                { name: '해외규격인증획득지원센터', url: 'https://www.smes.go.kr/globalcerti/main.do', ext: true, desc: 'CE·ISO 13485 등 시험·인증·컨설팅비 지원(세부 비율·한도는 최신 공고 확인)' },
+                { name: '해외인증정보시스템 (KTL)', url: 'https://www.certinfo.kr/index.do', ext: true, desc: '국가별 강제·임의 시험인증제도 사전 조회 및 상담' },
+                { name: '수출바우처 포털', url: 'https://www.exportvoucher.com', ext: true, desc: '해외규격인증 신규 취득 및 기존 인증 갱신비·연회비 바우처 활용' }
+            ],
+            crossRule: { stageZero: true, alert: '인허가 완료 전 선적·계약 리스크 주의 — 1:1 사전 상담을 권장합니다.' }
+        },
+        electronics: {
+            priorityTip: '국가별 안전·전파 강제인증(CE·UL·PSE 등)과 전략물자 사전 판정, HS코드 확정을 선적 전에 반드시 마쳐야 합니다.',
+            programs: [
+                { name: '해외규격인증획득지원센터', url: 'https://www.smes.go.kr/globalcerti/main.do', ext: true, desc: 'EU CE, 미국 NRTL(UL) 등 500여 개 해외인증 비용 지원(세부 비율·한도는 최신 공고 확인)' },
+                { name: '전략물자관리시스템 (YesTrade)', url: 'https://www.yestrade.go.kr', ext: true, desc: '전략물자 온라인 자가판정·전문판정, 수출허가 및 부적격거래자 사전 검색' },
+                { name: '해외기술규제포털 (KnowTBT)', url: 'https://www.knowtbt.kr/', ext: true, desc: '국가별 전기·전자 기술규제(TBT) 동향 및 강제인증 변화 모니터링' },
+                { name: '관세청 UNI-PASS', url: 'https://unipass.customs.go.kr/csp/index.do', ext: true, desc: '복합 전자기기 HS코드 품목분류 사전심사 및 수출신고필증 조회' }
+            ],
+            crossRule: { issues: ['cert', 'hs'], pinTop: ['해외규격인증획득지원센터', '전략물자관리시스템 (YesTrade)'] }
+        },
+        industrial: {
+            priorityTip: 'B2B 거래 특성상 전략물자 여부, FTA 원산지 기준, 간접수출 시 구매확인서 발급과 선적전 금융·보증 설계가 중요합니다.',
+            programs: [
+                { name: 'KOTRA 글로벌 파트너링 (GP)', url: 'https://www.kotra.or.kr', ext: true, desc: '글로벌 제조 대기업 조달 수요 맞춤 1:1 수출상담 및 공급망 진입 지원' },
+                { name: '전략물자관리시스템 (YesTrade)', url: 'https://www.yestrade.go.kr', ext: true, desc: '기계·소재·부품의 전략물자 해당 여부 사전 판정 및 수출통제 대응' },
+                { name: 'KTNET uTradeHub', url: 'https://www.utradehub.or.kr', ext: true, desc: '간접수출 시 구매확인서·내국신용장 발급 및 간접수출실적증명 처리' },
+                { name: 'Trade NAVI', url: 'https://www.tradenavi.or.kr/', ext: true, desc: '국가·품목별 관세율, FTA 원산지 결정기준 및 비관세장벽 통합 조회' }
+            ],
+            crossRule: { issues: ['fund', 'collect', 'factoring'], tip: '기계·장비 등 고액·장기 제작 건은 선적전 수출신용보증과 단계별 대금결제 조건을 함께 설계하세요.' }
+        },
+        service: {
+            priorityTip: '무형 서비스는 일반 통관(수출신고필증)이 없으므로 용역 계약서와 외화입금증명 등 무체물 수출실적 인정 절차를 챙겨야 합니다.',
+            programs: [
+                { name: '콘텐츠수출플랫폼 (WelCon)', url: 'https://welcon.kocca.kr', ext: true, desc: '한국콘텐츠진흥원 운영, 캐릭터·SW·콘텐츠 등 무형 서비스 해외 진출 지원' },
+                { name: 'KOTRA 서비스 거점 지원', url: 'https://www.kotra.or.kr', ext: true, desc: '콘텐츠·SW·프랜차이즈 등 서비스업 해외 거점 및 브랜드 마케팅 지원' },
+                { name: '무역협회 TradePro', url: 'https://kita.net/tradePro/tradeProMain/tradeProMain.do', ext: true, desc: '용역 계약·세무·무체물 수출실적 인정 등 분야별 전문가 온라인 무료 상담' }
+            ],
+            crossRule: {
+                issues: ['docs'],
+                extraPrograms: [{ name: '계약서 작성기', url: 'contract-builder.html', ext: false, desc: '서비스·용역 거래 조건에 맞는 계약서 초안과 추천 조항을 만듭니다.' }],
+                pinTop: ['계약서 작성기', '무역협회 TradePro']
+            }
+        },
+        etc: {
+            priorityTip: '품목의 정확한 HS코드 확정과 수출국 규제 여부를 먼저 확인한 뒤 맞춤 지원사업을 매칭하는 것이 안전합니다.',
+            programs: [
+                { name: '원스톱 수출·수주지원단', url: 'https://www.export119.go.kr', ext: true, desc: '통관·물류·금융·인증 등 범부처 수출 현장 애로사항 원스톱 접수 및 해결' },
+                { name: '무역협회 TradePro', url: 'https://kita.net/tradePro/tradeProMain/tradeProMain.do', ext: true, desc: '관세·물류·계약·마케팅 등 무역 현장 전문가 온라인 무료 상담' },
+                { name: 'Happy Oh 1:1 수출 컨설팅', url: 'index.html#contact', ext: false, desc: '품목·수출단계·자금 상황에 맞춘 1:1 무료 맞춤 설계 상담 신청' }
+            ]
+        }
+    };
+
     window.EG_MAP = {
         version: MAP_VERSION,
         stages: STAGES,
@@ -844,6 +927,7 @@
         stageMap: STAGE_MAP,
         formLinks: FORM_LINKS,
         dealFund: DEAL_FUND,
+        itemGuides: ITEM_GUIDES,
         short: SHORT
     };
 })();
