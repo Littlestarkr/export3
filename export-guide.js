@@ -101,9 +101,9 @@
         return M.short.q1b[a.q1b] || '';
     }
     function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
-    function mainCount() { return M.questions.filter(function (q) { return !q.sub; }).length; }
+    function mainCount() { return M.questions.filter(function (q) { return !q.sub && !q.retired; }).length; }
     function visible() {
-        return M.questions.filter(function (q) { return !q.when || q.when(a); });
+        return M.questions.filter(function (q) { return !q.retired && (!q.when || q.when(a)); });
     }
     // 시작 화면·제목의 '현황 N가지'를 실제 질문 수로 맞춘다(HTML 숫자는 JS가 꺼졌을 때·검색 설명용)
     [].forEach.call(document.querySelectorAll('[data-eg-count]'), function (n) { n.textContent = mainCount(); });
@@ -712,7 +712,8 @@
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
         if (arr(a.q6).indexOf('etc') >= 0 && etcValue()) L.push('기타(찾는 서비스): ' + etcValue());
-        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
+        var nd = needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ');   // 옛 결과만(9번 질문은 2026-11-24 삭제)
+        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + (nd ? ' / 필요: ' + nd : ''));
         return L.join('\n');
     }
 
