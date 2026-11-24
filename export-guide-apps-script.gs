@@ -36,7 +36,7 @@ var BURST = 30;   // 1분 동안 이보다 많이 들어오면 '검토대기'
 var L = {
   q1: { s0: '없음', s1: '1천 달러 미만', s2: '1천~1만 달러', s3: '1만~10만 달러', s4: '10만~100만 달러', s5: '100만~1천만 달러', s6: '1천만 달러 이상' },
   q1r: { r0: '매출 없음', r1: '1억 원 미만', r2: '1억~5억 원 미만', r3: '5억~20억 원 미만', r4: '20억~100억 원 미만', r5: '100억 원 이상' },
-  q1b: { prep: '준비 중', nego: '협상·샘플 진행', order: '첫 주문 받음' },
+  q1b: { prep: '진행 거래 없음(준비 중)', nego: '협상·샘플 진행', order: '주문(계약) 받음' },
   q1c: { d1: '1천 달러 미만', d2: '1천~1만 달러 미만', d3: '1만~10만 달러 미만', d4: '10만~50만 달러 미만', d5: '50만 달러 이상' },
   q2: { pre: '예비창업자', startup: '창업 3년 이내', y7: '3년 초과~7년 이내', y7p: '7년 초과', youth: '청년기업(만 39세 이하)', women: '여성기업', disabled: '장애인기업', social: '사회적기업', venture: '벤처기업', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '기업부설연구소·전담부서', restart: '재창업·중장년 기업', esg_local: '소부장·ESG·비수도권 등', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '기타' },
   q3: { consumer: '소비재', industrial: '산업재·부품', agri: '농수산식품', cosmetic: '화장품', service: '서비스·콘텐츠', etc: '기타' },
@@ -141,7 +141,7 @@ function doPost(e) {
       id,
       Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd HH:mm:ss'),
       one_('q1', p.q1),
-      p.q1 === 's0' ? one_('q1b', p.q1b) : '',
+      one_('q1b', p.q1b),   // 2026-11-24: 실적과 상관없이 모두에게 묻는다
       many_('q2', p.q2),
       many_('q3', p.q3),
       many_('q4', p.q4),
@@ -155,7 +155,7 @@ function doPost(e) {
       status,
       String(p.q6 || '').split(',').indexOf('etc') >= 0 ? text_(p.q6etc) : '',
       one_('q1r', p.q1r),
-      (p.q1 === 's0' && (p.q1b === 'nego' || p.q1b === 'order')) ? one_('q1c', p.q1c) : ''
+      (p.q1b === 'nego' || p.q1b === 'order') ? one_('q1c', p.q1c) : ''
     ]);
     return json_({ result: 'success' });
   } finally {

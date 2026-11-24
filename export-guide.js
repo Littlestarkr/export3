@@ -88,12 +88,18 @@
     }
     // 진행 거래 계약금액(Q1 보조 질문의 꼬리 질문): 협상·첫 주문일 때만 의미가 있다
     function dealObj() {
-        if (a.q1 !== 's0' || !(a.q1b === 'nego' || a.q1b === 'order')) return null;
+        if (!(a.q1b === 'nego' || a.q1b === 'order')) return null;
         var list = M.deals || [];
         for (var i = 0; i < list.length; i++) if (list[i].v === a.q1c) return list[i];
         return null;
     }
     function followOn(q) { return !!(q.followOne && q.followOne.when(a)); }
+    // 진행 거래(q1b) 짧은 이름: 실적 있음이면 '첫 주문' 대신 '새 주문'
+    function q1bShort() {
+        if (!a.q1b) return '';
+        if (a.q1 !== 's0') return ({ prep: '진행 중 새 거래 없음', nego: '협상·샘플 진행 중', order: '새 주문 받음' })[a.q1b] || '';
+        return M.short.q1b[a.q1b] || '';
+    }
     function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
     function mainCount() { return M.questions.filter(function (q) { return !q.sub; }).length; }
     function visible() {
@@ -201,6 +207,7 @@
         $('egMsg').textContent = '';
 
         var opts = q.options.slice();
+        if (q.id === 'q1b' && a.q1 !== 's0') opts = opts.map(function (o) { return o.labelExp ? { v: o.v, label: o.labelExp } : o; });
         if (q.id === 'q7' && !isPlan()) opts = opts.filter(function (o) { return !o.planOnly; });
         var more = [];
         if (q.id === 'q6') {
@@ -314,7 +321,6 @@
         if (q.type === 'one') {
             var changed = a[q.id] !== v;
             a[q.id] = v;
-            if (q.id === 'q1' && v !== 's0') { delete a.q1b; delete a.q1c; }
             // '아직 없음(준비 중)'으로 바꾸면 꼬리 질문(계약금액)에서 고른 값을 지운다
             if (q.followOne && !q.followOne.when(a)) delete a[q.followOne.id];
             if (q.id === 'q1' && changed) { delete a.q6; }
@@ -693,6 +699,7 @@
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rvTxt ? ' · ' + rvTxt : '') + ' 단계';
         var dl = dealObj();
         var paren = [dl ? '이번 건 계약금액 ' + dl.short : '', rvTxt].filter(Boolean).join(', ');
+        if (a.q1 !== 's0' && a.q1b && a.q1b !== 'prep') s += '(진행 거래: ' + q1bShort() + (dl ? ', 이번 건 계약금액 ' + dl.short : '') + ')';
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (paren ? '(' + paren + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
@@ -704,7 +711,7 @@
         var L = [];
         L.push('[수출 가이드 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
-        if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
+        if (a.q1b) s1 += ' / 진행 거래: ' + q1bShort();
         if (dealObj()) s1 += ' / 이번 건 계약금액: ' + dealObj().label;
         L.push(s1);
         if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
