@@ -200,8 +200,12 @@
         var more = [];
         if (q.id === 'q6') {
             var order = M.issueOrder[a.q1] || M.issueOrder.s0;
-            var first = order.concat(['etc']).map(function (k) { return { v: k, label: M.issues[k] }; });
+            var first = order.map(function (k) { return { v: k, label: M.issues[k] }; });
             more = opts.filter(function (o) { return order.indexOf(o.v) < 0 && o.v !== 'etc'; });
+            // 2026-11-24 작가님: '기타'가 첫 목록 끝에 있으면 거기서 끝나는 줄 알게 된다 →
+            // 첫 목록이 8개가 되도록 '더 보기'에서 앞의 것을 올리고, '기타'는 '더 보기' 맨 끝으로
+            while (first.length < 8 && more.length) first.push(more.shift());
+            more.push({ v: 'etc', label: M.issues.etc });
             opts = first;
         }
         var box = $('egOpts');
