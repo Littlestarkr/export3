@@ -76,6 +76,7 @@
         for (var i = 0; i < M.questions.length; i++) {
             if (M.questions[i].id === id) return M.questions[i];
             if (M.questions[i].extraOne && M.questions[i].extraOne.id === id) return M.questions[i].extraOne;
+            if (M.questions[i].followOne && M.questions[i].followOne.id === id) return M.questions[i].followOne;
         }
         return null;
     }
@@ -85,6 +86,14 @@
         for (var i = 0; i < q.options.length; i++) if (q.options[i].v === v) return q.options[i].label;
         return v;
     }
+    // 진행 거래 계약금액(Q1 보조 질문의 꼬리 질문): 협상·첫 주문일 때만 의미가 있다
+    function dealObj() {
+        if (a.q1 !== 's0' || !(a.q1b === 'nego' || a.q1b === 'order')) return null;
+        var list = M.deals || [];
+        for (var i = 0; i < list.length; i++) if (list[i].v === a.q1c) return list[i];
+        return null;
+    }
+    function followOn(q) { return !!(q.followOne && q.followOne.when(a)); }
     function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
     function visible() {
         return M.questions.filter(function (q) { return !q.when || q.when(a); });
@@ -219,6 +228,29 @@
             var qSub = { id: q.extraOne.id, type: 'one', options: q.extraOne.options };
             q.extraOne.options.forEach(function (o) { sub2.appendChild(optBtn(qSub, o)); });
             box.appendChild(sub2);
+        } else if (q.followOne) {
+            // 꼬리 질문이 있는 질문(Q1 보조 '진행 거래'): 위 보기 + 아래 꼬리 질문(조건이 맞을 때만 보임)
+            box.removeAttribute('role');
+            box.removeAttribute('aria-labelledby');
+            box.classList.add('eg-opts-grouped');
+            var main = el('div', 'eg-opts');
+            main.setAttribute('role', 'radiogroup');
+            main.setAttribute('aria-labelledby', 'egTitle');
+            opts.forEach(function (o) { main.appendChild(optBtn(q, o)); });
+            box.appendChild(main);
+            var fw = el('div', 'eg-follow');
+            fw.id = 'egFollow';
+            fw.hidden = !followOn(q);
+            var fh = el('p', 'eg-grp-h', q.followOne.label);
+            fh.id = 'egGrpF';
+            fw.appendChild(fh);
+            var fsub = el('div', 'eg-opts');
+            fsub.setAttribute('role', 'radiogroup');
+            fsub.setAttribute('aria-labelledby', 'egGrpF');
+            var qF = { id: q.followOne.id, type: 'one', options: q.followOne.options };
+            q.followOne.options.forEach(function (o) { fsub.appendChild(optBtn(qF, o)); });
+            fw.appendChild(fsub);
+            box.appendChild(fw);
         } else {
             box.setAttribute('role', q.type === 'one' ? 'radiogroup' : 'group');
             box.setAttribute('aria-labelledby', 'egTitle');
@@ -272,13 +304,21 @@
         if (q.type === 'one') {
             var changed = a[q.id] !== v;
             a[q.id] = v;
-            if (q.id === 'q1' && v !== 's0') delete a.q1b;
+            if (q.id === 'q1' && v !== 's0') { delete a.q1b; delete a.q1c; }
+            // '아직 없음(준비 중)'으로 바꾸면 꼬리 질문(계약금액)에서 고른 값을 지운다
+            if (q.followOne && !q.followOne.when(a)) delete a[q.followOne.id];
             if (q.id === 'q1' && changed) { delete a.q6; }
             if ((q.id === 'q1' || q.id === 'q1b') && changed && arr(a.q7).indexOf('unknown') >= 0 && !isPlan()) {
                 a.q7 = arr(a.q7).filter(function (x) { return x !== 'unknown'; });
             }
+            var fw = $('egFollow');
+            var wasHidden = fw ? fw.hidden : true;
             refreshOpts(stepQ);
             updateNext(stepQ);
+            // 꼬리 질문이 새로 나타나면 화면 안으로 살짝 내려 보여 준다(모바일에서 아래에 가려지지 않게)
+            if (fw && wasHidden && !fw.hidden && fw.scrollIntoView) {
+                fw.scrollIntoView({ block: 'nearest', behavior: (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' });
+            }
             // 2026-11-22 작가님: 하나만 고르는 질문도 자동으로 넘기지 않고 '다음'을 눌러 넘어간다(복수 질문과 같게)
             return;
         }
@@ -309,6 +349,8 @@
         var all = $('egAll');
         if (all && q.selectAll) all.checked = allVals(q).every(function (v) { return isSel(q, v); });
         // '기타' 입력칸(Q6)
+        var fw = $('egFollow');
+        if (fw) fw.hidden = !followOn(q);
         var eb = $('egEtcBox');
         if (eb) {
             var showEtc = q.id === 'q6' && isSel(q, 'etc');
@@ -326,6 +368,7 @@
     }
     function answered(q) {
         if (q.extraOne) return !!a[q.id] && !!a[q.extraOne.id];
+        if (followOn(q)) return !!a[q.id] && !!a[q.followOne.id];
         return q.type === 'one' ? !!a[q.id] : arr(a[q.id]).length > 0;
     }
     function updateNext(q) {
@@ -633,7 +676,9 @@
         var bits = [listLabels('q3', items()), listLabels('q4', a.q4), listLabels('q5', a.q5)].filter(Boolean).join(' · ');
         var rvTxt = rv ? (rv.v === 'r0' ? '매출 없음' : '매출 ' + rv.short) : '';
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rvTxt ? ' · ' + rvTxt : '') + ' 단계';
-        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (rvTxt ? '(' + rvTxt + ')' : '') + '인 단계';
+        var dl = dealObj();
+        var paren = [dl ? '계약금액 ' + dl.short : '', rvTxt].filter(Boolean).join(', ');
+        if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (paren ? '(' + paren + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
         s += iss.length ? '가장 큰 어려움은 ' + iss.join(' / ') + '입니다.' : '어려운 점은 고르지 않았습니다.';
@@ -645,6 +690,7 @@
         L.push('[수출 가이드 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
+        if (dealObj()) s1 += ' / 계약금액: ' + dealObj().label;
         L.push(s1);
         if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
@@ -697,7 +743,7 @@
     function finish() {
         var rec = renderResult(false);
         ga('guide_complete', {
-            stage: a.q1, revenue: a.q1r || '', size: arr(a.q2).join(','), item: items().join(','),
+            stage: a.q1, revenue: a.q1r || '', deal: dealObj() ? a.q1c : '', size: arr(a.q2).join(','), item: items().join(','),
             forms: arr(a.q4).join(','), issues: arr(a.q6).join(','), pays: arr(a.q7).join(','), need: needList(a).join(',')
         });
         maybeSave(rec);
@@ -850,6 +896,7 @@
         body.set('id', id);
         body.set('website', $('egHp').value || '');
         body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || ''); body.set('q1r', a.q1r || '');
+        body.set('q1c', dealObj() ? a.q1c : '');   // 진행 거래 계약금액(2026-11-24, 시트 18열 R)
         body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(','));

@@ -30,6 +30,15 @@
         { v: 'r5', label: '100억 원 이상', short: '100억 원 이상', tier: 5 }
     ];
 
+    // 진행 거래 계약금액 5구간(Q1 보조 질문의 꼬리 질문, 2026-11-24 작가님). 협상·샘플 진행 중이면 예상 금액
+    var DEALS = [
+        { v: 'd1', label: '1천 달러 미만', short: '1천 달러 미만' },
+        { v: 'd2', label: '1천 달러 이상 ~ 1만 달러 미만', short: '1천~1만 달러' },
+        { v: 'd3', label: '1만 달러 이상 ~ 10만 달러 미만', short: '1만~10만 달러' },
+        { v: 'd4', label: '10만 달러 이상 ~ 50만 달러 미만', short: '10만~50만 달러' },
+        { v: 'd5', label: '50만 달러 이상', short: '50만 달러 이상' }
+    ];
+
     // 애로사항(Q6) 10개
     var ISSUES = {
         buyer:   '바이어를 못 찾겠다',
@@ -125,7 +134,15 @@
                 { v: 'prep', label: '아직 없음(준비 중)' },
                 { v: 'nego', label: '바이어와 협상·샘플 진행 중' },
                 { v: 'order', label: '첫 주문을 받았음' }
-            ]
+            ],
+            // 꼬리 질문(2026-11-24 작가님): 협상·샘플 진행 중이거나 첫 주문을 받았으면 같은 화면 아래에 계약금액을 묻는다(필수).
+            // '아직 없음'으로 바꾸면 고른 금액은 지운다(export-guide.js pick).
+            followOne: {
+                id: 'q1c',
+                label: '진행 중인 거래의 계약금액은 얼마인가요? (협상 중이면 예상 금액)',
+                when: function (a) { return a.q1b === 'nego' || a.q1b === 'order'; },
+                options: DEALS.map(function (d) { return { v: d.v, label: d.label }; })
+            }
         },
         {
             id: 'q2', type: 'multi', title: '회사는 어느 쪽인가요? (복수 선택 가능)',
@@ -641,6 +658,7 @@
         version: MAP_VERSION,
         stages: STAGES,
         revenues: REVENUES,
+        deals: DEALS,
         issues: ISSUES,
         issueOrder: ISSUE_ORDER,
         issueHelp: ISSUE_HELP,

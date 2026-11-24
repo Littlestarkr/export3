@@ -373,3 +373,6 @@ body.eg-asking .pf-floatnav { display: none; }
 .eg-cal-txt small { font-size: 0.86rem; opacity: 0.9; line-height: 1.5; }
 .eg-cal-go { flex: 0 0 auto; font-weight: 700; color: #c5a059; white-space: nowrap; }
 @media print { .eg-cal-banner { display: none; } }
+
+/* Q1 보조 '진행 거래'의 꼬리 질문(계약금액, 2026-11-24): 위 보기와 구분되게 위쪽 선 */
+.eg-follow { margin-top: 16px; padding-top: 14px; border-top: 1px dashed #d5dcea; }
