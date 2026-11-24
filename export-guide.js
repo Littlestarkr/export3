@@ -458,7 +458,6 @@
             fx:      function (w) { add('fx', 3, w); add('qna-fx', 2, w); },
             fund:    function (w) {
                 add('policy-fund', 3, w); add('guarantee', 2, w); add('semas-innov', 3, w);
-                if (st >= 4) add('exim', 2, w);
                 if (hasItem('agri')) add('at', 2, w);
             },
             // '해외인증·규제를 모른다'(2026-11-24): 고르면 해외인증 조회 가이드가 '먼저 볼 곳'에 오도록 6점(전엔 3점이라 상위 3곳에 못 들었다)
@@ -548,7 +547,7 @@
             add('ksure-plus', 2, wr4); add('guarantee', 2, wr4); add('k-branch', 2, wr4);
         } else if (rev === 5) {
             var wr5 = '매출 100억 원 이상 중기업·강소기업이라서';
-            add('fx', 2, wr5); add('ksure-postship', 2, wr5); add('exim', 2, wr5);
+            add('fx', 2, wr5); add('ksure-postship', 2, wr5);
         }
 
         // 8) 조건별 정책금융·지원사업 전체 평가(2026-11-23: 어느 한 조건이라도 해당하면 모두 매칭, pri=1은 최우선 추천)

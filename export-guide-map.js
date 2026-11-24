@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 37;
+    var MAP_VERSION = 38;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -382,13 +382,14 @@
         'fx':          { s: [0, 0, 0, 1, 2, 2, 2] },
         'k-market':    { s: [1, 1, 1, 1, 2, 2, 2] },
         'k-branch':    { s: [0, 0, 1, 1, 2, 2, 2] },
-        'exim':        { s: [0, 0, 0, 0, 1, 2, 2] },
+        // 수은(exim)은 문턱이 높아 '먼저 볼 곳' 자동 가점에서 제외하고 PROGRAMS 맨 끝(pri: 5)에 배치한다
+        'exim':        { s: [0, 0, 0, 0, 0, 0, 0] },
         'claim':       { s: [0, 0, 1, 1, 1, 1, 1] }
     };
 
     // 조건에 맞는 정책금융·지원사업 전체 매칭(2026-11-23 작가님):
     // 8가지 질문 중 어느 하나의 조건이라도 해당하면 지원 가능한 금융·지원사업을 빠짐없이 추천한다.
-    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = IBK기업은행(금융상품 추천순위 맨 마지막)
+    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = IBK기업은행, 5 = 한국수출입은행(문턱이 높아 기은 다음 맨 마지막)
     var PROGRAMS = [
         // ── 최우선 추천 (pri: 1) ──
         { id: 'semas-disabled', pri: 1, match: function (c) {
@@ -580,18 +581,6 @@
             return '';
         }},
 
-        // ── 한국수출입은행 (수은) ──
-        { id: 'exim-growth', pri: 2, match: function (c) {
-            return (c.st >= 1 && c.smeOrMid) ? '수출실적 보유 중소·중견기업 운전자금 대상이라서' : '';
-        }},
-        { id: 'exim-perform', pri: 2, match: function (c) {
-            return (c.st >= 1 || (c.st === 0 && c.a.q1b === 'order')) ? '수출계약 이행 자금 대상이라서' : '';
-        }},
-        { id: 'exim-promo', pri: 3, match: function (c) {
-            if (c.rev === 5) return '매출 100억 원 이상 중기업·강소기업(해외투자·중장기 수출금융) 대상이라서';
-            return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
-        }},
-
         // ── 비금융 수출·창업 지원사업 ──
         { id: 'k-aitc', pri: 2, match: function (c) {
             if (c.rev !== 1) return '';
@@ -629,7 +618,7 @@
             return '';
         }},
 
-        // ── IBK기업은행 (금융상품 추천순위 맨 마지막 · pri: 4) ──
+        // ── IBK기업은행 (pri: 4) ──
         { id: 'ibk-export', pri: 4, match: function () {
             return '모든 수출기업 대상(IBK 무역금융·관세피해 지원대출)이라서';
         }},
@@ -647,6 +636,18 @@
         }},
         { id: 'ibk-smallbiz', pri: 4, match: function (c) {
             return c.smallbiz ? '소상공인 대상(가치성장·경영안정·희망Dream·골목상권 대출)이라서' : '';
+        }},
+
+        // ── 한국수출입은행 (수은 · 문턱이 높아 기은 다음 맨 마지막 · pri: 5) ──
+        { id: 'exim-growth', pri: 5, match: function (c) {
+            return (c.st >= 1 && c.smeOrMid) ? '수출실적 보유 중소·중견기업 운전자금 대상이라서' : '';
+        }},
+        { id: 'exim-perform', pri: 5, match: function (c) {
+            return (c.st >= 1 || (c.st === 0 && c.a.q1b === 'order')) ? '수출계약 이행 자금 대상이라서' : '';
+        }},
+        { id: 'exim-promo', pri: 5, match: function (c) {
+            if (c.rev === 5) return '매출 100억 원 이상 중기업·강소기업(해외투자·중장기 수출금융) 대상이라서';
+            return (c.smeOrMid || c.service || c.esg) ? '수출 전환·확대 설비·기술개발·시장개척 자금 대상이라서' : '';
         }}
     ];
 
