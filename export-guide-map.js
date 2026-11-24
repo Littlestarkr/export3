@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 25;
+    var MAP_VERSION = 26;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -298,6 +298,11 @@
         'at':          { t: 'aT 농식품 수출자금', u: 'policy-finance.html?org=at', d: '농식품 수출업체용 운영·시설 자금입니다.' },
         'at-ops':      { t: 'aT 농식품 글로벌육성지원자금(운영자금)', u: 'policy-finance.html?org=at#at-ops', d: '농식품 수출용 원료·부자재 구입·저장·가공 운영자금. 고정금리 2.5%(농업경영체)·3.0%(일반) 또는 변동, 업체당 200억 원 이내(1년).' },
         'at-facility': { t: 'aT 농식품 글로벌육성지원자금(시설자금)', u: 'policy-finance.html?org=at#at-facility', d: '농식품 저장·가공·부대시설·물류장비 현대화 시설자금. 고정금리 2.0%(농업경영체)·3.0%(일반) 또는 변동, 30억 원 이내(10년·거치 3년).' },
+        // '먼저 찾아볼 정보 사이트'(결과 맨 앞, 2026-11-24). 사이트에 이미 걸려 있는 주소만 쓴다.
+        'kotra-ai':    { t: 'KOTRA AI수출정보 서비스', u: 'https://www.kotra.or.kr/mutugpt/export-assistant/main', ext: true, d: 'KOTRA의 AI수출정보 서비스에서 우리 품목의 수출 정보를 먼저 살펴보세요.' },
+        'kati':        { t: 'AI 농산물 수출정보(KATI)', u: 'https://www.kati.net/searchGpt.do', ext: true, d: 'aT KATI의 AI 농산물 수출정보에서 농식품 수출 정보를 찾아보세요.' },
+        'kocei':       { t: '화장품수출가이드북', u: 'https://www.kcii.re.kr/kocei/', ext: true, d: '대한화장품산업연구원의 화장품 수출 가이드북 사이트에서 수출 정보를 확인하세요.' },
+        'kcii':        { t: '대한화장품산업연구원', u: 'https://www.kcii.re.kr/', ext: true, d: '대한화장품산업연구원 사이트로 연결됩니다.' },
         'cosmetic':    { t: '화장품 수출 지원', u: 'global-expansion.html#cosmetic', d: '화장품 수출 규제·지원 기관을 정리했습니다.' },
         'ksure-service': { t: '서비스보험(일시결제방식)', u: 'trade-insurance.html#ksure-service', d: '서비스·콘텐츠 수출 대금 미회수에 대비하는 무역보험입니다.' },
         // 신용보증기금 상품별(2026-11-23)
@@ -640,6 +645,17 @@
         issue: { market: 1, cert: 1, hs: 1, support: 1, buyer: 2, docs: 3, importer: 3, fraud: 3, tclaim: 3, fund: 4, collect: 4, factoring: 4, fx: 4 }
     };
 
+    // 결과 맨 앞 '먼저 찾아볼 정보 사이트'(2026-11-24 작가님). 조건은 '또는', 이 순서대로 보인다.
+    // c: { st(실적 구간 번호 0~6), consult(Q8 전문가 상담), item(품목 코드) }
+    // 수출경험이 많지 않음 = 최근 1년 수출실적 10만 달러 미만(s0~s3, KOTRA 내수기업 수출기업화 기준과 같음)
+    var AI_PICKS = [
+        { id: 'kotra-ai', when: function (c) { return c.st <= 3 || c.consult; },
+          why: function (c) { return c.st <= 3 ? '수출을 시작하거나 경험을 쌓는 단계라서' : '전문가 상담을 원하셔서'; } },
+        { id: 'kati', when: function (c) { return c.item('agri'); }, why: function () { return '농수산식품 수출(예정)기업이라서'; } },
+        { id: 'kocei', when: function (c) { return c.item('cosmetic'); }, why: function () { return '화장품 수출(예정)기업이라서'; } },
+        { id: 'kcii', when: function (c) { return c.item('cosmetic'); }, why: function () { return '화장품 수출(예정)기업이라서'; } }
+    ];
+
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
         local: ['k-domestic', 'qna-fx'],
@@ -670,6 +686,7 @@
         etcKeywords: ETC_KEYWORDS,
         extra: EXTRA,
         footLinks: FOOT_LINKS,
+        aiPicks: AI_PICKS,
         roadmap: ROADMAP,
         stageMap: STAGE_MAP,
         formLinks: FORM_LINKS,
