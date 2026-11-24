@@ -295,7 +295,6 @@
         }
 
         $('egPrev').disabled = step === 0;
-        $('egSkip').hidden = !q.optional;
         refreshOpts(q);
         updateNext(q);
         title.focus({ preventScroll: true });
@@ -392,13 +391,13 @@
         var last = step === qs.length - 1;
         var btn = $('egNext');
         btn.textContent = last ? '결과 보기' : '다음';
-        btn.disabled = !q.optional && !answered(q);
+        btn.disabled = !answered(q);
     }
     function next() {
         var qs = visible();
         var q = qs[step];
         if (!q) return;
-        if (!q.optional && !answered(q)) {
+        if (!answered(q)) {
             $('egMsg').textContent = '하나 이상 골라 주세요.';
             return;
         }
@@ -408,12 +407,6 @@
     $('egNext').addEventListener('click', next);
     $('egEtc').addEventListener('input', function () { a.q6etc = this.value.slice(0, 100); });
     $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); scrollToApp(true); } });
-    $('egSkip').addEventListener('click', function () {
-        var q = visible()[step];
-        if (q) delete a[q.id];
-        step++;
-        if (step >= visible().length) finish(); else { renderQ(); scrollToApp(true); }
-    });
 
     /* ---------- 추천 계산 ---------- */
     function tagWhy(hit) {

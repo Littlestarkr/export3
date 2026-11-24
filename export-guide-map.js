@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 28;
+    var MAP_VERSION = 29;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -114,7 +114,7 @@
 
     var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'restart', 'esg_local'];
 
-    // 질문. type: one(하나) | multi(여러 개). optional: 건너뛸 수 있음. when: 보일 조건
+    // 질문. type: one(하나) | multi(여러 개). 모두 필수(2026-11-24 건너뛰기 없앰). when: 보일 조건
     var QUESTIONS = [
         {
             id: 'q1', type: 'one', title: '최근 1년(또는 전년도) 수출 및 매출실적은 얼마인가요?',
@@ -229,7 +229,8 @@
             ]
         },
         {
-            id: 'q8', type: 'multi', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '꼭 답하지 않아도 됩니다. 여러 개 골라도 되고, 건너뛰어도 됩니다.',
+            // 2026-11-24 작가님: 필수(건너뛰기 없음)
+            id: 'q8', type: 'multi', title: '지금 가장 필요한 것은 무엇인가요?', help: '여러 개를 고를 수 있습니다.',
             options: [
                 { v: 'info', label: '수출 자료·도구' },
                 { v: 'market', label: '시장개척·바이어 발굴' },
