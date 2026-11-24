@@ -377,3 +377,14 @@ body.eg-asking .pf-floatnav { display: none; }
 /* Q1 보조 '진행 거래'의 꼬리 질문(계약금액, 2026-11-24): 위 보기와 구분되게 위쪽 선 */
 .eg-follow { margin-top: 16px; padding-top: 14px; border-top: 1px dashed #d5dcea; }
 .eg-follow-help { margin: -4px 0 10px; font-size: 0.86rem; color: #555; line-height: 1.55; }
+
+/* 결과 맨 앞 '먼저 찾아볼 정보 사이트'(KOTRA AI·KATI·화장품, 2026-11-24) */
+.eg-ai { margin: 0 0 14px; padding: 12px 14px; background: #f3f6fb; border: 1px solid #c9d4e6; border-radius: 8px; }
+.eg-ai-t { margin: 0 0 6px; font-weight: 700; color: var(--primary-color, #1a2a4a); }
+.eg-ai-t i { color: var(--secondary-color, #c9a227); }
+.eg-ai-list { list-style: none; margin: 0; padding: 0; }
+.eg-ai-list li { padding: 6px 0; border-top: 1px dashed #d5dcea; line-height: 1.6; }
+.eg-ai-list li:first-child { border-top: 0; }
+.eg-ai-link { font-weight: 700; color: var(--primary-color, #1a2a4a); text-decoration: underline; text-decoration-color: var(--secondary-color, #c9a227); text-underline-offset: 3px; }
+.eg-ai-why { color: #555; font-size: 0.92rem; }
+.eg-ai-note { margin: 6px 0 0; font-size: 0.82rem; color: #666; }
