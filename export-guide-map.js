@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 40;
+    var MAP_VERSION = 41;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -93,6 +93,8 @@
         { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
+        { k: ['고비즈', 'gobiz', '바이코리아', 'buykorea'], ids: ['gobizkorea', 'buykorea-portal'] },
+        { k: ['트라이빅', 'tribig', '해외경제정보', 'dream'], ids: ['tribig', 'kotra-dream', 'kita-portal'] },
         { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['ibk-export', 'ibk-smallbiz'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
@@ -350,7 +352,14 @@
         'ksight':      { t: 'K-SIGHT·트라이빅 바이어 검색', u: 'global-expansion.html#b-search', d: '무보 K-SIGHT와 KOTRA 트라이빅으로 해외 바이어 정보를 찾아봅니다.' },
         'b-data':      { t: '무역데이터로 바이어 찾기(Trade Map·트레이드잇)', u: 'global-expansion.html#b-data', d: '실제 수입 실적·수입국 통계로 바이어와 시장을 찾습니다.' },
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
-        'buykorea':    { t: 'KOTRA 바이코리아', u: 'global-expansion.html#k-buykorea', d: 'KOTRA의 온라인 수출 플랫폼입니다.' },
+        'buykorea':    { t: 'KOTRA 바이코리아', u: 'global-expansion.html#k-buykorea', d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색·등록, 거래대금 온라인 결제, 국제 배송(EMS·DHL)까지 지원합니다.' },
+        // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 수출 플랫폼·정보 포털(2026-11-24)
+        'gobizkorea':  { t: '고비즈코리아 (kr.gobizkorea.com)', u: 'https://kr.gobizkorea.com', ext: true, d: '해외 바이어 거래알선(BMS)·수출계약대응지원 등 B2B 온라인 수출과 의류·패션 등 브랜드에 유리한 글로벌쇼핑몰 판매지원·K-브랜드 수출 플랫폼 육성·홍보 동영상 콘텐츠 제작·온라인 수출 공동물류 및 물류할인서비스를 지원합니다.' },
+        'buykorea-portal': { t: '바이코리아 (www.buykorea.org)', u: 'https://www.buykorea.org', ext: true, d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색 및 등록, 거래대금 온라인 결제, 국제 배송(EMS, DHL)까지 수출 거래 전 단계를 지원합니다.' },
+        'tribig':      { t: '트라이빅 (www.kotra.or.kr/bigdata)', u: 'https://www.kotra.or.kr/bigdata', ext: true, d: '1.3억 건의 수출통계와 600만 해외기업 DB를 바탕으로 AI가 품목별 유망 시장과 잠재 파트너 리스트를 추천하고, 무역투자통계와 국가별 시장정보를 시각화된 자료로 제공합니다.' },
+        'kotra-dream': { t: '해외경제정보Dream (dream.kotra.or.kr)', u: 'https://dream.kotra.or.kr/', ext: true, d: '각 부처와 기관에 흩어져 있는 해외 진출 정보를 시장별·단계별로 통합 제공하는 범정부 플랫폼입니다.' },
+        'kita-portal': { t: '한국무역협회 무역정보포털 (www.kita.net)', u: 'https://www.kita.net', ext: true, d: '무역 통계, 수출 실무 가이드, 관련 법령 및 해외 인증 정보를 종합적으로 확인할 수 있습니다.' },
+        'voucher-portal': { t: '수출바우처 포털 (www.exportvoucher.com)', u: 'https://www.exportvoucher.com', ext: true, d: '해외 진출 및 마케팅에 필요한 서비스를 지원하는 수출바우처 사업과 해외지사화 사업 등을 신청할 수 있습니다.' },
         'k-exhib':     { t: 'KOTRA 해외전시회', u: 'global-expansion.html#k-exhib', d: '해외전시회 참가 지원 사이트로 연결합니다. 모집 일정은 공고를 확인하세요.' },
         'akei':        { t: '한국전시산업진흥원', u: 'global-expansion.html#exhibit', d: '국내외 전시회 정보를 찾아봅니다.' },
         'b-potential': { t: 'KOTRA 잠재바이어 발굴', u: 'global-expansion.html#b-potential', d: 'KOTRA 해외무역관이 잠재 바이어를 대신 찾아 주는 유료 대행 서비스입니다.' },
@@ -777,10 +786,17 @@
               { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
           ] },
         { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
-          items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'buykorea' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'b2c' }, { id: 'c-more' }] },
+          items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'b2c' }, { id: 'c-more' }] },
         { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
           items: [{ id: 'ksure-group', st: [0, 1, 2] }, { id: 'ins-support' }, { id: 'kon' }, { id: 'qna-f' }, { id: 'import-ins', on: ['form:relay', 'form:import'] }] },
-        { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] }
+        { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] },
+        // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 대상 주요 수출 플랫폼·정보·바우처 포털(2026-11-24)
+        { t: '바이어 매칭·온라인 수출 플랫폼 (B2B·B2C)', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
+          items: [{ id: 'gobizkorea' }, { id: 'buykorea-portal', skipIf: ['buykorea'] }] },
+        { t: '시장 분석·수출 정보 포털', on: ['form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
+          items: [{ id: 'tribig' }, { id: 'kotra-dream' }, { id: 'kita-portal' }] },
+        { t: '수출 지원사업·바우처 포털', on: ['form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
+          items: [{ id: 'voucher-portal' }] }
     ];
     // 결과 맨 아래 고정 줄
     var FOOT_LINKS = ['roadmap', 'notices', 'ins-cases', 'k-cases'];
