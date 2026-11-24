@@ -693,6 +693,30 @@
         }
     }
 
+    /* ---------- 먼저 찾아볼 정보 사이트(KOTRA AI·KATI·화장품, 2026-11-24) ---------- */
+    function renderAiPicks() {
+        var box = $('egAiBox'), ul = $('egAiList');
+        if (!box || !ul) return;
+        ul.textContent = '';
+        var c = { st: stageIdx(a.q1), consult: needList(a).indexOf('consult') >= 0, item: hasItem };
+        var n = 0;
+        (M.aiPicks || []).forEach(function (p) {
+            if (!M.links[p.id] || !p.when(c)) return;
+            var li = el('li');
+            var x = linkEl(p.id, 'eg-ai-link');
+            var ic = el('i', 'fa-solid fa-arrow-up-right-from-square pf-ext');
+            ic.setAttribute('aria-hidden', 'true');
+            x.appendChild(document.createTextNode(' '));
+            x.appendChild(ic);
+            li.appendChild(x);
+            li.appendChild(el('span', 'eg-ai-why', ' — ' + p.why(c)));
+            li.appendChild(el('span', 'eg-prog-d', M.links[p.id].d));
+            ul.appendChild(li);
+            n++;
+        });
+        box.hidden = !n;
+    }
+
     /* ---------- 결과 화면 ---------- */
     function finish() {
         var rec = renderResult(false);
@@ -710,6 +734,8 @@
         $('egSummary').textContent = oneLine();
 
         renderRoadmap();
+
+        renderAiPicks();
 
         var top = $('egTop');
         top.textContent = '';
