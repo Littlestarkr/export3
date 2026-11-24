@@ -556,7 +556,7 @@
         needs.forEach(function (n) { tags.push('need:' + n); });
         forms.forEach(function (f) { tags.push('form:' + f); });
         var ctx = {
-            st: st, rev: rev, noRev: noRev, a: a, has2: has2, hasItem: hasItem,
+            st: st, rev: rev, noRev: noRev, dealFund: dealFundOn(), a: a, has2: has2, hasItem: hasItem,
             forms: forms, issues: issues, pays: pays, needs: needs, tags: tags,
             pref: prefPicked, prefLabels: prefPicked.length ? listLabels('q2', prefPicked) : '',
             smallbiz: has2('smallbiz'),

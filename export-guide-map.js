@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 33;
+    var MAP_VERSION = 34;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -492,7 +492,16 @@
             return (c.rev === 5) ? '매출 100억 원 이상 중기업·강소기업(환변동보험 설계)이라서' : '';
         }},
         { id: 'trade-sure', pri: 2, match: function (c) {
-            return (c.st <= 5 && c.sme) ? '연간 수출실적 1천만 달러 미만 수출(예정) 중소기업 대상(무료 1:1 컨설팅 총 6회)이라서' : '';
+            if (!(c.st <= 5 && c.sme)) return '';
+            return c.dealFund
+                ? '수출실적이 아직 없는 계약·협상 중소기업도 이용 가능(무보 무료 1:1 컨설팅 총 6회)이라서'
+                : '연간 수출실적 1천만 달러 미만 수출(예정) 중소기업 대상(무료 1:1 컨설팅 총 6회)이라서';
+        }},
+        { id: 'credit', pri: 2, match: function (c) {
+            return c.dealFund ? '수출실적이 없어도 계약·협상 바이어의 신용을 미리 확인할 수 있는 무보 서비스라서' : '';
+        }},
+        { id: 'ksight', pri: 2, match: function (c) {
+            return c.dealFund ? '수출실적이 없어도 바이어·거래처 정보를 조회할 수 있는 무보 K-SIGHT·트라이빅이라서' : '';
         }},
 
         // ── 신용보증기금 (신보) ──
@@ -630,7 +639,7 @@
         title: '수출계약을 준비 중인 기업을 위한 자금 안내',
         // 위 안내와 겹쳐서 아래 '조건에 맞는 정책금융' 등에서 빼는 항목
         coveredIds: ['kodit-export', 'kodit', 'kibo', 'kosmes-dom', 'kosmes-startup', 'kosmes-growth', 'semas-general', 'semas-maker', 'semas-youth', 'semas-innov', 'seoul-shinbo', 'exim-perform', 'ibk-export'],
-        // 무보 금융·보험 상품(이 구간에서 추천 제외). TRADE-SURE 무료 컨설팅·K-SIGHT 바이어 검색은 상품이 아니라 남긴다.
+        // 무보 금융·보험 상품(이 구간에서 추천 제외). TRADE-SURE 무료 컨설팅·K-SIGHT 바이어 검색·국외기업 신용조사는 계약만 있는 기업에도 계속 추천한다(2026-11-24 작가님 확정).
         excludeIds: ['guarantee', 'claim', 'claim-exempt', 'ksure-direct', 'ksure-postship', 'ksure-after', 'ksure-plus', 'ksure-dplus', 'ksure-group', 'ksure-agri', 'ksure-service', 'ins-support', 'kon', 'qna-f', 'fx', 'qna-fx', 'import-ins'],
         excludeUrl: ['trade-insurance.html#ksure', 'org=ksure'],
         statusLabel: { ok: '가능', cond: '조건부 가능', alt: '수출 전용은 아직 불가 · 일반자금', deal: '계약서가 있으면' },
@@ -716,7 +725,7 @@
             { t: '회사·제품 소개서와 바이어 정보(나라·회사명·거래 조건)' },
             { t: '(있으면) 수출바우처 등 선정 확인서, 특허·벤처·이노비즈 등 기술 서류' }
         ],
-        ksureNote: '무역보험공사(무보) 보증·보험 상품은 수출실적이 없는 단계에서는 승인 문턱이 높아 이 안내에서는 뺐습니다. 첫 수출을 마친 뒤 다시 확인하세요.',
+        ksureNote: '무역보험공사(무보) 보증·보험 상품은 수출실적이 없는 단계에서는 승인 문턱이 높아 이 안내에서는 뺐습니다(첫 수출을 마친 뒤 다시 확인하세요). 다만 TRADE-SURE 무료 컨설팅·K-SIGHT 바이어 검색·국외기업 신용조사는 실적이 없어도 바로 이용할 수 있어 아래 추천에 포함했습니다.',
         bigNote: '이번 건 계약금액이 10만 달러 이상이면 기관마다 한도·심사 방식이 달라질 수 있습니다. 아래 안내를 출발점으로 보시고, 금액에 맞춘 조합은 상담에서 함께 짜 드립니다.',
         negoNote: '아직 계약 전이라면 \'계약서가 있으면\' 표시가 붙은 곳은 계약서에 서명한 뒤에 신청할 수 있습니다. 보증 상담은 지금 바로 시작하셔도 됩니다.',
         disclaimer: '이 안내는 각 기관이 공개한 자료를 바탕으로 정리한 참고용이며, 보증·대출 승인을 보장하지 않습니다. \'공고 확인\' 표시가 붙은 내용은 최신 공고 원문으로 아직 확인하지 못한 것이니, 신청 전에 해당 기관에 꼭 확인하세요.'
