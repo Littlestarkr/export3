@@ -377,3 +377,58 @@ body.eg-asking .pf-floatnav { display: none; }
 /* Q1 보조 '진행 거래'의 꼬리 질문(계약금액, 2026-11-24): 위 보기와 구분되게 위쪽 선 */
 .eg-follow { margin-top: 16px; padding-top: 14px; border-top: 1px dashed #d5dcea; }
 .eg-follow-help { margin: -4px 0 10px; font-size: 0.86rem; color: #555; line-height: 1.55; }
+
+/* 수출실적 0 + 수출계약 보유 기업 전용 자금 안내 (#egDealFund, 2026-11-24 작가님) */
+.eg-df { margin: 0 0 22px; padding: 18px 18px 20px; border: 2px solid #c5a059; border-radius: 12px; background: #fffdf6; }
+.eg-df[hidden] { display: none; }
+.eg-df-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.eg-df-badge { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: #0d1e38; color: #f6e3a8; font-size: 0.78rem; font-weight: 700; }
+.eg-df-title { margin: 0; font-size: 1.18rem; color: #0d1e38; line-height: 1.45; }
+.eg-df-intro { margin: 0 0 10px; font-size: 0.95rem; line-height: 1.7; color: #333; }
+.eg-df-notes { margin: 0 0 6px; padding-left: 20px; font-size: 0.88rem; line-height: 1.65; color: #555; }
+.eg-df-notes li { margin-bottom: 4px; }
+.eg-df-notes li.is-strong { color: #7c2d12; font-weight: 600; }
+.eg-df-sub { margin: 18px 0 10px; font-size: 1.02rem; color: #0d1e38; }
+.eg-df-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.eg-df-card { display: flex; flex-direction: column; padding: 14px; border: 1px solid #e2e6ee; border-left-width: 5px; border-radius: 10px; background: #fff; }
+.eg-df-card.is-ok { border-left-color: #15803d; }
+.eg-df-card.is-cond { border-left-color: #c5a059; }
+.eg-df-card.is-alt { border-left-color: #94a3b8; }
+.eg-df-card.is-deal { border-left-color: #1a3a6c; }
+.eg-df-card.is-fit { box-shadow: 0 0 0 2px #f2d98c; }
+.eg-df-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+.eg-df-org { font-size: 0.98rem; color: #0d1e38; }
+.eg-df-st { padding: 2px 9px; border-radius: 999px; font-size: 0.76rem; font-weight: 700; line-height: 1.5; }
+.eg-df-st.is-ok { background: #dcfce7; color: #14532d; }
+.eg-df-st.is-cond { background: #fef3c7; color: #7c580a; }
+.eg-df-st.is-alt { background: #eef1f5; color: #475569; }
+.eg-df-st.is-deal { background: #e0e9f7; color: #1a3a6c; }
+.eg-df-prod { margin: 6px 0 4px; font-weight: 700; font-size: 0.92rem; color: #333; line-height: 1.5; }
+.eg-df-fit { margin: 2px 0 4px; font-size: 0.84rem; color: #15803d; font-weight: 600; }
+.eg-df-fit.is-wait { color: #1a3a6c; }
+.eg-df-pts { margin: 4px 0 8px; padding-left: 18px; font-size: 0.87rem; line-height: 1.6; color: #444; }
+.eg-df-pts li { margin-bottom: 4px; }
+.eg-df-me { color: #0d1e38; }
+.eg-df-chk, .eg-df-wait { display: inline-block; padding: 0 7px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; line-height: 1.6; vertical-align: 1px; white-space: nowrap; }
+.eg-df-chk { background: #fff4e5; border: 1px solid #f0b46a; color: #9a4a00; }
+.eg-df-wait { background: #e0e9f7; color: #1a3a6c; }
+.eg-df-where { margin: auto 0 6px; font-size: 0.84rem; color: #555; line-height: 1.55; }
+.eg-df-where i { color: #8a6a1f; }
+.eg-df-go { align-self: flex-start; font-size: 0.88rem; font-weight: 700; color: #1a3a6c; }
+.eg-df-steps { margin: 0; padding-left: 0; list-style: none; counter-reset: dfstep; }
+.eg-df-steps > li { position: relative; padding: 10px 12px 10px 46px; margin-bottom: 8px; background: #fff; border: 1px solid #e8d49c; border-radius: 10px; counter-increment: dfstep; }
+.eg-df-steps > li::before { content: counter(dfstep); position: absolute; left: 12px; top: 10px; width: 24px; height: 24px; border-radius: 50%; background: #c5a059; color: #fff; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+.eg-df-step-h { font-size: 0.95rem; color: #0d1e38; line-height: 1.5; }
+.eg-df-why { margin: 4px 0 0; font-size: 0.87rem; line-height: 1.65; color: #444; }
+.eg-df-other { margin: 4px 0 0; }
+.eg-df-other > summary { cursor: pointer; font-size: 0.9rem; font-weight: 600; color: #1a3a6c; padding: 6px 0; }
+.eg-df-other[open] > summary { margin-bottom: 8px; }
+.eg-df-docs { margin: 0 0 6px; padding-left: 20px; font-size: 0.9rem; line-height: 1.7; color: #333; }
+.eg-df-disc { margin: 16px 0 12px; padding: 12px 14px; border: 1px solid #f3b4b4; border-left: 5px solid #c0392b; border-radius: 8px; background: #fff5f5; color: #7f1d1d; font-size: 0.87rem; line-height: 1.65; font-weight: 600; }
+.eg-df-cta { display: inline-flex; }
+@media (max-width: 768px) {
+    .eg-df { padding: 14px 12px 16px; }
+    .eg-df-grid { grid-template-columns: minmax(0, 1fr); }
+    .eg-df-title { font-size: 1.08rem; }
+}
+@media print { .eg-df { break-inside: auto; } .eg-df-card, .eg-df-steps > li { break-inside: avoid; } .eg-df-cta { display: none; } .eg-df-other:not([open]) > :not(summary) { display: block; } }
