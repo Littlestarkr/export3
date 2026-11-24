@@ -734,9 +734,20 @@ nav a:hover {
     }
 
     nav ul {
-        gap: 15px;
+        gap: 10px 15px;
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    /* 메뉴를 늘 두 줄로: 1줄 소개~상담 신청, 2줄 고객사·협력사~핫이슈 (2026-11-24) */
+    nav ul::before {
+        content: "";
+        flex-basis: 100%;
+        order: 1;
+    }
+
+    nav li:nth-child(n+5) {
+        order: 2;
     }
 
     .hero {
@@ -1231,4 +1242,14 @@ textarea:focus-visible,
 @media (prefers-reduced-motion: reduce) { .roadmap-banner:hover { transform: none; } }
 @media (max-width: 768px) {
     .eg-handoff { scroll-margin-top: 16px; }
+}
+
+/* 태블릿 폭(769~1024px): 메뉴·로고 글자가 칸 안에서 두 줄로 꺾이지 않게 (2026-11-24) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .logo h1, nav a { white-space: nowrap; }
+    nav ul { gap: 18px; }
+}
+@media (min-width: 769px) and (max-width: 900px) {
+    nav ul { gap: 14px; }
+    nav a { font-size: 0.95rem; }
 }
