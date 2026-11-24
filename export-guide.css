@@ -376,3 +376,4 @@ body.eg-asking .pf-floatnav { display: none; }
 
 /* Q1 보조 '진행 거래'의 꼬리 질문(계약금액, 2026-11-24): 위 보기와 구분되게 위쪽 선 */
 .eg-follow { margin-top: 16px; padding-top: 14px; border-top: 1px dashed #d5dcea; }
+.eg-follow-help { margin: -4px 0 10px; font-size: 0.86rem; color: #555; line-height: 1.55; }

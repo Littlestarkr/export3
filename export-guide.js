@@ -244,6 +244,7 @@
             var fh = el('p', 'eg-grp-h', q.followOne.label);
             fh.id = 'egGrpF';
             fw.appendChild(fh);
+            if (q.followOne.help) fw.appendChild(el('p', 'eg-follow-help', q.followOne.help));
             var fsub = el('div', 'eg-opts');
             fsub.setAttribute('role', 'radiogroup');
             fsub.setAttribute('aria-labelledby', 'egGrpF');
@@ -677,7 +678,7 @@
         var rvTxt = rv ? (rv.v === 'r0' ? '매출 없음' : '매출 ' + rv.short) : '';
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rvTxt ? ' · ' + rvTxt : '') + ' 단계';
         var dl = dealObj();
-        var paren = [dl ? '계약금액 ' + dl.short : '', rvTxt].filter(Boolean).join(', ');
+        var paren = [dl ? '이번 건 계약금액 ' + dl.short : '', rvTxt].filter(Boolean).join(', ');
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (paren ? '(' + paren + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
@@ -690,7 +691,7 @@
         L.push('[수출 가이드 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
         if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
-        if (dealObj()) s1 += ' / 계약금액: ' + dealObj().label;
+        if (dealObj()) s1 += ' / 이번 건 계약금액: ' + dealObj().label;
         L.push(s1);
         if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));

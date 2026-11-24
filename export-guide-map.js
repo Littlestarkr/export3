@@ -139,7 +139,8 @@
             // '아직 없음'으로 바꾸면 고른 금액은 지운다(export-guide.js pick).
             followOne: {
                 id: 'q1c',
-                label: '진행 중인 거래의 계약금액은 얼마인가요? (협상 중이면 예상 금액)',
+                label: '이번 건 계약금액은 얼마인가요?',
+                help: '위 1번의 최근 1년 수출실적과 별개로, 지금 진행 중인 이번 거래 한 건의 금액입니다. 협상 중이면 예상 금액을 골라 주세요.',
                 when: function (a) { return a.q1b === 'nego' || a.q1b === 'order'; },
                 options: DEALS.map(function (d) { return { v: d.v, label: d.label }; })
             }
