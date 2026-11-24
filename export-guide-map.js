@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 32;
+    var MAP_VERSION = 33;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -44,10 +44,10 @@
         buyer:   '바이어를 못 찾겠다',
         docs:    '수출서류·계약서가 어렵다',
         collect: '대금을 못 받을까 걱정된다',
-        importer: '수입자 신용조사가 필요하다',
+        fund:    '생산·선적 전 자금이 부족하다',
         factoring: '수출채권 유동화(선적 후 대금 조기 현금화)가 필요하다',
         fx:      '환율 변동이 부담된다',
-        fund:    '생산·선적 전 자금이 부족하다',
+        importer: '수입자 신용조사가 필요하다',
         cert:    '해외인증·규제를 모른다',
         hs:      'HS코드·관세·통관을 모른다',
         support: '받을 수 있는 정부지원사업을 모른다',
@@ -96,7 +96,7 @@
     var ISSUE_ORDER = {
         s0: ['market', 'buyer', 'support', 'cert', 'hs', 'docs'],
         s1: ['buyer', 'docs', 'hs', 'cert', 'support', 'fraud'],
-        s2: ['buyer', 'docs', 'collect', 'importer', 'fraud', 'support', 'cert', 'hs'],
+        s2: ['buyer', 'docs', 'collect', 'fund', 'fraud', 'support', 'cert', 'hs'],
         s3: ['buyer', 'collect', 'importer', 'fund', 'market', 'cert', 'docs', 'factoring', 'tclaim'],
         s4: ['buyer', 'market', 'cert', 'collect', 'importer', 'fund', 'factoring', 'fx', 'tclaim'],
         s5: ['buyer', 'market', 'cert', 'fx', 'collect', 'importer', 'factoring', 'tclaim', 'fund'],
