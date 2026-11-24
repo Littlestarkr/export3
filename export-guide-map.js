@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 36;
+    var MAP_VERSION = 37;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -77,7 +77,9 @@
         { k: ['사기', '해킹', '계좌변경', '계좌 변경'], ids: ['fraud'] },
         { k: ['클레임', '분쟁', '중재', '조정'], ids: ['trade-claim', 'kcab'] },
         { k: ['바우처'], ids: ['voucher'] },
-        { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd'] },
+        { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd', 'kibo-rnd'] },
+        { k: ['재기', '재도전', '재창업', '채무조정'], ids: ['kibo-retry', 'kodit-retry', 'kosmes-restart', 'semas-retry'] },
+        { k: ['기보', '기술보증'], ids: ['kibo', 'kibo-rnd', 'kibo-retry'] },
         { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['b2c', 'c-more'] },
         { k: ['b2b', '플랫폼'], ids: ['b-b2b', 'buykorea'] },
         { k: ['물류', '배송', '운송', '포워딩', '포워더'], ids: ['c-logi', 'customs'] },
@@ -320,7 +322,12 @@
         'kodit-esg':   { t: '신보 소부장·스마트공장 특화보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '소재·부품·장비 경쟁력 강화 보증, 스마트공장 특화지원 및 신성장동력산업 보증입니다.' },
         'kodit-mainbiz':{ t: '신보 경영혁신형(메인비즈) 우대보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '메인비즈 인증 기업 보증료율 0.1~0.2%p 차감·보증비율 85~90% 우대 및 매출채권보험 할인입니다.' },
         // 후순위 '더 찾아볼 곳' 및 기보·지역신보·무역협회·무보 다이렉트
-        'kibo':        { t: '기술보증기금 수출기업보증', u: 'policy-finance.html?org=kibo#kibo-export', d: '수출예상·실적·주력·유망 기술혁신선도형 중소기업 대상 보증비율 90~95%·보증료 0.2~0.4%p 감면(벤처·이노비즈·연구소·창업·소셜벤처·재도전 보증 포함).' },
+        'kibo':        { t: '기술보증기금 수출기업보증', u: 'policy-finance.html?org=kibo#kibo-export', d: '수출예상·실적·주력·유망 기술혁신선도형 중소기업 대상 보증비율 90~95%·보증료 0.2~0.4%p 감면 및 심사 완화 우대 보증입니다.' },
+        'kibo-rnd':    { t: '기술보증기금 R&D보증', u: 'policy-finance.html?org=kibo#kibo-rnd', d: '아이디어·개발 단계(연구개발·디자인·시제품 등 개발완성자금)부터 사업화 단계(개발 종료 후 3년 이내 운전·시설자금)까지 전주기 R&D 금융을 지원하는 보증입니다.' },
+        'kibo-retry':  { t: '기술보증기금 재도전 재기지원보증', u: 'policy-finance.html?org=kibo#kibo-retry', d: '기술력을 갖춘 실패 경영자(기보 단독채무자)의 재기·재창업 기업에 최대 75~90% 채무조정(또는 회생지원보증)과 재기자금 신규보증을 함께 지원합니다(기술평가료 무료).' },
+        'kibo-pre':    { t: '기술보증기금 예비창업자 사전보증', u: 'policy-finance.html?org=kibo#kibo-menu', d: '창업 전 예비창업자의 기술사업성을 사전 평가해 창업 후 보증 지원으로 연계하는 기보 성장단계별 창업 프로그램입니다(세부 요건은 기보 원문 확인).' },
+        'kibo-youth':  { t: '기술보증기금 청년창업기업 우대 프로그램', u: 'policy-finance.html?org=kibo#kibo-menu', d: '청년 기술창업기업을 위한 기보 성장단계별 창업 우대 보증 프로그램입니다(세부 요건은 기보 원문 확인).' },
+        'kibo-social': { t: '기술보증기금 소셜벤처 임팩트 보증', u: 'policy-finance.html?org=kibo#kibo-menu', d: '사회적 가치와 혁신성을 갖춘 사회적기업·소셜벤처 대상 기보 우대 보증입니다(세부 요건은 기보 원문 확인).' },
         'seoul-shinbo':{ t: '지역신용보증재단(서울신용보증재단) 보증', u: 'policy-finance.html?org=seoul#seoul-products', d: '창업·장애인·일자리/사회적·ESG·미래성장·모바일 자동심사 보증상품 안내(서울 외 지역은 소재지 신용보증재단 공고 확인).' },
         'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하) 대상 수출마케팅·수출이행 자금(최고 3억 원, 연 2.5~3.0% 고정금리).' },
         'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'policy-finance.html?org=ksure#ksure-direct', d: '매출 1억~100억 원·직수출 1만~200만 달러 미만(1만 달러 미만 시 간접수출 인정) 수출초보 중소기업용 비대면 100% 보증(한도 5천만~1억 원).' },
@@ -546,6 +553,24 @@
             if (c.rev === 3 && c.sme) return '매출 5억~20억 원 미만 성장 초입 소기업(기보 진입·수출기업보증)이라서';
             return '모든 수출(예정)기업 대상(기보 수출기업보증)이라서';
         }},
+        { id: 'kibo-rnd', pri: 2, match: function (c) {
+            if ((c.lab || c.venture || c.innobiz) && c.sme) return '기업부설연구소·벤처·이노비즈 보유 중소기업(기보 R&D보증)이라서';
+            if (c.rev === 3 && c.sme) return '매출 5억~20억 원 미만 성장 초입 소기업(기보 R&D 개발·사업화 보증)이라서';
+            if (c.under3 && c.sme && (c.industrial || c.service)) return '초기 창업 기술·개발기업(기보 R&D 개발·사업화 보증)이라서';
+            return '';
+        }},
+        { id: 'kibo-retry', pri: 2, match: function (c) {
+            return (c.restart && c.sme) ? '재도전·재창업 중소기업(기보 재도전 재기지원보증)이라서' : '';
+        }},
+        { id: 'kibo-pre', pri: 2, match: function (c) {
+            return (c.pre && c.sme) ? '예비창업자(기보 예비창업자 사전보증)라서' : '';
+        }},
+        { id: 'kibo-youth', pri: 2, match: function (c) {
+            return (c.youth && c.under7 && c.sme) ? '청년·창업 7년 이내 기업(기보 청년창업기업 우대 프로그램)이라서' : '';
+        }},
+        { id: 'kibo-social', pri: 2, match: function (c) {
+            return (c.social && c.sme) ? '사회적기업·소셜벤처 우대조건(기보 소셜벤처 임팩트 보증)이라서' : '';
+        }},
 
         // ── 지역신용보증재단 (서울신용보증재단) ──
         { id: 'seoul-shinbo', pri: 2, match: function (c) {
@@ -738,7 +763,7 @@
           items: [
               { id: 'policy-fund' }, { id: 'guarantee' },
               { id: 'kodit', skipIf: ['kodit-export', 'kodit-startup', 'kodit-youth', 'kodit-senior', 'kodit-retry'] },
-              { id: 'kibo' }, { id: 'seoul-shinbo' }, { id: 'kita-fund' },
+              { id: 'kibo', skipIf: ['kibo-rnd', 'kibo-retry', 'kibo-pre', 'kibo-youth', 'kibo-social'] }, { id: 'seoul-shinbo' }, { id: 'kita-fund' },
               { id: 'ksure-direct', st: [3, 4, 5] },
               { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
           ] },
