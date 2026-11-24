@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 26;
+    var MAP_VERSION = 31;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -56,7 +56,7 @@
         tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다',
         etc:     '기타(찾는 서비스 직접 적기)'
     };
-    // '기타'(2026-11-22 작가님): 단계별 목록 맨 끝에 늘 보이고, 고르면 입력칸(100자)이 열린다. 전체 선택에는 넣지 않는다.
+    // '기타'(2026-11-22 작가님): '더 보기' 목록 맨 끝에 있고(2026-11-24), 고르면 입력칸(100자)이 열린다. 전체 선택에는 넣지 않는다.
     // 적은 글은 아래 낱말과 맞춰 안내한다(소문자로 바꿔 '포함' 여부만 본다). 시트에는 글을 보내지 않고 '기타' 선택 여부만 저장한다.
     var ETC_KEYWORDS = [
         { k: ['전시', '박람회', '엑스포', '상담회', 'expo', 'fair'], ids: ['k-exhib', 'akei'] },
@@ -114,7 +114,7 @@
 
     var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'restart', 'esg_local'];
 
-    // 질문. type: one(하나) | multi(여러 개). optional: 건너뛸 수 있음. when: 보일 조건
+    // 질문. type: one(하나) | multi(여러 개). 모두 필수(2026-11-24 건너뛰기 없앰). when: 보일 조건
     var QUESTIONS = [
         {
             id: 'q1', type: 'one', title: '최근 1년(또는 전년도) 수출 및 매출실적은 얼마인가요?',
@@ -129,11 +129,12 @@
         },
         {
             id: 'q1b', type: 'one', title: '지금 진행 중인 해외 거래가 있나요?',
-            when: function (a) { return a.q1 === 's0'; },
+            // 2026-11-24 작가님: 실적이 있어도 추가 계약이 있으니 모두에게 묻는다(질문 9개로 통일). 실적 있음이면 보기 글자만 바뀐다(labelExp)
+            help: '최근 1년 수출실적과 별개로, 지금 진행 중인 거래를 알려 주세요.',
             options: [
-                { v: 'prep', label: '아직 없음(준비 중)' },
+                { v: 'prep', label: '아직 없음(준비 중)', labelExp: '지금 진행 중인 새 거래 없음' },
                 { v: 'nego', label: '바이어와 협상·샘플 진행 중' },
-                { v: 'order', label: '첫 주문을 받았음' }
+                { v: 'order', label: '첫 주문을 받았음', labelExp: '새 주문(계약)을 받았음' }
             ],
             // 꼬리 질문(2026-11-24 작가님): 협상·샘플 진행 중이거나 첫 주문을 받았으면 같은 화면 아래에 계약금액을 묻는다(필수).
             // '아직 없음'으로 바꾸면 고른 금액은 지운다(export-guide.js pick).
@@ -228,7 +229,9 @@
             ]
         },
         {
-            id: 'q8', type: 'multi', optional: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '꼭 답하지 않아도 됩니다. 여러 개 골라도 되고, 건너뛰어도 됩니다.',
+            // 2026-11-24 작가님: 질문 삭제(상담 신청은 결과 화면에 이미 있음). 화면에는 안 나오고(retired),
+            // 이전에 저장된 결과·기록의 글자를 읽으려고 정의만 남긴다. 추천 규칙의 'need:*'는 Q6 어려운 점과 겹쳐 따로 옮기지 않았다.
+            id: 'q8', type: 'multi', retired: true, title: '지금 가장 필요한 것은 무엇인가요?', help: '여러 개를 고를 수 있습니다.',
             options: [
                 { v: 'info', label: '수출 자료·도구' },
                 { v: 'market', label: '시장개척·바이어 발굴' },
@@ -646,11 +649,12 @@
     };
 
     // 결과 맨 앞 '먼저 찾아볼 정보 사이트'(2026-11-24 작가님). 조건은 '또는', 이 순서대로 보인다.
-    // c: { st(실적 구간 번호 0~6), consult(Q8 전문가 상담), item(품목 코드) }
+    // c: { st(실적 구간 번호 0~6), item(품목 코드) }
     // 수출경험이 많지 않음 = 최근 1년 수출실적 10만 달러 미만(s0~s3, KOTRA 내수기업 수출기업화 기준과 같음)
     var AI_PICKS = [
-        { id: 'kotra-ai', when: function (c) { return c.st <= 3 || c.consult; },
-          why: function (c) { return c.st <= 3 ? '수출을 시작하거나 경험을 쌓는 단계라서' : '전문가 상담을 원하셔서'; } },
+        // 옛 Q8 '전문가 상담' 조건은 질문 삭제(2026-11-24)로 뺐다
+        { id: 'kotra-ai', when: function (c) { return c.st <= 3; },
+          why: function () { return '수출을 시작하거나 경험을 쌓는 단계라서'; } },
         { id: 'kati', when: function (c) { return c.item('agri'); }, why: function () { return '농수산식품 수출(예정)기업이라서'; } },
         { id: 'kocei', when: function (c) { return c.item('cosmetic'); }, why: function () { return '화장품 수출(예정)기업이라서'; } },
         { id: 'kcii', when: function (c) { return c.item('cosmetic'); }, why: function () { return '화장품 수출(예정)기업이라서'; } }

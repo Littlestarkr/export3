@@ -88,16 +88,25 @@
     }
     // 진행 거래 계약금액(Q1 보조 질문의 꼬리 질문): 협상·첫 주문일 때만 의미가 있다
     function dealObj() {
-        if (a.q1 !== 's0' || !(a.q1b === 'nego' || a.q1b === 'order')) return null;
+        if (!(a.q1b === 'nego' || a.q1b === 'order')) return null;
         var list = M.deals || [];
         for (var i = 0; i < list.length; i++) if (list[i].v === a.q1c) return list[i];
         return null;
     }
     function followOn(q) { return !!(q.followOne && q.followOne.when(a)); }
-    function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
-    function visible() {
-        return M.questions.filter(function (q) { return !q.when || q.when(a); });
+    // 진행 거래(q1b) 짧은 이름: 실적 있음이면 '첫 주문' 대신 '새 주문'
+    function q1bShort() {
+        if (!a.q1b) return '';
+        if (a.q1 !== 's0') return ({ prep: '진행 중 새 거래 없음', nego: '협상·샘플 진행 중', order: '새 주문 받음' })[a.q1b] || '';
+        return M.short.q1b[a.q1b] || '';
     }
+    function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
+    function mainCount() { return M.questions.filter(function (q) { return !q.sub && !q.retired; }).length; }
+    function visible() {
+        return M.questions.filter(function (q) { return !q.retired && (!q.when || q.when(a)); });
+    }
+    // 시작 화면·제목의 '현황 N가지'를 실제 질문 수로 맞춘다(HTML 숫자는 JS가 꺼졌을 때·검색 설명용)
+    [].forEach.call(document.querySelectorAll('[data-eg-count]'), function (n) { n.textContent = mainCount(); });
     function show(view) {
         [vStart, vQ, vRes].forEach(function (v) { v.hidden = v !== view; });
         // 질문에 답하는 동안에는 떠 있는 '이전 화면'·'홈' 단추(back-nav.js)를 숨긴다. 휴대폰에서 보기 단추 위에 겹쳐
@@ -163,9 +172,11 @@
         var q = qs[step];
         // 기본값(작가님 2026-11-22: Q7은 외상거래 미리 선택). 처음 볼 때만 넣고, 사용자가 바꾼 값(빈 선택 포함)은 그대로 둔다.
         if (q.def && a[q.id] === undefined) a[q.id] = q.def.slice();
-        var total = qs.length;
-        $('egStep').textContent = (step + 1) + ' / ' + total;
-        $('egBar').value = step + 1;
+        // 진행 표시는 본 질문(보충 질문 sub 제외)만 센다: 시작 화면의 '현황 N가지'와 같은 숫자
+        var total = mainCount();
+        var num = qs.slice(0, step + 1).filter(function (x) { return !x.sub; }).length;
+        $('egStep').textContent = num + ' / ' + total + (q.sub ? ' · 보충 질문' : '');
+        $('egBar').value = num;
         $('egBar').max = total;
         var title = $('egTitle');
         title.textContent = (q.id === 'q7' && isPlan() && q.titlePlan) ? q.titlePlan : q.title;
@@ -196,12 +207,17 @@
         $('egMsg').textContent = '';
 
         var opts = q.options.slice();
+        if (q.id === 'q1b' && a.q1 !== 's0') opts = opts.map(function (o) { return o.labelExp ? { v: o.v, label: o.labelExp } : o; });
         if (q.id === 'q7' && !isPlan()) opts = opts.filter(function (o) { return !o.planOnly; });
         var more = [];
         if (q.id === 'q6') {
             var order = M.issueOrder[a.q1] || M.issueOrder.s0;
-            var first = order.concat(['etc']).map(function (k) { return { v: k, label: M.issues[k] }; });
+            var first = order.map(function (k) { return { v: k, label: M.issues[k] }; });
             more = opts.filter(function (o) { return order.indexOf(o.v) < 0 && o.v !== 'etc'; });
+            // 2026-11-24 작가님: '기타'가 첫 목록 끝에 있으면 거기서 끝나는 줄 알게 된다 →
+            // 첫 목록이 8개가 되도록 '더 보기'에서 앞의 것을 올리고, '기타'는 '더 보기' 맨 끝으로
+            while (first.length < 8 && more.length) first.push(more.shift());
+            more.push({ v: 'etc', label: M.issues.etc });
             opts = first;
         }
         var box = $('egOpts');
@@ -279,7 +295,6 @@
         }
 
         $('egPrev').disabled = step === 0;
-        $('egSkip').hidden = !q.optional;
         refreshOpts(q);
         updateNext(q);
         title.focus({ preventScroll: true });
@@ -305,7 +320,6 @@
         if (q.type === 'one') {
             var changed = a[q.id] !== v;
             a[q.id] = v;
-            if (q.id === 'q1' && v !== 's0') { delete a.q1b; delete a.q1c; }
             // '아직 없음(준비 중)'으로 바꾸면 꼬리 질문(계약금액)에서 고른 값을 지운다
             if (q.followOne && !q.followOne.when(a)) delete a[q.followOne.id];
             if (q.id === 'q1' && changed) { delete a.q6; }
@@ -377,13 +391,13 @@
         var last = step === qs.length - 1;
         var btn = $('egNext');
         btn.textContent = last ? '결과 보기' : '다음';
-        btn.disabled = !q.optional && !answered(q);
+        btn.disabled = !answered(q);
     }
     function next() {
         var qs = visible();
         var q = qs[step];
         if (!q) return;
-        if (!q.optional && !answered(q)) {
+        if (!answered(q)) {
             $('egMsg').textContent = '하나 이상 골라 주세요.';
             return;
         }
@@ -393,12 +407,6 @@
     $('egNext').addEventListener('click', next);
     $('egEtc').addEventListener('input', function () { a.q6etc = this.value.slice(0, 100); });
     $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); scrollToApp(true); } });
-    $('egSkip').addEventListener('click', function () {
-        var q = visible()[step];
-        if (q) delete a[q.id];
-        step++;
-        if (step >= visible().length) finish(); else { renderQ(); scrollToApp(true); }
-    });
 
     /* ---------- 추천 계산 ---------- */
     function tagWhy(hit) {
@@ -452,7 +460,12 @@
                 if (st >= 4) add('exim', 2, w);
                 if (hasItem('agri')) add('at', 2, w);
             },
-            cert:    function (w) { add('cert', 3, w); if (hasItem('cosmetic')) add('cosmetic', 2, w); },
+            // '해외인증·규제를 모른다'(2026-11-24): 고르면 해외인증 조회 가이드가 '먼저 볼 곳'에 오도록 6점(전엔 3점이라 상위 3곳에 못 들었다)
+            cert:    function (w) {
+                add('cert', 6, w);
+                if (hasItem('cosmetic')) add('cosmetic', 2, w);
+                if (hasItem('agri')) add('agri', 2, w);
+            },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
@@ -679,6 +692,7 @@
         var s = '최근 1년(또는 전년도) 수출실적 ' + st.short + (rvTxt ? ' · ' + rvTxt : '') + ' 단계';
         var dl = dealObj();
         var paren = [dl ? '이번 건 계약금액 ' + dl.short : '', rvTxt].filter(Boolean).join(', ');
+        if (a.q1 !== 's0' && a.q1b && a.q1b !== 'prep') s += '(진행 거래: ' + q1bShort() + (dl ? ', 이번 건 계약금액 ' + dl.short : '') + ')';
         if (a.q1 === 's0' && a.q1b) s = '수출실적이 아직 없고 ' + M.short.q1b[a.q1b] + (paren ? '(' + paren + ')' : '') + '인 단계';
         s += '의 ' + who + (bits ? '(' + bits + ')' : '') + '이고, ';
         var iss = arr(a.q6).map(function (k) { return k === 'etc' ? '기타' : M.issues[k]; });
@@ -690,7 +704,7 @@
         var L = [];
         L.push('[수출 가이드 결과]' + (withId && saved && saved.id ? ' 접수번호 ' + saved.id : ''));
         var s1 = '수출실적(최근 1년 또는 전년도): ' + st.label;
-        if (a.q1 === 's0' && a.q1b) s1 += ' / 진행 거래: ' + M.short.q1b[a.q1b];
+        if (a.q1b) s1 += ' / 진행 거래: ' + q1bShort();
         if (dealObj()) s1 += ' / 이번 건 계약금액: ' + dealObj().label;
         L.push(s1);
         if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
@@ -698,7 +712,8 @@
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
         if (arr(a.q6).indexOf('etc') >= 0 && etcValue()) L.push('기타(찾는 서비스): ' + etcValue());
-        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + ' / 필요: ' + (needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ') || '-'));
+        var nd = needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ');   // 옛 결과만(9번 질문은 2026-11-24 삭제)
+        L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + (nd ? ' / 필요: ' + nd : ''));
         return L.join('\n');
     }
 
@@ -745,7 +760,7 @@
         var box = $('egAiBox'), ul = $('egAiList');
         if (!box || !ul) return;
         ul.textContent = '';
-        var c = { st: stageIdx(a.q1), consult: needList(a).indexOf('consult') >= 0, item: hasItem };
+        var c = { st: stageIdx(a.q1), item: hasItem };
         var n = 0;
         (M.aiPicks || []).forEach(function (p) {
             if (!M.links[p.id] || !p.when(c)) return;
