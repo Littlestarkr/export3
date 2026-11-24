@@ -111,7 +111,7 @@
 
 /* Section B: 붙어 있는 검색·필터 막대 (PC는 고정 헤더 아래, 모바일은 맨 위) */
 .sc-filter {
-    position: sticky; top: 68px; z-index: 800; background: rgba(255, 255, 255, 0.97);
+    position: sticky; top: var(--sc-top, 68px); z-index: 800; background: rgba(255, 255, 255, 0.97);
     border-top: 1px solid #e3e7ee; border-bottom: 1px solid #e3e7ee; box-shadow: 0 4px 12px rgba(13, 30, 56, 0.06);
     padding: 10px 0 6px; backdrop-filter: blur(4px);
 }
@@ -191,7 +191,7 @@
 
 @media (max-width: 768px) {
     .sc-section { padding: 44px 0; }
-    .sc-filter { top: 0; padding: 8px 0 4px; }
+    .sc-filter { top: var(--sc-top, 0px); padding: 8px 0 4px; }
     .sc-search input { font-size: 16px; padding: 9px 0; }
     .sc-filter-toggle, .sc-reset { padding: 0 11px; font-size: 0.85rem; }
     .sc-chip-row { flex-direction: column; gap: 4px; }
@@ -216,3 +216,16 @@
 
 /* hidden 속성이 display 지정에 밀리지 않게 */
 .sc-filter [hidden], #scApp [hidden], .sc-state[hidden] { display: none !important; }
+
+/* PRD 반영(2026-11-24): 조건 0건 안내, 숨은 달 바로가기 비활성, 모바일 칩 가로 스크롤 */
+.sc-none { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 8px 0 4px; padding: 10px 14px; background: #fdf2f0; border: 1px solid #e3b5ae; border-radius: 8px; color: #6b2a20; }
+.sc-none p { font-weight: 600; font-size: 0.92rem; }
+.sc-none-btn { font-family: inherit; font-size: 0.88rem; font-weight: 700; cursor: pointer; background: #fff; color: #8e2a1f; border: 2px solid #e3b5ae; border-radius: 999px; padding: 6px 14px; min-height: 40px; }
+.sc-mn:disabled { opacity: 0.4; cursor: not-allowed; }
+.sc-chip-all[aria-pressed="true"]::before { content: none; }
+.sc-chip-all[aria-pressed="true"] { background: #fff8e6; color: #7a5b17; border-color: #d4a853; }
+@media (max-width: 768px) {
+    .sc-chip-list { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; scrollbar-width: thin; margin-right: -20px; padding-right: 20px; }
+    .sc-chip { flex: 0 0 auto; white-space: nowrap; min-height: 38px; }
+    .sc-chips { max-height: none; }
+}

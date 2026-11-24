@@ -363,3 +363,13 @@
 
 /* 질문 화면에서는 떠 있는 이전 화면·맨 위로·홈 단추를 숨긴다(export-guide.js의 show()가 body.eg-asking을 붙인다) */
 body.eg-asking .pf-floatnav { display: none; }
+
+/* 결과 화면 하단: 지원사업 연간 캘린더 연결 배너 (2026-11-24) */
+.eg-cal-banner { display: flex; align-items: center; gap: 14px; margin: 18px 0 0; padding: 14px 16px; border-radius: 10px; background: linear-gradient(135deg, #0d1e38 0%, #1a3a6c 100%); color: #fff; text-decoration: none; }
+.eg-cal-banner:hover { box-shadow: 0 6px 16px rgba(13, 30, 56, 0.25); color: #fff; }
+.eg-cal-ic { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; background: rgba(197, 160, 89, 0.18); color: #c5a059; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.eg-cal-txt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.eg-cal-txt strong { color: #f6e3a8; font-size: 1rem; }
+.eg-cal-txt small { font-size: 0.86rem; opacity: 0.9; line-height: 1.5; }
+.eg-cal-go { flex: 0 0 auto; font-weight: 700; color: #c5a059; white-space: nowrap; }
+@media print { .eg-cal-banner { display: none; } }

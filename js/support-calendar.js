@@ -10,13 +10,15 @@
     var PINNED_LIMIT = 4;
 
     // 표시 이름. JSON에 새 값이 오면 그 값을 그대로 보여 준다.
-    var TYPE_LABEL = { urgent: '긴급', always: '상시', rolling: '수시', regular: '정기' };
-    var STATUS_LABEL = { open: '접수 중', expected: '공고 예정', tentative: '일정 잠정', closed: '마감' };
+    // PRD 4.1: 일정 유형(고정값)과 일정 상태(변동 배지)를 나눈다.
+    var TYPE_LABEL = { urgent: '긴급·한시', always: '상시', rolling: '수시', regular: '정기' };
+    var TYPE_CHIP = { regular: '정기(월별)' };
+    var STATUS_LABEL = { expected: '통상 시기(예정)', tentative: '잠정', open: '접수중', closed: '마감' };
     // 필터 칩 순서(여기 없는 새 값은 뒤에 붙는다)
     var ORDER = {
-        type: ['urgent', 'always', 'rolling', 'regular'],
-        cat: ['금융·무역보험', '바우처·마케팅', '전시·상담회', '인증·지재권·규제', '물류·통관·FTA', '농식품(K-푸드)', '스타트업·조달'],
-        agency: ['KOTRA', '중기부·중진공', 'K-SURE', 'aT', '기타 유관기관'],
+        type: ['regular', 'always', 'rolling', 'urgent'],
+        cat: ['바우처·마케팅', '금융·무역보험', '인증·지재권·규제', '전시·상담회', '물류·통관·FTA', '농식품(K-푸드)', '스타트업·조달'],
+        agency: ['K-SURE', 'KOTRA', '중기부·중진공', 'aT', '기타 유관기관'],
         stage: ['내수·무실적 가능', '수출 초보·유망', '성장·중견']
     };
     var GROUPS = [
@@ -117,11 +119,13 @@
         // 옛 주소(github.io/export3)는 상담 신청 칸이 아니라 첫 화면으로 가므로 현재 사이트 상담 신청으로 보낸다.
         if (/littlestarkr\.github\.io/i.test(consultUrl)) consultUrl = CONSULT_DEFAULT;
         if (meta.notice) $('scNotice').textContent = meta.notice;
+        if (meta.notice) $('scNotice2').textContent = meta.notice;
+        $('scCtaConsult').href = consultUrl;
         var asof = $('scAsof');
         if (meta.lastUpdated && /^\d{4}-\d{2}-\d{2}$/.test(meta.lastUpdated)) {
             var d = meta.lastUpdated.split('-');
             asof.setAttribute('datetime', meta.lastUpdated);
-            asof.textContent = d[0] + '년 ' + parseInt(d[1], 10) + '월 ' + parseInt(d[2], 10) + '일';
+            asof.textContent = d[0] + '.' + d[1] + '.' + d[2];
         } else {
             asof.textContent = meta.lastUpdated || '표기 없음';
         }
@@ -135,12 +139,23 @@
                 TYPE_LABEL[p.scheduleType] || ''].join(' ').toLowerCase();
         });
 
-        // 히어로 버튼
-        $('scNowLabel').textContent = '지금은 ' + NOW + '월입니다 · 이번 달 사업 보기';
+        // 히어로 버튼: '지금은 ○월입니다 — 이번 달 주목할 사업 N건 바로 보기'(PRD 3.1)
+        var nowCnt = data.list.filter(function (p) { return p._months.indexOf(NOW) >= 0; }).length;
+        $('scNowLabel').textContent = '지금은 ' + NOW + '월입니다 — 이번 달 주목할 사업 ' + nowCnt + '건 바로 보기';
         $('scNowBtn').addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); goMonth(NOW); });
         var nx = nextMonth(NOW);
         $('scNextBtn').textContent = '다음 달(' + nx + '월) 미리 보기';
         $('scNextBtn').addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); goMonth(nx); });
+
+        // 고정 헤더 높이(메뉴가 두 줄이 되는 화면 포함)에 맞춰 검색·필터 막대가 붙을 위치를 정한다
+        var setTop = function () {
+            var hd = document.querySelector('header');
+            var top = (hd && getComputedStyle(hd).position === 'fixed') ? hd.offsetHeight : 0;
+            document.documentElement.style.setProperty('--sc-top', top + 'px');
+        };
+        setTop();
+        window.addEventListener('resize', setTop);
+        window.addEventListener('load', setTop);
 
         buildChips();
         buildMonthNav();
@@ -151,8 +166,15 @@
         render();
 
         // 주소에 #m-11 처럼 달이 있으면 그 달로
+        // #now 는 이번 달로(수출 가이드 결과 화면의 캘린더 배너가 쓴다)
         var m = /^#m-(\d{1,2})$/.exec(location.hash);
-        if (m) setTimeout(function () { goMonth(parseInt(m[1], 10), true); }, 50);
+        var target = m ? parseInt(m[1], 10) : (location.hash === '#now' ? NOW : 0);
+        if (target) {
+            // 글꼴·아이콘이 늦게 들어와 높이가 바뀌므로, 다 불러온 뒤 한 번 더 맞춘다
+            setTimeout(function () { goMonth(target, true); }, 50);
+            var again = function () { setTimeout(function () { goMonth(target, true); }, 120); };
+            if (document.readyState === 'complete') again(); else window.addEventListener('load', again);
+        }
     }
 
     // ── 필터 칩 ──
@@ -176,8 +198,14 @@
             row.setAttribute('aria-label', g.label);
             row.appendChild(el('span', 'sc-chip-label', g.label));
             var wrap = el('div', 'sc-chip-list');
+            var all = el('button', 'sc-chip sc-chip-all', '전체');
+            all.type = 'button';
+            all.setAttribute('aria-pressed', 'true');
+            all.dataset.group = g.key;
+            all.dataset.value = '';
+            wrap.appendChild(all);
             valuesOf(g.key).forEach(function (v) {
-                var b = el('button', 'sc-chip', g.key === 'type' ? (TYPE_LABEL[v] || v) : v);
+                var b = el('button', 'sc-chip', g.key === 'type' ? (TYPE_CHIP[v] || TYPE_LABEL[v] || v) : v);
                 b.type = 'button';
                 b.setAttribute('aria-pressed', 'false');
                 b.dataset.group = g.key;
@@ -190,18 +218,35 @@
         box.addEventListener('click', function (e) {
             var b = e.target.closest('.sc-chip');
             if (!b) return;
-            var s = state.sel[b.dataset.group];
-            if (s[b.dataset.value]) delete s[b.dataset.value]; else s[b.dataset.value] = true;
-            b.setAttribute('aria-pressed', s[b.dataset.value] ? 'true' : 'false');
+            var g = b.dataset.group;
+            if (!b.dataset.value) state.sel[g] = {};
+            else if (state.sel[g][b.dataset.value]) delete state.sel[g][b.dataset.value];
+            else state.sel[g][b.dataset.value] = true;
+            syncChips();
             render();
         });
         // 넓은 화면은 처음부터 펼친다
         if (window.matchMedia && window.matchMedia('(min-width: 1025px)').matches) setChips(true);
     }
 
+    function syncChips() {
+        Array.prototype.forEach.call(document.querySelectorAll('.sc-chip'), function (b) {
+            var s = state.sel[b.dataset.group];
+            var on = b.dataset.value ? !!s[b.dataset.value] : !Object.keys(s).length;
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    }
+
     function setChips(open) {
         $('scChips').hidden = !open;
         $('scFilterToggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function resetAll() {
+        state.q = ''; $('scQ').value = '';
+        Object.keys(state.sel).forEach(function (k) { state.sel[k] = {}; });
+        syncChips();
+        render();
     }
 
     function bindFilter() {
@@ -213,12 +258,8 @@
         });
         $('scQ').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); this.blur(); } });
         $('scFilterToggle').addEventListener('click', function () { setChips($('scChips').hidden); });
-        $('scReset').addEventListener('click', function () {
-            state.q = ''; $('scQ').value = '';
-            Object.keys(state.sel).forEach(function (k) { state.sel[k] = {}; });
-            Array.prototype.forEach.call(document.querySelectorAll('.sc-chip'), function (b) { b.setAttribute('aria-pressed', 'false'); });
-            render();
-        });
+        $('scReset').addEventListener('click', resetAll);
+        $('scNoneReset').addEventListener('click', resetAll);
         $('scPinnedMore').addEventListener('click', function () {
             state.pinnedOpen = !state.pinnedOpen;
             render();
@@ -296,7 +337,7 @@
             if (node) dd.appendChild(node);
             dl.appendChild(dd);
         }
-        row('지원대상', p.target);
+        row('추천 대상·자격', p.target);
         row('주관기관', p.agency);
         row('지원 분야', arr(p.categories).join(', '));
         row('수출 단계', arr(p.stages).join(', '));
@@ -311,6 +352,7 @@
         } else if (p.contact) {
             row('문의', p.contact);
         }
+        if (p.applyLabel) row('신청처', p.applyLabel);
         body.appendChild(dl);
 
         if (arr(p.tags).length) {
@@ -324,16 +366,15 @@
         if (au) {
             var a = el('a', 'sc-btn sc-btn-apply');
             a.href = au; a.target = '_blank'; a.rel = 'noopener noreferrer';
-            a.appendChild(document.createTextNode((p.applyLabel || '공식 신청처') + ' '));
-            a.appendChild(icon('fa-solid fa-arrow-up-right-from-square pf-ext'));
-            a.setAttribute('aria-label', (p.applyLabel || '공식 신청처') + ' (새 창)');
+            a.appendChild(document.createTextNode('공식 신청처 바로가기 ↗'));
+            a.setAttribute('aria-label', '공식 신청처 바로가기: ' + (p.applyLabel || p.title) + ' (새 창)');
             a.setAttribute('data-sc', 'apply');
             btns.appendChild(a);
         }
         var c = el('a', 'sc-btn sc-btn-consult');
         c.href = consultUrl;
         c.appendChild(icon('fa-regular fa-comments'));
-        c.appendChild(document.createTextNode(' Happy Oh 1:1 컨설팅 문의'));
+        c.appendChild(document.createTextNode(' 이 사업 상담 문의'));
         c.setAttribute('data-sc', 'consult');
         btns.appendChild(c);
         body.appendChild(btns);
@@ -344,7 +385,7 @@
         } else {
             var det = el('details', 'sc-acc');
             var sum = el('summary', null);
-            sum.appendChild(el('span', 'sc-acc-open', '지원대상·문의·신청처 보기'));
+            sum.appendChild(el('span', 'sc-acc-open', '추천 대상·문의·신청처 보기'));
             sum.appendChild(el('span', 'sc-acc-close', '접기'));
             sum.appendChild(icon('fa-solid fa-chevron-down sc-chev'));
             det.appendChild(sum);
@@ -395,6 +436,8 @@
     function goMonth(m, instant) {
         var t = $('m-' + m);
         if (!t) return;
+        // 필터 때문에 숨은 달이면 조건을 풀고 이동한다
+        if (t.hidden) { resetAll(); t = $('m-' + m); if (!t) return; }
         // 펼친 필터 칩이 화면을 가리지 않게, 달로 이동할 때는 접는다(고른 조건은 그대로, 버튼에 개수 표시)
         if (!$('scChips').hidden) setChips(false);
         scrollToEl(t, instant);
@@ -412,7 +455,23 @@
         $('scFcount').hidden = !n;
         $('scFcount').textContent = n ? String(n) : '';
         $('scReset').hidden = !filtering;
-        var monthly = list.filter(function (p) { return p._months.length && p.scheduleType !== 'urgent'; });
+        // 월이 있는 사업은 월별 타임라인에. 긴급 사업은 상단 배너에 나오면 월별에서는 뺀다.
+        var monthly = list.filter(function (p) {
+            return p._months.length && !(p.scheduleType === 'urgent' && p.isPinned !== false);
+        });
+        // 전체 결과 0건 안내(PRD 4.3)
+        $('scNone').hidden = list.length > 0;
+        if (!list.length) {
+            // 결과가 없어 페이지가 짧아지면 막대가 화면 밖으로 밀려날 수 있어, 안내가 보이도록 막대로 옮긴다
+            setTimeout(function () {
+                var bar = $('scFilter');
+                var top = parseInt(getComputedStyle(bar).top, 10) || 0;
+                var r = bar.getBoundingClientRect();
+                if (r.top < top - 1 || r.top > window.innerHeight) {
+                    window.scrollTo({ top: Math.max(0, window.pageYOffset + r.top - top), behavior: 'auto' });
+                }
+            }, 60);
+        }
         $('scCount').textContent = filtering
             ? '조건에 맞는 사업 ' + list.length + '건 (전체 ' + data.list.length + '건)'
             : '전체 ' + data.list.length + '건';
@@ -435,7 +494,7 @@
             if (!showAll && i >= PINNED_LIMIT) return;
             pBox.appendChild(buildCard(p));
         });
-        $('scPinnedEmpty').hidden = !!(pinned.length || urgentBox.children.length);
+        $('scPinnedEmpty').hidden = !!(pinned.length || urgentBox.children.length) || !list.length;
         var more = $('scPinnedMore');
         if (!filtering && pinned.length > PINNED_LIMIT) {
             more.hidden = false;
@@ -455,6 +514,8 @@
             if (nb) {
                 nb.querySelector('.sc-mn-n').textContent = String(items.length);
                 nb.classList.toggle('is-zero', !items.length);
+                // 조건으로 0건이 된 달은 숨기므로 바로가기도 누를 수 없게 한다
+                nb.disabled = filtering && !items.length;
                 nb.setAttribute('aria-label', m + '월, ' + items.length + '건' + (m === NOW ? ', 이번 달' : ''));
             }
             var sec = el('section', 'sc-month' + (m === NOW ? ' is-now' : '') + (!items.length ? ' is-empty' : ''));
@@ -480,11 +541,14 @@
                 items.forEach(function (p) { grid.appendChild(buildCard(p, { now: m === NOW })); });
                 sec.appendChild(grid);
             } else {
-                sec.appendChild(el('p', 'sc-empty', filtering
-                    ? '이 달에는 조건에 맞는 정기 공고가 없습니다.'
-                    : '이 달에 새로 열리는 정기 공고는 없습니다. 위의 상시·수시 사업과 이미 선정된 사업의 협약·집행 일정을 점검하세요.'));
+                sec.appendChild(el('p', 'sc-empty', '이 달에 새로 열리는 정기 공고는 없습니다. 위의 상시·수시 사업과 이미 선정된 사업의 협약·집행 일정을 점검하세요.'));
             }
+            // 검색·필터 결과가 0건인 달은 숨긴다(PRD 4.3). 조건 없이 볼 때는 빈 달도 액션 가이드와 함께 보여 준다.
+            if (filtering && !items.length) sec.hidden = true;
             box.appendChild(sec);
+        }
+        if (filtering && list.length && !monthly.length) {
+            box.appendChild(el('p', 'sc-empty', '조건에 맞는 월별 정기 사업은 없습니다. 위의 상시·긴급 사업을 확인하세요.'));
         }
     }
 
