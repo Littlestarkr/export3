@@ -95,9 +95,12 @@
     }
     function followOn(q) { return !!(q.followOne && q.followOne.when(a)); }
     function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
+    function mainCount() { return M.questions.filter(function (q) { return !q.sub; }).length; }
     function visible() {
         return M.questions.filter(function (q) { return !q.when || q.when(a); });
     }
+    // 시작 화면·제목의 '현황 N가지'를 실제 질문 수로 맞춘다(HTML 숫자는 JS가 꺼졌을 때·검색 설명용)
+    [].forEach.call(document.querySelectorAll('[data-eg-count]'), function (n) { n.textContent = mainCount(); });
     function show(view) {
         [vStart, vQ, vRes].forEach(function (v) { v.hidden = v !== view; });
         // 질문에 답하는 동안에는 떠 있는 '이전 화면'·'홈' 단추(back-nav.js)를 숨긴다. 휴대폰에서 보기 단추 위에 겹쳐
@@ -163,9 +166,11 @@
         var q = qs[step];
         // 기본값(작가님 2026-11-22: Q7은 외상거래 미리 선택). 처음 볼 때만 넣고, 사용자가 바꾼 값(빈 선택 포함)은 그대로 둔다.
         if (q.def && a[q.id] === undefined) a[q.id] = q.def.slice();
-        var total = qs.length;
-        $('egStep').textContent = (step + 1) + ' / ' + total;
-        $('egBar').value = step + 1;
+        // 진행 표시는 본 질문(보충 질문 sub 제외)만 센다: 시작 화면의 '현황 N가지'와 같은 숫자
+        var total = mainCount();
+        var num = qs.slice(0, step + 1).filter(function (x) { return !x.sub; }).length;
+        $('egStep').textContent = num + ' / ' + total + (q.sub ? ' · 보충 질문' : '');
+        $('egBar').value = num;
         $('egBar').max = total;
         var title = $('egTitle');
         title.textContent = (q.id === 'q7' && isPlan() && q.titlePlan) ? q.titlePlan : q.title;

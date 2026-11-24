@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 26;
+    var MAP_VERSION = 27;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -130,6 +130,8 @@
         {
             id: 'q1b', type: 'one', title: '지금 진행 중인 해외 거래가 있나요?',
             when: function (a) { return a.q1 === 's0'; },
+            // 보충 질문(2026-11-24 작가님: '8가지'라 해 놓고 9/9까지 나와 헷갈린다) → 진행 표시는 1번과 같은 번호로 센다
+            sub: true,
             options: [
                 { v: 'prep', label: '아직 없음(준비 중)' },
                 { v: 'nego', label: '바이어와 협상·샘플 진행 중' },
