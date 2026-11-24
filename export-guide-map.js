@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 38;
+    var MAP_VERSION = 39;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -86,7 +86,10 @@
         { k: ['수입보험', '선급금', '원자재 수입'], ids: ['import-ins'] },
         { k: ['채권', '팩토링', '현금화', '유동화', '네고'], ids: ['ksure-postship'] },
         { k: ['농산물', '수산물', '식품', '농식품'], ids: ['agri', 'at'] },
-        { k: ['화장품'], ids: ['cosmetic'] },
+        { k: ['화장품', '뷰티', '미용'], ids: ['cosmetic'] },
+        { k: ['의료기기', '바이오', '헬스케어', '식약처'], ids: ['cert-medical', 'cert'] },
+        { k: ['전략물자', 'yestrade', '수출통제', '전기전자', 'ul', 'fcc'], ids: ['cert-elec', 'customs'] },
+        { k: ['상표', '특허', '지재권', '지식재산', 'ip-desk'], ids: ['ip-help'] },
         { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
@@ -181,13 +184,15 @@
             ]
         },
         {
-            id: 'q3', type: 'multi', title: '어떤 품목인가요?', help: '여러 개를 고를 수 있습니다.',
+            id: 'q3', type: 'multi', grid2: true, title: '어떤 품목인가요?', help: '여러 개를 고를 수 있습니다.',
             options: [
-                { v: 'consumer', label: '소비재' },
-                { v: 'industrial', label: '산업재·부품' },
-                { v: 'agri', label: '농수산식품' },
-                { v: 'cosmetic', label: '화장품' },
-                { v: 'service', label: '서비스·콘텐츠' },
+                { v: 'cosmetic', label: '화장품·뷰티', sub: '스킨케어·미용기기' },
+                { v: 'agri', label: '농수산·가공식품', sub: 'K-푸드·건강기능식품' },
+                { v: 'consumer', label: '생활·패션·일반소비재', sub: '의류·잡화·유아·반려동물' },
+                { v: 'medical', label: '의료기기·바이오·헬스케어' },
+                { v: 'electronics', label: '전기·전자·IT기기', sub: '가전·스마트기기' },
+                { v: 'industrial', label: '기계·장비·소재·부품', sub: '금속·화학·산업용' },
+                { v: 'service', label: '서비스·SW·콘텐츠', sub: '앱·게임·디자인·용역' },
                 { v: 'etc', label: '기타' }
             ]
         },
@@ -251,6 +256,9 @@
         'buyer':       { t: '바이어 발굴 안내', u: 'global-expansion.html#buyer', d: 'K-SIGHT·트라이빅·Trade Map·B2B 플랫폼 등 바이어 찾는 길을 모았습니다.' },
         'b2c':         { t: 'B2C 온라인 판매(역직구) 시작 순서', u: 'global-expansion.html#c-flow', d: '플랫폼 선택부터 물류·결제까지 7단계로 정리했습니다.' },
         'cert':        { t: '해외인증 조회 가이드', u: 'cert-guide.html', d: '수출 단계와 품목에 맞는 해외인증 공식 조회 포털을 안내합니다.' },
+        'cert-medical':{ t: '의료기기·바이오 해외인증·인허가 안내', u: 'cert-guide.html#item-medical', d: '한국의료기기안전정보원(NIDS) 등 의료기기 등급 분류·인허가 조회 포털과 해외규격인증획득지원사업(지정 인증 최대 1억 5천만 원, 2026년 공고 기준)을 안내합니다.' },
+        'cert-elec':   { t: '전기·전자·공산품 해외인증 안내(CE·FCC·UL 등)', u: 'cert-guide.html#item-industrial', d: 'CE·FCC·UL·PSE 등 전기·전자·IT기기·기계류 필수 규격인증 조회 경로와 트레이드내비 교차 검증 방법을 안내합니다.' },
+        'ip-help':     { t: '해외지식재산센터(IP-DESK)·상표권·수출애로 상담', u: 'global-expansion.html#ip-help', d: '해외 상표·특허 출원, 위조품·지재권 분쟁 대응 상담(IP-DESK)과 무역 전문가 1:1 상담(TradePro)을 안내합니다.' },
         'voucher':     { t: '수출바우처', u: 'government-support.html#voucher', d: '시장조사·인증·홍보 등 수출 서비스를 골라 쓰는 지원사업입니다. 신청 자격은 해마다 공고를 확인하세요.' },
         'doc-builder': { t: '수출서류 작성기', u: 'doc-builder.html', d: '오퍼시트·PI·CI·P/L·선적통지 초안을 한 번의 입력으로 만듭니다.' },
         'contract':    { t: '계약서 작성기', u: 'contract-builder.html', d: '거래 조건에 맞는 매매계약서 초안과 추천 조항을 만듭니다.' },
@@ -295,7 +303,7 @@
         'exim-growth': { t: '수출입은행 수출성장자금', u: 'policy-finance.html?org=exim#exim-growth', d: '과거 수출실적(또는 원부자재 공급실적) 범위 내 수출 운전자금 일괄 지원(중소 350억~500억, 중견 500억~800억 원 이내).' },
         'exim-perform':{ t: '수출입은행 수출이행자금', u: 'policy-finance.html?org=exim#exim-perform', d: '수출계약별 제작이행~대금회수 자금((계약금액-기수령액)×90% 이내). 대·중견·중소기업 모두 이용 가능.' },
         'lawsearch':   { t: '법령 길잡이', u: 'https://www.littlestar.co.kr/lawsearch/', ext: true, d: '대외무역법·관세법 등 수출 관련 법령을 쉽게 찾아봅니다.' },
-        'customs':     { t: '관세청 유니패스 안내', u: 'global-expansion.html#customs', d: '수출 신고·통관 진행 조회 등 관세청 서비스입니다.' },
+        'customs':     { t: '통관·FTA·전략물자(YesTrade) 안내', u: 'global-expansion.html#customs', d: '관세청 유니패스·FTA·Trade NAVI·구매확인서와 전략물자 사전판정(YesTrade)·무역안보관리원(KOSTI)을 안내합니다.' },
         'rnd':         { t: '창업·R&D 지원사업', u: 'government-support.html#rnd', d: '예비창업패키지·TIPS 등 창업 기업용 지원사업입니다.' },
         'hope':        { t: '소진공 희망리턴패키지', u: 'government-support.html#hope', d: '폐업·재창업·재도전 소상공인의 재기·전환을 돕는 소진공 사업입니다.' },
         'agri':        { t: '농산물 수출 지원', u: 'global-expansion.html#agri', d: '농식품 수출 지원사업과 기관을 정리했습니다.' },
@@ -431,7 +439,7 @@
             return (c.smallbiz && c.b2c) ? 'B2C 온라인 판매 소상공인이라서' : '';
         }},
         { id: 'semas-maker', pri: 3, match: function (c) {
-            return (c.smallbiz && (c.industrial || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
+            return (c.smallbiz && (c.industrial || c.electronics || c.medical || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
                 ? '제조업 영위 소공인(상시근로자 10인 미만) 해당 시' : '';
         }},
         { id: 'semas-temp', pri: 3, match: function (c) {
@@ -539,7 +547,7 @@
         }},
         { id: 'kodit-esg', pri: 2, match: function (c) {
             if (c.esg && c.sme) return '소부장·스마트공장·ESG 우대조건이라서';
-            if (c.industrial && c.sme) return '산업재·부품 중소기업이라서';
+            if ((c.industrial || c.electronics || c.medical) && c.sme) return '기계·장비·소재·부품·전기전자·의료기기 중소기업이라서';
             return '';
         }},
         { id: 'kodit-mature', pri: 3, match: function (c) {
@@ -557,7 +565,7 @@
         { id: 'kibo-rnd', pri: 2, match: function (c) {
             if ((c.lab || c.venture || c.innobiz) && c.sme) return '기업부설연구소·벤처·이노비즈 보유 중소기업(기보 R&D보증)이라서';
             if (c.rev === 3 && c.sme) return '매출 5억~20억 원 미만 성장 초입 소기업(기보 R&D 개발·사업화 보증)이라서';
-            if (c.under3 && c.sme && (c.industrial || c.service)) return '초기 창업 기술·개발기업(기보 R&D 개발·사업화 보증)이라서';
+            if (c.under3 && c.sme && (c.industrial || c.electronics || c.medical || c.service)) return '초기 창업 기술·개발기업(기보 R&D 개발·사업화 보증)이라서';
             return '';
         }},
         { id: 'kibo-retry', pri: 2, match: function (c) {
