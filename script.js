@@ -340,3 +340,18 @@ function togglePrivacy() {
     if (document.readyState === 'complete') setTimeout(goCaret, 0);
     else window.addEventListener('load', function () { setTimeout(goCaret, 0); });
 })();
+
+// 홈 로고: 홈 안(#about·#services·#contact 등)에서 누르면 맨 위로 올리고 주소의 # 구간을 지운다.
+// 새로고침·history 항목 추가 없이 처리(앱 설치 환경의 뒤로가기 동작 유지). Ctrl/⌘ 클릭은 브라우저 기본 동작.
+(function () {
+    var logo = document.getElementById('logoHome');
+    if (!logo) return;
+    logo.addEventListener('click', function (e) {
+        if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        if (location.hash && window.history && history.replaceState) {
+            history.replaceState(history.state, '', location.pathname + location.search);
+        }
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    });
+})();
