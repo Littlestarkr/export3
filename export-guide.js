@@ -100,6 +100,7 @@
         if (a.q1 !== 's0') return ({ prep: '진행 중 새 거래 없음', nego: '협상·샘플 진행 중', order: '새 주문 받음' })[a.q1b] || '';
         return M.short.q1b[a.q1b] || '';
     }
+    function dealFundOn() { return !!(M.dealFund && M.dealFund.when(a)); }
     function isPlan() { return a.q1 === 's0' && a.q1b === 'prep'; }
     function mainCount() { return M.questions.filter(function (q) { return !q.sub && !q.retired; }).length; }
     function visible() {
@@ -606,8 +607,19 @@
         });
         matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
 
+        // 수출실적 0 + 수출계약 보유 기업(DEAL_FUND): 전용 안내에 정리한 곳과 무보 금융·보험 상품은 다른 목록에서 뺀다
+        var dfSkip = function (id) {
+            if (!dealFundOn()) return false;
+            var D = M.dealFund;
+            if (D.coveredIds.indexOf(id) >= 0 || D.excludeIds.indexOf(id) >= 0) return true;
+            var u = (M.links[id] && M.links[id].u) || '';
+            return D.excludeUrl.some(function (x) { return u.indexOf(x) >= 0; });
+        };
+        matchedProgs = matchedProgs.filter(function (r) { return !dfSkip(r.id); });
+
         // 자격 기준 거르기
         var list = order.filter(function (id) {
+            if (dfSkip(id)) return false;
             var sm = M.stageMap[id];
             if (sm && sm.hard && sm.s[st] === 0) return false;
             if (sm && sm.size && !has2(sm.size)) return false;
@@ -637,7 +649,7 @@
             if (!g.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
             var ids = [];
             g.items.forEach(function (it) {
-                if (!M.links[it.id] || shown.indexOf(it.id) >= 0) return;
+                if (!M.links[it.id] || shown.indexOf(it.id) >= 0 || dfSkip(it.id)) return;
                 if (it.skipIf && it.skipIf.some(function (sid) { return shown.indexOf(sid) >= 0; })) return;
                 if (it.st && it.st.indexOf(st) < 0) return;
                 if (it.on && !it.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
@@ -708,6 +720,7 @@
         if (dealObj()) s1 += ' / 이번 건 계약금액: ' + dealObj().label;
         L.push(s1);
         if (a.q1r) L.push('매출실적(최근 1년 또는 전년도): ' + label('q1r', a.q1r));
+        if (dealFundOn()) L.push('안내: 수출실적 0 + 수출계약 보유 기업 자금 안내 대상(무보 제외, ' + (has2('smallbiz') ? '소상공인 경로' : '일반 중소기업 경로') + ')');
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
@@ -715,6 +728,114 @@
         var nd = needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ');   // 옛 결과만(9번 질문은 2026-11-24 삭제)
         L.push('결제 방식: ' + (listLabels('q7', a.q7) || '-') + (nd ? ' / 필요: ' + nd : ''));
         return L.join('\n');
+    }
+
+    /* ---------- 수출실적 0 + 수출계약 보유 기업 전용 자금 안내 (2026-11-24) ---------- */
+    function renderDealFund() {
+        var box = $('egDealFund'), D = M.dealFund;
+        if (!box) return;
+        box.textContent = '';
+        box.hidden = !dealFundOn();
+        if (box.hidden) return;
+        var small = has2('smallbiz');
+        var tech = has2('venture') || has2('innobiz') || has2('lab');
+        var youth = has2('youth');
+        var under7 = has2('pre') || has2('startup') || has2('y7');
+        var over7 = has2('y7p');
+        var nego = a.q1b === 'nego';
+        var dl = dealObj();
+        function chkTag() { return el('span', 'eg-df-chk', '공고 확인'); }
+        function ic(cls) { var i = el('i', cls); i.setAttribute('aria-hidden', 'true'); return i; }
+
+        var head = el('div', 'eg-df-head');
+        head.appendChild(el('span', 'eg-df-badge', '우리 회사 맞춤 안내'));
+        head.appendChild(el('h4', 'eg-df-title', D.title));
+        box.appendChild(head);
+        var intro = '수출실적은 아직 없지만 ' + (nego ? '바이어와 협상·샘플을 진행 중인' : '수출 주문(계약)을 받은') + ' 회사' +
+            (dl ? '(이번 건 계약금액 ' + dl.short + ')' : '') + '를 위한 자금 안내입니다. ' +
+            '실적이 없어도 열려 있는 길을 기관별로 정리하고, 어떤 순서로 가면 좋은지 차례로 설명해 드립니다.';
+        box.appendChild(el('p', 'eg-df-intro', intro));
+        var notes = el('ul', 'eg-df-notes');
+        if (dl && D.bigDeal.indexOf(a.q1c) >= 0) notes.appendChild(el('li', 'is-strong', D.bigNote));
+        if (nego) notes.appendChild(el('li', null, D.negoNote));
+        notes.appendChild(el('li', null, D.ksureNote));
+        box.appendChild(notes);
+
+        // 1) 기관별 한눈에 보기
+        box.appendChild(el('h5', 'eg-df-sub', '① 기관별로 한눈에 보기'));
+        var grid = el('div', 'eg-df-grid');
+        D.rows.forEach(function (r) {
+            var card = el('article', 'eg-df-card is-' + r.st);
+            if ((r.tech && tech) || (r.small && small)) card.classList.add('is-fit');
+            var top = el('div', 'eg-df-card-top');
+            top.appendChild(el('strong', 'eg-df-org', r.org));
+            top.appendChild(el('span', 'eg-df-st is-' + r.st, r.stText || D.statusLabel[r.st]));
+            card.appendChild(top);
+            card.appendChild(el('p', 'eg-df-prod', r.product));
+            if (r.tech && tech) card.appendChild(el('p', 'eg-df-fit', '벤처·이노비즈·연구소를 고르셔서 기보가 잘 맞을 수 있습니다.'));
+            if (r.small && small) card.appendChild(el('p', 'eg-df-fit', '소상공인을 고르셔서 지금 바로 볼 수 있는 자금입니다.'));
+            if (r.contract && nego) card.appendChild(el('p', 'eg-df-fit is-wait', '계약서에 서명한 뒤 신청할 수 있습니다.'));
+            var ul = el('ul', 'eg-df-pts');
+            r.pts.forEach(function (p) {
+                if (p.youth && !youth) return;
+                if (p.small && !small) return;
+                var li = el('li', null, p.t);
+                if (p.age && (under7 || over7)) {
+                    li.appendChild(el('strong', 'eg-df-me', under7 ? ' → 고르신 업력이면 혁신창업사업화자금입니다.' : ' → 고르신 업력이면 신성장기반자금입니다.'));
+                }
+                if (p.chk) { li.appendChild(document.createTextNode(' ')); li.appendChild(chkTag()); }
+                ul.appendChild(li);
+            });
+            card.appendChild(ul);
+            var wh = el('p', 'eg-df-where');
+            wh.appendChild(ic('fa-solid fa-location-dot'));
+            wh.appendChild(document.createTextNode(' 신청: ' + r.where));
+            card.appendChild(wh);
+            if (r.link && M.links[r.link]) {
+                var go = linkEl(r.link, 'eg-df-go', '자세히 보기');
+                go.dataset.egLink = 'deal-fund:' + r.link;
+                go.appendChild(document.createTextNode(' '));
+                go.appendChild(ic('fa-solid fa-arrow-right'));
+                card.appendChild(go);
+            }
+            grid.appendChild(card);
+        });
+        box.appendChild(grid);
+
+        // 2) 추천 순서
+        function pathEl(P) {
+            var ol = el('ol', 'eg-df-steps');
+            P.steps.forEach(function (stp) {
+                var li = el('li');
+                var h = el('strong', 'eg-df-step-h', stp.h);
+                li.appendChild(h);
+                if (stp.contract && nego) { li.appendChild(document.createTextNode(' ')); li.appendChild(el('span', 'eg-df-wait', '계약 후')); }
+                li.appendChild(el('p', 'eg-df-why', stp.why));
+                ol.appendChild(li);
+            });
+            return ol;
+        }
+        var main = small ? D.paths.small : D.paths.sme;
+        var other = small ? D.paths.sme : D.paths.small;
+        box.appendChild(el('h5', 'eg-df-sub', '② ' + main.t));
+        box.appendChild(pathEl(main));
+        var det = el('details', 'eg-df-other');
+        det.appendChild(el('summary', null, small ? '일반 중소기업(소상공인이 아닌 경우) 순서 보기' : '소상공인이라면? 순서 보기'));
+        det.appendChild(pathEl(other));
+        box.appendChild(det);
+
+        // 3) 준비 서류
+        box.appendChild(el('h5', 'eg-df-sub', '③ 미리 준비하면 좋은 서류'));
+        var dul = el('ul', 'eg-df-docs');
+        D.docs.forEach(function (d) { dul.appendChild(el('li', null, nego && d.nego ? d.t + ' — ' + d.nego : d.t)); });
+        box.appendChild(dul);
+        box.appendChild(el('p', 'eg-note', '기관마다 요구하는 서류가 다르니 상담 때 목록을 꼭 받아 두세요.'));
+
+        box.appendChild(el('p', 'eg-df-disc', D.disclaimer));
+        var cta = el('a', 'btn btn-primary eg-df-cta', '이 순서로 1:1 상담받기');
+        cta.href = '#egConsult';
+        cta.dataset.egLink = 'deal-fund:consult';
+        box.appendChild(cta);
     }
 
     /* ---------- 수출 5단계 로드맵 한 줄 ---------- */
@@ -796,6 +917,7 @@
         $('egSummary').textContent = oneLine();
 
         renderRoadmap();
+        renderDealFund();
 
         renderAiPicks();
 
