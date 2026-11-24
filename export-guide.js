@@ -660,6 +660,10 @@
         var moreIds = rest.slice(0, 4);
         // 후순위 '더 찾아볼 곳': 고른 항목과 겹치는 묶음의 기관을 모두(위에서 나온 곳은 빼고)
         pays.forEach(function (p) { tags.push('pay:' + p); });
+        if (has2('smallbiz')) tags.push('size:smallbiz');
+        if (has2('small')) tags.push('size:small');
+        if (has2('medium')) tags.push('size:medium');
+        if (ctx.sme) tags.push('size:sme');
         var shown = topIds.concat(progIds, moreIds);
         var extra = [];
         (M.extra || []).forEach(function (g) {
@@ -1102,7 +1106,14 @@
             var ul = el('ul', 'eg-more-list');
             g.ids.forEach(function (id) {
                 var x = el('li');
-                x.appendChild(linkEl(id, 'eg-more-link'));
+                var aEl = linkEl(id, 'eg-more-link');
+                if (M.links[id].ext) {
+                    var ic = el('i', 'fa-solid fa-arrow-up-right-from-square pf-ext');
+                    ic.setAttribute('aria-hidden', 'true');
+                    aEl.appendChild(document.createTextNode(' '));
+                    aEl.appendChild(ic);
+                }
+                x.appendChild(aEl);
                 if (M.links[id].d) x.appendChild(el('span', 'eg-prog-d', M.links[id].d));
                 ul.appendChild(x);
             });
