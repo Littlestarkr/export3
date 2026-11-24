@@ -223,6 +223,7 @@
         }
         var box = $('egOpts');
         box.textContent = '';
+        box.classList.toggle('eg-opts-grid2', !!q.grid2);
         if (q.extraOne) {
             box.removeAttribute('role');
             box.removeAttribute('aria-labelledby');
@@ -305,7 +306,14 @@
         return q.type === 'one' ? a[q.id] === v : arr(a[q.id]).indexOf(v) >= 0;
     }
     function optBtn(q, o) {
-        var b = el('button', 'eg-opt', o.label);
+        var b = el('button', 'eg-opt');
+        if (o.sub) {
+            b.classList.add('eg-opt-has-sub');
+            b.appendChild(el('span', 'eg-opt-main', o.label));
+            b.appendChild(el('small', 'eg-opt-sub', o.sub));
+        } else {
+            b.textContent = o.label;
+        }
         b.type = 'button';
         b.dataset.qid = q.id;
         b.dataset.v = o.v;
@@ -465,6 +473,8 @@
                 add('cert', 6, w);
                 if (hasItem('cosmetic')) add('cosmetic', 2, w);
                 if (hasItem('agri')) add('agri', 2, w);
+                if (hasItem('medical')) add('cert-medical', 3, w);
+                if (hasItem('electronics') || hasItem('industrial')) add('cert-elec', 2, w);
             },
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
@@ -505,10 +515,16 @@
             var prefPts = (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0 || needList(a).indexOf('fund') >= 0) ? 3 : 2;
             add('pref-cond', prefPts, "우대 조건('" + listLabels('q2', prefPicked) + "')을 골라서");
         }
-        var w3 = "품목으로 '" + listLabels('q3', items()) + "'을 골라서";
-        if (hasItem('agri')) { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
+        var pickedItems = items();
+        var w3 = "품목으로 '" + listLabels('q3', pickedItems) + "'을 골라서";
         if (hasItem('cosmetic')) { add('cosmetic', 2, w3); add('cert', 1, w3); }
+        if (hasItem('agri')) { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
+        if (hasItem('consumer')) { add('b2c', 2, w3); add('ip-help', 2, w3); }
+        if (hasItem('medical')) { add('cert-medical', 3, w3); add('cert', 2, w3); consultTop = true; }
+        if (hasItem('electronics')) { add('cert-elec', 2, w3); add('customs', 2, w3); }
+        if (hasItem('industrial')) { add('buyer', 1, w3); add('customs', 1, w3); add('guarantee', 1, w3); }
         if (hasItem('service')) add('ksure-service', 2, w3);
+        if (hasItem('etc') && pickedItems.length === 1) consultTop = true;
 
         // 5) 시장(Q5)
         if (mk.indexOf('undecided') >= 0) { add('trade-stats', 1, '목표 시장이 아직 미정이라서'); add('k-market', 1, '목표 시장이 아직 미정이라서'); }
@@ -578,6 +594,8 @@
             agri: hasItem('agri'),
             service: hasItem('service'),
             industrial: hasItem('industrial'),
+            electronics: hasItem('electronics'),
+            medical: hasItem('medical'),
             b2c: forms.indexOf('b2c') >= 0,
             wantsFund: issues.indexOf('fund') >= 0 || issues.indexOf('factoring') >= 0 || needs.indexOf('fund') >= 0,
             hasAny: function (list) { return list.some(function (t) { return tags.indexOf(t) >= 0; }); },

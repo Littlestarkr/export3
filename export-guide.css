@@ -192,6 +192,15 @@
     background: var(--secondary-color);
     box-shadow: inset 0 0 0 3px var(--primary-color);
 }
+.eg-opt-has-sub {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+.eg-opt-main { font-weight: 600; line-height: 1.3; }
+.eg-opt-sub { font-size: 0.78rem; color: #666; line-height: 1.3; font-weight: 400; }
+.eg-opt.is-on .eg-opt-sub { color: rgba(255, 255, 255, 0.85); }
 
 .eg-opts.eg-opts-grouped { display: block; }
 .eg-grp-h { font-weight: 700; color: var(--primary-color); font-size: 0.92rem; margin: 4px 0 8px; }
@@ -295,9 +304,12 @@
     .eg-app { padding: 22px 16px; border-radius: 12px; }
     .eg-h, .eg-q-title { font-size: 1.2rem; }
     .eg-steps-preview, .eg-opts { grid-template-columns: minmax(0, 1fr); }
-    .eg-opts-grouped .eg-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .eg-opts-grouped .eg-opts, .eg-opts.eg-opts-grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     .eg-opts-grouped .eg-opt { padding: 11px 8px 11px 36px; font-size: 0.92rem; }
     .eg-opts-grouped .eg-opt::before { left: 10px; }
+    .eg-opts.eg-opts-grid2 .eg-opt { padding: 10px 8px 10px 32px; font-size: 0.88rem; line-height: 1.3; }
+    .eg-opts.eg-opts-grid2 .eg-opt::before { left: 9px; width: 16px; height: 16px; }
+    .eg-opts.eg-opts-grid2 .eg-opt-sub { font-size: 0.72rem; }
     .eg-begin { width: 100%; }
     .eg-card { padding: 14px; gap: 10px; }
     .eg-consult-btns > * { flex: 1 1 100%; justify-content: center; text-align: center; }

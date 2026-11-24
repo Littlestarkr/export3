@@ -39,7 +39,7 @@ var L = {
   q1b: { prep: '진행 거래 없음(준비 중)', nego: '협상·샘플 진행', order: '주문(계약) 받음' },
   q1c: { d1: '1천 달러 미만', d2: '1천~1만 달러 미만', d3: '1만~10만 달러 미만', d4: '10만~50만 달러 미만', d5: '50만 달러 이상' },
   q2: { pre: '예비창업자', startup: '창업 3년 이내', y7: '3년 초과~7년 이내', y7p: '7년 초과', youth: '청년기업(만 39세 이하)', women: '여성기업', disabled: '장애인기업', social: '사회적기업', venture: '벤처기업', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '기업부설연구소·전담부서', restart: '재창업·중장년 기업', esg_local: '소부장·ESG·비수도권 등', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '기타' },
-  q3: { consumer: '소비재', industrial: '산업재·부품', agri: '농수산식품', cosmetic: '화장품', service: '서비스·콘텐츠', etc: '기타' },
+  q3: { cosmetic: '화장품·뷰티', agri: '농수산·가공식품', consumer: '생활·패션·일반소비재', medical: '의료기기·바이오·헬스케어', electronics: '전기·전자·IT기기', industrial: '기계·장비·소재·부품', service: '서비스·SW·콘텐츠', etc: '기타' },
   q4: { local: '로컬 수출', b2c: 'B2C 온라인 판매', b2b: '일반수출(B2B)', relay: '중계무역', import: '수입', other: '기타' },
   q5: { undecided: '미정', cnjp: '중국·일본', sea: '동남아', na: '미국·캐나다', eu: '유럽', mea: '중동·아프리카', other: '그 밖의 지역' },
   q6: { buyer: '바이어 발굴', docs: '서류·계약서', collect: '대금 미회수', importer: '수입자 신용조사', factoring: '수출채권 유동화', tclaim: '무역클레임', fx: '환율', fund: '자금', cert: '해외인증·규제', hs: 'HS코드·관세·통관', support: '정부지원사업', fraud: '무역사기', market: '시장 선택', etc: '기타' },
