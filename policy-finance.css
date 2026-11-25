@@ -77,6 +77,47 @@ html {
     color: #666;
 }
 
+.pf-lead-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.pf-lead-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #fffaf0;
+    border: 1px solid #e3d2a3;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: var(--transition);
+}
+
+.pf-lead-links a i:first-child {
+    color: var(--gold-text, #8a6a1f);
+}
+
+.pf-lead-links a .pf-ext {
+    opacity: 0.72;
+}
+
+.pf-lead-links a:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.pf-lead-links a:hover i:first-child {
+    color: #f6e3a8;
+}
+
 .pf-group-title {
     display: flex;
     align-items: center;
