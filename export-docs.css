@@ -248,6 +248,9 @@ a.ed-law-a:hover { color: #8a6a1f; text-decoration: underline; text-underline-of
 .ed-fraud-where i { color: #c0392b; }
 .ed-fraud-where a { padding: 5px 12px; border: 1px solid #e3b5ae; border-radius: 999px; background: #fff; color: var(--primary-color); font-weight: 700; }
 .ed-fraud-where a:hover { border-color: #c0392b; background: #fdecea; }
+.ed-fraud-article { margin: 14px 0 0; padding-top: 14px; border-top: 1px dashed #e3b5ae; }
+.ed-fraud-article a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid #c0392b; border-radius: 999px; background: #fff; color: #a52a1f; font-size: .88rem; font-weight: 700; transition: var(--transition); }
+.ed-fraud-article a:hover { background: #c0392b; color: #fff; }
 .ed-hero .ed-hero-fraud { border-color: #e8a29a; color: #fff; }
 .ed-hero .ed-hero-fraud i { color: #f3b1a8; margin-right: 4px; }
 .ed-hero .ed-hero-make { border-color: var(--secondary-color); }
