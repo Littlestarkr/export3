@@ -87,3 +87,9 @@
 @media (max-width: 768px) {
     .gm-pick { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* 세 칸(소진공 페이지) */
+.gm-pick.gm-pick-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 768px) {
+    .gm-pick.gm-pick-3 { grid-template-columns: minmax(0, 1fr); }
+}
