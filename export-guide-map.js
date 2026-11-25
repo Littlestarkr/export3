@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 44;
+    var MAP_VERSION = 45;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -434,7 +434,7 @@
             return (c.smallbiz && c.youth) ? '청년 소상공인이라서' : '';
         }},
         { id: 'semas-general', pri: 2, match: function (c) {
-            if (c.smallbiz) return '소상공인이라서';
+            if (c.smallbiz) return c.mfg ? '' : '소상공인(제조업 아님)이라서'; // 제조업 소상공인은 소공인특화자금(2026-11-25 작가님)
             if (c.rev === 2 && c.sme) return '매출 1억~5억 원 미만 소상공인·소기업 대상이라서';
             return '';
         }},
@@ -452,8 +452,7 @@
             return (c.smallbiz && c.b2c) ? 'B2C 온라인 판매 소상공인이라서' : '';
         }},
         { id: 'semas-maker', pri: 3, match: function (c) {
-            return (c.smallbiz && (c.mfg || c.industrial || c.electronics || c.medical || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
-                ? '제조업 영위 소공인(상시근로자 10인 미만) 해당 시' : '';
+            return (c.smallbiz && c.mfg) ? '제조업 소상공인(상시근로자 10인 미만 소공인)이라서' : '';
         }},
         { id: 'semas-temp', pri: 3, match: function (c) {
             return (c.smallbiz && c.under7 && !c.pre && c.wantsFund && (c.rev === 0 || c.rev <= 2))
