@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 47;
+    var MAP_VERSION = 48;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -298,6 +298,7 @@
         'semas-online':{ t: '소진공 상생성장지원자금', u: 'policy-finance.html?org=semas#semas-direct', d: '온라인 플랫폼 입점·TOPS·브랜드 소상공인 대상 운전·시설 직접대출.' },
         'semas-temp':  { t: '소진공 일시적경영애로자금', u: 'policy-finance.html?org=semas#semas-direct', d: '연매출 1억 4백만 원 미만·업력 7년 미만 일시적 경영애로 소상공인 대상(한도 7천만 원, 기준금리+0.0%p).' },
         'policy-fund': { t: '정책자금 안내', u: 'policy-finance.html?org=kosmes', d: '기관별 정책자금의 대상·한도·금리를 정리했습니다.' },
+        'pref-lab':    { t: '기업부설연구소·전담부서 우대지원', u: 'policy-finance.html#pref-lab', d: '중진공 개발기술사업화자금 연계, 기보 R&D보증, 연구인력 채용 지원, R&D 세액공제 등 기업부설연구소·연구개발전담부서 보유 기업의 금융·비금융 우대를 정리한 카드입니다.' },
         'pref-mfg':    { t: '제조업 · 수출 제조기업 우대지원', u: 'policy-finance.html#pref-mfg', d: '무보 수출패키지 우대금융·인증기업 우대, 기보·신보·수출입은행 제조·수출기업 보증, 중진공 제조업 중점지원, 소진공 소공인특화자금, KOTRA·조달청 등 제조업 우대 제도를 한 카드에 모았습니다. 수치는 기관 공고를 확인하세요.' },
         'pref-cond':   { t: '기업 금융 우대조건·지원제도 매칭', u: 'policy-finance.html#preferential-conditions', d: '창업·청년·여성·장애인·사회적기업·벤처·이노비즈·메인비즈·연구소 등 우대조건별 금리 인하·보증료 감면·한도 확대와 공공조달·세제·R&D 혜택을 한눈에 비교합니다.' },
         'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'policy-finance.html?org=ksure#ksure-presh', d: '수출 계약·신용장을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다(모든 수출기업 대상). 보증 한도·요건은 무보 안내를 확인하세요.' },
@@ -490,6 +491,9 @@
         }},
 
         // ── 기업 금융 우대조건 종합 매칭 ──
+        { id: 'pref-lab', pri: 2, match: function (c) {
+            return c.lab ? "우대 조건('기업부설연구소·전담부서')을 골라서" : '';
+        }},
         { id: 'pref-mfg', pri: 2, match: function (c) {
             return c.mfg ? "우대 조건('제조업')을 골라서" : '';
         }},
