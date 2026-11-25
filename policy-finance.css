@@ -2099,3 +2099,39 @@ html {
     }
 }
 
+
+/* 금융 우대조건 '제조업' 카드(#pref-mfg, 2026-11-25): 공고 확인 안내는 두 칸을 가로지른다 */
+.pf-pref-chk {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fff8e6;
+    border: 1px solid #f0d68a;
+    color: #6b4f0e;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+.pf-pref-chk-tag {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #c9a24a;
+    color: #fff;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+.pf-pref-box-lead {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.6;
+}
+.pf-pref-ul a {
+    color: var(--pf-pref-navy);
+    text-decoration: underline;
+}
+@media (min-width: 769px) {
+    .pf-pref-card[id] { scroll-margin-top: 96px; }
+}
