@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 41;
+    var MAP_VERSION = 42;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -80,7 +80,7 @@
         { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd', 'kibo-rnd'] },
         { k: ['재기', '재도전', '재창업', '채무조정'], ids: ['kibo-retry', 'kodit-retry', 'kosmes-restart', 'semas-retry'] },
         { k: ['기보', '기술보증'], ids: ['kibo', 'kibo-rnd', 'kibo-retry'] },
-        { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['b2c', 'c-more'] },
+        { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['c-amazon', 'b2c', 'c-more'] },
         { k: ['b2b', '플랫폼'], ids: ['b-b2b', 'buykorea'] },
         { k: ['물류', '배송', '운송', '포워딩', '포워더'], ids: ['c-logi', 'customs'] },
         { k: ['수입보험', '선급금', '원자재 수입'], ids: ['import-ins'] },
@@ -90,7 +90,7 @@
         { k: ['의료기기', '바이오', '헬스케어', '식약처'], ids: ['cert-medical', 'cert'] },
         { k: ['전략물자', 'yestrade', '수출통제', '전기전자', 'ul', 'fcc'], ids: ['cert-elec', 'customs'] },
         { k: ['상표', '특허', '지재권', '지식재산', 'ip-desk'], ids: ['ip-help'] },
-        { k: ['내수기업', '첫 수출', '처음 수출'], ids: ['k-domestic'] },
+        { k: ['내수기업', '첫 수출', '첫수출', '처음 수출', '소상공인'], ids: ['smb-strategy', 'k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
         { k: ['고비즈', 'gobiz', '바이코리아', 'buykorea'], ids: ['gobizkorea', 'buykorea-portal'] },
@@ -252,6 +252,8 @@
 
     // 안내할 곳. ext: 새 탭
     var LINKS = {
+        'smb-strategy':{ t: '소상공인 첫수출 전략 (6단계 실전 로드맵)', u: 'global-expansion.html#smb-export-lecture', d: '하이브리드 진출 전략·HS Code/인코텀즈/적재이행등록·지재권/무역사기 차단·트라이빅/공공 B2B·범부처 5대 기관 지원사업·단계별 마스터 로드맵까지 소상공인·소기업의 첫 수출을 6단계로 정리했습니다.' },
+        'c-amazon':    { t: '아마존 입점전략 (아마존 통해서 첫 수출하기)', u: 'global-expansion.html#c-amazon', d: '아마존 글로벌 셀링 4단계 핵심 프로세스(계정 생성·카테고리 승인·FBA 물류 세팅·브랜드 레지스트리), 초기 비용·B2B 도약 전략과 정부 지원사업 연계를 정리했습니다.' },
         'k-domestic':  { t: 'KOTRA 내수기업 수출기업화', u: 'global-expansion.html#k-domestic', d: '전년도 통관 실적 10만 달러 미만 기업의 첫 수출을 돕는 사업입니다(로컬 수취액은 실적에서 제외).' },
         'semas-innov': { t: '소진공 혁신성장촉진자금(혁신형)', u: 'policy-finance.html?org=semas#semas-direct', d: "'수출 소상공인'(최근 1년 이내 직·간접 수출실적 1,000달러 이상인 소상공인)이 대상인 정책자금입니다. 한도·금리·업종 등 세부 요건은 소진공 공고를 확인하세요." },
         'trade-stats': { t: '무역통계·HS코드 길잡이', u: 'https://www.littlestar.co.kr/lawsearch/trade/', ext: true, d: '품목(HS코드)별 수출 통계와 유망 시장을 찾아봅니다.' },
@@ -786,7 +788,7 @@
               { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
           ] },
         { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
-          items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'b2c' }, { id: 'c-more' }] },
+          items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'c-amazon' }, { id: 'b2c' }, { id: 'c-more' }] },
         { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
           items: [{ id: 'ksure-group', st: [0, 1, 2] }, { id: 'ins-support' }, { id: 'kon' }, { id: 'qna-f' }, { id: 'import-ins', on: ['form:relay', 'form:import'] }] },
         { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] },
@@ -828,7 +830,7 @@
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
         local: ['k-domestic', 'qna-fx'],
-        b2c:   ['b2c'],
+        b2c:   ['c-amazon', 'b2c'],
         b2b:   ['buyer', 'doc-builder'],
         relay: ['ksure-plus', 'claim-exempt'],
         import: ['import-ins', 'customs', 'trade-stats'],
