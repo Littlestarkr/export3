@@ -1215,8 +1215,8 @@ textarea:focus-visible,
 }
 
 /* 홈 푸터 슬로건 (홈에만) */
-.main-footer p.footer-slogan { opacity: 1; color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; margin: 4px 0 10px; word-break: keep-all; }
-.footer-slogan i { font-size: 0.8rem; margin-right: 4px; }
+.main-footer p.footer-slogan { opacity: 1; color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; margin: 4px 0 10px; word-break: keep-all; line-height: 1.7; }
+@media (max-width: 768px) { .main-footer p.footer-slogan { font-size: 0.82rem; letter-spacing: 0; } }
 
 /* 홈 도구 줄 첫 칸(수출 가이드) 강조 + 가이드에서 넘어온 상담 요약 안내 (2026-11-22) */
 .tool-chip.is-featured { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
