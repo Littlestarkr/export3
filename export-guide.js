@@ -624,6 +624,27 @@
         });
         matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
 
+        // 8-2) 무조건 추천(고정 최상단, 2026-11-25):
+        // - 소상공인·소기업: 소상공인 첫수출 전략을 비중있게(#1 강조 카드) 무조건 추천
+        // - B2C 선택 기업: 아마존 입점전략을 무조건 추천
+        var pinned = [];
+        var featuredMap = {};
+        if (has2('smallbiz') || has2('small')) {
+            var wSmb = has2('smallbiz')
+                ? '소상공인을 위한 핵심 첫수출 6단계 실전 전략이라서(필수 추천)'
+                : '소기업의 첫 수출 준비에 꼭 맞는 6단계 실전 전략이라서(필수 추천)';
+            add('smb-strategy', 12, wSmb);
+            priMap['smb-strategy'] = 1;
+            featuredMap['smb-strategy'] = true;
+            pinned.push('smb-strategy');
+        }
+        if (forms.indexOf('b2c') >= 0) {
+            var wAmz = "거래 형태로 'B2C 온라인 판매'를 골라서(필수 추천)";
+            add('c-amazon', 10, wAmz);
+            priMap['c-amazon'] = 1;
+            pinned.push('c-amazon');
+        }
+
         // 수출실적 0 + 수출계약 보유 기업(DEAL_FUND): 전용 안내에 정리한 곳과 무보 금융·보험 상품은 다른 목록에서 뺀다
         var dfSkip = function (id) {
             if (!dealFundOn()) return false;
@@ -648,10 +669,13 @@
             R[id].forEach(function (r) { if (r[0] > best[0]) best = r; });
             return best[1];
         };
-        var topIds = list.slice(0, 3);
+        var topLimit = Math.max(3, pinned.length + 2);
+        var unpinned = list.filter(function (id) { return pinned.indexOf(id) < 0; });
+        var topIds = pinned.filter(function (id) { return !!M.links[id]; }).concat(unpinned).slice(0, topLimit);
         var progs = matchedProgs.filter(function (r) { return topIds.indexOf(r.id) < 0; });
         var progIds = progs.map(function (r) { return r.id; });
-        var rest = list.slice(3).filter(function (id) {
+        var rest = list.filter(function (id) {
+            if (topIds.indexOf(id) >= 0) return false;
             if (progIds.indexOf(id) >= 0) return false;
             if (id === 'at' && (progIds.indexOf('at-ops') >= 0 || progIds.indexOf('at-facility') >= 0)) return false;
             if (id === 'exim' && (progIds.indexOf('exim-growth') >= 0 || progIds.indexOf('exim-perform') >= 0 || progIds.indexOf('exim-promo') >= 0)) return false;
@@ -682,7 +706,7 @@
         });
         return {
             extra: extra,
-            top: topIds.map(function (id) { return { id: id, why: why(id), pri: priMap[id] || 0 }; }),
+            top: topIds.map(function (id) { return { id: id, why: why(id), pri: priMap[id] || 0, featured: !!featuredMap[id] }; }),
             progs: progs,
             more: moreIds.map(function (id) { return { id: id, why: why(id) }; }),
             consultTop: consultTop,
@@ -1053,11 +1077,12 @@
         top.textContent = '';
         rec.top.forEach(function (r, i) {
             var L = M.links[r.id];
-            var card = el('article', 'eg-card');
+            var card = el('article', 'eg-card' + (r.featured ? ' is-featured' : ''));
             card.appendChild(el('span', 'eg-card-n', String(i + 1)));
             var body = el('div', 'eg-card-body');
             var h = el('h4', 'eg-card-t');
-            if (r.pri === 1) h.appendChild(el('span', 'eg-pri-badge', '최우선 추천'));
+            if (r.featured) h.appendChild(el('span', 'eg-pri-badge is-featured', '핵심 필수 추천'));
+            else if (r.pri === 1) h.appendChild(el('span', 'eg-pri-badge', '최우선 추천'));
             h.appendChild(document.createTextNode(L.t));
             body.appendChild(h);
             body.appendChild(el('p', 'eg-card-why', r.why));

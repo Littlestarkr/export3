@@ -366,6 +366,21 @@
     font-weight: 700;
     line-height: 1.4;
 }
+.eg-card.is-featured {
+    border: 1.5px solid #c5a059;
+    border-left: 5px solid #c5a059;
+    background: linear-gradient(135deg, #fffdf5 0%, #faf5e4 100%);
+    box-shadow: 0 6px 18px rgba(13, 30, 56, 0.08);
+}
+.eg-card.is-featured .eg-card-n {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+.eg-pri-badge.is-featured {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #f6e3a8;
+}
 .eg-prog-cnt {
     margin-left: 6px;
     font-size: 0.86rem;
