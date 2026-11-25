@@ -104,3 +104,18 @@
     cards.forEach(function (c) { c.addEventListener('toggle', updateToggleLabel); });
     updateToggleLabel();
 })();
+
+/* 주소 #pref-… 로 들어오면 그 우대조건 카드를 펼쳐 보여 준다(수출 가이드 '제조업' 추천 등, 2026-11-25) */
+(function () {
+    'use strict';
+    function openFromHash() {
+        var id = (location.hash || '').slice(1);
+        if (!/^pref-[a-z0-9-]+$/.test(id)) return;
+        var card = document.getElementById(id);
+        if (!card || card.tagName !== 'DETAILS') return;
+        card.open = true;
+        setTimeout(function () { card.scrollIntoView({ block: 'start' }); }, 60);
+    }
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+})();
