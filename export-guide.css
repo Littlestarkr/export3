@@ -533,12 +533,3 @@ body.eg-asking .pf-floatnav { display: none; }
     line-height: 1.45;
 }
 
-
-/* 검색봇용 정적 안내(제도·FAQ) */
-.eg-seo { padding: 8px 0 28px; }
-.eg-seo-inner { max-width: 860px; margin: 0 auto; color: #555; font-size: 0.82rem; line-height: 1.65; }
-.eg-seo h2 { font-size: 0.95rem; color: #0d1e38; margin: 18px 0 6px; }
-.eg-seo h3 { font-size: 0.85rem; color: #333; margin: 10px 0 2px; font-weight: 500; }
-.eg-seo p { margin: 0 0 4px; }
-.eg-seo ul { margin: 0; padding-left: 1.2em; }
-.eg-seo li { margin-bottom: 4px; }
