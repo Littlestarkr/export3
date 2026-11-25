@@ -800,6 +800,11 @@ html {
         display: inline;
     }
 
+    /* 상단 큰 제목은 모바일에서 강제 줄바꿈을 빼고 자연스럽게 이어지게 한다 */
+    .pf-hero h2 .pf-br {
+        display: none;
+    }
+
     .pf-section {
         padding: 50px 0 !important;
     }
