@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 45;
+    var MAP_VERSION = 46;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -119,7 +119,7 @@
         s6: '대형 거래·글로벌 확장을 관리하는 단계입니다.'
     };
 
-    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'mfg', 'restart', 'esg_local'];
+    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'mfg', 'restart', 'esg_local'];
 
     // 질문. type: one(하나) | multi(여러 개). 모두 필수(2026-11-24 건너뛰기 없앰). when: 보일 조건
     var QUESTIONS = [
@@ -174,6 +174,7 @@
                 { v: 'venture', label: '벤처기업' },
                 { v: 'innobiz', label: '이노비즈' },
                 { v: 'mainbiz', label: '메인비즈' },
+                { v: 'lab', label: '기업부설연구소·전담부서' },
                 { v: 'mfg', label: '제조업' },
                 { v: 'restart', label: '재창업·중장년 기업' },
                 { v: 'esg_local', label: '소부장·ESG·비수도권 등' },
