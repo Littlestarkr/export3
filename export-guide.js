@@ -510,7 +510,7 @@
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
         if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
-        var prefPicked = (M.prefVals || []).filter(has2);
+        var prefPicked = (M.prefVals || []).filter(function (v) { return v !== 'mfg' && has2(v); }); // 제조업은 우대조건 페이지에 카드가 없어 제외
         if (prefPicked.length) {
             var prefPts = (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0 || needList(a).indexOf('fund') >= 0) ? 3 : 2;
             add('pref-cond', prefPts, "우대 조건('" + listLabels('q2', prefPicked) + "')을 골라서");
@@ -589,6 +589,7 @@
             innobiz: has2('innobiz'),
             mainbiz: has2('mainbiz'),
             lab: has2('lab'),
+            mfg: has2('mfg'),
             restart: has2('restart'),
             esg: has2('esg_local'),
             agri: hasItem('agri'),

@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 43;
+    var MAP_VERSION = 44;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -119,7 +119,7 @@
         s6: '대형 거래·글로벌 확장을 관리하는 단계입니다.'
     };
 
-    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'restart', 'esg_local'];
+    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'mfg', 'restart', 'esg_local'];
 
     // 질문. type: one(하나) | multi(여러 개). 모두 필수(2026-11-24 건너뛰기 없앰). when: 보일 조건
     var QUESTIONS = [
@@ -174,7 +174,7 @@
                 { v: 'venture', label: '벤처기업' },
                 { v: 'innobiz', label: '이노비즈' },
                 { v: 'mainbiz', label: '메인비즈' },
-                { v: 'lab', label: '기업부설연구소·전담부서' },
+                { v: 'mfg', label: '제조업' },
                 { v: 'restart', label: '재창업·중장년 기업' },
                 { v: 'esg_local', label: '소부장·ESG·비수도권 등' },
                 { v: 'smallbiz', label: '소상공인' },
@@ -452,7 +452,7 @@
             return (c.smallbiz && c.b2c) ? 'B2C 온라인 판매 소상공인이라서' : '';
         }},
         { id: 'semas-maker', pri: 3, match: function (c) {
-            return (c.smallbiz && (c.industrial || c.electronics || c.medical || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
+            return (c.smallbiz && (c.mfg || c.industrial || c.electronics || c.medical || c.hasItem('consumer') || c.agri || c.hasItem('cosmetic')))
                 ? '제조업 영위 소공인(상시근로자 10인 미만) 해당 시' : '';
         }},
         { id: 'semas-temp', pri: 3, match: function (c) {
@@ -840,7 +840,7 @@
     };
 
     var SHORT = {
-        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 3년 초과~7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 3년 초과~7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', mfg: '제조업', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
