@@ -1,0 +1,89 @@
+/* =========================================
+   글로벌 쇼핑몰 판매지원사업 (global-mall.html)
+   경고·면책 상자는 cert-guide.css 의 .cg-*, 표·목차는 policy-finance.css 의 .pf-* 를 쓴다.
+   ========================================= */
+
+/* 공고 확인 표시 */
+.gm-chk {
+    display: inline-block;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #a5281b;
+    font-size: .72rem;
+    font-weight: 700;
+    vertical-align: 1px;
+    white-space: nowrap;
+}
+.cg-warn a { color: #8a6a1f; font-weight: 700; text-decoration: underline; }
+
+/* 번호 목록(지원 제외 대상) */
+.gm-ol {
+    margin: 0 0 8px;
+    padding-left: 1.6em;
+    font-size: .93rem;
+    line-height: 1.7;
+    color: #444;
+}
+.gm-ol li { margin-top: 3px; }
+
+/* 접기(제외 업종) */
+.gm-more { margin-top: 16px; }
+.gm-more summary {
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid #dcdcdc;
+    background: #fff;
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.gm-more summary:hover { border-color: var(--secondary-color); }
+.gm-more[open] summary { margin-bottom: 8px; }
+
+/* 입점 vs 마케팅 */
+.gm-pick {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+.gm-pick-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 18px 18px 16px;
+    font-size: .92rem;
+    line-height: 1.65;
+    color: #444;
+}
+.gm-pick-k {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+.gm-pick-k span {
+    margin-left: 6px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #8a6a1f;
+    background: #fff8e6;
+    border: 1px solid #f0dfb0;
+    border-radius: 999px;
+    padding: 1px 9px;
+    vertical-align: 2px;
+}
+.gm-pick-who {
+    background: #f6f7f9;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .gm-pick { grid-template-columns: minmax(0, 1fr); }
+}
