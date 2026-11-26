@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 54;
+    var MAP_VERSION = 55;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -87,9 +87,13 @@
         { k: ['벤처', '이노비즈', 'innobiz', '기업부설연구소', '연구소', '기업인증'], ids: ['biz-cert'] },
         { k: ['메인비즈', 'mainbiz', '경영혁신'], ids: ['biz-cert-mainbiz'] },
         { k: ['iso', '품질경영', '환경경영', '안전보건', '식품안전'], ids: ['iso-cert'] },
-        { k: ['공공조달', '조달', '수의계약', '나라장터', '혁신제품', '우수조달', '녹색제품', 'b2g'], ids: ['public-proc'] },
+        { k: ['공공조달', '조달', '수의계약', '나라장터', 'b2g'], ids: ['public-proc'] },
+        { k: ['혁신제품', '혁신장터'], ids: ['pp-innov', 'iso-cert'] },
+        { k: ['녹색제품', '환경표지', '저탄소', 'gr인증'], ids: ['pp-green', 'iso-cert'] },
+        { k: ['우수조달', '우수제품'], ids: ['pp-excellent', 'iso-cert'] },
         { k: ['직접생산', '중소기업자간', '중소기업간'], ids: ['pp-sme-mfg'] },
         { k: ['벤처나라'], ids: ['pp-venture'] },
+        { k: ['지방소재', '비수도권', '지방기업'], ids: ['pref-cond', 'seoul-shinbo', 'voucher'] },
         { k: ['여성기업', '액셀러레이팅', '엑셀러레이팅'], ids: ['women-accel', 'pp-women'] },
         { k: ['채권', '팩토링', '현금화', '유동화', '네고'], ids: ['ksure-postship'] },
         { k: ['농산물', '수산물', '식품', '농식품'], ids: ['agri', 'at'] },
@@ -105,6 +109,65 @@
         { k: ['내국신용장', '구매확인서', '로컬', 'local'], ids: ['bok-local', 'bok-tf'] },
         { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['bok-tf', 'ibk-export', 'ibk-smallbiz'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
+    ];
+    // Q2 '혁신·녹색·우수조달제품' 세부 선택(선택 안 하면 3종 모두 추천, 2026-11-26)
+    var Q2_PROC_OPTS = [
+        { v: 'innov', label: '혁신제품' },
+        { v: 'green', label: '녹색제품' },
+        { v: 'excellent', label: '우수조달물품' }
+    ];
+    // Q2 우대 조건 '기타' 입력 키워드 매칭(지방소재·비수도권·ESG·소부장·ISO·가족친화 등, 2026-11-26)
+    var Q2_ETC_KEYWORDS = [
+        { k: ['지방', '비수도권', '수도권 외', '수도권외', '지역', '글로컬', '지방소재', '지방기업', '지역특화'],
+          flags: ['localBiz', 'esg'],
+          ids: ['pref-cond', 'seoul-shinbo', 'voucher', 'policy-fund', 'exim-promo'],
+          why: '지방소재·비수도권 기업 지역 우대·보증·수출지원 추천' },
+        { k: ['소부장', '소재부품', '소재·부품', '뿌리', '부품장비'],
+          flags: ['esg'],
+          ids: ['pref-cond', 'import-ins', 'biz-cert', 'iso-cert'],
+          why: '소부장·뿌리기업 우대 보증·공급망·인증 지원 추천' },
+        { k: ['esg', '친환경', '탄소', 're100', '넷제로'],
+          flags: ['esg'],
+          ids: ['pref-cond', 'iso-cert', 'pp-green'],
+          why: 'ESG·친환경 기업 우대 보증·ISO 14001·녹색조달 추천' },
+        { k: ['스마트공장', '스마트제조', '자동화'],
+          flags: ['esg'],
+          ids: ['pref-cond', 'iso-cert', 'biz-cert'],
+          why: '스마트공장·스마트제조 기업 정책자금·인증 우대 추천' },
+        { k: ['iso', '9001', '14001', '45001', '22000', '13485', 'iatf', '품질경영', '환경경영', '안전보건', 'haccp', '해썹'],
+          flags: ['q2EtcIso'],
+          ids: ['iso-cert', 'cert', 'pref-cond'],
+          why: 'ISO·품질·환경 경영시스템 인증 연계 정부지원·조달 가점 추천' },
+        { k: ['혁신제품', '혁신장터', '혁신조달'],
+          flags: ['procInnov'],
+          ids: ['pp-innov', 'iso-cert'],
+          why: '혁신제품 공공조달 3년 금액 제한 없는 수의계약·시범구매 추천' },
+        { k: ['녹색', '환경표지', '저탄소', 'gr인증'],
+          flags: ['procGreen', 'esg'],
+          ids: ['pp-green', 'iso-cert'],
+          why: '녹색제품 공공조달 의무구매·수의계약·ISO 14001 연계 추천' },
+        { k: ['우수조달', '우수제품'],
+          flags: ['procExcl'],
+          ids: ['pp-excellent', 'iso-cert'],
+          why: '우수조달물품 나라장터 종합쇼핑몰 직행·15% 의무구매 추천' },
+        { k: ['벤처나라'],
+          ids: ['pp-venture'],
+          why: '조달청 벤처나라 전용 쇼핑몰 등록 추천' },
+        { k: ['직접생산', '중소기업자간', '중소기업간'],
+          ids: ['pp-sme-mfg'],
+          why: '중소기업자 간 경쟁제품·직접생산확인 입찰 참여 추천' },
+        { k: ['공공조달', '조달', '수의계약', '나라장터', 'b2g'],
+          ids: ['public-proc'],
+          why: '공공조달 우대지원·수의계약 특례 안내' },
+        { k: ['가족친화', '일자리', '고용', '청년친화', '강소', '수출유망', '유망중소', '백년소공인', '백년가게', '선도기업', '명문장수'],
+          ids: ['pref-cond', 'policy-fund', 'kodit-export', 'voucher', 'ksure-plus'],
+          why: '우대 인증·선정기업 정책금융·보증·수출바우처 가점 추천' },
+        { k: ['특허', '지재권', '지식재산', '실용신안', '디자인권', 'ip'],
+          ids: ['kibo-rnd', 'ip-help', 'biz-cert', 'pref-cond'],
+          why: '특허·지식재산 보유기업 기술보증·IP 지원·기업인증 추천' },
+        { k: ['소공인', '소상공인'],
+          ids: ['pp-small', 'smb-strategy'],
+          why: '소상공인·소공인 공공조달 수의계약 우대·첫수출 전략 추천' }
     ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
     // 2026-11-22 작가님: 10만 달러 이상이어도 바이어·시장·인증은 필요 → 1만 달러 이상은 9개를 먼저 보인다
@@ -127,7 +190,7 @@
         s6: '대형 거래·글로벌 확장을 관리하는 단계입니다.'
     };
 
-    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'mfg', 'restart', 'esg_local'];
+    var PREF_VALS = ['youth', 'women', 'disabled', 'social', 'venture', 'innobiz', 'mainbiz', 'lab', 'mfg', 'restart', 'proc_cert', 'pref_etc'];
 
     // 질문. type: one(하나) | multi(여러 개). 모두 필수(2026-11-24 건너뛰기 없앰). when: 보일 조건
     var QUESTIONS = [
@@ -185,7 +248,8 @@
                 { v: 'lab', label: '기업부설연구소·전담부서' },
                 { v: 'mfg', label: '제조업' },
                 { v: 'restart', label: '재창업·중장년 기업' },
-                { v: 'esg_local', label: '소부장·ESG·비수도권 등' },
+                { v: 'proc_cert', label: '혁신·녹색·우수조달제품' },
+                { v: 'pref_etc', label: '기타' },
                 { v: 'smallbiz', label: '소상공인' },
                 { v: 'small', label: '소기업(소상공인 제외)' },
                 { v: 'medium', label: '중기업' },
@@ -322,6 +386,9 @@
         'pp-venture':  { t: '공공조달 벤처나라 (벤처·창업기업 전용 쇼핑몰)', u: 'government-support.html#public-procurement', d: '조달청 벤처나라(venture.g2b.go.kr) 등록을 통해 기술·품질이 우수한 벤처·창업기업이 전국 공공기관에 제품을 홍보하고 초기 공공 납품 실적을 확보할 수 있습니다(하단 벤처나라 공식 링크 연결).' },
         'pp-small':    { t: '공공조달 우대지원 (소기업·소상공인 우선조달 쿼터 · 수의계약 우대)', u: 'government-support.html#public-procurement', d: '추정가격 2,000만 원 초과 ~ 1억 원 이하 구간의 소액수의계약(2인 이상 전자견적)은 대기업·중견기업 참여가 제한되고 소기업·소상공인 간 경쟁으로만 진행되는 공공조달 우선조달 우대제도입니다.' },
         'pp-sme-mfg':  { t: '공공조달 우대지원 (중소기업자 간 경쟁제품 · 직접생산확인)', u: 'government-support.html#public-procurement', d: '대기업의 공공시장 독점을 막기 위해 지정된 품목(지정 유효기간 3년)은 직접생산확인증명서를 보유한 중소 제조기업만 입찰에 참여할 수 있는 공공조달 보호제도입니다.' },
+        'pp-innov':    { t: '공공조달 우대지원 (혁신제품 — 3년 금액 제한 없는 수의계약 · 시범구매)', u: 'government-support.html#public-procurement', d: '혁신장터 등록 혁신제품은 지정 유효기간 3년 동안 금액 제한 없이 공공기관과 직접 수의계약이 가능하며, 조달청 예산으로 초기 납품 실적을 쌓는 혁신제품 시범구매 사업에 참여할 수 있습니다.' },
+        'pp-green':    { t: '공공조달 우대지원 (녹색제품 — 공공기관 의무구매 · 수의계약)', u: 'government-support.html#public-procurement', d: '환경표지·GR인증·저탄소인증 등을 받은 녹색제품은 「녹색제품 구매촉진에 관한 법률」에 따라 공공기관 의무구매 대상이며, 조달 입찰 가점 및 수의계약 우대 혜택을 받습니다.' },
+        'pp-excellent':{ t: '공공조달 우대지원 (우수조달물품 — 나라장터 종합쇼핑몰 직행 · 15% 의무구매)', u: 'government-support.html#public-procurement', d: '우수조달물품으로 지정되면 나라장터 종합쇼핑몰에 제3자 단가계약으로 직행 등록되어 별도 입찰 없이 수의계약 납품이 가능하며, 공공기관 기술개발제품 15% 의무구매 품목에 포함됩니다.' },
         'women-accel': { t: '여성기업 글로벌 액셀러레이팅 (여성기업종합지원센터)', u: 'government-support.html#women-accel', d: '창업 7년 미만 여성기업을 대상으로 수출 교육(5회차 이상 이수 필수)·전문가 컨설팅, 사업화 지원금(최대 1,000만 원, 20개사 내외) 또는 해외 전시회 공동관 참가(10개사 내외)를 지원하는 사업입니다.' },
         'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'policy-finance.html?org=ksure#ksure-presh', d: '수출 계약·신용장을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다(모든 수출기업 대상). 보증 한도·요건은 무보 안내를 확인하세요.' },
         'fx':          { t: '환변동보험', u: 'trade-insurance.html#fx', d: '환율 하락으로 생기는 손실에 대비하는 무역보험 상품입니다.' },
@@ -530,12 +597,16 @@
 
         // ── 핵심 기업인증 · ISO 인증 (2026-11-26 작가님) ──
         { id: 'biz-cert', pri: 2, match: function (c) {
-            return (c.mfg && c.smeOrMid)
-                ? '제조업 기업이라서(벤처·이노비즈·메인비즈 3대 기업인증 및 기업부설연구소 추천)' : '';
+            if (c.mfg && c.smeOrMid) return '제조업 기업이라서(벤처·이노비즈·메인비즈 3대 기업인증 및 기업부설연구소 추천)';
+            if (c.procCert && c.smeOrMid) return '혁신·녹색·우수조달제품 기업이라서(벤처·이노비즈·기업부설연구소 등 기술인증 연계로 공공조달 가점 확대 추천)';
+            return '';
         }},
         { id: 'iso-cert', pri: 2, match: function (c) {
-            return c.mfg
-                ? '제조업 기업이라서(ISO 품질·환경·안전 등 경영시스템 인증 및 정부 지원사업 연계 추천)' : '';
+            if (c.mfg && c.procCert) return '제조업 · 혁신·녹색·우수조달제품 기업이라서(ISO 9001 품질·ISO 14001 환경 등 인증으로 조달 평가 가점 및 정부 지원사업 연계 추천)';
+            if (c.mfg) return '제조업 기업이라서(ISO 품질·환경·안전 등 경영시스템 인증 및 정부 지원사업 연계 추천)';
+            if (c.procGreen) return '녹색제품 기업이라서(ISO 14001 환경경영시스템 등 인증 취득 및 정부 지원사업 연계 추천)';
+            if (c.procCert) return '혁신·우수조달제품 기업이라서(ISO 9001 품질경영 등 경영시스템 인증으로 공공조달 가점 및 정부 지원사업 연계 추천)';
+            return '';
         }},
         { id: 'biz-cert-mainbiz', pri: 2, match: function (c) {
             if (c.mfg || !c.sme) return '';
@@ -571,6 +642,18 @@
         { id: 'pp-venture', pri: 2, match: function (c) {
             return c.venture
                 ? '벤처기업이라서(조달청 공공조달 벤처나라 전용 쇼핑몰 등록 및 초기 판로 확보 추천)' : '';
+        }},
+        { id: 'pp-innov', pri: 2, match: function (c) {
+            return c.procInnov
+                ? '혁신제품 해당 기업이라서(공공조달 3년 금액 제한 없는 수의계약 · 조달청 혁신제품 시범구매 추천)' : '';
+        }},
+        { id: 'pp-green', pri: 2, match: function (c) {
+            return c.procGreen
+                ? '녹색제품(환경표지·GR·저탄소인증) 해당 기업이라서(공공기관 의무구매 · 조달 입찰 가점 · 수의계약 우대)' : '';
+        }},
+        { id: 'pp-excellent', pri: 2, match: function (c) {
+            return c.procExcl
+                ? '우수조달물품 해당 기업이라서(나라장터 종합쇼핑몰 제3자 단가계약 직행 · 기술개발제품 15% 의무구매)' : '';
         }},
         { id: 'pp-small', pri: 2, match: function (c) {
             if (c.smallbiz && c.mfg) return '소공인(제조업 소상공인)이라서(공공조달 2,000만 원 초과~1억 원 이하 소기업·소상공인 우선조달 수의계약 우대)';
@@ -952,7 +1035,7 @@
     };
 
     var SHORT = {
-        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 3년 초과~7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', mfg: '제조업', restart: '재창업·중장년', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
+        q2: { pre: '예비창업', startup: '창업 3년 이내', y7: '창업 3년 초과~7년 이내', y7p: '창업 7년 초과', youth: '청년', women: '여성', disabled: '장애인', social: '사회적', venture: '벤처', innobiz: '이노비즈', mainbiz: '메인비즈', lab: '연구소 보유', mfg: '제조업', restart: '재창업·중장년', proc_cert: '혁신·녹색·우수조달제품', pref_etc: '', esg_local: '소부장·ESG·비수도권', smallbiz: '소상공인', small: '소기업(소상공인 제외)', medium: '중기업', mid: '중견기업', large: '대기업', etc: '' },
         q1b: { prep: '준비 중', nego: '협상·샘플 진행 중', order: '첫 주문 받음' }
     };
 
@@ -1052,6 +1135,8 @@
         links: LINKS,
         programs: PROGRAMS,
         etcKeywords: ETC_KEYWORDS,
+        q2ProcOpts: Q2_PROC_OPTS,
+        q2EtcKeywords: Q2_ETC_KEYWORDS,
         extra: EXTRA,
         footLinks: FOOT_LINKS,
         aiPicks: AI_PICKS,
