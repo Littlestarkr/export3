@@ -550,7 +550,12 @@
             hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
-            market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); }
+            market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); },
+            logistics: function (w) {
+                add('logi-support', 5, w); add('c-logi', 3, w); add('voucher', 2, w); add('c-more', 2, w);
+                if (has2('smallbiz')) add('op-semas-logi', 4, w);
+                if (hasItem('agri')) add('agri', 2, w);
+            }
         };
         issues.forEach(function (k) { if (I[k]) I[k]("'" + M.issues[k] + "'를 골라서"); });
         // '기타'에 적은 글: 사이트 서비스 낱말과 맞으면 그곳을 추천, 맞는 게 없으면 상담 상자를 위로
