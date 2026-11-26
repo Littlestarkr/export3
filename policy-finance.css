@@ -2150,6 +2150,9 @@ html {
 .pf-bok-news p { margin: 0 0 8px; }
 .pf-bok-news .pf-bok-news-title { font-weight: 700; color: #a3291c; font-size: 0.98rem; }
 .pf-bok-news .pf-bok-news-chk { font-size: 0.84rem; color: #6b4a45; }
+.pf-bok-news .pf-bok-news-art { font-size: 0.86rem; }
+.pf-bok-news .pf-bok-news-art a { color: #a3291c; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.pf-bok-news .pf-bok-news-art span { color: #6b4a45; }
 .pf-bok-news .pf-bok-news-sub { margin-top: 12px; font-weight: 700; color: var(--primary-color, #0d1e38); }
 .pf-bok-news-links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 8px; }
 .pf-bok-news-links li { background: #fff; border: 1px solid #ecd3cf; border-radius: 8px; padding: 10px 12px; min-width: 0; }
