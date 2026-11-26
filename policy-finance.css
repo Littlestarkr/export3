@@ -2158,3 +2158,208 @@ html {
 .pf-bok-news-links li { background: #fff; border: 1px solid #ecd3cf; border-radius: 8px; padding: 10px 12px; min-width: 0; }
 .pf-bok-news-links a { display: block; font-weight: 700; color: var(--primary-color, #0d1e38); text-decoration: underline; text-underline-offset: 3px; }
 .pf-bok-news-links span { display: block; margin-top: 2px; font-size: 0.8rem; color: #777; }
+
+/* 중소기업 혁신바우처(#innovation-voucher, 2026-11-26) */
+#innovation-voucher .iv-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 14px 0 4px;
+}
+
+#innovation-voucher .iv-kpi {
+    background: #faf8f2;
+    border: 1px solid #e6dec8;
+    border-radius: 10px;
+    padding: 15px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+#innovation-voucher .iv-kpi-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--gold-text, #8a6a1f);
+    letter-spacing: 0.02em;
+}
+
+#innovation-voucher .iv-kpi-val {
+    font-size: 1.06rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.35;
+    word-break: keep-all;
+}
+
+#innovation-voucher .iv-kpi-note {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.45;
+    word-break: keep-all;
+}
+
+#innovation-voucher .iv-kpi.is-accent {
+    background: linear-gradient(135deg, #0d1e38 0%, #1a3a6c 100%);
+    border-color: #0d1e38;
+}
+
+#innovation-voucher .iv-kpi.is-accent .iv-kpi-label {
+    color: #f6e3a8;
+}
+
+#innovation-voucher .iv-kpi.is-accent .iv-kpi-val {
+    color: #fff;
+    font-size: 1.18rem;
+}
+
+#innovation-voucher .iv-kpi.is-accent .iv-kpi-note {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+#innovation-voucher .iv-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#innovation-voucher .iv-badge.is-general {
+    background: #eef2f8;
+    color: var(--primary-color, #0d1e38);
+}
+
+#innovation-voucher .iv-badge.is-special {
+    background: #fff8e6;
+    border: 1px solid #e5cf94;
+    color: var(--gold-text, #8a6a1f);
+}
+
+#innovation-voucher .iv-diagram {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+    margin-top: 12px;
+    padding: 20px;
+    background: #f8f9fb;
+    border: 1px solid #e3e8f0;
+    border-radius: 10px;
+}
+
+#innovation-voucher .iv-node {
+    background: #fff;
+    border: 1px solid #d5dfee;
+    border-top: 3px solid var(--primary-color, #0d1e38);
+    border-radius: 8px;
+    padding: 16px 18px;
+    text-align: center;
+    min-width: 0;
+}
+
+#innovation-voucher .iv-node-tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #eef2f8;
+    color: var(--primary-color, #0d1e38);
+    margin-bottom: 6px;
+}
+
+#innovation-voucher .iv-node strong {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--primary-color, #0d1e38);
+    margin-bottom: 4px;
+}
+
+#innovation-voucher .iv-node p {
+    margin: 0;
+    font-size: 0.86rem;
+    color: #555;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+#innovation-voucher .iv-bridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    padding: 0 6px;
+}
+
+#innovation-voucher .iv-bridge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.84rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#innovation-voucher .iv-bridge-sub {
+    font-size: 0.78rem;
+    color: #666;
+    word-break: keep-all;
+}
+
+#innovation-voucher .iv-bridge-sub a {
+    color: var(--primary-color, #0d1e38);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+#innovation-voucher .iv-bridge-sub a:hover {
+    color: var(--gold-text, #8a6a1f);
+}
+
+#innovation-voucher .iv-partner-note {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid #e6e8ee;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+#innovation-voucher .iv-partner-note strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+@media (max-width: 900px) {
+    #innovation-voucher .iv-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #innovation-voucher .iv-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #innovation-voucher .iv-diagram {
+        grid-template-columns: 1fr;
+        padding: 14px;
+        gap: 10px;
+    }
+
+    #innovation-voucher .iv-bridge {
+        padding: 4px 0;
+    }
+}
+
