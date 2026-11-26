@@ -2140,3 +2140,7 @@ html {
 @media (min-width: 769px) {
     .pf-pref-card[id] { scroll-margin-top: 96px; }
 }
+
+/* 무역금융 탭(#panel-bok, 2026-11-26): 좁은 폰·큰 글자에서 두 칸 목록이 카드 밖으로 넘치지 않게 */
+#panel-bok .pf-two { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+#panel-bok .pf-fund, #panel-bok .pf-list li, #panel-bok .pf-pref-chk, #panel-bok .pf-callout { overflow-wrap: anywhere; min-width: 0; }
