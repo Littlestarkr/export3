@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 55;
+    var MAP_VERSION = 56;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -54,6 +54,7 @@
         fraud:   '계좌변경·무역사기가 걱정된다',
         market:  '어느 나라로 갈지 모르겠다',
         tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다',
+        logistics: '물류·배송이 어렵거나 비용이 부담된다',
         etc:     '기타(찾는 서비스 직접 적기)'
     };
     // '기타'(2026-11-22 작가님): '더 보기' 목록 맨 끝에 있고(2026-11-24), 고르면 입력칸(100자)이 열린다. 전체 선택에는 넣지 않는다.
@@ -82,7 +83,7 @@
         { k: ['기보', '기술보증'], ids: ['kibo', 'kibo-rnd', 'kibo-retry'] },
         { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['c-amazon', 'gm-kosmes', 'op-semas', 'b2c', 'c-more'] },
         { k: ['b2b', '플랫폼'], ids: ['b-b2b', 'buykorea'] },
-        { k: ['물류', '배송', '운송', '포워딩', '포워더'], ids: ['c-logi', 'customs'] },
+        { k: ['물류', '배송', '운송', '포워딩', '포워더', '풀필먼트', 'ems'], ids: ['logi-support', 'c-logi', 'customs'] },
         { k: ['수입보험', '선급금', '원자재 수입'], ids: ['import-ins'] },
         { k: ['벤처', '이노비즈', 'innobiz', '기업부설연구소', '연구소', '기업인증'], ids: ['biz-cert'] },
         { k: ['메인비즈', 'mainbiz', '경영혁신'], ids: ['biz-cert-mainbiz'] },
@@ -472,7 +473,9 @@
         'kon':         { t: 'K-SURE ON(온라인 무역보험)', u: 'trade-insurance.html#kon', d: '무역보험 신청과 조회를 온라인으로 합니다.' },
         'qna-f':       { t: '단기수출보험 Q&A', u: 'trade-insurance.html#qna-f', d: '보험 한도·수출 통지 등 자주 묻는 질문입니다.' },
         'import-ins':  { t: '수입보험', u: 'trade-insurance.html#import', d: '주요 자원·시설재 등을 수입하며 선급금을 먼저 낼 때(수입자용)나 수입자금을 빌릴 때(금융기관용) 대비하는 무보 보험입니다. 대상 품목이 정해져 있으니 지원물품을 확인하세요.' },
-        'c-logi':      { t: 'B2C 물류·통관·결제', u: 'global-expansion.html#c-logi', d: '해외 배송·통관·결제 방법을 정리했습니다.' },
+        'logi-support':{ t: '수출 물류·배송비 지원사업 (우체국 EMS·특송 할인 · 온라인 수출 바우처 · 풀필먼트)', u: 'global-expansion.html#c-support', d: '중기부·우정사업본부 우체국 EMS 이용료 지원·최대 30% 할인(DHL·한진 등 특송 15~66% 할인), 온라인 수출 바우처(풀필먼트 한도 확대), 소진공 해외 온라인 플랫폼 물류지원 등 배송비 절감 지원사업을 정리했습니다.' },
+        'op-semas-logi': { t: '소진공 해외 온라인 플랫폼 물류지원 (B2C 국제특송·B2B 국제운송·국내 풀필먼트)', u: 'overseas-platform.html#types', d: '해외 온라인 플랫폼에서 주문이 발생한 소상공인에게 국내·외 배송 물류비와 풀필먼트 전 과정 처리 서비스를 지원합니다(세부 자격·모집 일정은 최신 공고 확인).' },
+        'c-logi':      { t: '수출 물류·배송·통관·결제 가이드', u: 'global-expansion.html#c-logi', d: '우체국 EMS·DHL/FedEx 특송·아마존 FBA·풀필먼트 선택과 간이수출신고(관세청 유니패스)·관세·부가세·정산 실무를 정리했습니다.' },
         'fxinfo':      { t: '환율 정보', u: 'trade-insurance.html#fxinfo', d: '무보 환변동보험 홈페이지의 환율 정보로 연결합니다.' },
         'roadmap':     { t: '수출 5단계 로드맵', u: 'export-roadmap.html', d: '' },
         'notices':     { t: '핫이슈(최신 공고·수출 소식)', u: 'notices.html', d: '' },
@@ -801,10 +804,29 @@
             return '';
         }},
         { id: 'voucher', pri: 2, match: function (c) {
+            if (c.hasAny(['logistics'])) return "'물류·배송' 어려움을 골라서(수출바우처 국제운송·해외물류비 활용 추천)";
             if (c.hasAny(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']))
                 return c.whyTags(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']);
             if (c.rev === 2) return '매출 1억~5억 원 미만 초보 수출바우처 대상이라서';
             return '';
+        }},
+        { id: 'logi-support', pri: 2, match: function (c) {
+            return c.hasAny(['logistics'])
+                ? "'물류·배송' 어려움을 골라서(우체국 EMS·특송 할인 · 온라인 수출 바우처 · 풀필먼트 등 물류·배송비 지원정책)" : '';
+        }},
+        { id: 'op-semas-logi', pri: 2, match: function (c) {
+            if (!c.hasAny(['logistics'])) return '';
+            if (c.smallbiz) return "소상공인 + '물류·배송' 어려움을 골라서(소진공 B2C 국제특송·B2B 국제운송·국내 풀필먼트 물류지원)";
+            if (c.b2c) return "B2C + '물류·배송' 어려움을 골라서(소진공 해외 온라인 플랫폼 물류지원 — 소상공인 대상, 공고 확인)";
+            return '';
+        }},
+        { id: 'c-logi', pri: 2, match: function (c) {
+            return c.hasAny(['logistics'])
+                ? "'물류·배송' 어려움을 골라서(우체국 EMS·특송·FBA·풀필먼트 및 간이수출신고·관세 실무 가이드)" : '';
+        }},
+        { id: 'c-more', pri: 3, match: function (c) {
+            return c.hasAny(['logistics'])
+                ? "'물류·배송' 어려움을 골라서(KOTRA 콰징 원스톱 물류지원 · 우체국 EMS · 지자체 수출 물류비 지원)" : '';
         }},
         { id: 'k-market', pri: 3, match: function (c) {
             if (c.hasAny(['buyer', 'market', 'need:market'])) return c.whyTags(['buyer', 'market', 'need:market']);
