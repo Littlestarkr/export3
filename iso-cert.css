@@ -1,0 +1,479 @@
+/* =========================================
+   정부사업 매칭 - ISO 인증 안내 섹션 (#iso-certification)
+   기존 CSS와 충돌하지 않도록 모든 클래스를 .iso- 접두어로 격리한다.
+   ========================================= */
+
+#iso-certification.iso-section {
+    scroll-margin-top: 80px;
+    padding: 84px 0 90px;
+    background: var(--accent-color, #f8f9fa);
+    border-top: 1px solid #e6e1d4;
+}
+
+/* ── 섹션 헤더 (좌측 골드 포인트 바) ── */
+#iso-certification .iso-header {
+    border-left: 5px solid var(--secondary-color, #c5a059);
+    padding: 4px 0 4px 22px;
+    margin-bottom: 32px;
+}
+
+#iso-certification .iso-eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-text, #8a6a1f);
+    margin-bottom: 6px;
+}
+
+#iso-certification .iso-title {
+    font-size: 1.95rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.3;
+    margin: 0;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-intro {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin-bottom: 44px;
+    box-shadow: 0 4px 16px rgba(13, 30, 56, 0.04);
+}
+
+#iso-certification .iso-intro p {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.8;
+    color: #333;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-intro p + p {
+    margin-top: 12px;
+}
+
+/* ── 블록 공통 소제목 ── */
+#iso-certification .iso-block {
+    margin-bottom: 48px;
+}
+
+#iso-certification .iso-block-head {
+    margin-bottom: 18px;
+}
+
+#iso-certification .iso-block-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.28rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 0 0 6px;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-block-title i {
+    color: var(--secondary-color, #c5a059);
+    font-size: 1.1rem;
+}
+
+#iso-certification .iso-block-desc {
+    margin: 0;
+    font-size: 0.94rem;
+    color: #555;
+    line-height: 1.65;
+    word-break: keep-all;
+}
+
+/* ── 블록 1: 주요 ISO 인증 6종 카드 그리드 (PC 3열 / 태블릿 2열 / 모바일 1열) ── */
+#iso-certification .iso-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+#iso-certification .iso-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--primary-color, #0d1e38);
+    border-radius: 10px;
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+#iso-certification .iso-card:hover {
+    border-top-color: var(--secondary-color, #c5a059);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(13, 30, 56, 0.08);
+}
+
+#iso-certification .iso-code {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+#iso-certification .iso-card-name {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 2px 0 0;
+    line-height: 1.35;
+}
+
+#iso-certification .iso-card-desc {
+    margin: 0;
+    font-size: 0.91rem;
+    color: #444;
+    line-height: 1.68;
+    word-break: keep-all;
+}
+
+/* ── 블록 2: ISO 인증 취득 5단계 스텝 타임라인 ── */
+#iso-certification .iso-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+#iso-certification .iso-step {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 3px solid var(--secondary-color, #c5a059);
+    border-radius: 10px;
+    padding: 20px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#iso-certification .iso-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    flex: none;
+}
+
+#iso-certification .iso-step-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-step-desc {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.65;
+    word-break: keep-all;
+}
+
+/* ── 블록 3: 정부 지원사업 연계 카드 3종 ── */
+#iso-certification .iso-support-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+#iso-certification .iso-support-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-radius: 10px;
+    padding: 24px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(13, 30, 56, 0.04);
+}
+
+#iso-certification .iso-support-tag {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #fff8e6;
+    border: 1px solid #ebd7a0;
+    color: var(--gold-text, #8a6a1f);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+#iso-certification .iso-support-card h5 {
+    margin: 0;
+    font-size: 1.12rem;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.35;
+}
+
+#iso-certification .iso-support-card p {
+    margin: 0;
+    font-size: 0.91rem;
+    color: #444;
+    line-height: 1.7;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-support-link {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+#iso-certification .iso-ext-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--primary-color, #0d1e38);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.4;
+    transition: var(--transition);
+}
+
+#iso-certification .iso-ext-btn:hover {
+    background: var(--secondary-color, #c5a059);
+    color: var(--primary-color, #0d1e38);
+}
+
+#iso-certification .iso-ext-btn i {
+    font-size: 0.8rem;
+    opacity: 0.88;
+}
+
+/* ── Happy Oh 실무 체크포인트 콜아웃 ── */
+#iso-certification .iso-tip {
+    background: #fffaf0;
+    border: 1.5px solid #e3cf9b;
+    border-left: 5px solid var(--secondary-color, #c5a059);
+    border-radius: 10px;
+    padding: 24px 26px;
+}
+
+#iso-certification .iso-tip-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 0 0 12px;
+}
+
+#iso-certification .iso-tip-title i {
+    color: var(--gold-text, #8a6a1f);
+}
+
+#iso-certification .iso-tip-list {
+    margin: 0 0 14px;
+    padding-left: 20px;
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: #3a3222;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-tip-list li + li {
+    margin-top: 8px;
+}
+
+#iso-certification .iso-tip-list strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+#iso-certification .iso-tip-closing {
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px dashed #e2cfa0;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.7;
+    word-break: keep-all;
+}
+
+/* ── 블록 4: 하단 연관 메뉴 및 상담 CTA 바 ── */
+#iso-certification .iso-actions {
+    background: linear-gradient(135deg, #0d1e38 0%, #17305a 100%);
+    border: 1.5px solid var(--secondary-color, #c5a059);
+    border-radius: 12px;
+    padding: 26px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#iso-certification .iso-actions-copy {
+    color: #fff;
+    max-width: 460px;
+}
+
+#iso-certification .iso-actions-copy strong {
+    display: block;
+    font-size: 1.12rem;
+    margin-bottom: 4px;
+    color: #f6e3a8;
+}
+
+#iso-certification .iso-actions-copy span {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+#iso-certification .iso-actions-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#iso-certification .iso-actions-btns .btn {
+    min-height: 44px;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 0.92rem;
+}
+
+#iso-certification .iso-uplink-wrap {
+    margin-top: 22px;
+    text-align: right;
+}
+
+/* ── 반응형 (태블릿 / 모바일) ── */
+@media (max-width: 1024px) {
+    #iso-certification .iso-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #iso-certification .iso-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #iso-certification .iso-support-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #iso-certification.iso-section {
+        padding: 56px 0 64px;
+    }
+
+    #iso-certification .iso-header {
+        padding-left: 16px;
+        margin-bottom: 22px;
+    }
+
+    #iso-certification .iso-title {
+        font-size: 1.48rem;
+    }
+
+    #iso-certification .iso-intro {
+        padding: 18px 18px;
+        margin-bottom: 34px;
+    }
+
+    #iso-certification .iso-block {
+        margin-bottom: 36px;
+    }
+
+    #iso-certification .iso-block-title {
+        font-size: 1.15rem;
+    }
+
+    #iso-certification .iso-card-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    /* 모바일 세로 타임라인 */
+    #iso-certification .iso-steps {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        position: relative;
+        padding-left: 18px;
+    }
+
+    #iso-certification .iso-steps::before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 12px;
+        bottom: 12px;
+        width: 2px;
+        background: #dfd3b0;
+    }
+
+    #iso-certification .iso-step {
+        padding: 16px 16px 15px;
+    }
+
+    #iso-certification .iso-step::before {
+        content: "";
+        position: absolute;
+        left: -17px;
+        top: 22px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--secondary-color, #c5a059);
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px var(--primary-color, #0d1e38);
+    }
+
+    #iso-certification .iso-tip {
+        padding: 18px 18px;
+    }
+
+    #iso-certification .iso-actions {
+        padding: 20px 18px;
+    }
+
+    #iso-certification .iso-actions-btns {
+        width: 100%;
+    }
+
+    #iso-certification .iso-actions-btns .btn {
+        width: 100%;
+    }
+}
