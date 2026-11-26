@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 48;
+    var MAP_VERSION = 49;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -95,7 +95,8 @@
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
         { k: ['고비즈', 'gobiz', '바이코리아', 'buykorea'], ids: ['gobizkorea', 'buykorea-portal'] },
         { k: ['트라이빅', 'tribig', '해외경제정보', 'dream'], ids: ['tribig', 'kotra-dream', 'kita-portal'] },
-        { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['ibk-export', 'ibk-smallbiz'] },
+        { k: ['내국신용장', '구매확인서', '로컬', 'local'], ids: ['bok-local', 'bok-tf'] },
+        { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['bok-tf', 'ibk-export', 'ibk-smallbiz'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
     // 단계별로 먼저 보이는 애로(순서대로, 6~9개). 나머지는 '다른 어려움 더 보기'
@@ -349,6 +350,9 @@
         'kita-fund':   { t: '무역협회 무역진흥자금', u: 'policy-finance.html?org=kita#kita-fund', d: '회비를 완납한 무역협회 회원사(전년도 수출실적 2천만 달러 이하) 대상 수출마케팅·수출이행 자금(최고 3억 원, 연 2.5~3.0% 고정금리).' },
         'ksure-direct':{ t: '무보 수출신용보증(다이렉트-선적전)', u: 'policy-finance.html?org=ksure#ksure-direct', d: '매출 1억~100억 원·직수출 1만~200만 달러 미만(1만 달러 미만 시 간접수출 인정) 수출초보 중소기업용 비대면 100% 보증(한도 5천만~1억 원).' },
         'trade-sure':  { t: '무역보험공사 TRADE-SURE 컨설팅(무료)', u: 'https://ksure.or.kr/rh-kr/cntnts/i-287/web.do', ext: true, d: '연간 수출실적 US$1천만 미만 수출(예정) 중소기업에 무역·법무·회계·관세 등 1:1 맞춤형 무료 컨설팅을 기업당 총 6회 제공합니다. 신청 절차는 무보 안내를 확인하세요.' },
+        // 한국은행 무역금융(2026-11-26 작가님: 모든 수출기업에 기업은행보다 앞에서 추천, 로컬 수출기업에는 내국신용장·구매확인서 안내)
+        'bok-tf':      { t: '한국은행 무역금융(시중은행 창구)', u: 'policy-finance.html?org=bok#bok-overview', d: '수출신용장·수출계약서·수출실적을 근거로 시중은행이 원자재 구매·생산·완제품 구매 자금을 저금리로 지원하는 선적 전 금융입니다. 2026.7.23 한국은행 개편으로 단계적 축소·폐지 예정(언론 보도 기준)이니 신규 지원 여부는 거래 은행에서 꼭 확인하세요.' },
+        'bok-local':   { t: '무역금융 · 내국신용장(Local L/C)과 구매확인서', u: 'policy-finance.html?org=bok#bok-local', d: '국내 수출기업에 수출용 물품을 납품(간접수출)할 때 쓰는 내국신용장(은행 지급보증 있음)과 구매확인서(지급보증 없음)의 차이, 부가세 영세율·간접수출 실적 인정, 내국신용장 필수 기한 규정을 정리했습니다.' },
         // IBK기업은행 기업대출(2026-11-23)
         'ibk-export':  { t: 'IBK기업은행 무역금융·관세피해 지원대출', u: 'policy-finance.html?org=ibk#ibk-export', d: '외화획득 단계별 무역금융, 통상환경 변화 대응 IBK관세피해기업 지원대출, 철강산업 수출공급 활성화 지원대출(무보 보증 연계) 등 수출기업 전용 대출입니다.' },
         'ibk-youth':   { t: 'IBK기업은행 IBK유망청년창업대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신용보증기금·기술보증기금과 업무협약으로 유망 청년창업기업에 운전자금을 지원하는 전용 상품입니다(고정·변동·혼합).' },
@@ -413,7 +417,7 @@
 
     // 조건에 맞는 정책금융·지원사업 전체 매칭(2026-11-23 작가님):
     // 8가지 질문 중 어느 하나의 조건이라도 해당하면 지원 가능한 금융·지원사업을 빠짐없이 추천한다.
-    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = IBK기업은행, 5 = 한국수출입은행(문턱이 높아 기은 다음 맨 마지막)
+    // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = 한국은행 무역금융(기은보다 앞)·IBK기업은행, 5 = 한국수출입은행(문턱이 높아 기은 다음 맨 마지막)
     var PROGRAMS = [
         // ── 최우선 추천 (pri: 1) ──
         { id: 'semas-disabled', pri: 1, match: function (c) {
@@ -647,6 +651,14 @@
             return '';
         }},
 
+        // ── 한국은행 무역금융 (pri: 4, 기업은행보다 앞 · 2026-11-26 작가님) ──
+        { id: 'bok-tf', pri: 4, match: function () {
+            return '모든 수출기업 대상(한국은행 무역금융 · 개편 예정, 은행 확인)이라서';
+        }},
+        { id: 'bok-local', pri: 4, match: function (c) {
+            return c.hasAny(['form:local']) ? '로컬 수출(국내 수출기업 납품) 기업이라서(내국신용장·구매확인서)' : '';
+        }},
+
         // ── IBK기업은행 (pri: 4) ──
         { id: 'ibk-export', pri: 4, match: function () {
             return '모든 수출기업 대상(IBK 무역금융·관세피해 지원대출)이라서';
@@ -839,7 +851,7 @@
 
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
-        local: ['k-domestic', 'qna-fx'],
+        local: ['bok-local', 'k-domestic', 'qna-fx'],
         b2c:   ['c-amazon', 'gm-kosmes', 'op-semas', 'b2c'],
         b2b:   ['buyer', 'doc-builder'],
         relay: ['ksure-plus', 'claim-exempt'],
