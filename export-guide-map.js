@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 56;
+    var MAP_VERSION = 57;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -77,7 +77,8 @@
         { k: ['서류', '인보이스', 'invoice', '패킹', '오퍼', '선적통지'], ids: ['doc-builder', 'export-docs'] },
         { k: ['사기', '해킹', '계좌변경', '계좌 변경'], ids: ['fraud'] },
         { k: ['클레임', '분쟁', '중재', '조정'], ids: ['trade-claim', 'kcab'] },
-        { k: ['바우처'], ids: ['voucher'] },
+        { k: ['혁신바우처', '중대재해', '탄소바우처', '탄소중립'], ids: ['innovation-voucher'] },
+        { k: ['바우처'], ids: ['voucher', 'innovation-voucher'] },
         { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd', 'kibo-rnd'] },
         { k: ['재기', '재도전', '재창업', '채무조정'], ids: ['kibo-retry', 'kodit-retry', 'kosmes-restart', 'semas-retry'] },
         { k: ['기보', '기술보증'], ids: ['kibo', 'kibo-rnd', 'kibo-retry'] },
@@ -340,6 +341,7 @@
         'cert-elec':   { t: '전기·전자·공산품 해외인증 안내(CE·FCC·UL 등)', u: 'cert-guide.html#item-industrial', d: 'CE·FCC·UL·PSE 등 전기·전자·IT기기·기계류 필수 규격인증 조회 경로와 트레이드내비 교차 검증 방법을 안내합니다.' },
         'ip-help':     { t: '해외지식재산센터(IP-DESK)·상표권·수출애로 상담', u: 'global-expansion.html#ip-help', d: '해외 상표·특허 출원, 위조품·지재권 분쟁 대응 상담(IP-DESK)과 무역 전문가 1:1 상담(TradePro)을 안내합니다.' },
         'voucher':     { t: '수출바우처', u: 'government-support.html#voucher', d: '시장조사·인증·홍보 등 수출 서비스를 골라 쓰는 지원사업입니다. 신청 자격은 해마다 공고를 확인하세요.' },
+        'innovation-voucher': { t: '중소기업 혁신바우처', u: 'government-support.html#innovation-voucher', d: '「중소기업기본법」 제2조에 따른 제조업 중소기업에 컨설팅·기술지원·마케팅을 바우처로 최대 5,000만 원 지원하는 사업입니다. 일반바우처는 평균(3년) 매출 140억 원 이하 소기업, 중대재해예방·탄소중립 바우처는 140억 초과~1,800억 원 이하 중소기업까지 신청 가능합니다.' },
         'doc-builder': { t: '수출서류 작성기', u: 'doc-builder.html', d: '오퍼시트·PI·CI·P/L·선적통지 초안을 한 번의 입력으로 만듭니다.' },
         'contract':    { t: '계약서 작성기', u: 'contract-builder.html', d: '거래 조건에 맞는 매매계약서 초안과 추천 조항을 만듭니다.' },
         'export-docs': { t: '수출서류 점검·작성', u: 'export-docs.html', d: '샘플 계약서·체크리스트로 서류의 빠진 곳과 위험 조항을 점검합니다.' },
@@ -593,6 +595,16 @@
         }},
         { id: 'pref-mfg', pri: 2, match: function (c) {
             return c.mfg ? "우대 조건('제조업')을 골라서" : '';
+        }},
+        { id: 'innovation-voucher', pri: 2, match: function (c) {
+            if (!c.mfg || !c.sme) return '';
+            if (c.has2('medium') || c.rev === 5) {
+                return '제조업 중소기업이라서(일반바우처는 평균 매출 140억 이하 소기업, 중대재해예방·탄소중립 바우처는 140억 초과~1,800억 원 이하 중소기업까지 신청 가능 · 최대 5,000만 원)';
+            }
+            if (c.localBiz) {
+                return '제조업 중소기업(비수도권·지방소재)이라서(컨설팅·기술지원·마케팅 바우처 최대 5,000만 원 · 지역 보조율 우대 적용 가능)';
+            }
+            return '제조업 중소기업이라서(일반바우처 평균 매출 140억 이하 소기업 · 탄소·중대재해 바우처 1,800억 이하 중소기업 · 최대 5,000만 원)';
         }},
         { id: 'pref-cond', pri: 2, match: function (c) {
             return c.pref.length ? "우대 조건('" + c.prefLabels + "')을 골라서" : '';
