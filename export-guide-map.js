@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 50;
+    var MAP_VERSION = 51;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -317,7 +317,9 @@
         'rnd':         { t: '창업·R&D 지원사업', u: 'government-support.html#rnd', d: '예비창업패키지·TIPS 등 창업 기업용 지원사업입니다.' },
         'hope':        { t: '소진공 희망리턴패키지', u: 'government-support.html#hope', d: '폐업·재창업·재도전 소상공인의 재기·전환을 돕는 소진공 사업입니다.' },
         'agri':        { t: '농산물 수출 지원', u: 'global-expansion.html#agri', d: '농식품 수출 지원사업과 기관을 정리했습니다.' },
-        'ksure-agri':  { t: '농수산물 패키지 보험', u: 'trade-insurance.html#ksure-agri', d: '농수산물 수출에 특화된 단기수출보험입니다.' },
+        'ksure-agri':  { t: '농수산물 패키지 보험', u: 'trade-insurance.html#ksure-agri', d: '농수산물 수출에 특화된 단기수출보험입니다. 대금미회수·수입국 검역·무역클레임비용 위험을 보험증권 하나로 보장합니다.' },
+        // 2026-11-26 작가님: 농식품기업에 aT 지원제도(수출보험료 지원 포함) 소개. 비율·대상 종목은 무보 보험료지원 게시판 2026년 aT 안내(i-671, ntt_sn=290)로 확인
+        'at-ins':      { t: 'aT 농식품글로벌성장패키지(수출보험료 지원)', u: 'trade-insurance.html#ksure-agri-at', d: 'aT 패키지 지원업체로 선정되어 약정한 농식품 수출 중소·중견기업에 단기수출보험(농수산물패키지 등)·환변동보험·수출신용보증 보험료(보증료)를 국고로 지원합니다(중소 90%·중견 80%, 무보 2026년 안내 기준). 모집 시기·한도는 공고 확인.' },
         'at':          { t: 'aT 농식품 수출자금', u: 'policy-finance.html?org=at', d: '농식품 수출업체용 운영·시설 자금입니다.' },
         'at-ops':      { t: 'aT 농식품 글로벌육성지원자금(운영자금)', u: 'policy-finance.html?org=at#at-ops', d: '농식품 수출용 원료·부자재 구입·저장·가공 운영자금. 고정금리 2.5%(농업경영체)·3.0%(일반) 또는 변동, 업체당 200억 원 이내(1년).' },
         'at-facility': { t: 'aT 농식품 글로벌육성지원자금(시설자금)', u: 'policy-finance.html?org=at#at-facility', d: '농식품 저장·가공·부대시설·물류장비 현대화 시설자금. 고정금리 2.0%(농업경영체)·3.0%(일반) 또는 변동, 30억 원 이내(10년·거치 3년).' },
@@ -511,6 +513,14 @@
         }},
         { id: 'at-facility', pri: 2, match: function (c) {
             return c.agri ? '농수산식품 수출(예정)기업이라서' : '';
+        }},
+        { id: 'at-ins', pri: 2, match: function (c) {
+            // 중소·중견기업 대상 제도
+            return (c.agri && c.smeOrMid) ? '농수산식품 수출(예정) 중소·중견기업이라서' : '';
+        }},
+        { id: 'ksure-agri', pri: 2, match: function (c) {
+            // 중소·중견기업 대상 제도
+            return (c.agri && c.smeOrMid) ? '농수산식품 수출(예정) 중소·중견기업이라서' : '';
         }},
 
         // ── 한국무역보험공사 (무보) ──
