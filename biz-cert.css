@@ -1,0 +1,729 @@
+/* =========================================
+   벤처/이노비즈/메인비즈 기업인증 가이드 (biz-cert.html)
+   기본 변수·헤더·푸터는 styles.css, 히어로·섹션·절차·CTA는 policy-finance.css,
+   경고·면책 상자는 cert-guide.css 의 .cg-* 를 공유한다.
+   ========================================= */
+
+/* ── 페이지 하단 플로팅 바 여백 확보 ── */
+.bc-page .main-footer {
+    padding-bottom: 78px;
+}
+
+/* ── 섹션 배경 교차 ── */
+.bc-section-alt {
+    background: var(--accent-color, #f8f9fa);
+}
+
+/* ── 타깃별 빠른 추천 칩/카드 (초기창업·기술·경영) ── */
+.bc-target-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 36px;
+}
+
+.bc-target-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 3px solid var(--primary-color, #0d1e38);
+    border-radius: 10px;
+    padding: 20px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.bc-target-card:hover {
+    border-top-color: var(--secondary-color, #c5a059);
+    box-shadow: 0 8px 22px rgba(13, 30, 56, 0.08);
+    transform: translateY(-2px);
+}
+
+.bc-target-tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--gold-text, #8a6a1f);
+    background: #fff8e6;
+    border: 1px solid #f0dfb0;
+    border-radius: 999px;
+    padding: 2px 10px;
+}
+
+.bc-target-card h4 {
+    font-size: 1.05rem;
+    color: var(--primary-color, #0d1e38);
+    margin: 2px 0 0;
+    line-height: 1.4;
+}
+
+.bc-target-card p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.bc-target-btn {
+    margin-top: auto;
+    padding-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding-left: 0;
+    min-height: 44px;
+    text-align: left;
+}
+
+.bc-target-btn:hover {
+    color: var(--gold-text, #8a6a1f);
+}
+
+.bc-target-btn i {
+    color: var(--secondary-color, #c5a059);
+    font-size: 0.82rem;
+}
+
+/* ── 3대 인증 비교표 (모바일 가로 스와이프 + 좌측 '구분' 열 고정) ── */
+.bc-swipe-hint {
+    display: none;
+    font-size: 0.82rem;
+    color: var(--gold-text, #8a6a1f);
+    font-weight: 600;
+    margin: 0 0 8px;
+    text-align: right;
+}
+
+.bc-cmp-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e3ded1;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(13, 30, 56, 0.05);
+}
+
+.bc-cmp-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.93rem;
+    line-height: 1.6;
+}
+
+.bc-cmp-table th,
+.bc-cmp-table td {
+    padding: 15px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #eceae2;
+    border-right: 1px solid #f0eee7;
+    word-break: keep-all;
+}
+
+.bc-cmp-table th:last-child,
+.bc-cmp-table td:last-child {
+    border-right: none;
+}
+
+.bc-cmp-table tbody tr:last-child th,
+.bc-cmp-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.bc-cmp-table thead th {
+    background: var(--primary-color, #0d1e38);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.96rem;
+    border-bottom: 2px solid var(--secondary-color, #c5a059);
+    border-right-color: rgba(255, 255, 255, 0.14);
+}
+
+.bc-cmp-table thead th small {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: #e8d29c;
+    margin-top: 2px;
+}
+
+.bc-cmp-table tbody th {
+    background: #faf8f2;
+    color: var(--primary-color, #0d1e38);
+    font-weight: 700;
+    width: 120px;
+    white-space: nowrap;
+}
+
+.bc-cmp-table tbody tr:nth-child(even) td {
+    background: #fcfcfd;
+}
+
+.bc-cmp-table td strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+.bc-cmp-sub {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.82rem;
+    color: #666;
+}
+
+/* ── 인증별 상세 탭 UI ── */
+.bc-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 28px;
+}
+
+.bc-tab {
+    font-family: inherit;
+    min-height: 54px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #cfd6e0;
+    background: #fff;
+    color: var(--primary-color, #0d1e38);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.bc-tab small {
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.bc-tab:hover {
+    border-color: var(--secondary-color, #c5a059);
+    background: #fffcf5;
+}
+
+.bc-tab.is-active {
+    background: var(--secondary-color, #c5a059);
+    border-color: var(--secondary-color, #c5a059);
+    color: var(--primary-color, #0d1e38);
+    box-shadow: 0 6px 18px rgba(197, 160, 89, 0.32);
+}
+
+.bc-tab.is-active small {
+    color: #2c2410;
+    font-weight: 600;
+}
+
+/* ── 탭 패널 카드 래퍼 ── */
+.bc-panel {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--primary-color, #0d1e38);
+    border-radius: 12px;
+    padding: 32px 30px;
+    box-shadow: 0 8px 26px rgba(13, 30, 56, 0.05);
+}
+
+.bc-panel[hidden] {
+    display: none;
+}
+
+.bc-panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #ece8dc;
+}
+
+.bc-panel-head h4 {
+    font-size: 1.45rem;
+    color: var(--primary-color, #0d1e38);
+    margin: 0;
+}
+
+.bc-panel-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.bc-overview {
+    background: #faf8f2;
+    border-left: 4px solid var(--secondary-color, #c5a059);
+    border-radius: 6px;
+    padding: 15px 18px;
+    font-size: 0.96rem;
+    color: #333;
+    line-height: 1.7;
+    margin: 0 0 26px;
+    word-break: keep-all;
+}
+
+.bc-subhead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 28px 0 14px;
+}
+
+.bc-subhead i {
+    color: var(--secondary-color, #c5a059);
+}
+
+/* ── 벤처 4가지 유형 카드 ── */
+.bc-type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.bc-type-card {
+    background: #fafbfc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--primary-color, #0d1e38);
+    border-radius: 8px;
+    padding: 18px 18px 16px;
+}
+
+.bc-type-num {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--primary-color, #0d1e38);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+}
+
+.bc-type-card h5 {
+    font-size: 1.05rem;
+    color: var(--primary-color, #0d1e38);
+    margin: 0 0 6px;
+}
+
+.bc-type-card p {
+    font-size: 0.91rem;
+    color: #444;
+    line-height: 1.65;
+    margin: 0;
+    word-break: keep-all;
+}
+
+/* ── 체크리스트 (이노비즈·메인비즈 요건) ── */
+.bc-checklist {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.bc-checklist li {
+    position: relative;
+    padding: 13px 16px 13px 44px;
+    background: #fafbfc;
+    border: 1px solid #e5e9f0;
+    border-radius: 8px;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: #333;
+    word-break: keep-all;
+}
+
+.bc-checklist li i {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    color: var(--secondary-color, #c5a059);
+    font-size: 1rem;
+}
+
+.bc-checklist li strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+/* ── 제외 대상 안내 상자 ── */
+.bc-exclude {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #fdf6f5;
+    border: 1px solid #f1d4d0;
+    border-left: 4px solid #b84a39;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    color: #5c2e28;
+    line-height: 1.6;
+    margin: 12px 0 6px;
+    word-break: keep-all;
+}
+
+.bc-exclude i {
+    color: #b84a39;
+    margin-top: 3px;
+    flex: none;
+}
+
+/* ── 주요 혜택 4분류 그리드 ── */
+.bc-benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.bc-benefit-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 3px solid var(--secondary-color, #c5a059);
+    border-radius: 8px;
+    padding: 18px 18px 16px;
+}
+
+.bc-benefit-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.bc-benefit-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #0d1e38;
+    color: #f6e3a8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.92rem;
+    flex: none;
+}
+
+.bc-benefit-head h5 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--primary-color, #0d1e38);
+}
+
+.bc-benefit-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.91rem;
+    line-height: 1.65;
+    color: #444;
+    word-break: keep-all;
+}
+
+.bc-benefit-card li + li {
+    margin-top: 5px;
+}
+
+.bc-benefit-card strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+/* ── 공식 사이트 연결 바 ── */
+.bc-official {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #faf8f2;
+    border: 1px solid #e6dec8;
+    border-left: 4px solid var(--secondary-color, #c5a059);
+    border-radius: 8px;
+    padding: 18px 20px;
+}
+
+.bc-official-info strong {
+    display: block;
+    font-size: 1rem;
+    color: var(--primary-color, #0d1e38);
+    margin-bottom: 3px;
+}
+
+.bc-official-info span {
+    font-size: 0.86rem;
+    color: #666;
+}
+
+.bc-official .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+/* ── 정책자금 우대조건 연계 팁 ── */
+.bc-crosslink {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+    background: #f0f4fa;
+    border: 1px solid #d5dfee;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    color: var(--primary-color, #0d1e38);
+}
+
+.bc-crosslink a {
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    text-decoration: underline;
+    text-decoration-color: var(--secondary-color, #c5a059);
+    text-underline-offset: 3px;
+    white-space: nowrap;
+}
+
+.bc-crosslink a:hover {
+    color: var(--gold-text, #8a6a1f);
+}
+
+/* ── Section 4: 기업부설연구소 강조 카드 ── */
+.bc-lab-card {
+    background: linear-gradient(135deg, #0d1e38 0%, #17305a 100%);
+    color: #fff;
+    border: 2px solid var(--secondary-color, #c5a059);
+    border-radius: 14px;
+    padding: 34px 30px;
+    box-shadow: 0 12px 30px rgba(13, 30, 56, 0.16);
+}
+
+.bc-lab-head {
+    margin-bottom: 22px;
+}
+
+.bc-lab-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary-color, #c5a059);
+    margin-bottom: 6px;
+}
+
+.bc-lab-head h3 {
+    font-size: 1.55rem;
+    margin: 0 0 10px;
+    color: #fff;
+    line-height: 1.35;
+}
+
+.bc-lab-head p {
+    margin: 0;
+    font-size: 0.96rem;
+    color: #e2e8f0;
+    line-height: 1.7;
+    word-break: keep-all;
+}
+
+.bc-lab-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 22px 0 18px;
+}
+
+.bc-lab-stat {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+}
+
+.bc-lab-stat-label {
+    display: block;
+    font-size: 0.84rem;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    line-height: 1.45;
+    word-break: keep-all;
+}
+
+.bc-lab-stat-num {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #f6e3a8;
+}
+
+.bc-lab-note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(197, 160, 89, 0.15);
+    border: 1px solid rgba(197, 160, 89, 0.45);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    color: #f8fafc;
+    margin: 0 0 22px;
+    word-break: keep-all;
+}
+
+.bc-lab-note i {
+    color: #f6e3a8;
+    flex: none;
+}
+
+.bc-lab-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.bc-lab-actions .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ── Section 6: 하단 기준일 및 면책 안내 박스 ── */
+.bc-disclaimer-wrap {
+    padding: 0 0 60px;
+}
+
+.bc-disclaimer-wrap .cg-disclaimer {
+    margin-top: 0;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 960px) {
+    .bc-target-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bc-lab-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .bc-swipe-hint {
+        display: block;
+    }
+
+    /* 좌측 '구분' 열 고정 */
+    .bc-cmp-table thead th:first-child,
+    .bc-cmp-table tbody th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        box-shadow: 2px 0 6px rgba(13, 30, 56, 0.08);
+    }
+
+    .bc-cmp-table thead th:first-child {
+        z-index: 3;
+    }
+
+    .bc-cmp-table tbody th {
+        width: 96px;
+        padding: 12px 10px;
+        font-size: 0.86rem;
+    }
+
+    .bc-cmp-table td,
+    .bc-cmp-table thead th {
+        padding: 12px 12px;
+        font-size: 0.88rem;
+    }
+
+    .bc-tabs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .bc-tab {
+        padding: 10px 8px;
+        font-size: 0.88rem;
+        min-height: 52px;
+    }
+
+    .bc-tab small {
+        font-size: 0.7rem;
+    }
+
+    .bc-panel {
+        padding: 22px 18px;
+    }
+
+    .bc-panel-head h4 {
+        font-size: 1.25rem;
+    }
+
+    .bc-type-grid,
+    .bc-benefit-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bc-official .btn,
+    .bc-lab-actions .btn {
+        width: 100%;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.45;
+        padding: 12px 14px;
+    }
+
+    .bc-lab-card {
+        padding: 24px 18px;
+    }
+
+    .bc-lab-head h3 {
+        font-size: 1.3rem;
+    }
+
+    .bc-page .main-footer {
+        padding-bottom: 72px;
+    }
+}
+
+@media (max-width: 420px) {
+    .bc-lab-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
