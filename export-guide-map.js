@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 49;
+    var MAP_VERSION = 50;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -527,7 +527,13 @@
                 ? '매출 1억~100억 원·수출실적 1만~200만 달러 미만 수출초보 중소기업 대상이라서' : '';
         }},
         { id: 'ksure-plus', pri: 2, match: function (c) {
+            // 2026-11-26 작가님: 로컬 수출·신용장·선수금 외의 거래면 대금 미회수 담보 보험 추천(중소·중견기업 대상 상품)
+            if (c.unpaidRisk && c.smeOrMid) return '선수금·신용장 외 결제 방식(' + c.unpaidRisk + ')이 있어 대금 미회수 위험을 담보하는 무보 보험이라서';
             return (c.rev === 4 && c.smeOrMid) ? '매출 20억~100억 원 미만 본격 성장 중소기업(단기수출보험)이라서' : '';
+        }},
+        { id: 'ksure-dplus', pri: 2, match: function (c) {
+            // 다이렉트-중소Plus+는 중소기업 전용(K-SURE ON 비대면)
+            return (c.unpaidRisk && c.sme) ? '선수금·신용장 외 결제 방식(' + c.unpaidRisk + ')이 있어 대금 미회수 위험을 담보하는 무보 비대면 보험(중소기업 전용)이라서' : '';
         }},
         { id: 'fx', pri: 2, match: function (c) {
             return (c.rev === 5) ? '매출 100억 원 이상 중기업·강소기업(환변동보험 설계)이라서' : '';
