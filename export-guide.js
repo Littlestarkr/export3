@@ -600,6 +600,11 @@
             electronics: hasItem('electronics'),
             medical: hasItem('medical'),
             b2c: forms.indexOf('b2c') >= 0,
+            // 2026-11-26 작가님: 거래 형태가 로컬 수출(·수입)뿐이거나 결제가 선수금·신용장뿐인 경우 외에는
+            // 대금 미회수 위험을 담보하는 무보 보험(중소중견Plus+ 등)을 추천한다. 값은 이유 문구용 결제 방식 이름
+            unpaidRisk: (forms.some(function (f) { return f !== 'local' && f !== 'import'; })
+                ? pays.filter(function (p) { return p !== 'prepay' && p !== 'lc'; }).map(function (p) { return "'" + label('q7', p) + "'"; }).join('·')
+                : ''),
             wantsFund: issues.indexOf('fund') >= 0 || issues.indexOf('factoring') >= 0 || needs.indexOf('fund') >= 0,
             hasAny: function (list) { return list.some(function (t) { return tags.indexOf(t) >= 0; }); },
             whyTags: function (list) { return tagWhy(list.filter(function (t) { return tags.indexOf(t) >= 0; })); }
