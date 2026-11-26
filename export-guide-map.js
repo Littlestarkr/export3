@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 53;
+    var MAP_VERSION = 54;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -88,6 +88,7 @@
         { k: ['메인비즈', 'mainbiz', '경영혁신'], ids: ['biz-cert-mainbiz'] },
         { k: ['iso', '품질경영', '환경경영', '안전보건', '식품안전'], ids: ['iso-cert'] },
         { k: ['공공조달', '조달', '수의계약', '나라장터', '혁신제품', '우수조달', '녹색제품', 'b2g'], ids: ['public-proc'] },
+        { k: ['직접생산', '중소기업자간', '중소기업간'], ids: ['pp-sme-mfg'] },
         { k: ['벤처나라'], ids: ['pp-venture'] },
         { k: ['여성기업', '액셀러레이팅', '엑셀러레이팅'], ids: ['women-accel', 'pp-women'] },
         { k: ['채권', '팩토링', '현금화', '유동화', '네고'], ids: ['ksure-postship'] },
@@ -319,6 +320,8 @@
         'pp-social':   { t: '공공조달 우대지원 (사회적배려기업 특례)', u: 'government-support.html#public-procurement', d: '일정 요건 충족 시 5,000만 원 이하 1인 견적 수의계약 특례, 공공기관 우선구매 권장 대상 및 입찰 시 사회적 가치 기여도 평가 가점 혜택을 정리했습니다.' },
         'pp-youth':    { t: '공공조달 우대지원 (청년창업기업 특례 · 벤처나라)', u: 'government-support.html#public-procurement', d: '대표자 만 39세 이하·창업 7년 이내 청년창업기업에 5,000만 원 이하 1인 견적 수의계약 법정 특례와 조달청 벤처나라 등록·초기 납품 실적 확보 지원을 안내합니다.' },
         'pp-venture':  { t: '공공조달 벤처나라 (벤처·창업기업 전용 쇼핑몰)', u: 'government-support.html#public-procurement', d: '조달청 벤처나라(venture.g2b.go.kr) 등록을 통해 기술·품질이 우수한 벤처·창업기업이 전국 공공기관에 제품을 홍보하고 초기 공공 납품 실적을 확보할 수 있습니다(하단 벤처나라 공식 링크 연결).' },
+        'pp-small':    { t: '공공조달 우대지원 (소기업·소상공인 우선조달 쿼터 · 수의계약 우대)', u: 'government-support.html#public-procurement', d: '추정가격 2,000만 원 초과 ~ 1억 원 이하 구간의 소액수의계약(2인 이상 전자견적)은 대기업·중견기업 참여가 제한되고 소기업·소상공인 간 경쟁으로만 진행되는 공공조달 우선조달 우대제도입니다.' },
+        'pp-sme-mfg':  { t: '공공조달 우대지원 (중소기업자 간 경쟁제품 · 직접생산확인)', u: 'government-support.html#public-procurement', d: '대기업의 공공시장 독점을 막기 위해 지정된 품목(지정 유효기간 3년)은 직접생산확인증명서를 보유한 중소 제조기업만 입찰에 참여할 수 있는 공공조달 보호제도입니다.' },
         'women-accel': { t: '여성기업 글로벌 액셀러레이팅 (여성기업종합지원센터)', u: 'government-support.html#women-accel', d: '창업 7년 미만 여성기업을 대상으로 수출 교육(5회차 이상 이수 필수)·전문가 컨설팅, 사업화 지원금(최대 1,000만 원, 20개사 내외) 또는 해외 전시회 공동관 참가(10개사 내외)를 지원하는 사업입니다.' },
         'guarantee':   { t: '무보 수출신용보증(선적 전)', u: 'policy-finance.html?org=ksure#ksure-presh', d: '수출 계약·신용장을 근거로 생산·선적 전 자금을 빌릴 때 무보가 보증합니다(모든 수출기업 대상). 보증 한도·요건은 무보 안내를 확인하세요.' },
         'fx':          { t: '환변동보험', u: 'trade-insurance.html#fx', d: '환율 하락으로 생기는 손실에 대비하는 무역보험 상품입니다.' },
@@ -568,6 +571,16 @@
         { id: 'pp-venture', pri: 2, match: function (c) {
             return c.venture
                 ? '벤처기업이라서(조달청 공공조달 벤처나라 전용 쇼핑몰 등록 및 초기 판로 확보 추천)' : '';
+        }},
+        { id: 'pp-small', pri: 2, match: function (c) {
+            if (c.smallbiz && c.mfg) return '소공인(제조업 소상공인)이라서(공공조달 2,000만 원 초과~1억 원 이하 소기업·소상공인 우선조달 수의계약 우대)';
+            if (c.smallbiz) return '소상공인이라서(공공조달 2,000만 원 초과~1억 원 이하 소기업·소상공인 우선조달 수의계약 우대)';
+            if (c.has2('small')) return '소기업이라서(공공조달 2,000만 원 초과~1억 원 이하 소기업·소상공인 우선조달 수의계약 우대)';
+            return '';
+        }},
+        { id: 'pp-sme-mfg', pri: 2, match: function (c) {
+            return (c.sme && c.mfg)
+                ? '중소 제조기업이라서(공공조달 중소기업자 간 경쟁제품 · 직접생산확인증명서 기반 입찰 참여 추천)' : '';
         }},
 
         // ── 한국농수산식품유통공사 (aT) ──
