@@ -47,8 +47,9 @@
     function arr(v) { return Array.isArray(v) ? v : []; }
     // Q3 품목은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개)도 읽는다.
     function items(o) { var v = (o || a).q3; return typeof v === 'string' ? (v ? [v] : []) : arr(v); }
-    // '기타'에 적은 글(Q6). 화면에는 textContent·value 로만 넣는다(HTML로 넣지 않음)
+    // '기타'에 적은 글(Q6·Q2). 화면에는 textContent·value 로만 넣는다(HTML로 넣지 않음)
     function etcValue() { return String(a.q6etc || '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 100); }
+    function q2EtcValue() { return String(a.q2etc || '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 100); }
     function hasItem(v) { return items().indexOf(v) >= 0; }
     // Q8은 2026-11-22에 복수 선택으로 바뀌었다. 이전 결과(문자열 한 개, 옛 'tool' 코드)도 읽는다.
     function needList(a) {
@@ -280,6 +281,52 @@
                     var sub = el('div', 'eg-opts');
                     opts.forEach(function (o) { if (g.vs.indexOf(o.v) >= 0) sub.appendChild(optBtn(q, o)); });
                     box.appendChild(sub);
+                    // Q2 우대 조건: '혁신·녹색·우수조달제품' 세부 선택 + '기타' 직접 입력칸 (2026-11-26)
+                    if (q.id === 'q2' && g.multi) {
+                        var procBox = el('div', 'eg-subbox');
+                        procBox.id = 'egProcSub';
+                        procBox.hidden = !has2('proc_cert');
+                        procBox.appendChild(el('p', 'eg-subbox-l', '해당 항목을 고르시면 맞춤 추천합니다 (미선택 시 3종 모두 추천)'));
+                        var procOpts = el('div', 'eg-sub-opts');
+                        procOpts.setAttribute('role', 'group');
+                        procOpts.setAttribute('aria-label', '혁신·녹색·우수조달제품 세부 선택');
+                        (M.q2ProcOpts || []).forEach(function (po) {
+                            var pb = el('button', 'eg-sub-opt', po.label);
+                            pb.type = 'button';
+                            pb.dataset.proc = po.v;
+                            var on = arr(a.q2proc).indexOf(po.v) >= 0;
+                            pb.classList.toggle('is-on', on);
+                            pb.setAttribute('aria-pressed', on ? 'true' : 'false');
+                            pb.addEventListener('click', function () {
+                                var cur = arr(a.q2proc).slice();
+                                var idx = cur.indexOf(po.v);
+                                if (idx >= 0) cur.splice(idx, 1); else cur.push(po.v);
+                                a.q2proc = cur;
+                                refreshOpts(q);
+                            });
+                            procOpts.appendChild(pb);
+                        });
+                        procBox.appendChild(procOpts);
+                        box.appendChild(procBox);
+
+                        var q2eb = el('div', 'eg-etc eg-q2-etc');
+                        q2eb.id = 'egQ2EtcBox';
+                        q2eb.hidden = !has2('pref_etc');
+                        var q2lab = el('label', 'eg-etc-l', '기타 우대 조건');
+                        q2lab.setAttribute('for', 'egQ2Etc');
+                        var q2inp = el('input');
+                        q2inp.type = 'text';
+                        q2inp.id = 'egQ2Etc';
+                        q2inp.maxLength = 100;
+                        q2inp.placeholder = '지방소재 등 우대지원 가능한 항목을 적어주세요.';
+                        q2inp.autocomplete = 'off';
+                        q2inp.value = a.q2etc || '';
+                        q2inp.addEventListener('input', function () { a.q2etc = this.value.slice(0, 100); });
+                        q2eb.appendChild(q2lab);
+                        q2eb.appendChild(q2inp);
+                        q2eb.appendChild(el('p', 'eg-note', '예: 지방소재, 비수도권, ESG, 소부장, ISO, 뿌리기업, 가족친화 등 (개인정보 입력 금지, 100자 이내)'));
+                        box.appendChild(q2eb);
+                    }
                 });
             } else {
                 opts.forEach(function (o) { box.appendChild(optBtn(q, o)); });
@@ -348,8 +395,10 @@
         }
         var cur = arr(a[q.id]).slice();
         var i = cur.indexOf(v);
+        var addedPrefEtc = false;
         if (i >= 0) {
             cur.splice(i, 1);
+            if (q.id === 'q2' && v === 'proc_cert') delete a.q2proc;
         } else {
             var ex = q.exclusive || [];
             (q.groups || []).forEach(function (g) {
@@ -362,17 +411,22 @@
                 return;
             }
             cur.push(v);
+            if (q.id === 'q2' && v === 'pref_etc') addedPrefEtc = true;
         }
         a[q.id] = cur;
         refreshOpts(stepQ);
         updateNext(stepQ);
+        if (addedPrefEtc) {
+            var q2inp = $('egQ2Etc');
+            if (q2inp) q2inp.focus();
+        }
     }
     // 전체 선택이 고르는 값(Q6 '기타'는 직접 적는 칸이라 빼고)
     function allVals(q) { return q.options.map(function (o) { return o.v; }).filter(function (v) { return v !== 'etc'; }); }
     function refreshOpts(q) {
         var all = $('egAll');
         if (all && q.selectAll) all.checked = allVals(q).every(function (v) { return isSel(q, v); });
-        // '기타' 입력칸(Q6)
+        // '기타' 입력칸(Q6) · Q2 우대 조건 세부/기타 입력칸
         var fw = $('egFollow');
         if (fw) fw.hidden = !followOn(q);
         var eb = $('egEtcBox');
@@ -381,6 +435,23 @@
             eb.hidden = !showEtc;
             var inp = $('egEtc');
             if (showEtc && inp.value !== (a.q6etc || '')) inp.value = a.q6etc || '';
+        }
+        var ps = $('egProcSub');
+        if (ps) {
+            var showProc = q.id === 'q2' && isSel(q, 'proc_cert');
+            ps.hidden = !showProc;
+            Array.prototype.forEach.call(ps.querySelectorAll('.eg-sub-opt'), function (pb) {
+                var on = arr(a.q2proc).indexOf(pb.dataset.proc) >= 0;
+                pb.classList.toggle('is-on', on);
+                pb.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+        }
+        var q2eb = $('egQ2EtcBox');
+        if (q2eb) {
+            var showQ2Etc = q.id === 'q2' && isSel(q, 'pref_etc');
+            q2eb.hidden = !showQ2Etc;
+            var q2i = $('egQ2Etc');
+            if (showQ2Etc && q2i && q2i.value !== (a.q2etc || '')) q2i.value = a.q2etc || '';
         }
         Array.prototype.forEach.call(vQ.querySelectorAll('.eg-opt'), function (b) {
             var qid = b.dataset.qid || q.id;
@@ -510,13 +581,44 @@
         if (has2('startup')) add('rnd', 2, '창업 3년 이내 기업이라서');
         if (has2('y7')) add('rnd', 1, '창업 7년 이내 기업이라서');
         if (has2('smallbiz')) { add('semas-innov', 3, '최근 1년 직·간접 수출실적 1천 달러 이상 소상공인이라서'); add('hope', 1, '소상공인이라서'); }
-        var prefPicked = (M.prefVals || []).filter(function (v) { return v !== 'mfg' && v !== 'lab' && has2(v); }); // 연구소·제조업은 아래 전용 카드(#pref-lab·#pref-mfg)로
+        var prefPicked = (M.prefVals || []).filter(function (v) { return v !== 'mfg' && v !== 'lab' && v !== 'pref_etc' && has2(v); }); // 연구소·제조업은 아래 전용 카드(#pref-lab·#pref-mfg)로
         if (has2('lab')) add('pref-lab', (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0) ? 3 : 2, "우대 조건('기업부설연구소·전담부서')을 골라서");
         if (has2('mfg')) add('pref-mfg', (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0) ? 3 : 2, "우대 조건('제조업')을 골라서");
         if (prefPicked.length) {
             var prefPts = (issues.indexOf('fund') >= 0 || issues.indexOf('support') >= 0 || needList(a).indexOf('fund') >= 0) ? 3 : 2;
             add('pref-cond', prefPts, "우대 조건('" + listLabels('q2', prefPicked) + "')을 골라서");
         }
+        // Q2 우대 조건 '기타' 입력 키워드 매칭 (지방소재·비수도권·ESG·소부장·ISO 등, 2026-11-26)
+        var q2EtcText = has2('pref_etc') ? q2EtcValue() : '';
+        var q2Flags = {};
+        var q2EtcProgs = [];
+        if (q2EtcText) {
+            var q2Low = q2EtcText.toLowerCase(), q2Hit = 0;
+            (M.q2EtcKeywords || []).forEach(function (g) {
+                if (!g.k.some(function (w) { return q2Low.indexOf(w) >= 0; })) return;
+                (g.flags || []).forEach(function (fl) { q2Flags[fl] = true; });
+                var q2Why = "우대 조건 기타('" + q2EtcText + "')에 해당해서(" + (g.why || '관련 우대 지원 추천') + ')';
+                (g.ids || []).forEach(function (id, j) {
+                    if (!M.links[id]) return;
+                    add(id, j === 0 ? 5 : 3, q2Why);
+                    q2EtcProgs.push({ id: id, why: q2Why, pri: 2 });
+                    q2Hit++;
+                });
+            });
+            if (!q2Hit) {
+                add('pref-cond', 3, "우대 조건 기타('" + q2EtcText + "')에 맞춰 우대조건 매칭 안내");
+                q2EtcProgs.push({ id: 'pref-cond', why: "우대 조건 기타('" + q2EtcText + "') 관련 우대조건 확인 추천", pri: 2 });
+                consultTop = true;
+            }
+        } else if (has2('pref_etc')) {
+            add('pref-cond', 2, "우대 조건('기타')을 골라서");
+            consultTop = true;
+        }
+        var procSel = has2('proc_cert') ? arr(a.q2proc) : [];
+        var procInnov = (has2('proc_cert') && (!procSel.length || procSel.indexOf('innov') >= 0)) || !!q2Flags.procInnov;
+        var procGreen = (has2('proc_cert') && (!procSel.length || procSel.indexOf('green') >= 0)) || !!q2Flags.procGreen;
+        var procExcl  = (has2('proc_cert') && (!procSel.length || procSel.indexOf('excellent') >= 0)) || !!q2Flags.procExcl;
+        var procCert  = procInnov || procGreen || procExcl;
         var pickedItems = items();
         var w3 = "품목으로 '" + listLabels('q3', pickedItems) + "'을 골라서";
         if (hasItem('cosmetic')) { add('cosmetic', 2, w3); add('cert', 1, w3); }
@@ -593,7 +695,12 @@
             lab: has2('lab'),
             mfg: has2('mfg'),
             restart: has2('restart'),
-            esg: has2('esg_local'),
+            esg: has2('esg_local') || procGreen || !!q2Flags.esg,
+            localBiz: !!q2Flags.localBiz,
+            procCert: procCert,
+            procInnov: procInnov,
+            procGreen: procGreen,
+            procExcl: procExcl,
             agri: hasItem('agri'),
             service: hasItem('service'),
             industrial: hasItem('industrial'),
@@ -610,6 +717,7 @@
             whyTags: function (list) { return tagWhy(list.filter(function (t) { return tags.indexOf(t) >= 0; })); }
         };
         var matchedProgs = [];
+        var matchedIds = {};
         var priMap = {};
         (M.programs || []).forEach(function (pg, idx) {
             if (!M.links[pg.id]) return;
@@ -629,6 +737,12 @@
             priMap[pg.id] = pri;
             if (pri === 1) add(pg.id, 7, w);
             matchedProgs.push({ id: pg.id, why: w, pri: pri, ord: idx });
+            matchedIds[pg.id] = true;
+        });
+        q2EtcProgs.forEach(function (qp, j) {
+            if (!M.links[qp.id] || matchedIds[qp.id]) return;
+            matchedProgs.push({ id: qp.id, why: qp.why, pri: qp.pri, ord: 1000 + j });
+            matchedIds[qp.id] = true;
         });
         matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
 
@@ -783,6 +897,11 @@
         if (dealFundOn()) L.push('안내: 수출실적 0 + 수출계약 보유 기업 자금 안내 대상(무보 제외, ' + (has2('smallbiz') ? '소상공인 경로' : '일반 중소기업 경로') + ')');
         L.push('거래 형태(희망 포함): ' + (listLabels('q4', a.q4) || '-'));
         L.push('창업 연차·우대 조건·규모: ' + (listLabels('q2', Array.isArray(a.q2) ? a.q2 : (a.q2 ? [a.q2] : [])) || '-') + ' / 품목: ' + (listLabels('q3', items()) || '-') + ' / 시장: ' + (listLabels('q5', a.q5) || '-'));
+        if (has2('proc_cert') && arr(a.q2proc).length) {
+            var pNames = (M.q2ProcOpts || []).filter(function (o) { return arr(a.q2proc).indexOf(o.v) >= 0; }).map(function (o) { return o.label; });
+            if (pNames.length) L.push('공공조달 제품 세부: ' + pNames.join(', '));
+        }
+        if (has2('pref_etc') && q2EtcValue()) L.push('기타(우대 조건): ' + q2EtcValue());
         L.push('어려운 점: ' + (arr(a.q6).filter(function (k) { return k !== 'etc'; }).map(function (k) { return M.issues[k]; }).concat(arr(a.q6).indexOf('etc') >= 0 ? ['기타'] : []).join(', ') || '-'));
         if (arr(a.q6).indexOf('etc') >= 0 && etcValue()) L.push('기타(찾는 서비스): ' + etcValue());
         var nd = needList(a).map(function (c) { return label('q8', c); }).filter(Boolean).join(', ');   // 옛 결과만(9번 질문은 2026-11-24 삭제)
@@ -1237,6 +1356,7 @@
         body.set('q1', a.q1 || ''); body.set('q1b', a.q1b || ''); body.set('q1r', a.q1r || '');
         body.set('q1c', dealObj() ? a.q1c : '');   // 진행 거래 계약금액(2026-11-24, 시트 18열 R)
         body.set('q2', arr(a.q2).join(',')); body.set('q3', items().join(','));
+        if (has2('pref_etc') && q2EtcValue()) body.set('q2etc', q2EtcValue());
         body.set('q4', arr(a.q4).join(',')); body.set('q5', arr(a.q5).join(','));
         body.set('q6', arr(a.q6).join(','));
         if (arr(a.q6).indexOf('etc') >= 0) body.set('q6etc', etcValue());   // '기타'에 적은 글(100자, 2026-11-22 작가님: 시트에 저장)
