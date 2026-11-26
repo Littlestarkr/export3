@@ -2250,3 +2250,29 @@ html {
     }
 }
 
+/* 사이트 카드 안 핵심 항목 목록 */
+.pf-site-meta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #555;
+    word-break: keep-all;
+}
+
+.pf-site-meta li strong {
+    display: inline-block;
+    color: var(--primary-color);
+    background: #eef2f8;
+    border-radius: 4px;
+    padding: 1px 7px;
+    margin-right: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    vertical-align: baseline;
+}
+
