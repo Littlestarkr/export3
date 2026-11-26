@@ -1,0 +1,528 @@
+/* =========================================
+   정부사업 매칭 - 공공조달 우대지원 섹션 (#public-procurement)
+   기존 CSS와 충돌하지 않도록 모든 클래스를 .pp- 접두어로 격리한다.
+   ========================================= */
+
+#public-procurement.pp-section {
+    scroll-margin-top: 80px;
+    padding: 84px 0 90px;
+    background: #fff;
+    border-top: 1px solid #e6e1d4;
+}
+
+/* ── 섹션 헤더 ── */
+#public-procurement .pp-header {
+    border-left: 5px solid var(--secondary-color, #c5a059);
+    padding: 4px 0 4px 22px;
+    margin-bottom: 28px;
+}
+
+#public-procurement .pp-eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-text, #8a6a1f);
+    margin-bottom: 6px;
+}
+
+#public-procurement .pp-title {
+    font-size: 1.95rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.3;
+    margin: 0 0 8px;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-subtitle {
+    margin: 0;
+    font-size: 0.96rem;
+    color: #555;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+/* ── 도입 안내 카드 (B2G 시장 개요) ── */
+#public-procurement .pp-intro {
+    background: #faf8f2;
+    border: 1px solid #e6dec8;
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 42px;
+}
+
+#public-procurement .pp-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+#public-procurement .pp-badge {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+#public-procurement .pp-badge.is-gold {
+    background: #fff8e6;
+    border: 1px solid #e5cf94;
+    color: var(--gold-text, #8a6a1f);
+}
+
+#public-procurement .pp-intro p {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.8;
+    color: #333;
+    word-break: keep-all;
+}
+
+/* ── 블록 공통 ── */
+#public-procurement .pp-block {
+    margin-bottom: 48px;
+}
+
+#public-procurement .pp-block-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+#public-procurement .pp-block-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.28rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 0;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-block-title i {
+    color: var(--secondary-color, #c5a059);
+    font-size: 1.08rem;
+}
+
+#public-procurement .pp-cat-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #f0f4fa;
+    border: 1px solid #d5dfee;
+    color: var(--primary-color, #0d1e38);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* ── 요약 비교표 (가로 스크롤 지원) ── */
+#public-procurement .pp-swipe-hint {
+    display: none;
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold-text, #8a6a1f);
+    text-align: right;
+}
+
+#public-procurement .pp-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e3ded1;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(13, 30, 56, 0.05);
+}
+
+#public-procurement .pp-table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.91rem;
+    line-height: 1.6;
+}
+
+#public-procurement .pp-table th,
+#public-procurement .pp-table td {
+    padding: 13px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #eceae2;
+    border-right: 1px solid #f0eee7;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-table th:last-child,
+#public-procurement .pp-table td:last-child {
+    border-right: none;
+}
+
+#public-procurement .pp-table tbody tr:last-child th,
+#public-procurement .pp-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#public-procurement .pp-table thead th {
+    background: var(--primary-color, #0d1e38);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    border-bottom: 2px solid var(--secondary-color, #c5a059);
+    border-right-color: rgba(255, 255, 255, 0.14);
+    white-space: nowrap;
+}
+
+#public-procurement .pp-table tbody tr:nth-child(even) td {
+    background: #fcfcfd;
+}
+
+#public-procurement .pp-table tbody th {
+    background: #faf8f2;
+    color: var(--primary-color, #0d1e38);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#public-procurement .pp-cat-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#public-procurement .pp-cat-pill.is-care {
+    background: #eef3fb;
+    color: var(--primary-color, #0d1e38);
+}
+
+#public-procurement .pp-cat-pill.is-tech {
+    background: #fff6df;
+    color: var(--gold-text, #8a6a1f);
+}
+
+#public-procurement .pp-hi {
+    color: var(--primary-color, #0d1e38);
+    font-weight: 700;
+}
+
+#public-procurement .pp-hi-gold {
+    color: #9a6b0d;
+    font-weight: 700;
+}
+
+#public-procurement .pp-table-note {
+    margin: 10px 0 0;
+    font-size: 0.86rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ── 상세 카드 그리드 (2열 / 3열) ── */
+#public-procurement .pp-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+#public-procurement .pp-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+#public-procurement .pp-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-top: 4px solid var(--primary-color, #0d1e38);
+    border-radius: 10px;
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(13, 30, 56, 0.04);
+}
+
+#public-procurement .pp-card.is-tech {
+    border-top-color: var(--secondary-color, #c5a059);
+}
+
+#public-procurement .pp-card.is-protect {
+    background: #fafbfc;
+    border-left: 4px solid var(--primary-color, #0d1e38);
+    border-top: 1px solid #e2e8f0;
+}
+
+#public-procurement .pp-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#public-procurement .pp-card-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary-color, #0d1e38);
+    color: #f6e3a8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+#public-procurement .pp-card.is-tech .pp-card-num {
+    background: var(--secondary-color, #c5a059);
+    color: var(--primary-color, #0d1e38);
+}
+
+#public-procurement .pp-card h5 {
+    margin: 0;
+    font-size: 1.08rem;
+    color: var(--primary-color, #0d1e38);
+    line-height: 1.35;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-card-target {
+    margin: 0;
+    padding: 7px 11px;
+    border-radius: 6px;
+    background: #f5f7fa;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-card-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.91rem;
+    line-height: 1.7;
+    color: #333;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-card-list li + li {
+    margin-top: 6px;
+}
+
+#public-procurement .pp-card-list strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+#public-procurement .pp-card-text {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.72;
+    color: #333;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-card-text strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+/* ── 결론 및 실무 전략 콜아웃 ── */
+#public-procurement .pp-strategy {
+    background: #fffaf0;
+    border: 1.5px solid #e3cf9b;
+    border-left: 5px solid var(--secondary-color, #c5a059);
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin-bottom: 36px;
+}
+
+#public-procurement .pp-strategy-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    margin: 0 0 12px;
+}
+
+#public-procurement .pp-strategy-title i {
+    color: var(--gold-text, #8a6a1f);
+}
+
+#public-procurement .pp-strategy p {
+    margin: 0 0 10px;
+    font-size: 0.94rem;
+    line-height: 1.75;
+    color: #3a3222;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-strategy p:last-of-type {
+    margin-bottom: 18px;
+}
+
+#public-procurement .pp-strategy strong {
+    color: var(--primary-color, #0d1e38);
+}
+
+#public-procurement .pp-strategy-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#public-procurement .pp-strategy-btns .btn,
+#public-procurement .pp-strategy-btns .btn-kakao {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ── 관련 공식 사이트 5종 그리드 ── */
+#public-procurement .pp-site-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+#public-procurement .pp-site-card {
+    background: #fff;
+    border: 1px solid #e6e1d4;
+    border-radius: 8px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+#public-procurement .pp-site-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(13, 30, 56, 0.08);
+    border-color: var(--secondary-color, #c5a059);
+}
+
+#public-procurement .pp-site-card h5 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--primary-color, #0d1e38);
+}
+
+#public-procurement .pp-site-url {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gold-text, #8a6a1f);
+}
+
+#public-procurement .pp-site-desc {
+    margin: 0;
+    font-size: 0.89rem;
+    color: #555;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+#public-procurement .pp-site-link {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 0.89rem;
+    font-weight: 700;
+    color: var(--primary-color, #0d1e38);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#public-procurement .pp-site-link:hover {
+    color: var(--gold-text, #8a6a1f);
+}
+
+#public-procurement .pp-uplink-wrap {
+    margin-top: 18px;
+    text-align: right;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 1024px) {
+    #public-procurement .pp-grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #public-procurement .pp-site-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    #public-procurement.pp-section {
+        padding: 56px 0 64px;
+    }
+
+    #public-procurement .pp-header {
+        padding-left: 16px;
+        margin-bottom: 20px;
+    }
+
+    #public-procurement .pp-title {
+        font-size: 1.48rem;
+    }
+
+    #public-procurement .pp-intro {
+        padding: 18px;
+        margin-bottom: 32px;
+    }
+
+    #public-procurement .pp-block {
+        margin-bottom: 36px;
+    }
+
+    #public-procurement .pp-block-title {
+        font-size: 1.15rem;
+    }
+
+    #public-procurement .pp-swipe-hint {
+        display: block;
+    }
+
+    #public-procurement .pp-table th,
+    #public-procurement .pp-table td {
+        padding: 11px 11px;
+        font-size: 0.86rem;
+    }
+
+    #public-procurement .pp-grid-2,
+    #public-procurement .pp-site-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    #public-procurement .pp-card {
+        padding: 18px 16px;
+    }
+
+    #public-procurement .pp-strategy {
+        padding: 18px;
+    }
+
+    #public-procurement .pp-strategy-btns .btn,
+    #public-procurement .pp-strategy-btns .btn-kakao {
+        width: 100%;
+    }
+}
