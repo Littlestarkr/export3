@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 57;
+    var MAP_VERSION = 58;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -67,6 +67,7 @@
         { k: ['보증', '대출', '융자', '자금', '정책자금', '운전자금', '시설자금'], ids: ['policy-fund', 'guarantee', 'kodit', 'kibo'] },
         { k: ['무역진흥자금', '무역협회'], ids: ['kita-fund'] },
         { k: ['수출입은행'], ids: ['exim'] },
+        { k: ['서비스수출보험', '서비스보험', '서비스종합보험', '콘텐츠', '소프트웨어', '용역'], ids: ['ksure-service', 'kodit-service'] },
         { k: ['보험', '미수', '대금', '떼일', '떼인', '못 받', '못받'], ids: ['ksure-plus', 'claim'] },
         { k: ['신용조사', '신용 조사', '신용도'], ids: ['credit'] },
         { k: ['환율', '환변동', '환리스크', '환 리스크'], ids: ['fx'] },
@@ -420,7 +421,7 @@
         'kocei':       { t: '화장품수출가이드북', u: 'https://www.kcii.re.kr/kocei/', ext: true, d: '대한화장품산업연구원의 화장품 수출 가이드북 사이트에서 수출 정보를 확인하세요.' },
         'kcii':        { t: '대한화장품산업연구원', u: 'https://www.kcii.re.kr/', ext: true, d: '대한화장품산업연구원 사이트로 연결됩니다.' },
         'cosmetic':    { t: '화장품 수출 지원', u: 'global-expansion.html#cosmetic', d: '화장품 수출 규제·지원 기관을 정리했습니다.' },
-        'ksure-service': { t: '서비스보험(일시결제방식)', u: 'trade-insurance.html#ksure-service', d: '서비스·콘텐츠 수출 대금 미회수에 대비하는 무역보험입니다.' },
+        'ksure-service': { t: '무역보험공사 서비스수출보험(서비스종합보험·일시결제방식)', u: 'trade-insurance.html#ksure-service', d: '문화콘텐츠·SW·디자인·컨설팅·운송·관광 등 서비스 수출 대금 미회수에 대비하는 한국무역보험공사 보험입니다(결제기간 180일 이하, 부보율 중소 100%·중견 97.5%·대기업 95%).' },
         // 신용보증기금 상품별(2026-11-23)
         'kodit':       { t: '신용보증기금 보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '성장단계별 보증 중 수출중소기업 종합지원(희망·진입·확장·주력·스타 단계) 등 수출 우대 보증이 있습니다. 단계 기준·한도는 신보 공고를 확인하세요.' },
         'kodit-export':{ t: '신보 수출중소기업 종합지원보증', u: 'policy-finance.html?org=kodit#kodit-grow', d: '수출 역량 단계별(희망·진입·확장·주력·스타) 모든 수출 중소기업 우대 보증입니다. 세부 한도·요건은 신보 공고를 확인하세요.' },
@@ -698,6 +699,10 @@
         }},
 
         // ── 한국무역보험공사 (무보) ──
+        { id: 'ksure-service', pri: 2, match: function (c) {
+            return c.service
+                ? '서비스·SW·콘텐츠 수출(예정)기업이라서(문화콘텐츠·SW·용역 등 서비스 수출대금 미회수 보장)' : '';
+        }},
         { id: 'guarantee', pri: 2, match: function (c) {
             if (c.rev === 4) return '매출 20억~100억 원 미만 본격 성장 중소기업(무보 선적 전 신용보증)이라서';
             return '모든 수출기업 대상(선적 전 제작·조달 자금 보증)이라서';
@@ -1136,6 +1141,7 @@
         service: {
             priorityTip: '무형 서비스는 일반 통관(수출신고필증)이 없으므로 용역 계약서와 외화입금증명 등 무체물 수출실적 인정 절차를 챙겨야 합니다.',
             programs: [
+                { name: '무역보험공사 서비스수출보험 (서비스종합보험·일시결제방식)', url: 'trade-insurance.html#ksure-service', ext: false, desc: '문화콘텐츠·SW·디자인·컨설팅·용역 등 서비스 수출대금 미회수에 대비하는 한국무역보험공사 보험(결제기간 180일 이하, 부보율 중소 100%·중견 97.5%·대기업 95%)' },
                 { name: '콘텐츠수출플랫폼 (WelCon)', url: 'https://welcon.kocca.kr', ext: true, desc: '한국콘텐츠진흥원 운영, 캐릭터·SW·콘텐츠 등 무형 서비스 해외 진출 지원' },
                 { name: 'KOTRA 서비스 거점 지원', url: 'https://www.kotra.or.kr', ext: true, desc: '콘텐츠·SW·프랜차이즈 등 서비스업 해외 거점 및 브랜드 마케팅 지원' },
                 { name: '무역협회 TradePro', url: 'https://kita.net/tradePro/tradeProMain/tradeProMain.do', ext: true, desc: '용역 계약·세무·무체물 수출실적 인정 등 분야별 전문가 온라인 무료 상담' }

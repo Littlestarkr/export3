@@ -526,7 +526,7 @@
         var I = {
             buyer:   function (w) { add('buyer', 3, w); if (st === 0) add('k-domestic', 2, w); },
             docs:    function (w) { add('doc-builder', 3, w); add('export-docs', 2, w); add('contract', 2, w); },
-            collect: function (w) { add(ins, 3, w); add('credit', 2, w); add('claim', 2, w); },
+            collect: function (w) { add(ins, 3, w); if (hasItem('service')) add('ksure-service', 4, w); add('credit', 2, w); add('claim', 2, w); },
             importer: function (w) { add('credit', 3, w); add(ins, 2, w); },
             factoring: function (w) { add('ksure-postship', 3, w); add('ksure-after', 2, w); },
             // 무역클레임(작가님 확정): 무역클레임 대응 가이드(trade-claim.html, 2026-11-22)를 맨 앞에, 중소중견Plus+(클레임위험 특약)·농수산물패키지(클레임비용위험)·대한상사중재원. 계약서·중재 법령은 보조
@@ -632,7 +632,7 @@
         if (hasItem('medical')) { add('cert-medical', 3, w3); add('cert', 2, w3); consultTop = true; }
         if (hasItem('electronics')) { add('cert-elec', 2, w3); add('customs', 2, w3); }
         if (hasItem('industrial')) { add('buyer', 1, w3); add('customs', 1, w3); add('guarantee', 1, w3); }
-        if (hasItem('service')) add('ksure-service', 2, w3);
+        if (hasItem('service')) add('ksure-service', 3, w3);
         if (hasItem('etc')) consultTop = true;
 
         // 5) 시장(Q5)
@@ -643,7 +643,7 @@
             var w = "결제 방식으로 '" + label('q7', p) + "'를 골라서";
             if (p === 'prepay') { add('fraud', 1, w); add('doc-builder', 1, w); }
             if (p === 'lc') { add('export-docs', 1, w); add('doc-builder', 1, w); }
-            if (p === 'collection' || p === 'deferred') { add(ins, 2, w); add('credit', 2, w); add('claim', 2, w); }
+            if (p === 'collection' || p === 'deferred') { add(ins, 2, w); if (hasItem('service')) add('ksure-service', 2, w); add('credit', 2, w); add('claim', 2, w); }
             if (p === 'other') consultTop = true;
         });
 
@@ -1105,6 +1105,7 @@
         function addProg(p, pinned) {
             var key = normUrl(p.url);
             if (!key) return;
+            if (dealFundOn() && M.dealFund && (M.dealFund.excludeUrl || []).some(function (x) { return String(p.url || '').indexOf(x) >= 0; })) return;
             if (byUrl[key]) {
                 if (pinned) byUrl[key].pinned = true;
                 return;
