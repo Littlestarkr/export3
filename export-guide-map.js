@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 58;
+    var MAP_VERSION = 59;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -842,7 +842,7 @@
                 ? "'물류·배송' 어려움을 골라서(우체국 EMS·특송·FBA·풀필먼트 및 간이수출신고·관세 실무 가이드)" : '';
         }},
         { id: 'c-more', pri: 3, match: function (c) {
-            return c.hasAny(['logistics'])
+            return (c.b2c && c.hasAny(['logistics']))
                 ? "'물류·배송' 어려움을 골라서(KOTRA 콰징 원스톱 물류지원 · 우체국 EMS · 지자체 수출 물류비 지원)" : '';
         }},
         { id: 'k-market', pri: 3, match: function (c) {
@@ -1024,13 +1024,34 @@
               { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
           ] },
         { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
-          items: [{ id: 'buyer' }, { id: 'ksight' }, { id: 'b-data' }, { id: 'k-exhib' }, { id: 'akei' }, { id: 'b-b2b' }, { id: 'b-potential' }, { id: 'k-bts' }, { id: 'k-aitc' }, { id: 'c-amazon' }, { id: 'b2c' }, { id: 'c-more' }] },
+          items: [
+              { id: 'buyer', on: ['form:b2b', 'buyer'] },
+              { id: 'ksight', on: ['form:b2b', 'buyer'] },
+              { id: 'b-data', on: ['form:b2b', 'buyer', 'market', 'need:market'] },
+              { id: 'k-exhib', on: ['form:b2b', 'buyer'] },
+              { id: 'akei', on: ['form:b2b', 'buyer'] },
+              { id: 'b-b2b', on: ['form:b2b', 'buyer'] },
+              { id: 'b-potential', on: ['form:b2b', 'buyer'] },
+              { id: 'k-bts', on: ['form:b2b', 'buyer'] },
+              { id: 'k-aitc' },
+              { id: 'c-amazon', on: ['form:b2c'] },
+              { id: 'b2c', on: ['form:b2c'] },
+              { id: 'c-more', on: ['form:b2c'] }
+          ] },
         { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
           items: [{ id: 'ksure-group', st: [0, 1, 2] }, { id: 'ins-support' }, { id: 'kon' }, { id: 'qna-f' }, { id: 'import-ins', on: ['form:relay', 'form:import'] }] },
         { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] },
         // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 대상 주요 수출 플랫폼·정보·바우처 포털(2026-11-24)
-        { t: '바이어 매칭·온라인 수출 플랫폼 (B2B·B2C)', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
-          items: [{ id: 'gobizkorea' }, { id: 'buykorea-portal', skipIf: ['buykorea'] }] },
+        { t: function (c) {
+            if (c.b2b && !c.b2c) return '바이어 매칭·온라인 수출 플랫폼 (B2B)';
+            if (c.b2c && !c.b2b) return '온라인 수출 플랫폼 (B2C)';
+            return '바이어 매칭·온라인 수출 플랫폼 (B2B·B2C)';
+          },
+          on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
+          items: [
+              { id: 'gobizkorea' },
+              { id: 'buykorea-portal', skipIf: ['buykorea'], when: function (c) { return !c.b2c || c.b2b || c.issues.indexOf('buyer') >= 0; } }
+          ] },
         { t: '시장 분석·수출 정보 포털', on: ['form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
           items: [{ id: 'tribig' }, { id: 'kotra-dream' }, { id: 'kita-portal' }] },
         { t: '수출 지원사업·바우처 포털', on: ['form:b2b', 'form:b2c', 'size:smallbiz', 'size:small', 'size:medium', 'size:sme'],
@@ -1102,12 +1123,14 @@
         },
         consumer: {
             priorityTip: 'B2C 역직구(아마존·쇼피 등)나 해외 유통망 입점 전에 진출국 상표권 출원(IP-DESK)을 먼저 챙기세요.',
+            priorityTipNonB2c: '해외 유통망 입점이나 바이어 납품 전에 진출국 상표권·디자인권 출원(IP-DESK)과 국가별 라벨링·안전 규제를 먼저 챙기세요.',
             programs: [
-                { name: 'KOTRA 파워셀러·1무역관 1유통망', url: 'https://www.kotra.or.kr', ext: true, desc: '글로벌 이커머스 파워셀러 육성 및 해외 현지 유력 유통망 입점·판촉 지원' },
-                { name: '고비즈코리아 (글로벌쇼핑몰 지원)', url: 'https://kr.gobizkorea.com', ext: true, desc: '아마존·쇼피·큐텐 등 글로벌 온라인몰 입점, 상세페이지 제작 및 공동물류 연계' },
+                { name: 'KOTRA 파워셀러·1무역관 1유통망', url: 'https://www.kotra.or.kr', ext: true, b2cOnly: true, desc: '글로벌 이커머스 파워셀러 육성 및 해외 현지 유력 유통망 입점·판촉 지원' },
+                { name: 'KOTRA 해외유통망 입점·1무역관 1유통망', url: 'https://www.kotra.or.kr', ext: true, nonB2cOnly: true, desc: '해외 현지 유력 온·오프라인 유통망 및 바이어 입점·판촉 연계 지원' },
+                { name: '고비즈코리아 (글로벌쇼핑몰 지원)', url: 'https://kr.gobizkorea.com', ext: true, b2cOnly: true, desc: '아마존·쇼피·큐텐 등 글로벌 온라인몰 입점, 상세페이지 제작 및 공동물류 연계' },
                 { name: '해외지식재산센터 (IP-DESK)', url: 'https://www.ip-navi.or.kr', ext: true, desc: '해외 상표·디자인 출원 비용 지원 및 현지 지재권 침해 예방' }
             ],
-            crossRule: { issues: ['buyer', 'market'], pinTop: ['KOTRA 파워셀러·1무역관 1유통망', '고비즈코리아 (글로벌쇼핑몰 지원)'] }
+            crossRule: { issues: ['buyer', 'market'], pinTop: ['KOTRA 파워셀러·1무역관 1유통망', 'KOTRA 해외유통망 입점·1무역관 1유통망', '고비즈코리아 (글로벌쇼핑몰 지원)'] }
         },
         medical: {
             priorityTip: '수출국 인허가(FDA·CE·PMDA) 및 품질인증 요건 확인이 최우선입니다. 인허가 기간과 비용을 고려해 지원사업을 먼저 확보하세요.',
