@@ -552,7 +552,8 @@
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
             market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); },
             logistics: function (w) {
-                add('logi-support', 5, w); add('c-logi', 3, w); add('voucher', 2, w); add('c-more', 2, w);
+                add('logi-support', 5, w); add('c-logi', 3, w); add('voucher', 2, w);
+                if (forms.indexOf('b2c') >= 0) add('c-more', 2, w);
                 if (has2('smallbiz')) add('op-semas-logi', 4, w);
                 if (hasItem('agri')) add('agri', 2, w);
             }
@@ -628,7 +629,7 @@
         var w3 = "품목으로 '" + listLabels('q3', pickedItems) + "'을 골라서";
         if (hasItem('cosmetic')) { add('cosmetic', 2, w3); add('cert', 1, w3); }
         if (hasItem('agri')) { add('agri', 2, w3); add('ksure-agri', 2, w3); add('at', 2, w3); }
-        if (hasItem('consumer')) { add('b2c', 2, w3); add('ip-help', 2, w3); }
+        if (hasItem('consumer')) { if (forms.indexOf('b2c') >= 0) add('b2c', 2, w3); add('ip-help', 2, w3); }
         if (hasItem('medical')) { add('cert-medical', 3, w3); add('cert', 2, w3); consultTop = true; }
         if (hasItem('electronics')) { add('cert-elec', 2, w3); add('customs', 2, w3); }
         if (hasItem('industrial')) { add('buyer', 1, w3); add('customs', 1, w3); add('guarantee', 1, w3); }
@@ -711,6 +712,7 @@
             industrial: hasItem('industrial'),
             electronics: hasItem('electronics'),
             medical: hasItem('medical'),
+            b2b: forms.indexOf('b2b') >= 0,
             b2c: forms.indexOf('b2c') >= 0,
             // 2026-11-26 작가님: 거래 형태가 로컬 수출(·수입)뿐이거나 결제가 선수금·신용장뿐인 경우 외에는
             // 대금 미회수 위험을 담보하는 무보 보험(중소중견Plus+ 등)을 추천한다. 값은 이유 문구용 결제 방식 이름
@@ -832,11 +834,13 @@
                 if (it.skipIf && it.skipIf.some(function (sid) { return shown.indexOf(sid) >= 0; })) return;
                 if (it.st && it.st.indexOf(st) < 0) return;
                 if (it.on && !it.on.some(function (t) { return tags.indexOf(t) >= 0; })) return;
+                if (it.when && !it.when(ctx)) return;
                 var sm = M.stageMap[it.id];
                 if (sm && sm.hard && sm.s[st] === 0) return;
                 ids.push(it.id); shown.push(it.id);
             });
-            if (ids.length) extra.push({ t: g.t, ids: ids });
+            var gt = typeof g.t === 'function' ? g.t(ctx) : g.t;
+            if (ids.length) extra.push({ t: gt, ids: ids });
         });
         return {
             extra: extra,
@@ -1099,10 +1103,13 @@
 
         var st = stageIdx(a.q1);
         var iss = arr(a.q6);
+        var hasB2c = arr(a.q4).indexOf('b2c') >= 0;
         var alerts = [], tips = [], priTips = [];
         var byUrl = {}, progs = [];
 
         function addProg(p, pinned) {
+            if (p.b2cOnly && !hasB2c) return;
+            if (p.nonB2cOnly && hasB2c) return;
             var key = normUrl(p.url);
             if (!key) return;
             if (dealFundOn() && M.dealFund && (M.dealFund.excludeUrl || []).some(function (x) { return String(p.url || '').indexOf(x) >= 0; })) return;
@@ -1118,7 +1125,8 @@
         picked.forEach(function (v) {
             var g = IG[v];
             var lbl = label('q3', v) || v;
-            if (g.priorityTip) priTips.push({ label: lbl, text: g.priorityTip });
+            var pTip = (!hasB2c && g.priorityTipNonB2c) ? g.priorityTipNonB2c : g.priorityTip;
+            if (pTip) priTips.push({ label: lbl, text: pTip });
             var cr = g.crossRule || null;
             var hit = false;
             if (cr) {
