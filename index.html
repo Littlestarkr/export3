@@ -48,19 +48,29 @@
       "@type": "Person",
       "@id": "https://www.littlestar.co.kr/#person",
       "name": "오주현",
-      "alternateName": "Happy Oh",
-      "jobTitle": "경영지도사",
-      "description": "수출금융·무역보험·정책자금 분야를 전문으로 하는 경영지도사. 저서 『수출 첫걸음』.",
+      "alternateName": ["Happy Oh", "해피오", "오주현 경영지도사"],
+      "jobTitle": "경영지도사 · 중소기업 수출컨설턴트",
+      "description": "한국무역보험공사(K-SURE) 30년+ 경력의 내수·초보 중소기업 수출컨설팅 전문 경영지도사. 수출자금·정책자금 조달, 무역보험 설계, 글로벌 진출, 정부지원사업 매칭 자문. 저서 『따라하면 돈 되는 수출 첫걸음』.",
       "url": "https://www.littlestar.co.kr/",
       "image": "https://www.littlestar.co.kr/profile.jpg",
+      "email": "mailto:happyojh@gmail.com",
       "knowsAbout": [
-        "수출금융",
+        "중소기업 수출컨설팅",
+        "초보기업 수출 컨설팅",
         "무역보험",
+        "단기수출보험",
+        "수출신용보증",
+        "환변동보험",
+        "수출자금조달",
+        "수출금융",
         "정책자금",
-        "수출 컨설팅",
+        "정부지원사업 매칭",
         "글로벌 진출"
       ],
       "worksFor": {
+        "@id": "https://www.littlestar.co.kr/#service"
+      },
+      "affiliation": {
         "@type": "Organization",
         "name": "한국강소기업협회"
       },
@@ -85,15 +95,151 @@
       ]
     },
     {
+      "@type": "ProfessionalService",
+      "@id": "https://www.littlestar.co.kr/#service",
+      "name": "Happy Oh Consulting (오주현 경영지도사 중소기업 수출컨설팅)",
+      "alternateName": ["Happy Oh Consulting", "해피오 컨설팅", "리틀스타 수출컨설팅", "오주현 중소기업 수출컨설팅"],
+      "description": "내수·초보 중소기업 수출컨설팅 전문 플랫폼. 3분 맞춤형 수출 가이드, 정책자금·수출자금 조달, 한국무역보험공사(K-SURE) 무역보험 설계, 바이어 발굴·글로벌 진출, 수출바우처·정부지원사업 매칭까지 실전 수출을 안내합니다.",
+      "url": "https://www.littlestar.co.kr/",
+      "image": "https://www.littlestar.co.kr/og-image.jpg?v=3",
+      "logo": "https://www.littlestar.co.kr/icon-512.png",
+      "email": "mailto:happyojh@gmail.com",
+      "founder": {
+        "@id": "https://www.littlestar.co.kr/#person"
+      },
+      "employee": {
+        "@id": "https://www.littlestar.co.kr/#person"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "KR"
+      },
+      "availableLanguage": "ko",
+      "serviceType": [
+        "중소기업 수출컨설팅",
+        "무역보험 컨설팅",
+        "수출자금·정책자금 조달 컨설팅",
+        "글로벌 진출 및 바이어 발굴 지원",
+        "정부 수출지원사업 매칭"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "중소기업 수출컨설팅 서비스",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "정책자금 및 수출금융 컨설팅",
+              "description": "소진공·중진공·신보·기보·지역신보·무역보험공사·한국은행 무역금융 등 중소기업 수출자금조달 및 정책자금 활용 전략 수립",
+              "url": "https://www.littlestar.co.kr/policy-finance.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "무역보험 및 수출안전망 컨설팅",
+              "description": "단기수출보험·수출신용보증·환변동보험·수출보증보험·수출채권 유동화 등 대금 미회수 위험 제거를 위한 K-SURE 상품 최적화 설계",
+              "url": "https://www.littlestar.co.kr/trade-insurance.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "글로벌 진출 및 바이어 발굴 지원",
+              "description": "소상공인 첫수출 6단계 전략, 바이어 발굴, B2C 역직구, KOTRA 해외 판로 개척, 해외인증, 수출서류 점검·작성 지원",
+              "url": "https://www.littlestar.co.kr/global-expansion.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "정부 수출지원사업 매칭",
+              "description": "수출바우처, 중소기업 혁신바우처, 희망리턴패키지, 여성기업 글로벌 액셀러레이팅, 창업·R&D, 핵심 기업인증, 공공조달 우대지원 매칭",
+              "url": "https://www.littlestar.co.kr/government-support.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "3분 맞춤형 수출 가이드",
+              "description": "수출·매출실적, 기업 규모·우대조건, 품목, 애로사항에 맞춰 중소기업에 적합한 정책자금·무역보험·정부지원사업을 안내하는 무료 진단 도구",
+              "url": "https://www.littlestar.co.kr/export-guide.html"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://blog.naver.com/happyojh",
+        "https://open.kakao.com/o/sYyKojDh"
+      ]
+    },
+    {
       "@type": "WebSite",
       "@id": "https://www.littlestar.co.kr/#website",
-      "name": "오주현 경영지도사 | Happy Oh Consulting",
-      "alternateName": ["Happy Oh Consulting", "해피오 컨설팅"],
+      "name": "중소기업 수출컨설팅 · 무역보험·수출자금 | 오주현 경영지도사 (Happy Oh)",
+      "alternateName": ["Happy Oh Consulting", "해피오 컨설팅", "리틀스타"],
       "url": "https://www.littlestar.co.kr/",
       "inLanguage": "ko",
-      "publisher": {
+      "about": {
+        "@id": "https://www.littlestar.co.kr/#service"
+      },
+      "author": {
         "@id": "https://www.littlestar.co.kr/#person"
+      },
+      "publisher": {
+        "@id": "https://www.littlestar.co.kr/#service"
       }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.littlestar.co.kr/#faq",
+      "url": "https://www.littlestar.co.kr/",
+      "inLanguage": "ko",
+      "about": {
+        "@id": "https://www.littlestar.co.kr/#service"
+      },
+      "author": {
+        "@id": "https://www.littlestar.co.kr/#person"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "오주현 경영지도사(Happy Oh Consulting)는 어떤 중소기업 수출컨설팅을 제공하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "한국무역보험공사(K-SURE) 30년 이상 경력의 오주현 경영지도사가 내수·초보 중소기업을 대상으로 정책자금·수출자금 조달, 무역보험(단기수출보험·수출신용보증·환변동보험·수출보증보험) 설계, 글로벌 진출 및 바이어 발굴, 수출바우처 등 정부지원사업 매칭까지 실전 수출 컨설팅을 제공합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "수출 경험이 없는 내수·초보 중소기업도 수출 준비를 시작할 수 있나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "네, 가능합니다. www.littlestar.co.kr의 '3분 맞춤형 수출 가이드'와 '수출 5단계 로드맵'을 통해 기업 규모·품목·단계에 맞는 지원사업과 준비 순서를 무료로 확인할 수 있으며, 내수기업 수출기업화·수출바우처·해외인증 지원 등 초보기업 대상 제도를 연계해 단계적으로 수출을 시작할 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "수출자금·정책자금 조달과 무역보험 컨설팅은 어떻게 연계되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "소진공·중진공·신보·기보·지역신보·한국은행 무역금융 등 정책금융으로 수출 제작·운영자금을 마련하고, 한국무역보험공사의 단기수출보험·수출신용보증(선적전·선적후·매입)·환변동보험·수출보증보험으로 외상수출 대금 미회수 및 환율 변동 리스크를 함께 관리할 수 있도록 기업 여건에 맞춰 설계합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "중소기업 수출컨설팅 상담은 어떻게 신청할 수 있나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "www.littlestar.co.kr 하단의 '상담 신청하기' 양식, 카카오톡 1:1 수출상담 채널, 또는 이메일(happyojh@gmail.com)을 통해 기업 현황과 수출 애로사항을 남겨 주시면 오주현 경영지도사가 직접 검토 후 안내해 드립니다."
+          }
+        }
+      ]
     }
   ]
 }
