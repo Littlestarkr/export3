@@ -744,7 +744,7 @@ nav a:hover {
         justify-content: center;
     }
 
-    /* 메뉴를 늘 두 줄로: 1줄 소개~상담 신청, 2줄 고객사·협력사~핫이슈 (2026-11-24) */
+    /* 메뉴를 늘 두 줄로: 1줄 서비스~상담 신청, 2줄 고객사·협력사~핫이슈 (2026-11-27 순서 정비) */
     nav ul::before {
         content: "";
         flex-basis: 100%;
@@ -1055,13 +1055,9 @@ nav a:hover {
 
 .stat-number sup { font-size: 0.6em; font-weight: 700; vertical-align: super; line-height: 0; margin-left: 1px; }
 
-/* 상단 메뉴: 감사·응원 한마디(금색) */
-nav a.nav-gold { color: var(--secondary-color); }
-nav a.nav-gold:hover { color: var(--primary-color); }
-
 /* 흰 배경 위 금색 글자: 대비 확보용 진한 금색(어두운 히어로 위 글자는 원래 금색 유지) */
 :root { --gold-text: #8a6a1f; }
-nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
+.service-more, .section-subtitle { color: var(--gold-text); }
 .pf-hero .section-subtitle { color: var(--secondary-color); }
 
 /* 푸터 홈페이지 주소 */
@@ -1215,13 +1211,20 @@ textarea:focus-visible,
 /* 상담 양식: 선택 항목 표시 */
 .form-optional { font-weight: 400; font-size: .85em; color: #888; }
 
-/* 홈 첫 화면: 공식 명칭 소개 한 줄 (#home) */
-.hero p.hero-tagline { display: inline-block; margin: -16px auto 36px; padding: 10px 22px; border: 1px solid rgba(197, 160, 89, 0.55); border-radius: 999px; background: rgba(13, 30, 56, 0.45); font-size: 1rem; line-height: 1.6; opacity: 1; word-break: keep-all; }
-.hero-tagline i { color: var(--secondary-color); margin-right: 4px; }
-.hero-tagline strong { color: var(--secondary-color); font-weight: 700; }
-.hero-tagline .tg-keep { white-space: nowrap; }
+/* 소개 섹션(#about): 공식 명칭·비전 한 줄 (히어로에서 이동, 2026-11-27) */
+.about-tagline-wrap { text-align: center; margin: -24px 0 36px; }
+.about-tagline { display: inline-block; padding: 11px 24px; border: 1px solid rgba(197, 160, 89, 0.5); border-radius: 999px; background: #faf8f2; color: var(--primary-color); font-size: 0.98rem; line-height: 1.6; word-break: keep-all; }
+.about-tagline i { color: var(--secondary-color); margin-right: 6px; }
+.about-tagline strong { color: var(--gold-text, #8a6a1f); font-weight: 700; }
+.about-tagline .tg-keep { white-space: nowrap; }
 @media (max-width: 768px) {
-    .hero p.hero-tagline { margin: -12px 4px 28px; padding: 10px 16px; border-radius: 14px; font-size: 0.92rem; }
+    .about-tagline-wrap { margin: -28px 0 28px; }
+    .about-tagline { padding: 10px 16px; border-radius: 12px; font-size: 0.9rem; }
+    .hero-btns { flex-wrap: wrap; gap: 12px; }
+}
+@media (max-width: 520px) {
+    .hero-btns { flex-direction: column; align-items: center; }
+    .hero-btns .btn { width: 100%; max-width: 280px; }
 }
 
 /* 홈 푸터 슬로건 (홈에만) */
