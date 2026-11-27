@@ -663,58 +663,63 @@ nav a:hover {
     box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
 }
 
-/* Footer 최적화: 불필요한 공간을 모두 제거한 버전 */
+/* Footer 최적화: 불필요한 공간을 줄이고 블로그·홈주소·앱 설치를 한 줄에 배치 */
 .main-footer {
     background: #000;
     color: #fff;
-    /* 상하 패딩을 15px로 최소화하여 높이를 대폭 줄임 */
-    padding: 15px 10px;
+    padding: 12px 10px;
     text-align: center;
 }
 
-.footer-social {
-    /* 버튼과 아래 텍스트 사이의 간격을 8px로 설정 */
+.footer-links {
     margin-bottom: 8px;
     display: flex;
     justify-content: center;
-    gap: 10px;
-    /* 버튼 사이의 간격도 좁힘 */
+    align-items: center;
+    gap: 6px 14px;
     flex-wrap: wrap;
 }
 
-.footer-social a {
+.footer-links .footer-blog {
     color: #fff;
     font-size: 0.85rem;
-    /* 가독성을 유지하는 선에서 폰트 크기 축소 */
     text-decoration: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    /* 버튼 내부 여백을 줄여 부피감을 제거 */
     padding: 4px 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
-    /* 둥근 모양을 살짝 완화하여 더 깔끔하게 처리 */
+    line-height: 1.4;
+    white-space: nowrap;
     transition: var(--transition);
+}
+
+.footer-links .footer-blog:hover {
+    border-color: var(--secondary-color, #c5a059);
+    color: var(--secondary-color, #c5a059);
 }
 
 .main-footer p {
     opacity: 0.8;
     font-size: 0.78rem;
-    /* 카피라이트 텍스트를 작게 배치 */
     margin: 0;
-    line-height: 1.6;
-    /* 줄 간격에 의한 추가 공간 제거 */
+    line-height: 1.55;
 }
 
-/* 모바일 전용: 더욱 타이트한 조정 */
+/* 모바일 전용: 타이트한 조정 */
 @media (max-width: 768px) {
     .main-footer {
-        padding: 12px 10px;
+        padding: 11px 8px;
     }
 
-    .footer-social {
-        gap: 8px;
+    .main-footer .container {
+        padding: 0;
+    }
+
+    .footer-links {
+        gap: 6px 8px;
+        margin-bottom: 6px;
     }
 }
 
@@ -1060,9 +1065,8 @@ nav a.nav-gold, .service-more, .section-subtitle { color: var(--gold-text); }
 .pf-hero .section-subtitle { color: var(--secondary-color); }
 
 /* 푸터 홈페이지 주소 */
-.main-footer p.footer-home { opacity: 0.85; font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; }
-.main-footer p.footer-home a { color: #fff; text-decoration: none; letter-spacing: 0.02em; }
-.main-footer p.footer-home a:hover { color: var(--secondary-color, #c5a059); }
+.main-footer .footer-home { color: rgba(255, 255, 255, 0.85); font-size: 0.85rem; line-height: 1.4; text-decoration: none; letter-spacing: 0.02em; white-space: nowrap; }
+.main-footer .footer-home:hover { color: var(--secondary-color, #c5a059); }
 
 /* 감사와 응원의 한마디 */
 .voices-section { background: #faf8f2; border-top: 1px solid #eee7d3; border-bottom: 1px solid #eee7d3; }
@@ -1162,11 +1166,17 @@ textarea:focus-visible,
 }
 
 /* 푸터 '앱 설치' 버튼과 설치 안내문 */
-.main-footer p.footer-install { margin: 10px 0 4px; }
+.footer-install { display: inline-flex; align-items: center; }
 .footer-install[hidden] { display: none; }
-.footer-install-btn { font: inherit; font-size: 0.85rem; color: #d8c48a; background: none; border: 1px solid rgba(216, 196, 138, 0.45); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+.footer-install-btn { font: inherit; font-size: 0.85rem; line-height: 1.4; color: #d8c48a; background: none; border: 1px solid rgba(216, 196, 138, 0.45); border-radius: 999px; padding: 4px 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
 .footer-install-btn:hover { color: #fff; border-color: #fff; }
 .footer-install-btn:focus-visible { outline: 2px solid #f6e3a8; outline-offset: 2px; }
+@media (max-width: 480px) {
+    .footer-links { gap: 5px 6px; }
+    .footer-links .footer-blog { font-size: 0.72rem; gap: 4px; padding: 3px 7px; letter-spacing: -0.02em; }
+    .main-footer .footer-home { font-size: 0.72rem; letter-spacing: 0; }
+    .footer-install-btn { font-size: 0.72rem; gap: 4px; padding: 3px 8px; letter-spacing: -0.02em; }
+}
 .install-guide { background: #faf8f2; border-top: 1px solid #eee7d3; }
 .install-guide[hidden] { display: none; }
 .install-guide-inner { max-width: 680px; margin: 0 auto; padding: 18px 20px 20px; text-align: left; }
@@ -1215,8 +1225,8 @@ textarea:focus-visible,
 }
 
 /* 홈 푸터 슬로건 (홈에만) */
-.main-footer p.footer-slogan { opacity: 1; color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; margin: 4px 0 10px; word-break: keep-all; line-height: 1.7; }
-@media (max-width: 768px) { .main-footer p.footer-slogan { font-size: 0.82rem; letter-spacing: 0; } }
+.main-footer p.footer-slogan { opacity: 1; color: var(--secondary-color); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; margin: 0 0 8px; word-break: keep-all; line-height: 1.55; }
+@media (max-width: 768px) { .main-footer p.footer-slogan { font-size: 0.82rem; letter-spacing: 0; margin-bottom: 6px; } }
 
 /* 홈 도구 줄 첫 칸(수출 가이드) 강조 + 가이드에서 넘어온 상담 요약 안내 (2026-11-22) */
 .tool-chip.is-featured { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
