@@ -26,6 +26,7 @@
 
     var a = {};          // 답
     var step = 0;        // 보이는 질문 중 현재 위치
+    var moreViewed = false; // Q6 '다른 어려움 더 보기'를 한 번이라도 펼쳐 보았는지 여부
     var started = false;
     var saved = null;    // { id } 저장 성공 시
     var lastSummary = '';
@@ -160,7 +161,7 @@
         renderStart();
     });
     $('egBegin').addEventListener('click', function () {
-        a = {}; step = 0; saved = null; nowClear();
+        a = {}; step = 0; moreViewed = false; saved = null; nowClear();
         if (!started) { started = true; ga('guide_start'); }
         renderQ();
         scrollToApp();
@@ -196,7 +197,12 @@
                 var keepEtc = arr(a[q.id]).indexOf('etc') >= 0;
                 a[q.id] = cb.checked ? allVals(q) : [];
                 if (keepEtc) a[q.id].push('etc');
-                if (cb.checked) $('egMore').open = true;
+                if (cb.checked) {
+                    moreViewed = true;
+                    $('egMore').open = true;
+                    $('egMore').classList.remove('is-warn-open');
+                    if ($('egMoreWarn')) $('egMoreWarn').hidden = true;
+                }
                 $('egMsg').textContent = '';
                 refreshOpts(q);
                 updateNext(q);
@@ -335,11 +341,17 @@
 
         var moreWrap = $('egMore');
         var moreBox = $('egMoreOpts');
+        var moreWarn = $('egMoreWarn');
+        var moreCnt = $('egMoreCnt');
         moreBox.textContent = '';
         moreWrap.hidden = !more.length;
+        moreWrap.classList.remove('is-warn-open');
+        if (moreWarn) moreWarn.hidden = true;
         if (more.length) {
+            if (moreCnt) moreCnt.textContent = '+ ' + more.length + '개 항목 더 있음';
             var anyMoreSel = more.some(function (o) { return arr(a[q.id]).indexOf(o.v) >= 0; });
-            moreWrap.open = anyMoreSel;
+            if (anyMoreSel) moreViewed = true;
+            moreWrap.open = anyMoreSel || moreViewed;
             more.forEach(function (o) { moreBox.appendChild(optBtn(q, o)); });
         }
 
@@ -378,7 +390,7 @@
             a[q.id] = v;
             // '아직 없음(준비 중)'으로 바꾸면 꼬리 질문(계약금액)에서 고른 값을 지운다
             if (q.followOne && !q.followOne.when(a)) delete a[q.followOne.id];
-            if (q.id === 'q1' && changed) { delete a.q6; }
+            if (q.id === 'q1' && changed) { delete a.q6; moreViewed = false; }
             if ((q.id === 'q1' || q.id === 'q1b') && changed && arr(a.q7).indexOf('unknown') >= 0 && !isPlan()) {
                 a.q7 = arr(a.q7).filter(function (x) { return x !== 'unknown'; });
             }
@@ -481,9 +493,28 @@
             $('egMsg').textContent = '하나 이상 골라 주세요.';
             return;
         }
+        // 2026-11-28: Q6 '다른 어려움 더 보기'를 한 번도 펼쳐 보지 않고 '다음'을 누르면
+        // 먼저 자동으로 펼쳐 주의 문구를 보여 주고, 선택하지 않더라도 한 번 더 누르면 넘어가게 한다.
+        var moreWrap = $('egMore');
+        if (q.id === 'q6' && moreWrap && !moreWrap.hidden && !moreViewed && !moreWrap.open) {
+            moreViewed = true;
+            moreWrap.open = true;
+            moreWrap.classList.add('is-warn-open');
+            var moreWarn = $('egMoreWarn');
+            if (moreWarn) moreWarn.hidden = false;
+            $('egMsg').textContent = '아직 확인하지 않은 추가 어려움 항목을 펼쳤습니다. 해당 사항이 없다면 선택하지 않고 ‘다음’을 한 번 더 눌러 주세요.';
+            var hdr = document.querySelector('header');
+            var hh = (hdr && window.innerWidth > 768) ? hdr.offsetHeight + 12 : 12;
+            var y = moreWrap.getBoundingClientRect().top + window.pageYOffset - hh;
+            window.scrollTo({ top: Math.max(0, y), behavior: (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' });
+            return;
+        }
         step++;
         if (step >= visible().length) finish(); else { renderQ(); scrollToApp(true); }
     }
+    $('egMore').addEventListener('toggle', function () {
+        if (this.open) moreViewed = true;
+    });
     $('egNext').addEventListener('click', next);
     $('egEtc').addEventListener('input', function () { a.q6etc = this.value.slice(0, 100); });
     $('egPrev').addEventListener('click', function () { if (step > 0) { step--; renderQ(); scrollToApp(true); } });
@@ -1493,7 +1524,7 @@
     });
     $('egPrint').addEventListener('click', function () { window.print(); });
     $('egRestart').addEventListener('click', function () {
-        a = {}; step = 0; saved = null; nowClear();
+        a = {}; step = 0; moreViewed = false; saved = null; nowClear();
         renderStart();
         scrollToApp();
     });

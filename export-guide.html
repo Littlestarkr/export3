@@ -25,7 +25,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css?v=46">
     <link rel="stylesheet" href="policy-finance.css?v=24">
-    <link rel="stylesheet" href="export-guide.css?v=24">
+    <link rel="stylesheet" href="export-guide.css?v=25">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -211,7 +211,26 @@
                     <p class="eg-help" id="egHelp"></p>
                     <div class="eg-opts" id="egOpts"></div>
                     <details class="eg-more" id="egMore" hidden>
-                        <summary>다른 어려움 더 보기</summary>
+                        <summary id="egMoreSummary">
+                            <span class="eg-more-head">
+                                <span class="eg-more-top">
+                                    <span class="eg-more-badge" id="egMoreCnt">추가 항목</span>
+                                    <strong class="eg-more-title">다른 어려움 더 보기</strong>
+                                </span>
+                                <span class="eg-more-sub" id="egMoreSub">연체·미수금 회수, 해외몰 입점, IP·마케팅, 물류·배송, 구매확인서, 기타 등</span>
+                            </span>
+                            <span class="eg-more-cta" aria-hidden="true">
+                                <span class="eg-more-open-lbl">펼쳐 보기 <i class="fa-solid fa-chevron-down"></i></span>
+                                <span class="eg-more-close-lbl">접기 <i class="fa-solid fa-chevron-up"></i></span>
+                            </span>
+                        </summary>
+                        <div class="eg-more-warn" id="egMoreWarn" role="alert" hidden>
+                            <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                            <div>
+                                <strong>아직 확인하지 않은 추가 어려움 항목이 있습니다.</strong>
+                                <p>아래 추가 어려움 목록을 먼저 확인해 주세요. 해당되는 항목이 있다면 선택하고, 없다면 <strong>선택하지 않고 ‘다음’ 버튼을 한 번 더 누르면</strong> 바로 다음 질문으로 넘어갑니다.</p>
+                            </div>
+                        </div>
                         <div class="eg-opts" id="egMoreOpts" role="group" aria-label="다른 어려움"></div>
                     </details>
                     <div class="eg-etc" id="egEtcBox" hidden>
@@ -476,7 +495,7 @@
     </footer>
 
     <script src="export-guide-map.js?v=69"></script>
-    <script src="export-guide.js?v=54"></script>
+    <script src="export-guide.js?v=55"></script>
     <script src="back-nav.js?v=6"></script>
 </body>
 
