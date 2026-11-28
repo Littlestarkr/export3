@@ -609,9 +609,21 @@
                 if (has2('venture') || has2('innobiz') || has2('lab')) add('kibo-rnd', 2, w);
             },
             promo: function (w) {
-                add('voucher', 8, "'" + M.issues.promo + "'를 골라서(수출바우처 홍보·디자인·동영상 제작 활용 추천)");
-                add('k-aitc', 8, w); add('gobizkorea', 7, w);
-                if (has2('mfg') && !has2('mid') && !has2('large')) add('innovation-voucher', 2, w);
+                add('k-aitc', 10, "'" + M.issues.promo + "'를 골라서(KOTRA AI무역지원센터 상품사진 촬영·보정 및 AI 수출상품 콘텐츠 무료 제작 추천)");
+                add('voucher', 10, "'" + M.issues.promo + "'를 골라서(수출바우처 홍보/광고·디자인 개발·홍보 동영상 제작 활용 추천)");
+                add('gobizkorea', 9, "'" + M.issues.promo + "'를 골라서(중진공 고비즈코리아 영문 상품페이지·홍보 동영상 제작 지원)");
+                if (!pureB2b && !has2('mid') && !has2('large')) {
+                    add('gm-kosmes', 9, "'" + M.issues.promo + "'를 골라서(중진공 글로벌쇼핑몰 마케팅·상품페이지/영상 콘텐츠 제작 지원 · 공고 확인)");
+                }
+                if (has2('smallbiz')) {
+                    add('op-semas', 9, "소상공인 + '" + M.issues.promo + "'를 골라서(소진공 해외 온라인 플랫폼 콘텐츠 제작·직접/간접 홍보 마케팅 지원 · 공고 확인)");
+                } else if (!pureB2b && !has2('mid') && !has2('large')) {
+                    add('op-semas', 7, "'" + M.issues.promo + "'를 골라서(소진공 해외 온라인 플랫폼 콘텐츠 제작·홍보 마케팅 지원 · 소상공인 대상, 공고 확인)");
+                }
+                if (has2('mfg') && !has2('mid') && !has2('large')) {
+                    add('innovation-voucher', 7, "제조업 + '" + M.issues.promo + "'를 골라서(중진공 중소기업 혁신바우처 마케팅·홍보 지원)");
+                }
+                add('buykorea', 5, w);
             },
             indirect: function (w) {
                 add('utradehub', 8, w); add('bok-local', 8, w); add('kita-perf', 7, w);

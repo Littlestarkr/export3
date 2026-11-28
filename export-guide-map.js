@@ -473,7 +473,7 @@
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
         'buykorea':    { t: 'KOTRA 바이코리아', u: 'global-expansion.html#k-buykorea', d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색·등록, 거래대금 온라인 결제, 국제 배송(EMS·DHL)까지 지원합니다.' },
         // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 수출 플랫폼·정보 포털(2026-11-24)
-        'gobizkorea':  { t: '고비즈코리아 (kr.gobizkorea.com)', u: 'https://kr.gobizkorea.com', ext: true, d: '중진공 온라인 수출 플랫폼으로 영문 상품페이지·홍보 동영상 콘텐츠 제작, 해외 바이어 거래알선(BMS)·수출계약대응지원, 글로벌쇼핑몰 판매지원 및 온라인 수출 공동물류·물류할인을 지원합니다.' },
+        'gobizkorea':  { t: '중진공 고비즈코리아 (영문 상품페이지·홍보 동영상 제작)', u: 'https://kr.gobizkorea.com', ext: true, d: '중진공 온라인 수출 플랫폼으로 영문 상품페이지·홍보 동영상 콘텐츠 제작, 해외 바이어 거래알선(BMS)·수출계약대응지원, 글로벌쇼핑몰 판매지원 및 온라인 수출 공동물류·물류할인을 지원합니다.' },
         'buykorea-portal': { t: '바이코리아 (www.buykorea.org)', u: 'https://www.buykorea.org', ext: true, d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색 및 등록, 거래대금 온라인 결제, 국제 배송(EMS, DHL)까지 수출 거래 전 단계를 지원합니다.' },
         'tribig':      { t: '트라이빅 (www.kotra.or.kr/bigdata)', u: 'https://www.kotra.or.kr/bigdata', ext: true, d: '1.3억 건의 수출통계와 600만 해외기업 DB를 바탕으로 AI가 품목별 유망 시장과 잠재 파트너 리스트를 추천하고, 무역투자통계와 국가별 시장정보를 시각화된 자료로 제공합니다.' },
         'kotra-dream': { t: '해외경제정보Dream (dream.kotra.or.kr)', u: 'https://dream.kotra.or.kr/', ext: true, d: '각 부처와 기관에 흩어져 있는 해외 진출 정보를 시장별·단계별로 통합 제공하는 범정부 플랫폼입니다.' },
@@ -483,7 +483,7 @@
         'akei':        { t: '한국전시산업진흥원', u: 'global-expansion.html#exhibit', d: '국내외 전시회 정보를 찾아봅니다.' },
         'b-potential': { t: 'KOTRA 잠재바이어 발굴', u: 'global-expansion.html#b-potential', d: 'KOTRA 해외무역관이 잠재 바이어를 대신 찾아 주는 유료 대행 서비스입니다.' },
         'k-bts':       { t: 'KOTRA 바이어 트래킹', u: 'global-expansion.html#k-bts', d: 'KOTRA로 알게 된 바이어와의 교신을 무역관이 대신 도와줍니다(KOTRA 기업 회원 대상).' },
-        'k-aitc':      { t: 'KOTRA AI무역지원센터 (무료 콘텐츠 제작)', u: 'global-expansion.html#k-aitc', d: 'AI 활용 상품사진 촬영·보정, 수출상품 상세 콘텐츠 제작, 바이코리아 상품등록 및 수출 상담을 무료로 지원하는 전국 20개 KOTRA 센터입니다.' },
+        'k-aitc':      { t: 'KOTRA AI무역지원센터 (AITC · 무료 콘텐츠 제작)', u: 'global-expansion.html#k-aitc', d: '전국 20개 도시에서 무료로 운영하는 KOTRA 센터입니다. AI 활용 수출상품 콘텐츠 제작, 상품사진 촬영·보정, 상세설명 작성, 바이코리아 상품 등록, 수출 컨설팅과 공간 이용을 무료 지원합니다.' },
         'c-more':      { t: 'KOTRA 파워셀러 육성 · B2C 역직구 기관 추가 지원', u: 'global-expansion.html#c-more', d: 'KOTRA 이베이·쇼피 파워셀러 육성, 중국 역직구(콰징) 물류지원과 중진공·aT·지자체·민간의 해외 온라인몰 판매 지원을 모았습니다. 사업 내용은 해마다 공고를 확인하세요.' },
         'ksure-group': { t: '단기수출보험(단체보험)', u: 'trade-insurance.html#ksure-group', d: '지자체·협회 등이 단체로 가입하고 보험료를 대신 내 주는 수출대금 미회수 보험입니다. 가입 여부·보상 한도는 지자체마다 다릅니다.' },
         'ins-support': { t: '무역보험 보험료 지원사업', u: 'trade-insurance.html#support', d: '보험료 지원사업 공고는 무보 홈페이지 게시판에서 확인합니다.' },
@@ -617,6 +617,9 @@
         }},
         { id: 'innovation-voucher', pri: 2, match: function (c) {
             if (!c.mfg || !c.sme) return '';
+            if (c.hasAny(['promo'])) {
+                return "제조업 중소기업 + '해외 마케팅·영문 홍보물이 없다'를 골라서(중진공 중소기업 혁신바우처 마케팅·홍보 분야 지원 · 최대 5,000만 원)";
+            }
             if (c.has2('medium') || c.rev === 5) {
                 return '제조업 중소기업이라서(일반바우처는 평균 매출 140억 이하 소기업, 중대재해예방·탄소중립 바우처는 140억 초과~1,800억 원 이하 중소기업까지 신청 가능 · 최대 5,000만 원)';
             }
@@ -837,10 +840,17 @@
                 ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(최종 회수 포기·감액 합의 시 법인세 손실 처리 근거)" : '';
         }},
         { id: 'gm-kosmes', pri: 2, match: function (c) {
-            return (!c.pureB2b && c.hasAny(['mall']) && c.sme)
-                ? "'해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(중진공·고비즈코리아 글로벌쇼핑몰 입점·마케팅 지원 · 모집 시기 공고 확인)" : '';
+            if (c.pureB2b || !c.sme) return '';
+            if (c.hasAny(['mall']) && c.hasAny(['promo'])) return "'해외 온라인 쇼핑몰 입점'·'해외 마케팅·영문 홍보물' 어려움을 골라서(중진공·고비즈코리아 글로벌쇼핑몰 입점·마케팅·상품페이지/영상 제작 지원 · 공고 확인)";
+            if (c.hasAny(['mall'])) return "'해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(중진공·고비즈코리아 글로벌쇼핑몰 입점·마케팅 지원 · 모집 시기 공고 확인)";
+            if (c.hasAny(['promo'])) return "'해외 마케팅·영문 홍보물이 없다'를 골라서(중진공·고비즈코리아 글로벌쇼핑몰 마케팅·상품페이지/썸네일/영상 제작 지원 · 공고 확인)";
+            return '';
         }},
         { id: 'op-semas', pri: 2, match: function (c) {
+            if (c.hasAny(['promo'])) {
+                if (c.smallbiz) return "소상공인 + '해외 마케팅·영문 홍보물이 없다'를 골라서(소진공 해외 온라인 플랫폼 콘텐츠 제작·직접/간접 홍보 마케팅 지원 · 공고 확인)";
+                if (!c.pureB2b && c.sme) return "'해외 마케팅·영문 홍보물이 없다'를 골라서(소진공 해외 온라인 플랫폼 콘텐츠 제작·홍보 마케팅 지원 · 소상공인 대상, 공고 확인)";
+            }
             if (c.pureB2b || !c.hasAny(['mall'])) return '';
             if (c.smallbiz) return "소상공인 + '해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(소진공 해외 온라인 플랫폼 입점·활용·물류 지원 · 공고 확인)";
             if (c.b2c) return "B2C + '해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(소진공 해외 온라인 플랫폼 판로지원 · 소상공인 대상, 공고 확인)";
@@ -859,13 +869,13 @@
                 ? "'해외 상표권·특허(IP) 보호가 필요하다'를 골라서(특허청 IP-DESK 해외 상표·디자인 출원비 지원 및 현지 침해 대응)" : '';
         }},
         { id: 'k-aitc', pri: 2, match: function (c) {
-            if (c.hasAny(['promo'])) return "'해외 마케팅·영문 홍보물이 없다'를 골라서(KOTRA AI무역지원센터 상품사진·콘텐츠 무료 제작 지원)";
+            if (c.hasAny(['promo'])) return "'해외 마케팅·영문 홍보물이 없다'를 골라서(KOTRA AI무역지원센터 상품사진 촬영·보정 및 AI 수출상품 콘텐츠 무료 제작)";
             if (c.rev !== 1) return '';
             return c.noRev ? '매출 없음 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서' : '매출 1억 원 미만 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서';
         }},
         { id: 'gobizkorea', pri: 2, match: function (c) {
             return c.hasAny(['promo'])
-                ? "'해외 마케팅·영문 홍보물이 없다'를 골라서(고비즈코리아 영문 상품페이지·홍보 동영상 제작 지원)" : '';
+                ? "'해외 마케팅·영문 홍보물이 없다'를 골라서(중진공 고비즈코리아 영문 상품페이지·홍보 동영상 제작 지원)" : '';
         }},
         { id: 'utradehub', pri: 2, match: function (c) {
             if (c.hasAny(['indirect'])) return "'구매확인서·부가세 영세율·수출실적 인정' 어려움을 골라서(KTNET uTradeHub 구매확인서·간접수출실적증명 발급)";
@@ -1121,7 +1131,16 @@
         { t: '지재권·상표권 보호', on: ['ip'],
           items: [{ id: 'ip-help' }, { id: 'ip-desk' }, { id: 'voucher' }, { id: 'trade-sure' }] },
         { t: '해외 마케팅·영문 홍보물 제작', on: ['promo'],
-          items: [{ id: 'voucher' }, { id: 'gobizkorea' }, { id: 'k-aitc' }, { id: 'voucher-portal' }] },
+          items: [
+              { id: 'k-aitc' },
+              { id: 'voucher' },
+              { id: 'gobizkorea' },
+              { id: 'gm-kosmes', when: function (c) { return !c.pureB2b && c.sme; } },
+              { id: 'op-semas', when: function (c) { return c.smallbiz || (!c.pureB2b && c.sme); } },
+              { id: 'innovation-voucher', when: function (c) { return c.mfg && c.sme; } },
+              { id: 'buykorea' },
+              { id: 'voucher-portal' }
+          ] },
         { t: '간접수출·구매확인서·수출실적 인정', on: ['indirect', 'form:local'],
           items: [{ id: 'utradehub' }, { id: 'bok-local' }, { id: 'kita-perf' }, { id: 'customs' }, { id: 'qna-fx' }] },
         { t: '통관·HS코드·FTA·원산지증명(C/O)', on: ['hs', 'form:import'],
