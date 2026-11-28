@@ -360,7 +360,7 @@
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
         'ksure-postship': { t: '무보 수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
         'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
-        'debt-collect':{ t: 'K-SURE 해외채권 회수대행 · 미수채권 추심 지원', u: 'trade-claim.html#step3', d: '이미 연체·미수 상태가 된 해외 수출대금의 회수 전략 컨설팅, K-SURE 해외채권 회수지원 서비스, KOTRA 회원사 NICE 추심 할인 및 추심 수수료 지원(공고 확인)을 단계별로 안내합니다.' },
+        'debt-collect':{ t: '한국무역보험공사(K-SURE) 해외채권 회수지원 서비스', u: 'trade-insurance.html#recovery', d: '무역보험에 가입하지 않은 수출기업의 해외 미수채권 회수를 지원합니다. 무료 회수컨설팅과 착수금 없는 성공불 조건의 해외채권 회수대행(40개국 110여 개 현지 추심기관), 수출바우처·하나은행·aT 성공수수료 지원사업과 이용 절차·유의사항을 안내합니다.' },
         'debt-writeoff':{ t: '해외채권 회수불능 확인 (법인세 손실 처리)', u: 'trade-claim.html#step4', d: '추심·협상 끝에도 끝내 회수하지 못하거나 감액 합의한 해외 미수채권에 대해 법인세법상 대손(손실) 처리 근거로 무보 회수불능 확인을 받는 절차를 안내합니다.' },
         'trade-claim': { t: '무역클레임 대응 가이드', u: 'trade-claim.html#matrix', d: '클레임 접수 직후의 무료 자문부터 알선·조정, 미수채권 추심, 회수불능 확인까지 상황별로 찾아갈 곳을 정리했습니다.' },
         'kcab':        { t: '대한상사중재원(중재·조정)', u: 'https://www.kcab.or.kr/', d: '무역클레임이 당사자 합의로 풀리지 않을 때 상사중재·조정을 신청하는 기관입니다. 절차·비용은 공식 사이트에서 확인하세요.', ext: true },
@@ -532,7 +532,7 @@
         // ── 최우선 추천 (pri: 1) ──
         { id: 'debt-collect', pri: 1, match: function (c) {
             return c.hasAny(['overdue'])
-                ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(최우선 추천 · 이미 발생한 미수채권 사후 추심·K-SURE 회수대행)" : '';
+                ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(최우선 추천 · 무역보험 미가입 미수채권 무료 컨설팅·성공불 추심대행)" : '';
         }},
         { id: 'semas-disabled', pri: 1, match: function (c) {
             return (c.disabled && !c.has2('medium') && !c.has2('mid') && !c.has2('large'))

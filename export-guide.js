@@ -785,15 +785,16 @@
         matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
 
         // 8-2) 무조건 추천(고정 최상단, 2026-11-25):
-        // - 연체된 수출대금(미수금) 회수 선택: K-SURE 해외채권 회수대행을 최우선 추천으로 맨 앞 고정
+        // - 연체된 수출대금(미수금) 회수 선택: 한국무역보험공사(K-SURE) 해외채권 회수지원 서비스를 최우선 강조 카드로 맨 앞 고정
         // - 소상공인·소기업: 소상공인 첫수출 전략을 비중있게(#1 강조 카드) 무조건 추천
         // - B2C 선택 기업: 아마존 입점전략·글로벌 쇼핑몰 판매지원(중진공)·해외 온라인 플랫폼 판로지원(소진공)을 무조건 추천
         var pinned = [];
         var featuredMap = {};
         if (issues.indexOf('overdue') >= 0) {
-            var wOverdue = "'" + M.issues.overdue + "'를 골라서(최우선 추천 · 이미 발생한 미수채권 사후 추심·K-SURE 회수대행)";
+            var wOverdue = "'" + M.issues.overdue + "'를 골라서(최우선 추천 · 무역보험 미가입 미수채권 무료 컨설팅·성공불 추심대행)";
             add('debt-collect', 14, wOverdue);
             priMap['debt-collect'] = 1;
+            featuredMap['debt-collect'] = true;
             pinned.push('debt-collect');
         }
         if (has2('smallbiz') || has2('small')) {
