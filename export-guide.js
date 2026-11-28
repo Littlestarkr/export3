@@ -504,6 +504,7 @@
         var stShort = M.stages[st].short;
         var S = {}, R = {}, order = [];
         var consultTop = false;
+        var urgentConsult = false;
         function add(id, pts, why) {
             if (!M.links[id]) return;
             if (!(id in S)) { S[id] = 0; R[id] = []; order.push(id); }
@@ -512,6 +513,7 @@
         }
         var ins = st <= 2 ? 'ksure-dplus' : 'ksure-plus';
         var issues = arr(a.q6), forms = arr(a.q4), pays = arr(a.q7), mk = arr(a.q5);
+        var pureB2b = forms.indexOf('b2b') >= 0 && forms.indexOf('b2c') < 0;
 
         // 1) 수출실적 단계 기본 추천(●)
         Object.keys(M.stageMap).forEach(function (id) {
@@ -547,7 +549,7 @@
                 if (hasItem('medical')) add('cert-medical', 3, w);
                 if (hasItem('electronics') || hasItem('industrial')) add('cert-elec', 2, w);
             },
-            hs:      function (w) { add('trade-stats', 3, w); add('customs', 2, w); add('lawsearch', 2, w); },
+            hs:      function (w) { add('customs', 8, w); add('trade-stats', 8, w); add('fta-portal', 6, w); add('trade-navi', 4, w); add('lawsearch', 2, w); },
             support: function (w) { add('voucher', 3, w); add('k-domestic', 2, w); if (has2('pre') || has2('startup') || has2('y7')) add('rnd', 2, w); },
             fraud:   function (w) { add('fraud', 3, w); add('export-docs', 2, w); },
             market:  function (w) { add('trade-stats', 3, w); add('k-market', 2, w); add('nationgrade', 2, w); },
@@ -556,6 +558,34 @@
                 if (forms.indexOf('b2c') >= 0) add('c-more', 2, w);
                 if (has2('smallbiz')) add('op-semas-logi', 4, w);
                 if (hasItem('agri')) add('agri', 2, w);
+            },
+            overdue: function (w) {
+                add('debt-collect', 10, w); add('claim', 8, w); add('debt-writeoff', 7, w); add('trade-claim', 4, w);
+                consultTop = true; urgentConsult = true;
+            },
+            mall: function (w) {
+                if (pureB2b) {
+                    add('b-b2b', 5, w); add('gobizkorea', 4, w); add('buykorea', 3, w);
+                    return;
+                }
+                add('gm-kosmes', 8, w); add('c-more', 8, w);
+                add('op-semas', has2('smallbiz') ? 8 : 5, w);
+                add('c-amazon', 7, w); add('b2c', 4, w);
+            },
+            ip: function (w) {
+                add('ip-help', 8, w); add('ip-desk', 7, w);
+                add('voucher', 6, "'" + M.issues.ip + "'를 골라서(수출바우처 '특허/지재권/시험' 메뉴 활용 추천)");
+                if (has2('venture') || has2('innobiz') || has2('lab')) add('kibo-rnd', 2, w);
+            },
+            promo: function (w) {
+                add('voucher', 8, "'" + M.issues.promo + "'를 골라서(수출바우처 홍보·디자인·동영상 제작 활용 추천)");
+                add('k-aitc', 8, w); add('gobizkorea', 7, w);
+                if (has2('mfg') && !has2('mid') && !has2('large')) add('innovation-voucher', 2, w);
+            },
+            indirect: function (w) {
+                add('utradehub', 8, w); add('bok-local', 8, w); add('kita-perf', 7, w);
+                add('customs', 3, w);
+                if (hasItem('service')) add('trade-sure', 2, w);
             }
         };
         issues.forEach(function (k) { if (I[k]) I[k]("'" + M.issues[k] + "'를 골라서"); });
@@ -714,6 +744,7 @@
             medical: hasItem('medical'),
             b2b: forms.indexOf('b2b') >= 0,
             b2c: forms.indexOf('b2c') >= 0,
+            pureB2b: pureB2b,
             // 2026-11-26 작가님: 거래 형태가 로컬 수출(·수입)뿐이거나 결제가 선수금·신용장뿐인 경우 외에는
             // 대금 미회수 위험을 담보하는 무보 보험(중소중견Plus+ 등)을 추천한다. 값은 이유 문구용 결제 방식 이름
             unpaidRisk: (forms.some(function (f) { return f !== 'local' && f !== 'import'; })
@@ -754,10 +785,17 @@
         matchedProgs.sort(function (x, y) { return (x.pri - y.pri) || (x.ord - y.ord); });
 
         // 8-2) 무조건 추천(고정 최상단, 2026-11-25):
+        // - 연체된 수출대금(미수금) 회수 선택: K-SURE 해외채권 회수대행을 최우선 추천으로 맨 앞 고정
         // - 소상공인·소기업: 소상공인 첫수출 전략을 비중있게(#1 강조 카드) 무조건 추천
         // - B2C 선택 기업: 아마존 입점전략·글로벌 쇼핑몰 판매지원(중진공)·해외 온라인 플랫폼 판로지원(소진공)을 무조건 추천
         var pinned = [];
         var featuredMap = {};
+        if (issues.indexOf('overdue') >= 0) {
+            var wOverdue = "'" + M.issues.overdue + "'를 골라서(최우선 추천 · 이미 발생한 미수채권 사후 추심·K-SURE 회수대행)";
+            add('debt-collect', 14, wOverdue);
+            priMap['debt-collect'] = 1;
+            pinned.push('debt-collect');
+        }
         if (has2('smallbiz') || has2('small')) {
             var wSmb = has2('smallbiz')
                 ? '소상공인을 위한 핵심 첫수출 6단계 실전 전략이라서(필수 추천)'
@@ -848,6 +886,7 @@
             progs: progs,
             more: moreIds.map(function (id) { return { id: id, why: why(id) }; }),
             consultTop: consultTop,
+            urgentConsult: urgentConsult,
             etcNoMatch: etcNoMatch
         };
     }
@@ -1103,7 +1142,9 @@
 
         var st = stageIdx(a.q1);
         var iss = arr(a.q6);
-        var hasB2c = arr(a.q4).indexOf('b2c') >= 0;
+        var forms4 = arr(a.q4);
+        var pureB2b4 = forms4.indexOf('b2b') >= 0 && forms4.indexOf('b2c') < 0;
+        var hasB2c = forms4.indexOf('b2c') >= 0 || (!pureB2b4 && iss.indexOf('mall') >= 0);
         var alerts = [], tips = [], priTips = [];
         var byUrl = {}, progs = [];
 
@@ -1323,9 +1364,14 @@
         fBox.hidden = !anyForm;
         $('egLocalNote').hidden = !(forms.length === 1 && forms[0] === 'local');
 
-        // 상담 상자 위치: '전문가 상담'·'기타'를 고르면 추천 위로
+        // 상담 상자 위치: '연체·미수금'(긴급 안내)·'무역클레임'·'기타' 등을 고르면 추천 위로
         $('egEtcNoMatch').hidden = !rec.etcNoMatch;
+        var urgEl = $('egUrgentMsg');
+        if (urgEl) urgEl.hidden = !rec.urgentConsult;
         var consult = $('egConsult');
+        consult.classList.toggle('is-urgent', !!rec.urgentConsult);
+        var cTitle = $('egConsultTitle');
+        if (cTitle) cTitle.textContent = rec.urgentConsult ? '긴급 1:1 상담받기 (연체·미수금 사후 대응)' : '이 내용으로 상담받기';
         var anchor = rec.consultTop ? $('egTopWrap') : $('egFormsAnchor');
         anchor.parentNode.insertBefore(consult, rec.consultTop ? anchor : anchor.nextSibling);
 

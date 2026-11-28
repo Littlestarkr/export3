@@ -42,7 +42,7 @@ var L = {
   q3: { cosmetic: '화장품·뷰티', agri: '농수산·가공식품', consumer: '생활·패션·일반소비재', medical: '의료기기·바이오·헬스케어', electronics: '전기·전자·IT기기', industrial: '기계·장비·소재·부품', service: '서비스·SW·콘텐츠', etc: '기타' },
   q4: { local: '로컬 수출', b2c: 'B2C 온라인 판매', b2b: '일반수출(B2B)', relay: '중계무역', import: '수입', other: '기타' },
   q5: { undecided: '미정', cnjp: '중국·일본', sea: '동남아', na: '미국·캐나다', eu: '유럽', mea: '중동·아프리카', other: '그 밖의 지역' },
-  q6: { buyer: '바이어 발굴', docs: '서류·계약서', collect: '대금 미회수', importer: '수입자 신용조사', factoring: '수출채권 유동화', tclaim: '무역클레임', fx: '환율', fund: '자금', cert: '해외인증·규제', hs: 'HS코드·관세·통관', support: '정부지원사업', fraud: '무역사기', market: '시장 선택', etc: '기타' },
+  q6: { buyer: '바이어 발굴', docs: '서류·계약서', collect: '대금 미회수', importer: '수입자 신용조사', factoring: '수출채권 유동화', tclaim: '무역클레임', fx: '환율', fund: '자금', cert: '해외인증·규제', hs: 'HS코드·관세·통관·FTA', support: '정부지원사업', fraud: '무역사기', market: '시장 선택', logistics: '물류·배송', overdue: '연체·미수금 회수', mall: '해외 온라인 쇼핑몰 입점', ip: '해외 상표권·특허(IP)', promo: '해외 마케팅·영문 홍보물', indirect: '구매확인서·영세율·수출실적', etc: '기타' },
   q7: { prepay: '선수금', lc: '신용장(L/C)', collection: '추심(D/P, D/A)', deferred: '외상거래', other: '기타', unknown: '아직 모름' },
   q8: { info: '자료·도구', market: '시장·바이어', fund: '자금·보험·지원사업', consult: '상담', tool: '자료·도구' }
 };
@@ -74,7 +74,7 @@ function one_(key, v) {
 
 function many_(key, v) {
   var out = [];
-  String(v || '').split(',').slice(0, 15).forEach(function (c) {
+  String(v || '').split(',').slice(0, 30).forEach(function (c) {
     var t = L[key][c];
     if (t && out.indexOf(t) < 0) out.push(t);
   });

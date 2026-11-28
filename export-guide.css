@@ -343,6 +343,10 @@
 .eg-etc input:focus { outline: 2px solid var(--secondary-color, #c9a227); outline-offset: 1px; }
 .eg-etc .eg-note { margin-top: 6px; }
 .eg-etc-nomatch { background: #fff8e6; border-left: 3px solid var(--secondary-color, #c9a227); padding: 8px 10px; border-radius: 4px; font-size: 0.92rem; }
+.eg-consult.is-urgent { border-color: #c0392b; background: #fff7f6; }
+.eg-consult.is-urgent h4 { color: #9b1c1c; }
+.eg-urgent-msg { background: #fdecec; border-left: 4px solid #c0392b; color: #5a1d17; padding: 10px 12px; border-radius: 6px; font-size: 0.92rem; line-height: 1.65; margin: 8px 0 10px; }
+.eg-urgent-msg i { color: #c0392b; margin-right: 4px; }
 
 /* Q2 '혁신·녹색·우수조달제품' 세부 선택 칩 (2026-11-26) */
 .eg-subbox { margin-top: 10px; padding: 12px 14px; background: #f6f8fc; border: 1px solid #d9e2f2; border-radius: 10px; }

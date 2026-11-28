@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 59;
+    var MAP_VERSION = 60;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -39,7 +39,7 @@
         { v: 'd5', label: '50만 달러 이상', short: '50만 달러 이상' }
     ];
 
-    // 애로사항(Q6) 10개
+    // 애로사항(Q6) 19개 + 기타 1개
     var ISSUES = {
         buyer:   '바이어를 못 찾겠다',
         docs:    '수출서류·계약서가 어렵다',
@@ -49,12 +49,17 @@
         fx:      '환율 변동이 부담된다',
         importer: '수입자 신용조사가 필요하다',
         cert:    '해외인증·규제를 모른다',
-        hs:      'HS코드·관세·통관을 모른다',
+        hs:      'HS코드·관세·통관·FTA를 모른다',
         support: '받을 수 있는 정부지원사업을 모른다',
         fraud:   '계좌변경·무역사기가 걱정된다',
         market:  '어느 나라로 갈지 모르겠다',
         tclaim:  '무역클레임(품질·수량·납기 분쟁)이 걱정된다',
         logistics: '물류·배송이 어렵거나 비용이 부담된다',
+        overdue: '연체된 수출대금(미수금) 회수가 필요하다',
+        mall:    '해외 온라인 쇼핑몰(아마존·쇼피 등) 입점이 어렵다',
+        ip:      '해외 상표권·특허(IP) 보호가 필요하다',
+        promo:   '해외 마케팅·영문 홍보물(카탈로그·홈페이지)이 없다',
+        indirect: '구매확인서·부가세 영세율·수출실적 인정이 어렵다',
         etc:     '기타(찾는 서비스 직접 적기)'
     };
     // '기타'(2026-11-22 작가님): '더 보기' 목록 맨 끝에 있고(2026-11-24), 고르면 입력칸(100자)이 열린다. 전체 선택에는 넣지 않는다.
@@ -68,11 +73,12 @@
         { k: ['무역진흥자금', '무역협회'], ids: ['kita-fund'] },
         { k: ['수출입은행'], ids: ['exim'] },
         { k: ['서비스수출보험', '서비스보험', '서비스종합보험', '콘텐츠', '소프트웨어', '용역'], ids: ['ksure-service', 'kodit-service'] },
-        { k: ['보험', '미수', '대금', '떼일', '떼인', '못 받', '못받'], ids: ['ksure-plus', 'claim'] },
+        { k: ['연체', '미수금', '미수채권', '회수대행', '회수지원', '추심', '회수불능', '대손', '떼인', '떼일'], ids: ['debt-collect', 'claim', 'debt-writeoff'] },
+        { k: ['보험', '미수', '대금', '못 받', '못받'], ids: ['ksure-plus', 'claim', 'debt-collect'] },
         { k: ['신용조사', '신용 조사', '신용도'], ids: ['credit'] },
         { k: ['환율', '환변동', '환리스크', '환 리스크'], ids: ['fx'] },
         { k: ['인증', '규격', '할랄', 'fda', 'ce마크', 'ce 마크'], ids: ['cert'] },
-        { k: ['hs', '관세', '통관', 'fta', '원산지'], ids: ['trade-stats', 'customs'] },
+        { k: ['hs', '관세', '통관', 'fta', '원산지', 'c/o', '원산지증명'], ids: ['trade-stats', 'customs', 'fta-portal', 'trade-navi'] },
         { k: ['법령', '법률', '대외무역법', '관세법'], ids: ['lawsearch'] },
         { k: ['계약'], ids: ['contract'] },
         { k: ['서류', '인보이스', 'invoice', '패킹', '오퍼', '선적통지'], ids: ['doc-builder', 'export-docs'] },
@@ -83,9 +89,10 @@
         { k: ['창업', 'r&d', '연구개발', '팁스', 'tips'], ids: ['rnd', 'kibo-rnd'] },
         { k: ['재기', '재도전', '재창업', '채무조정'], ids: ['kibo-retry', 'kodit-retry', 'kosmes-restart', 'semas-retry'] },
         { k: ['기보', '기술보증'], ids: ['kibo', 'kibo-rnd', 'kibo-retry'] },
-        { k: ['온라인', '쇼핑몰', '아마존', '역직구', '이커머스', 'b2c'], ids: ['c-amazon', 'gm-kosmes', 'op-semas', 'b2c', 'c-more'] },
+        { k: ['온라인', '쇼핑몰', '아마존', '쇼피', '이베이', '큐텐', '파워셀러', '역직구', '이커머스', 'b2c'], ids: ['c-amazon', 'gm-kosmes', 'op-semas', 'b2c', 'c-more'] },
         { k: ['b2b', '플랫폼'], ids: ['b-b2b', 'buykorea'] },
         { k: ['물류', '배송', '운송', '포워딩', '포워더', '풀필먼트', 'ems'], ids: ['logi-support', 'c-logi', 'customs'] },
+        { k: ['홍보', '카탈로그', '브로슈어', '홈페이지', '영문', '동영상', '영상', '상세페이지', '디자인', '마케팅'], ids: ['voucher', 'k-aitc', 'gobizkorea'] },
         { k: ['수입보험', '선급금', '원자재 수입'], ids: ['import-ins'] },
         { k: ['벤처', '이노비즈', 'innobiz', '기업부설연구소', '연구소', '기업인증'], ids: ['biz-cert'] },
         { k: ['메인비즈', 'mainbiz', '경영혁신'], ids: ['biz-cert-mainbiz'] },
@@ -103,13 +110,13 @@
         { k: ['화장품', '뷰티', '미용'], ids: ['cosmetic'] },
         { k: ['의료기기', '바이오', '헬스케어', '식약처'], ids: ['cert-medical', 'cert'] },
         { k: ['전략물자', 'yestrade', '수출통제', '전기전자', 'ul', 'fcc'], ids: ['cert-elec', 'customs'] },
-        { k: ['상표', '특허', '지재권', '지식재산', 'ip-desk'], ids: ['ip-help'] },
+        { k: ['상표', '특허', '지재권', '지식재산', 'ip-desk', '디자인권', '위조품', 'ip'], ids: ['ip-help', 'ip-desk', 'voucher'] },
         { k: ['내수기업', '첫 수출', '첫수출', '처음 수출', '소상공인'], ids: ['smb-strategy', 'k-domestic'] },
         { k: ['우대', '여성기업', '장애인기업', '사회적기업', '벤처', '이노비즈', '메인비즈', '청년기업', '기업부설연구소'], ids: ['pref-cond', 'policy-fund'] },
         { k: ['컨설팅', 'trade-sure', '트레이드슈어', '무료 자문', '무료자문'], ids: ['trade-sure'] },
         { k: ['고비즈', 'gobiz', '바이코리아', 'buykorea'], ids: ['gobizkorea', 'buykorea-portal'] },
         { k: ['트라이빅', 'tribig', '해외경제정보', 'dream'], ids: ['tribig', 'kotra-dream', 'kita-portal'] },
-        { k: ['내국신용장', '구매확인서', '로컬', 'local'], ids: ['bok-local', 'bok-tf'] },
+        { k: ['내국신용장', '구매확인서', '로컬', 'local', '간접수출', '영세율', '부가세', '수출실적', '실적증명', 'utradehub', 'ktnet'], ids: ['utradehub', 'bok-local', 'kita-perf'] },
         { k: ['기업은행', 'ibk', '무역금융', '관세피해'], ids: ['bok-tf', 'ibk-export', 'ibk-smallbiz'] },
         { k: ['최신', '공고', '소식'], ids: ['notices'] }
     ];
@@ -330,7 +337,7 @@
     var LINKS = {
         'smb-strategy':{ t: '소상공인 첫수출 전략 (6단계 실전 로드맵)', u: 'global-expansion.html#smb-export-lecture', d: '하이브리드 진출 전략·HS Code/인코텀즈/적재이행등록·지재권/무역사기 차단·트라이빅/공공 B2B·범부처 5대 기관 지원사업·단계별 마스터 로드맵까지 소상공인·소기업의 첫 수출을 6단계로 정리했습니다.' },
         'c-amazon':    { t: '아마존 입점전략 (아마존 통해서 첫 수출하기)', u: 'global-expansion.html#c-amazon', d: '아마존 글로벌 셀링 4단계 핵심 프로세스(계정 생성·카테고리 승인·FBA 물류 세팅·브랜드 레지스트리), 초기 비용·B2B 도약 전략과 정부 지원사업 연계를 정리했습니다.' },
-        'gm-kosmes':   { t: '글로벌 쇼핑몰 판매지원(중진공)', u: 'global-mall.html', d: '아마존·쇼피 등 글로벌 쇼핑몰 입점과 마케팅을 수행기관을 통해 지원하는 중기부·중진공 사업입니다(중소기업 대상). 2026년 모집은 마감되었으니 다음 모집 시기는 공고 확인이 필요합니다.' },
+        'gm-kosmes':   { t: '글로벌 쇼핑몰 판매지원(중진공·고비즈코리아)', u: 'global-mall.html', d: '아마존·쇼피 등 글로벌 쇼핑몰 입점과 마케팅을 수행기관을 통해 지원하는 중기부·중진공(고비즈코리아) 사업입니다(중소기업 대상). 2026년 모집은 마감되었으니 다음 모집 시기는 공고 확인이 필요합니다.' },
         'op-semas':    { t: '해외 온라인 플랫폼 판로지원(소진공)', u: 'overseas-platform.html', d: '소상공인의 해외 온라인 플랫폼 입점·활용(마케팅)·물류를 단계별로 지원하는 중기부·소진공 사업입니다(소상공인 대상). 모집 시기·기업당 금액은 공고 확인이 필요합니다.' },
         'k-domestic':  { t: 'KOTRA 내수기업 수출기업화', u: 'global-expansion.html#k-domestic', d: '전년도 통관 실적 10만 달러 미만 기업의 첫 수출을 돕는 사업입니다(로컬 수취액은 실적에서 제외).' },
         'semas-innov': { t: '소진공 혁신성장촉진자금(혁신형)', u: 'policy-finance.html?org=semas#semas-direct', d: "'수출 소상공인'(최근 1년 이내 직·간접 수출실적 1,000달러 이상인 소상공인)이 대상인 정책자금입니다. 한도·금리·업종 등 세부 요건은 소진공 공고를 확인하세요." },
@@ -341,7 +348,8 @@
         'cert-medical':{ t: '의료기기·바이오 해외인증·인허가 안내', u: 'cert-guide.html#item-medical', d: '한국의료기기안전정보원(NIDS) 등 의료기기 등급 분류·인허가 조회 포털과 해외규격인증획득지원사업(지정 인증 최대 1억 5천만 원, 2026년 공고 기준)을 안내합니다.' },
         'cert-elec':   { t: '전기·전자·공산품 해외인증 안내(CE·FCC·UL 등)', u: 'cert-guide.html#item-industrial', d: 'CE·FCC·UL·PSE 등 전기·전자·IT기기·기계류 필수 규격인증 조회 경로와 트레이드내비 교차 검증 방법을 안내합니다.' },
         'ip-help':     { t: '해외지식재산센터(IP-DESK)·상표권·수출애로 상담', u: 'global-expansion.html#ip-help', d: '해외 상표·특허 출원, 위조품·지재권 분쟁 대응 상담(IP-DESK)과 무역 전문가 1:1 상담(TradePro)을 안내합니다.' },
-        'voucher':     { t: '수출바우처', u: 'government-support.html#voucher', d: '시장조사·인증·홍보 등 수출 서비스를 골라 쓰는 지원사업입니다. 신청 자격은 해마다 공고를 확인하세요.' },
+        'ip-desk':     { t: '해외지식재산센터(IP-DESK) 공식 포털', u: 'https://www.ip-navi.or.kr', ext: true, d: '특허청·한국지식재산보호원이 운영하는 해외지식재산센터(IP-DESK)입니다. 해외 상표·디자인 출원 비용 지원과 현지 지재권 침해·위조품 대응 상담을 제공합니다.' },
+        'voucher':     { t: '수출바우처', u: 'government-support.html#voucher', d: '시장조사·특허/지재권·홍보물/디자인/동영상·해외인증·국제운송 등 14개 분야 수출 서비스를 골라 쓰는 지원사업입니다. 신청 자격은 해마다 공고를 확인하세요.' },
         'innovation-voucher': { t: '중소기업 혁신바우처', u: 'government-support.html#innovation-voucher', d: '「중소기업기본법」 제2조에 따른 제조업 중소기업에 컨설팅·기술지원·마케팅을 바우처로 최대 5,000만 원 지원하는 사업입니다. 일반바우처는 평균(3년) 매출 140억 원 이하 소기업, 중대재해예방·탄소중립 바우처는 140억 초과~1,800억 원 이하 중소기업까지 신청 가능합니다.' },
         'doc-builder': { t: '수출서류 작성기', u: 'doc-builder.html', d: '오퍼시트·PI·CI·P/L·선적통지 초안을 한 번의 입력으로 만듭니다.' },
         'contract':    { t: '계약서 작성기', u: 'contract-builder.html', d: '거래 조건에 맞는 매매계약서 초안과 추천 조항을 만듭니다.' },
@@ -352,10 +360,12 @@
         'credit':      { t: '국외기업 신용조사', u: 'trade-insurance.html#credit', d: '거래 전에 해외 바이어의 신용을 확인합니다.' },
         'ksure-postship': { t: '무보 수출신용보증(선적 후·매입·포괄매입)', u: 'trade-insurance.html#ksure-guarantee', d: '선적을 마친 수출채권을 금융기관에서 미리 현금화할 때 무보가 보증합니다. 선적후 보증은 단기수출보험과 연계해야 합니다.' },
         'ksure-after': { t: '무보 선적 후·대금 회수 상품 한눈에', u: 'policy-finance.html?org=ksure#ksure-after', d: '대금 미회수에 대비하는 보험과 채권 조기 현금화 보증을 함께 정리했습니다.' },
+        'debt-collect':{ t: 'K-SURE 해외채권 회수대행 · 미수채권 추심 지원', u: 'trade-claim.html#step3', d: '이미 연체·미수 상태가 된 해외 수출대금의 회수 전략 컨설팅, K-SURE 해외채권 회수지원 서비스, KOTRA 회원사 NICE 추심 할인 및 추심 수수료 지원(공고 확인)을 단계별로 안내합니다.' },
+        'debt-writeoff':{ t: '해외채권 회수불능 확인 (법인세 손실 처리)', u: 'trade-claim.html#step4', d: '추심·협상 끝에도 끝내 회수하지 못하거나 감액 합의한 해외 미수채권에 대해 법인세법상 대손(손실) 처리 근거로 무보 회수불능 확인을 받는 절차를 안내합니다.' },
         'trade-claim': { t: '무역클레임 대응 가이드', u: 'trade-claim.html#matrix', d: '클레임 접수 직후의 무료 자문부터 알선·조정, 미수채권 추심, 회수불능 확인까지 상황별로 찾아갈 곳을 정리했습니다.' },
         'kcab':        { t: '대한상사중재원(중재·조정)', u: 'https://www.kcab.or.kr/', d: '무역클레임이 당사자 합의로 풀리지 않을 때 상사중재·조정을 신청하는 기관입니다. 절차·비용은 공식 사이트에서 확인하세요.', ext: true },
         'law-adr':     { t: '중재·분쟁해결 법령·규칙', u: 'export-docs.html#law-adr', d: '무역클레임이 분쟁으로 번질 때 참고할 중재법·국제 중재 규칙 링크를 모았습니다.' },
-        'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '사고가 났을 때의 절차와 보험금을 못 받는 사례를 정리했습니다.' },
+        'claim':       { t: '보상절차·면책사례', u: 'trade-insurance.html#claim', d: '무역보험 가입 건에서 연체·미수 사고가 났을 때의 사고 통지·보험금 청구 절차와 면책사례를 정리했습니다.' },
         'claim-exempt':{ t: '면책사례(중계무역 조달 차질 등)', u: 'trade-insurance.html#claim-exempt', d: '중계무역 등에서 자주 생기는 면책 사례를 정리했습니다.' },
         'kosmes-dom':  { t: '중진공 신시장진출지원자금(내수기업 수출기업화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 1달러~10만 달러 미만 수출 초보 중소기업(소상공인 포함) 대상 직접대출(운전 연 10억 원 이내). 세부 요건은 중진공 공고를 확인하세요.' },
         'kosmes-glb':  { t: '중진공 신시장진출지원자금(수출기업 글로벌화)', u: 'policy-finance.html?org=kosmes#kosmes-export', d: '최근 1년 직·간접 수출실적 10만 달러 이상 수출 유망 중소기업(소상공인 포함) 대상(연 30억 원·운전 10억·고성장기업 60억 이내). 세부 요건은 중진공 공고를 확인하세요.' },
@@ -405,7 +415,9 @@
         'exim-growth': { t: '수출입은행 수출성장자금', u: 'policy-finance.html?org=exim#exim-growth', d: '과거 수출실적(또는 원부자재 공급실적) 범위 내 수출 운전자금 일괄 지원(중소 350억~500억, 중견 500억~800억 원 이내).' },
         'exim-perform':{ t: '수출입은행 수출이행자금', u: 'policy-finance.html?org=exim#exim-perform', d: '수출계약별 제작이행~대금회수 자금((계약금액-기수령액)×90% 이내). 대·중견·중소기업 모두 이용 가능.' },
         'lawsearch':   { t: '법령 길잡이', u: 'https://www.littlestar.co.kr/lawsearch/', ext: true, d: '대외무역법·관세법 등 수출 관련 법령을 쉽게 찾아봅니다.' },
-        'customs':     { t: '통관·FTA·전략물자(YesTrade) 안내', u: 'global-expansion.html#customs', d: '관세청 유니패스·FTA·Trade NAVI·구매확인서와 전략물자 사전판정(YesTrade)·무역안보관리원(KOSTI)을 안내합니다.' },
+        'customs':     { t: '통관·FTA·원산지증명(C/O)·전략물자 안내', u: 'global-expansion.html#customs', d: '관세청 유니패스(수출입 통관·HS코드 품목분류), FTA강국 KOREA(협정별 관세율·원산지증명 C/O 활용), Trade NAVI(품목별 관세·규제), uTradeHub·전략물자(YesTrade)를 안내합니다.' },
+        'fta-portal':  { t: 'FTA강국 KOREA (협정별 관세혜택·원산지증명 C/O 안내)', u: 'https://www.fta.go.kr', ext: true, d: '정부 FTA 종합 포털입니다. 수출국별 체결 FTA 현황, HS코드별 협정관세율, 원산지 결정기준 및 원산지증명서(C/O) 발급·활용 절차를 확인할 수 있습니다.' },
+        'trade-navi':  { t: 'Trade NAVI (국가·HS코드별 관세율·FTA·규제 조회)', u: 'https://kita.net/tradeNavi/tariffRegulation/main.do', ext: true, d: '한국무역협회 Trade NAVI에서 수출 대상국의 품목(HS코드)별 기본·FTA 협정 관세율, 원산지 기준과 통관·비관세 규제를 조회합니다.' },
         'rnd':         { t: '창업·R&D 지원사업', u: 'government-support.html#rnd', d: '예비창업패키지·TIPS 등 창업 기업용 지원사업입니다.' },
         'hope':        { t: '소진공 희망리턴패키지', u: 'government-support.html#hope', d: '폐업·재창업·재도전 소상공인의 재기·전환을 돕는 소진공 사업입니다.' },
         'agri':        { t: '농산물 수출 지원', u: 'global-expansion.html#agri', d: '농식품 수출 지원사업과 기관을 정리했습니다.' },
@@ -447,6 +459,8 @@
         // 한국은행 무역금융(2026-11-26 작가님: 모든 수출기업에 기업은행보다 앞에서 추천, 로컬 수출기업에는 내국신용장·구매확인서 안내)
         'bok-tf':      { t: '한국은행 무역금융(시중은행 창구)', u: 'policy-finance.html?org=bok#bok-overview', d: '수출신용장·수출계약서·수출실적을 근거로 시중은행이 원자재 구매·생산·완제품 구매 자금을 저금리로 지원하는 선적 전 금융입니다. 2026.7.23 한국은행 개편으로 단계적 축소·폐지 예정(언론 보도 기준)이니 신규 지원 여부는 거래 은행에서 꼭 확인하세요.' },
         'bok-local':   { t: '무역금융 · 내국신용장(Local L/C)과 구매확인서', u: 'policy-finance.html?org=bok#bok-local', d: '국내 수출기업에 수출용 물품을 납품(간접수출)할 때 쓰는 내국신용장(은행 지급보증 있음)과 구매확인서(지급보증 없음)의 차이, 부가세 영세율·간접수출 실적 인정, 내국신용장 필수 기한 규정을 정리했습니다.' },
+        'utradehub':   { t: 'KTNET uTradeHub (구매확인서·간접수출실적증명 발급)', u: 'https://www.utradehub.or.kr', ext: true, d: '한국무역정보통신(KTNET) 국가전자무역 플랫폼입니다. 국내 수출기업 납품(간접수출) 시 구매확인서·내국신용장 전자 발급, 부가세 영세율 적용 및 간접수출실적증명서 발급을 처리합니다.' },
+        'kita-perf':   { t: '한국무역협회 수출입실적증명서 발급', u: 'https://membership.kita.net/cert/oncert/expImpResCertRequest.do', ext: true, d: '대외무역관리규정에 따라 직수출·용역/전자적무체물 등 수출입실적증명서를 온라인으로 발급받는 한국무역협회 멤버십서비스 경로입니다(정부 수출지원사업·무역진흥자금 신청 제출용).' },
         // IBK기업은행 기업대출(2026-11-23)
         'ibk-export':  { t: 'IBK기업은행 무역금융·관세피해 지원대출', u: 'policy-finance.html?org=ibk#ibk-export', d: '외화획득 단계별 무역금융, 통상환경 변화 대응 IBK관세피해기업 지원대출, 철강산업 수출공급 활성화 지원대출(무보 보증 연계) 등 수출기업 전용 대출입니다.' },
         'ibk-youth':   { t: 'IBK기업은행 IBK유망청년창업대출', u: 'policy-finance.html?org=ibk#ibk-innov', d: '신용보증기금·기술보증기금과 업무협약으로 유망 청년창업기업에 운전자금을 지원하는 전용 상품입니다(고정·변동·혼합).' },
@@ -459,7 +473,7 @@
         'b-b2b':       { t: '온라인 B2B 플랫폼', u: 'global-expansion.html#b-b2b', d: '해외 바이어를 만나는 온라인 B2B 플랫폼을 모았습니다.' },
         'buykorea':    { t: 'KOTRA 바이코리아', u: 'global-expansion.html#k-buykorea', d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색·등록, 거래대금 온라인 결제, 국제 배송(EMS·DHL)까지 지원합니다.' },
         // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 수출 플랫폼·정보 포털(2026-11-24)
-        'gobizkorea':  { t: '고비즈코리아 (kr.gobizkorea.com)', u: 'https://kr.gobizkorea.com', ext: true, d: '해외 바이어 거래알선(BMS)·수출계약대응지원 등 B2B 온라인 수출과 의류·패션 등 브랜드에 유리한 글로벌쇼핑몰 판매지원·K-브랜드 수출 플랫폼 육성·홍보 동영상 콘텐츠 제작·온라인 수출 공동물류 및 물류할인서비스를 지원합니다.' },
+        'gobizkorea':  { t: '고비즈코리아 (kr.gobizkorea.com)', u: 'https://kr.gobizkorea.com', ext: true, d: '중진공 온라인 수출 플랫폼으로 영문 상품페이지·홍보 동영상 콘텐츠 제작, 해외 바이어 거래알선(BMS)·수출계약대응지원, 글로벌쇼핑몰 판매지원 및 온라인 수출 공동물류·물류할인을 지원합니다.' },
         'buykorea-portal': { t: '바이코리아 (www.buykorea.org)', u: 'https://www.buykorea.org', ext: true, d: '전 세계 바이어와 한국 수출업체를 연결하는 글로벌 B2B e-커머스 플랫폼입니다. 상품 해외홍보, 바이어 구매정보(인콰이어리) 검색 및 등록, 거래대금 온라인 결제, 국제 배송(EMS, DHL)까지 수출 거래 전 단계를 지원합니다.' },
         'tribig':      { t: '트라이빅 (www.kotra.or.kr/bigdata)', u: 'https://www.kotra.or.kr/bigdata', ext: true, d: '1.3억 건의 수출통계와 600만 해외기업 DB를 바탕으로 AI가 품목별 유망 시장과 잠재 파트너 리스트를 추천하고, 무역투자통계와 국가별 시장정보를 시각화된 자료로 제공합니다.' },
         'kotra-dream': { t: '해외경제정보Dream (dream.kotra.or.kr)', u: 'https://dream.kotra.or.kr/', ext: true, d: '각 부처와 기관에 흩어져 있는 해외 진출 정보를 시장별·단계별로 통합 제공하는 범정부 플랫폼입니다.' },
@@ -469,8 +483,8 @@
         'akei':        { t: '한국전시산업진흥원', u: 'global-expansion.html#exhibit', d: '국내외 전시회 정보를 찾아봅니다.' },
         'b-potential': { t: 'KOTRA 잠재바이어 발굴', u: 'global-expansion.html#b-potential', d: 'KOTRA 해외무역관이 잠재 바이어를 대신 찾아 주는 유료 대행 서비스입니다.' },
         'k-bts':       { t: 'KOTRA 바이어 트래킹', u: 'global-expansion.html#k-bts', d: 'KOTRA로 알게 된 바이어와의 교신을 무역관이 대신 도와줍니다(KOTRA 기업 회원 대상).' },
-        'k-aitc':      { t: 'KOTRA AI무역지원센터', u: 'global-expansion.html#k-aitc', d: 'AI 수출상품 콘텐츠 제작·바이코리아 등록·수출 상담을 무료로 지원하는 전국 센터입니다.' },
-        'c-more':      { t: 'B2C 역직구 기관·민간 추가 지원', u: 'global-expansion.html#c-more', d: 'KOTRA·중진공·aT·무역협회·지자체의 온라인 판매 지원을 모았습니다. 사업 내용은 해마다 공고를 확인하세요.' },
+        'k-aitc':      { t: 'KOTRA AI무역지원센터 (무료 콘텐츠 제작)', u: 'global-expansion.html#k-aitc', d: 'AI 활용 상품사진 촬영·보정, 수출상품 상세 콘텐츠 제작, 바이코리아 상품등록 및 수출 상담을 무료로 지원하는 전국 20개 KOTRA 센터입니다.' },
+        'c-more':      { t: 'KOTRA 파워셀러 육성 · B2C 역직구 기관 추가 지원', u: 'global-expansion.html#c-more', d: 'KOTRA 이베이·쇼피 파워셀러 육성, 중국 역직구(콰징) 물류지원과 중진공·aT·지자체·민간의 해외 온라인몰 판매 지원을 모았습니다. 사업 내용은 해마다 공고를 확인하세요.' },
         'ksure-group': { t: '단기수출보험(단체보험)', u: 'trade-insurance.html#ksure-group', d: '지자체·협회 등이 단체로 가입하고 보험료를 대신 내 주는 수출대금 미회수 보험입니다. 가입 여부·보상 한도는 지자체마다 다릅니다.' },
         'ins-support': { t: '무역보험 보험료 지원사업', u: 'trade-insurance.html#support', d: '보험료 지원사업 공고는 무보 홈페이지 게시판에서 확인합니다.' },
         'kon':         { t: 'K-SURE ON(온라인 무역보험)', u: 'trade-insurance.html#kon', d: '무역보험 신청과 조회를 온라인으로 합니다.' },
@@ -516,6 +530,10 @@
     // pri: 1 = 최우선 추천(먼저 볼 곳 상단 가점 + 최우선 배지), 2 = 조건 직접 해당, 3 = 함께 검토할 수출금융·지원, 4 = 한국은행 무역금융(기은보다 앞)·IBK기업은행, 5 = 한국수출입은행(문턱이 높아 기은 다음 맨 마지막)
     var PROGRAMS = [
         // ── 최우선 추천 (pri: 1) ──
+        { id: 'debt-collect', pri: 1, match: function (c) {
+            return c.hasAny(['overdue'])
+                ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(최우선 추천 · 이미 발생한 미수채권 사후 추심·K-SURE 회수대행)" : '';
+        }},
         { id: 'semas-disabled', pri: 1, match: function (c) {
             return (c.disabled && !c.has2('medium') && !c.has2('mid') && !c.has2('large'))
                 ? '장애인기업이라서(최우선 추천 · 저금리 고정금리)' : '';
@@ -809,10 +827,62 @@
             return '';
         }},
 
-        // ── 비금융 수출·창업 지원사업 ──
+        // ── 비금융 수출·창업·애로 대응 지원사업 ──
+        { id: 'claim', pri: 2, match: function (c) {
+            return c.hasAny(['overdue'])
+                ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(무역보험 가입 건 사고 통지·보험금 청구 절차 확인)" : '';
+        }},
+        { id: 'debt-writeoff', pri: 2, match: function (c) {
+            return c.hasAny(['overdue'])
+                ? "'연체된 수출대금(미수금) 회수가 필요하다'를 골라서(최종 회수 포기·감액 합의 시 법인세 손실 처리 근거)" : '';
+        }},
+        { id: 'gm-kosmes', pri: 2, match: function (c) {
+            return (!c.pureB2b && c.hasAny(['mall']) && c.sme)
+                ? "'해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(중진공·고비즈코리아 글로벌쇼핑몰 입점·마케팅 지원 · 모집 시기 공고 확인)" : '';
+        }},
+        { id: 'op-semas', pri: 2, match: function (c) {
+            if (c.pureB2b || !c.hasAny(['mall'])) return '';
+            if (c.smallbiz) return "소상공인 + '해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(소진공 해외 온라인 플랫폼 입점·활용·물류 지원 · 공고 확인)";
+            if (c.b2c) return "B2C + '해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(소진공 해외 온라인 플랫폼 판로지원 · 소상공인 대상, 공고 확인)";
+            return '';
+        }},
+        { id: 'c-amazon', pri: 2, match: function (c) {
+            return (!c.pureB2b && c.hasAny(['mall']))
+                ? "'해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(아마존 글로벌 셀링 4단계 입점전략 · FBA 물류 가이드)" : '';
+        }},
+        { id: 'ip-help', pri: 2, match: function (c) {
+            return c.hasAny(['ip'])
+                ? "'해외 상표권·특허(IP) 보호가 필요하다'를 골라서(해외지식재산센터 IP-DESK 출원 지원·지재권 분쟁 대응 안내)" : '';
+        }},
+        { id: 'ip-desk', pri: 2, match: function (c) {
+            return c.hasAny(['ip'])
+                ? "'해외 상표권·특허(IP) 보호가 필요하다'를 골라서(특허청 IP-DESK 해외 상표·디자인 출원비 지원 및 현지 침해 대응)" : '';
+        }},
         { id: 'k-aitc', pri: 2, match: function (c) {
+            if (c.hasAny(['promo'])) return "'해외 마케팅·영문 홍보물이 없다'를 골라서(KOTRA AI무역지원센터 상품사진·콘텐츠 무료 제작 지원)";
             if (c.rev !== 1) return '';
             return c.noRev ? '매출 없음 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서' : '매출 1억 원 미만 초기 기업(KOTRA AI무역지원센터 무료 지원)이라서';
+        }},
+        { id: 'gobizkorea', pri: 2, match: function (c) {
+            return c.hasAny(['promo'])
+                ? "'해외 마케팅·영문 홍보물이 없다'를 골라서(고비즈코리아 영문 상품페이지·홍보 동영상 제작 지원)" : '';
+        }},
+        { id: 'utradehub', pri: 2, match: function (c) {
+            if (c.hasAny(['indirect'])) return "'구매확인서·부가세 영세율·수출실적 인정' 어려움을 골라서(KTNET uTradeHub 구매확인서·간접수출실적증명 발급)";
+            if (c.hasAny(['form:local'])) return '로컬 수출(간접수출) 기업이라서(KTNET uTradeHub 구매확인서·간접수출실적증명 발급)';
+            return '';
+        }},
+        { id: 'kita-perf', pri: 2, match: function (c) {
+            return c.hasAny(['indirect'])
+                ? "'구매확인서·부가세 영세율·수출실적 인정' 어려움을 골라서(한국무역협회 직수출·용역/무체물 수출입실적증명서 온라인 발급)" : '';
+        }},
+        { id: 'customs', pri: 2, match: function (c) {
+            return c.hasAny(['hs'])
+                ? "'HS코드·관세·통관·FTA를 모른다'를 골라서(관세청 유니패스·FTA강국 KOREA·Trade NAVI·원산지증명 C/O 안내)" : '';
+        }},
+        { id: 'fta-portal', pri: 2, match: function (c) {
+            return c.hasAny(['hs'])
+                ? "'HS코드·관세·통관·FTA를 모른다'를 골라서(협정별 FTA 관세율·원산지 결정기준·원산지증명서 C/O 발급 안내)" : '';
         }},
         { id: 'k-domestic', pri: 2, match: function (c) {
             if (c.st <= 3 && c.hasAny(['buyer', 'market', 'support', 'need:market', 'need:fund', 'form:local']))
@@ -821,7 +891,11 @@
             return '';
         }},
         { id: 'voucher', pri: 2, match: function (c) {
-            if (c.hasAny(['logistics'])) return "'물류·배송' 어려움을 골라서(수출바우처 국제운송·해외물류비 활용 추천)";
+            var menus = [];
+            if (c.hasAny(['ip'])) menus.push('특허/지재권/시험');
+            if (c.hasAny(['promo'])) menus.push('홍보/광고·디자인 개발·홍보 동영상');
+            if (c.hasAny(['logistics'])) menus.push('국제운송·해외물류비');
+            if (menus.length) return '고른 어려움에 맞춰 수출바우처(' + menus.join(', ') + ') 메뉴 활용 추천';
             if (c.hasAny(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']))
                 return c.whyTags(['support', 'buyer', 'market', 'cert', 'need:market', 'need:fund']);
             if (c.rev === 2) return '매출 1억~5억 원 미만 초보 수출바우처 대상이라서';
@@ -841,7 +915,8 @@
             return c.hasAny(['logistics'])
                 ? "'물류·배송' 어려움을 골라서(우체국 EMS·특송·FBA·풀필먼트 및 간이수출신고·관세 실무 가이드)" : '';
         }},
-        { id: 'c-more', pri: 3, match: function (c) {
+        { id: 'c-more', pri: 2, match: function (c) {
+            if (!c.pureB2b && c.hasAny(['mall'])) return "'해외 온라인 쇼핑몰 입점이 어렵다'를 골라서(KOTRA 파워셀러 육성 · 기관·민간 B2C 역직구 지원)";
             return (c.b2c && c.hasAny(['logistics']))
                 ? "'물류·배송' 어려움을 골라서(KOTRA 콰징 원스톱 물류지원 · 우체국 EMS · 지자체 수출 물류비 지원)" : '';
         }},
@@ -870,6 +945,7 @@
             return '모든 수출기업 대상(한국은행 무역금융 · 개편 예정, 은행 확인)이라서';
         }},
         { id: 'bok-local', pri: 4, match: function (c) {
+            if (c.hasAny(['indirect'])) return "'구매확인서·부가세 영세율·수출실적 인정' 어려움을 골라서(내국신용장·구매확인서 차이, 영세율·간접수출 실적 인정)";
             return c.hasAny(['form:local']) ? '로컬 수출(국내 수출기업 납품) 기업이라서(내국신용장·구매확인서)' : '';
         }},
 
@@ -1023,7 +1099,7 @@
               { id: 'ksure-direct', st: [3, 4, 5] },
               { id: 'exim', skipIf: ['exim-promo', 'exim-growth', 'exim-perform'] }
           ] },
-        { t: '바이어 발굴·판로', on: ['buyer', 'market', 'need:market', 'form:b2b', 'form:b2c'],
+        { t: '바이어 발굴·판로', on: ['buyer', 'market', 'mall', 'need:market', 'form:b2b', 'form:b2c'],
           items: [
               { id: 'buyer', on: ['form:b2b', 'buyer'] },
               { id: 'ksight', on: ['form:b2b', 'buyer'] },
@@ -1034,11 +1110,23 @@
               { id: 'b-potential', on: ['form:b2b', 'buyer'] },
               { id: 'k-bts', on: ['form:b2b', 'buyer'] },
               { id: 'k-aitc' },
-              { id: 'c-amazon', on: ['form:b2c'] },
-              { id: 'b2c', on: ['form:b2c'] },
-              { id: 'c-more', on: ['form:b2c'] }
+              { id: 'c-amazon', when: function (c) { return c.b2c || (!c.pureB2b && c.issues.indexOf('mall') >= 0); } },
+              { id: 'gm-kosmes', when: function (c) { return c.b2c || (!c.pureB2b && c.issues.indexOf('mall') >= 0); } },
+              { id: 'op-semas', when: function (c) { return c.b2c || (!c.pureB2b && c.issues.indexOf('mall') >= 0); } },
+              { id: 'b2c', when: function (c) { return c.b2c || (!c.pureB2b && c.issues.indexOf('mall') >= 0); } },
+              { id: 'c-more', when: function (c) { return c.b2c || (!c.pureB2b && c.issues.indexOf('mall') >= 0); } }
           ] },
-        { t: '무역보험 이용', on: ['collect', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
+        { t: '미수채권 회수·사후 대응', on: ['overdue', 'tclaim'],
+          items: [{ id: 'debt-collect' }, { id: 'claim' }, { id: 'debt-writeoff' }, { id: 'trade-claim' }, { id: 'kcab' }, { id: 'trade-sure' }] },
+        { t: '지재권·상표권 보호', on: ['ip'],
+          items: [{ id: 'ip-help' }, { id: 'ip-desk' }, { id: 'voucher' }, { id: 'trade-sure' }] },
+        { t: '해외 마케팅·영문 홍보물 제작', on: ['promo'],
+          items: [{ id: 'voucher' }, { id: 'gobizkorea' }, { id: 'k-aitc' }, { id: 'voucher-portal' }] },
+        { t: '간접수출·구매확인서·수출실적 인정', on: ['indirect', 'form:local'],
+          items: [{ id: 'utradehub' }, { id: 'bok-local' }, { id: 'kita-perf' }, { id: 'customs' }, { id: 'qna-fx' }] },
+        { t: '통관·HS코드·FTA·원산지증명(C/O)', on: ['hs', 'form:import'],
+          items: [{ id: 'customs' }, { id: 'fta-portal' }, { id: 'trade-navi' }, { id: 'trade-stats' }, { id: 'lawsearch' }] },
+        { t: '무역보험 이용', on: ['collect', 'overdue', 'importer', 'factoring', 'tclaim', 'need:fund', 'pay:deferred', 'pay:collection', 'form:relay', 'form:import'],
           items: [{ id: 'ksure-group', st: [0, 1, 2] }, { id: 'ins-support' }, { id: 'kon' }, { id: 'qna-f' }, { id: 'import-ins', on: ['form:relay', 'form:import'] }] },
         { t: '환율', on: ['fx'], items: [{ id: 'fxinfo' }] },
         // 낮은 순위(후순위) B2B·B2C·소상공인·소기업·중소기업 대상 주요 수출 플랫폼·정보·바우처 포털(2026-11-24)
@@ -1069,7 +1157,7 @@
         stage: { s0: 1, s1: 2, s2: 2, s3: 3, s4: 4, s5: 4, s6: 4 },
         s0Deal: { nego: 3, order: 3 },
         // 어려운 점(Q6) → 관련 단계
-        issue: { market: 1, cert: 1, hs: 1, support: 1, buyer: 2, docs: 3, importer: 3, fraud: 3, tclaim: 3, fund: 4, collect: 4, factoring: 4, fx: 4 }
+        issue: { market: 1, cert: 1, hs: 1, support: 1, ip: 1, promo: 1, buyer: 2, mall: 2, docs: 3, importer: 3, fraud: 3, tclaim: 3, fund: 4, collect: 4, factoring: 4, fx: 4, logistics: 5, overdue: 5, indirect: 5 }
     };
 
     // 결과 맨 앞 '먼저 찾아볼 정보 사이트'(2026-11-24 작가님). 조건은 '또는', 이 순서대로 보인다.
@@ -1086,7 +1174,7 @@
 
     // 수출 형태별 참고(결과 화면 아래 작은 묶음)
     var FORM_LINKS = {
-        local: ['bok-local', 'k-domestic', 'qna-fx'],
+        local: ['bok-local', 'utradehub', 'kita-perf', 'k-domestic', 'qna-fx'],
         b2c:   ['c-amazon', 'gm-kosmes', 'op-semas', 'b2c'],
         b2b:   ['buyer', 'doc-builder'],
         relay: ['ksure-plus', 'claim-exempt'],
@@ -1110,7 +1198,7 @@
                 { name: '해외지식재산센터 (IP-DESK)', url: 'https://www.ip-navi.or.kr', ext: true, desc: '해외 상표 출원 비용 지원 및 K-뷰티 브랜드 무단선점·위조품 대응' },
                 { name: 'KOTRA 한류박람회·유통망 협력', url: 'https://www.kotra.or.kr', ext: true, desc: 'K-뷰티 특화 해외 판촉전 및 현지 온·오프라인 유통망 입점 연계' }
             ],
-            crossRule: { issues: ['cert', 'hs'], pinTop: ['해외규격인증획득지원센터', '해외지식재산센터 (IP-DESK)'] }
+            crossRule: { issues: ['cert', 'hs', 'ip'], pinTop: ['해외규격인증획득지원센터', '해외지식재산센터 (IP-DESK)'] }
         },
         agri: {
             priorityTip: '수출국 검역·성분규제·라벨링 현지화가 핵심입니다. aT 농식품글로벌성장패키지는 수출바우처와 중복 불가하므로 유리한 쪽을 선택하세요.',
@@ -1130,7 +1218,7 @@
                 { name: '고비즈코리아 (글로벌쇼핑몰 지원)', url: 'https://kr.gobizkorea.com', ext: true, b2cOnly: true, desc: '아마존·쇼피·큐텐 등 글로벌 온라인몰 입점, 상세페이지 제작 및 공동물류 연계' },
                 { name: '해외지식재산센터 (IP-DESK)', url: 'https://www.ip-navi.or.kr', ext: true, desc: '해외 상표·디자인 출원 비용 지원 및 현지 지재권 침해 예방' }
             ],
-            crossRule: { issues: ['buyer', 'market'], pinTop: ['KOTRA 파워셀러·1무역관 1유통망', 'KOTRA 해외유통망 입점·1무역관 1유통망', '고비즈코리아 (글로벌쇼핑몰 지원)'] }
+            crossRule: { issues: ['buyer', 'market', 'mall'], pinTop: ['KOTRA 파워셀러·1무역관 1유통망', 'KOTRA 해외유통망 입점·1무역관 1유통망', '고비즈코리아 (글로벌쇼핑몰 지원)'] }
         },
         medical: {
             priorityTip: '수출국 인허가(FDA·CE·PMDA) 및 품질인증 요건 확인이 최우선입니다. 인허가 기간과 비용을 고려해 지원사업을 먼저 확보하세요.',
