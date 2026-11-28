@@ -7,7 +7,7 @@
 (function () {
     'use strict';
 
-    var MAP_VERSION = 60;
+    var MAP_VERSION = 61;
 
     // 수출실적 7단계(핵심 축). 순서 = 단계 번호(0~6)
     var STAGES = [
@@ -241,7 +241,15 @@
             groups: [
                 { label: '창업 연차', vs: ['pre', 'startup', 'y7', 'y7p'] },
                 { label: '우대 조건 (복수 선택 가능)', multi: true, vs: PREF_VALS },
-                { label: '기업 규모', vs: ['smallbiz', 'small', 'medium', 'mid', 'large', 'etc'] }
+                {
+                    label: '기업 규모',
+                    vs: ['smallbiz', 'small', 'medium', 'mid', 'large', 'etc'],
+                    note: [
+                        '※ 소상공인: 상시근로자(대표자 제외) 수 기준',
+                        'ㆍ광업·제조업·건설업·운수업 10명 미만',
+                        'ㆍ기타 업종 5명 미만'
+                    ]
+                }
             ],
             options: [
                 { v: 'pre', label: '예비창업자' },

@@ -287,6 +287,11 @@
                     var sub = el('div', 'eg-opts');
                     opts.forEach(function (o) { if (g.vs.indexOf(o.v) >= 0) sub.appendChild(optBtn(q, o)); });
                     box.appendChild(sub);
+                    if (g.note && g.note.length) {
+                        var gn = el('div', 'eg-grp-note');
+                        g.note.forEach(function (line) { gn.appendChild(el('p', '', line)); });
+                        box.appendChild(gn);
+                    }
                     // Q2 우대 조건: '혁신·녹색·우수조달제품' 세부 선택 + '기타' 직접 입력칸 (2026-11-26)
                     if (q.id === 'q2' && g.multi) {
                         var procBox = el('div', 'eg-subbox');

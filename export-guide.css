@@ -204,7 +204,9 @@
 
 .eg-opts.eg-opts-grouped { display: block; }
 .eg-grp-h { font-weight: 700; color: var(--primary-color); font-size: 0.92rem; margin: 4px 0 8px; }
-.eg-opts-grouped .eg-opts + .eg-grp-h { margin-top: 16px; }
+.eg-opts-grouped .eg-grp-h:not(:first-child) { margin-top: 16px; }
+.eg-grp-note { margin: 7px 0 0 2px; font-size: 0.72rem; line-height: 1.48; color: #6b7280; }
+.eg-grp-note p { margin: 0; }
 /* 다른 어려움 더 보기 (눈에 띄는 강조 펼침 바 + 미확인 주의 안내, 2026-11-28) */
 .eg-more {
     margin-top: 18px;
@@ -441,6 +443,7 @@
     .eg-opts.eg-opts-grid2 .eg-opt { padding: 10px 8px 10px 32px; font-size: 0.88rem; line-height: 1.3; }
     .eg-opts.eg-opts-grid2 .eg-opt::before { left: 9px; width: 16px; height: 16px; }
     .eg-opts.eg-opts-grid2 .eg-opt-sub { font-size: 0.72rem; }
+    .eg-grp-note { font-size: 0.7rem; }
     .eg-begin { width: 100%; }
     .eg-card { padding: 14px; gap: 10px; }
     .eg-consult-btns > * { flex: 1 1 100%; justify-content: center; text-align: center; }
